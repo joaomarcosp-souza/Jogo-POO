@@ -9,8 +9,9 @@ public class Principal extends JFrame {
     public Principal() {
         Fase fase = new Fase();
         super.add(fase);
+        
         super.setTitle("Invasores do Espaço");
-        super.setSize(1024, 500);
+        super.setSize(735, 413);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setLocationRelativeTo(null);
         super.setResizable(false);
@@ -18,6 +19,6 @@ public class Principal extends JFrame {
     }
 
     public static void main(String[] args) {
-       new Principal();
+       Principal principal = new Principal();
     }
 }

@@ -19,8 +19,8 @@ public class Personagem {
     }
     
     public void carregar(){
-        ImageIcon jogador = new ImageIcon("recursos\\starfighter.png");
-        this.imagem = jogador.getImage();
+        ImageIcon carregador = new ImageIcon("recursos\\starfighter.png");
+        this.imagem = carregador.getImage();
         this.alturaImagem = this.imagem.getWidth(null);
         this.larguraImagem = this.imagem.getHeight(null);
     }
