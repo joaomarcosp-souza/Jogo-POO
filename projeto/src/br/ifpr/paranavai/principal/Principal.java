@@ -10,7 +10,7 @@ public class Principal extends JFrame {
         Fase fase = new Fase();
         super.add(fase);
         
-        super.setTitle("Invasores do Espaço");
+        super.setTitle("Invasores Espaciais");
         super.setSize(735, 413);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setLocationRelativeTo(null);
