@@ -1,5 +1,7 @@
 package br.ifpr.paranavai.jogo.modelo;
+
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 
@@ -23,6 +25,48 @@ public class Personagem {
         this.imagem = carregador.getImage();
         this.alturaImagem = this.imagem.getWidth(null);
         this.larguraImagem = this.imagem.getHeight(null);
+    }
+
+    //COMEÇO DO METODO MOVIMENTO
+    public void keypressed(KeyEvent teclado){ // Chamando o objeto para conseguir mexer o boneco
+        int tecla = teclado.getKeyCode();
+
+        // Movimentando o Personagem atráves das teclas 'W'(Pra cima) é 'S'(Pra baixo)
+        if(tecla == KeyEvent.VK_UP){
+            deslocamentoEmY = -3;
+        };
+        if(tecla == KeyEvent.VK_DOWN){
+            deslocamentoEmY = 3;
+        }
+
+        // Movimentando o Personagem atráves das teclas 'A'(Para a Esquerda) é 'S'(Para Direita)
+        if(tecla == KeyEvent.VK_LEFT){
+            deslocamentoEmX = -3;
+        };
+        if(tecla == KeyEvent.VK_RIGHT){
+            deslocamentoEmX = 3;
+        };
+    }
+    //FIM MOVIMENTO
+
+    public void keyRelease(KeyEvent teclado){
+        int tecla = teclado.getKeyCode();
+
+        //Ao soltar as teclas o personagem tera seu movimento zerado
+        if(tecla == KeyEvent.VK_UP){
+            deslocamentoEmY = 0;
+        };
+        if(tecla == KeyEvent.VK_DOWN){
+            deslocamentoEmY = 0;
+        };
+
+        if(tecla == KeyEvent.VK_LEFT){
+            deslocamentoEmX = 0;
+        };
+        if(tecla == KeyEvent.VK_RIGHT){
+            deslocamentoEmX = 0;
+        };
+
     }
     
 
