@@ -3,19 +3,23 @@ package br.ifpr.paranavai.jogo.modelo;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Fase extends JPanel {
+public class Fase extends JPanel implements ActionListener {
     private Image fundo;
     private Personagem personagem;
 
     public Fase() {
-        ImageIcon carregando = new ImageIcon("recursos\\espaco.jpg");
+        setFocusable(true);
+        setDoubleBuffered(true);
+
+        ImageIcon carregando = new ImageIcon("recursos\\fundo.jpg");
         this.fundo = carregando.getImage();
 
         personagem = new Personagem();
@@ -25,41 +29,29 @@ public class Fase extends JPanel {
 
     }
 
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(735, 413); // Definindo as dimenões do jogo
-    }
-
     public void paint(Graphics g) {
         Graphics2D graficos = (Graphics2D) g;
         graficos.drawImage(this.fundo, 0, 0, null);
-
-        // Atualizar a posição do personagem
-        int novaPosicaoX = personagem.getPosicaoEmX() + personagem.getDeslocamentoEmX();
-        int novaPosicaoY = personagem.getPosicaoEmY() + personagem.getDeslocamentoEmY();
-        personagem.setPosicaoEmX(novaPosicaoX);
-        personagem.setPosicaoEmY(novaPosicaoY);
-        /*
-         * graficos.drawImage(this.fundo, 0, 0, null);// Desenhando a Imagem no BG
-         * graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(),
-         * personagem.getPosicaoEmY(), null);
-         */
         graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(), null);
         g.dispose();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        personagem.atualizar();
+        repaint();
     }
 
     // polimorfismo dos metodos criados na classe PersonagemS
     private class TecladoAdapter extends KeyAdapter {
         @Override
-        public void keyTyped(KeyEvent e) {
-            personagem.keyTyped(e);
-            repaint(); //atualização da tela
+        public void keyPressed(KeyEvent e) {
+            personagem.keypressed(e);
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
             personagem.keyRelease(e);
-            repaint(); // atualização da tela 
         }
     }
 

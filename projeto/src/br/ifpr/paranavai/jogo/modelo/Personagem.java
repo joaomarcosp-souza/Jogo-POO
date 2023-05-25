@@ -13,10 +13,13 @@ public class Personagem {
     private Image imagem;
     private int larguraImagem;
     private int alturaImagem;
+    private boolean eVisivel;
 
     public Personagem() {
         this.posicaoEmX = 100;
         this.posicaoEmY = 100;
+
+        this.eVisivel = true;
     }
 
     public void carregar() {
@@ -26,53 +29,52 @@ public class Personagem {
         this.larguraImagem = this.imagem.getHeight(null);
     }
 
-    // COMEÇO DO METODO MOVIMENTO
-    public void keyTyped(KeyEvent e) { // Chamando o objeto para conseguir mexer o boneco
-        int tecla = e.getKeyCode();
+    public void atualizar() {
+        posicaoEmX += deslocamentoEmX;
+        posicaoEmY += deslocamentoEmY;
+    }
 
-        // Movimentando o Personagem atráves das teclas 'W'(Pra cima) é 'S'(Pra baixo)
+    public Rectangle getBounds() {
+        return new Rectangle(posicaoEmX, posicaoEmY, larguraImagem, alturaImagem);
+    }
+
+    // COMEÇO DO METODO MOVIMENTO
+    public void keypressed(KeyEvent teclado) {
+        int tecla = teclado.getKeyCode();
+
         if (tecla == KeyEvent.VK_UP) {
             deslocamentoEmY = -3;
-
-        } else if (tecla == KeyEvent.VK_DOWN) {
+        }
+        if (tecla == KeyEvent.VK_DOWN) {
             deslocamentoEmY = 3;
         }
-
-        // Movimentando o Personagem atráves das teclas 'A'(Para a Esquerda) é 'S'(Para
-        // Direita)
         if (tecla == KeyEvent.VK_LEFT) {
             deslocamentoEmX = -3;
         }
-        else if (tecla == KeyEvent.VK_RIGHT) {
+        if (tecla == KeyEvent.VK_RIGHT) {
             deslocamentoEmX = 3;
         }
-    
-    }
-    // FIM MOVIMENTO
 
-    public void keyRelease(KeyEvent e) {
-        int tecla = e.getKeyCode();
-        // Ao soltar as teclas o personagem tera seu movimento zerado
+    }
+
+    public void keyRelease(KeyEvent teclado) {
+        int tecla = teclado.getKeyCode();
+
         if (tecla == KeyEvent.VK_UP) {
             deslocamentoEmY = 0;
         }
-        ;
         if (tecla == KeyEvent.VK_DOWN) {
             deslocamentoEmY = 0;
         }
-        ;
-
         if (tecla == KeyEvent.VK_LEFT) {
             deslocamentoEmX = 0;
         }
-        ;
         if (tecla == KeyEvent.VK_RIGHT) {
             deslocamentoEmX = 0;
         }
-        ;
-
     }
 
+    // metodos gets e sets
     public int getPosicaoEmX() {
         return posicaoEmX;
     }
@@ -128,4 +130,13 @@ public class Personagem {
     public void setAlturaImagem(int alturaImagem) {
         this.alturaImagem = alturaImagem;
     }
+
+    public boolean iseVisivel() {
+        return eVisivel;
+    }
+
+    public void seteVisivel(boolean eVisivel) {
+        this.eVisivel = eVisivel;
+    }
+
 }
