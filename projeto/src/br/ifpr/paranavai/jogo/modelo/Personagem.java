@@ -14,61 +14,64 @@ public class Personagem {
     private int larguraImagem;
     private int alturaImagem;
 
-
-    public Personagem(){
+    public Personagem() {
         this.posicaoEmX = 100;
         this.posicaoEmY = 100;
     }
-    
-    public void carregar(){
+
+    public void carregar() {
         ImageIcon carregador = new ImageIcon("recursos\\starfighter.png");
         this.imagem = carregador.getImage();
         this.alturaImagem = this.imagem.getWidth(null);
         this.larguraImagem = this.imagem.getHeight(null);
     }
 
-    //COMEÇO DO METODO MOVIMENTO
-    public void keypressed(KeyEvent teclado){ // Chamando o objeto para conseguir mexer o boneco
-        int tecla = teclado.getKeyCode();
+    // COMEÇO DO METODO MOVIMENTO
+    public void keyTyped(KeyEvent e) { // Chamando o objeto para conseguir mexer o boneco
+        int tecla = e.getKeyCode();
 
         // Movimentando o Personagem atráves das teclas 'W'(Pra cima) é 'S'(Pra baixo)
-        if(tecla == KeyEvent.VK_UP){
+        if (tecla == KeyEvent.VK_UP) {
             deslocamentoEmY = -3;
-        };
-        if(tecla == KeyEvent.VK_DOWN){
+
+        } else if (tecla == KeyEvent.VK_DOWN) {
             deslocamentoEmY = 3;
         }
 
-        // Movimentando o Personagem atráves das teclas 'A'(Para a Esquerda) é 'S'(Para Direita)
-        if(tecla == KeyEvent.VK_LEFT){
+        // Movimentando o Personagem atráves das teclas 'A'(Para a Esquerda) é 'S'(Para
+        // Direita)
+        if (tecla == KeyEvent.VK_LEFT) {
             deslocamentoEmX = -3;
-        };
-        if(tecla == KeyEvent.VK_RIGHT){
+        }
+        else if (tecla == KeyEvent.VK_RIGHT) {
             deslocamentoEmX = 3;
-        };
-    }
-    //FIM MOVIMENTO
-
-    public void keyRelease(KeyEvent teclado){
-        int tecla = teclado.getKeyCode();
-
-        //Ao soltar as teclas o personagem tera seu movimento zerado
-        if(tecla == KeyEvent.VK_UP){
-            deslocamentoEmY = 0;
-        };
-        if(tecla == KeyEvent.VK_DOWN){
-            deslocamentoEmY = 0;
-        };
-
-        if(tecla == KeyEvent.VK_LEFT){
-            deslocamentoEmX = 0;
-        };
-        if(tecla == KeyEvent.VK_RIGHT){
-            deslocamentoEmX = 0;
-        };
-
-    }
+        }
     
+    }
+    // FIM MOVIMENTO
+
+    public void keyRelease(KeyEvent e) {
+        int tecla = e.getKeyCode();
+        // Ao soltar as teclas o personagem tera seu movimento zerado
+        if (tecla == KeyEvent.VK_UP) {
+            deslocamentoEmY = 0;
+        }
+        ;
+        if (tecla == KeyEvent.VK_DOWN) {
+            deslocamentoEmY = 0;
+        }
+        ;
+
+        if (tecla == KeyEvent.VK_LEFT) {
+            deslocamentoEmX = 0;
+        }
+        ;
+        if (tecla == KeyEvent.VK_RIGHT) {
+            deslocamentoEmX = 0;
+        }
+        ;
+
+    }
 
     public int getPosicaoEmX() {
         return posicaoEmX;
@@ -125,6 +128,4 @@ public class Personagem {
     public void setAlturaImagem(int alturaImagem) {
         this.alturaImagem = alturaImagem;
     }
-
-    
 }

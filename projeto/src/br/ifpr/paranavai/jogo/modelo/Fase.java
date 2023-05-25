@@ -2,6 +2,8 @@ package br.ifpr.paranavai.jogo.modelo;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -21,27 +23,44 @@ public class Fase extends JPanel {
 
         addKeyListener(new TecladoAdapter()); // Carregando o metodo
 
-        
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(735, 413); // Definindo as dimenões do jogo
     }
 
     public void paint(Graphics g) {
-        Graphics2D graficos = (Graphics2D) g; // Tranformando o objeto em um 2D // CAST
-        graficos.drawImage(this.fundo, 0, 0, null);// Desenhando a Imagem no BG
+        Graphics2D graficos = (Graphics2D) g;
+        graficos.drawImage(this.fundo, 0, 0, null);
+
+        // Atualizar a posição do personagem
+        int novaPosicaoX = personagem.getPosicaoEmX() + personagem.getDeslocamentoEmX();
+        int novaPosicaoY = personagem.getPosicaoEmY() + personagem.getDeslocamentoEmY();
+        personagem.setPosicaoEmX(novaPosicaoX);
+        personagem.setPosicaoEmY(novaPosicaoY);
+        /*
+         * graficos.drawImage(this.fundo, 0, 0, null);// Desenhando a Imagem no BG
+         * graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(),
+         * personagem.getPosicaoEmY(), null);
+         */
         graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(), null);
-        g.dispose(); // Exibe o Desenho por meio do metodo
+        g.dispose();
     }
 
-    // Carregando os metodos criados na fase personagem e os sobreescrevendo com
-    // polimorfismo
+    // polimorfismo dos metodos criados na classe PersonagemS
     private class TecladoAdapter extends KeyAdapter {
         @Override
-        public void keyPressed(KeyEvent e) {
-            personagem.keypressed(e);
+        public void keyTyped(KeyEvent e) {
+            personagem.keyTyped(e);
+            repaint(); //atualização da tela
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
             personagem.keyRelease(e);
+            repaint(); // atualização da tela 
         }
     }
+
 }
