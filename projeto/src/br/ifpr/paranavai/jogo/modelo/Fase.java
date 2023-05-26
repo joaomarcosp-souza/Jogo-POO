@@ -28,9 +28,8 @@ public class Fase extends JPanel implements ActionListener {
 
         addKeyListener(new TecladoAdapter());
 
-        Timer timer = new Timer(5, this);
-        timer.start();
-
+        Timer timer = new Timer(5, this); // atualizando o personagem e redesenhar a tela em intervalos regulares.
+        timer.start(); // Iniciando
     }
 
     public void paint(Graphics g) {
