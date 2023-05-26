@@ -11,7 +11,7 @@ public class Principal extends JFrame {
         super.add(fase);
 
         super.setTitle("Invasores Espaciais");
-        super.setSize(1020, 600);
+        super.setSize(1250, 700);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setLocationRelativeTo(null);
         super.setResizable(false);
