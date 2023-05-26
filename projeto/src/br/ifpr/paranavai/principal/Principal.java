@@ -7,7 +7,9 @@ import br.ifpr.paranavai.jogo.modelo.Fase;
 public class Principal extends JFrame {
 
     public Principal() {
-        super.add(new Fase());
+        Fase fase = new Fase();
+        super.add(fase);
+
         super.setTitle("Invasores Espaciais");
         super.setSize(1020, 600);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

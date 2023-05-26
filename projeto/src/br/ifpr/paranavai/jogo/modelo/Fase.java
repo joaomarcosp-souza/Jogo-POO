@@ -1,15 +1,16 @@
 package br.ifpr.paranavai.jogo.modelo;
 
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyAdapter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class Fase extends JPanel implements ActionListener {
     private Image fundo;
@@ -25,7 +26,10 @@ public class Fase extends JPanel implements ActionListener {
         personagem = new Personagem();
         personagem.carregar();
 
-        addKeyListener(new TecladoAdapter()); // Carregando o metodo
+        addKeyListener(new TecladoAdapter());
+
+        Timer timer = new Timer(5, this);
+        timer.start();
 
     }
 
@@ -38,21 +42,19 @@ public class Fase extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        personagem.atualizar();
+        personagem.update();
         repaint();
     }
 
-    // polimorfismo dos metodos criados na classe PersonagemS
     private class TecladoAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
-            personagem.keypressed(e);
+            personagem.keyPressed(e);
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            personagem.keyRelease(e);
+            personagem.keyReleased(e);
         }
     }
-
 }

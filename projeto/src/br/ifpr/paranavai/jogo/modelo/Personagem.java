@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 
 public class Personagem {
     private int posicaoEmX;
@@ -14,11 +15,9 @@ public class Personagem {
     private int larguraImagem;
     private int alturaImagem;
     private boolean eVisivel;
-
     public Personagem() {
         this.posicaoEmX = 100;
         this.posicaoEmY = 100;
-
         this.eVisivel = true;
     }
 
@@ -29,7 +28,8 @@ public class Personagem {
         this.larguraImagem = this.imagem.getHeight(null);
     }
 
-    public void atualizar() {
+    // Classe para atualizar a pintura
+    public void update() {
         posicaoEmX += deslocamentoEmX;
         posicaoEmY += deslocamentoEmY;
     }
@@ -39,7 +39,7 @@ public class Personagem {
     }
 
     // COMEÇO DO METODO MOVIMENTO
-    public void keypressed(KeyEvent teclado) {
+    public void keyPressed(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
 
         if (tecla == KeyEvent.VK_UP) {
@@ -54,24 +54,23 @@ public class Personagem {
         if (tecla == KeyEvent.VK_RIGHT) {
             deslocamentoEmX = 3;
         }
-
+        // Repintar após processar a tecla pressionada
+        Fase fase = (Fase) SwingUtilities.getRoot(teclado.getComponent());
+        fase.repaint();
     }
 
-    public void keyRelease(KeyEvent teclado) {
+    public void keyReleased(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
 
-        if (tecla == KeyEvent.VK_UP) {
+        if (tecla == KeyEvent.VK_UP || tecla == KeyEvent.VK_DOWN) {
             deslocamentoEmY = 0;
         }
-        if (tecla == KeyEvent.VK_DOWN) {
-            deslocamentoEmY = 0;
-        }
-        if (tecla == KeyEvent.VK_LEFT) {
+        if (tecla == KeyEvent.VK_LEFT || tecla == KeyEvent.VK_RIGHT) {
             deslocamentoEmX = 0;
         }
-        if (tecla == KeyEvent.VK_RIGHT) {
-            deslocamentoEmX = 0;
-        }
+        // Repintar após processar a tecla liberada
+        Fase fase = (Fase) SwingUtilities.getRoot(teclado.getComponent());
+        fase.repaint();
     }
 
     // metodos gets e sets
