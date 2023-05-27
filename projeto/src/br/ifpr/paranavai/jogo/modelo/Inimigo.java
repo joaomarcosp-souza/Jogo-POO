@@ -8,16 +8,18 @@ public class Inimigo {
     private int larguraImagem;
     private int alturaImagem;
     private Image imagem;
+    private boolean visivel;
 
     private static int VELOCIDADE = 2;
 
     public Inimigo(int posicaoEmX, int posicaoEmY) {
         this.posicaoEmX = posicaoEmX;
         this.posicaoEmY = posicaoEmY;
+        visivel = true;
     }
 
     public void carregar() {
-        ImageIcon carregador = new ImageIcon("recursos\\estreladamorte.png");
+        ImageIcon carregador = new ImageIcon("recursos\\tfighterdefinitiva.png");
         this.imagem = carregador.getImage();
         this.alturaImagem = this.imagem.getWidth(null);
         this.larguraImagem = this.imagem.getHeight(null);
@@ -78,5 +80,14 @@ public class Inimigo {
     public static void setVELOCIDADE(int vELOCIDADE) {
         VELOCIDADE = vELOCIDADE;
     }
+
+    public boolean isVisivel() {
+        return visivel;
+    }
+
+    public void setVisivel(boolean visivel) {
+        this.visivel = visivel;
+    }
+
 
 }

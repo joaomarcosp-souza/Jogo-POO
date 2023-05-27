@@ -12,12 +12,12 @@ public class Personagem {
     private Image imagem;
 
     public Personagem() {
-        this.posicaoEmX = 500;
-        this.posicaoEmY = 500;
+        this.posicaoEmX = 100;
+        this.posicaoEmY = 100;
     }
 
     public void carregar() {
-        ImageIcon carregador = new ImageIcon("recursos\\starfighter.png");
+        ImageIcon carregador = new ImageIcon("recursos\\falcon.png");
         this.imagem = carregador.getImage();
         this.alturaImagem = this.imagem.getWidth(null);
         this.larguraImagem = this.imagem.getHeight(null);

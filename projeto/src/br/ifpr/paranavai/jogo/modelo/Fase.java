@@ -3,23 +3,28 @@ package br.ifpr.paranavai.jogo.modelo;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
 
 public class Fase extends JPanel implements ActionListener {
     private Image fundo;
     private Personagem personagem;
     private List<Inimigo> inimigo;
     private int larguraTela = 1250; // Definindo o tamanho da Tela
-    private int alturaTela = 300; // Aqui pode ser um pouco menor do que a tela pros inimigos não nascerem em cima da nave
+    private int alturaTela = 300; // Aqui pode ser um pouco menor do que a tela pros inimigos não nascerem em cima
+                                  // da nave
 
     public Fase() {
         setFocusable(true);
@@ -44,25 +49,31 @@ public class Fase extends JPanel implements ActionListener {
         inimigo = new ArrayList<Inimigo>();
 
         // Tamanho dos Inimigos
-        int larguraInimigo = 30; 
+        //int larguraInimigo = 30;
         int alturaInimigo = 30;
 
-        //GERANDO INIMIGOS DENTRO DA TELA
-        for (int i = 0; i < 5; i++) {
-            int posicaoEmX = (int) (Math.random() * (larguraTela - larguraInimigo));
-            int posicaoEmY = (int) (Math.random() * (alturaTela - alturaInimigo));
+        // GERANDO INIMIGOS DENTRO DA TELA
+        for (int i = 0; i < 200; i++) {
+            int posicaoEmX = (int) (Math.random() * 8000 + 1250);
+            //int posicaoEmX = (int) (Math.random() * (larguraTela - larguraInimigo));
+            int posicaoEmY = (int) (Math.random() * (600 - alturaInimigo)); // calcula um valor aleatório que varia entre 0 e alturaTela - alturaInimigo.
             inimigo.add(new Inimigo(posicaoEmX, posicaoEmY));
         }
     }
 
+    // A SER FEITO AINDA
+    public void colisa() {
+
+    }
+
     public void paint(Graphics g) {
-        super.paint(g); // Chama o método paint da superclasse para limpar a tela antes de redesenhar
+        super.paint(g); // Chama o método paint da superclasse para limpar a tela antes de a redesenhar
 
         Graphics2D graficos = (Graphics2D) g;
         graficos.drawImage(this.fundo, 0, 0, null);
         graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(), null);
 
-        //Carregando inimigo
+        // Carregando inimigo
         for (int i = 0; i < inimigo.size(); i++) {
             Inimigo ini = inimigo.get(i);
             ini.carregar();
@@ -71,10 +82,24 @@ public class Fase extends JPanel implements ActionListener {
         g.dispose();
     }
 
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         personagem.atuzaliza();
         repaint();
+
+        // Verificando se o inimigo esta visivel e atualizando a sua posicação atraves do metodo 'Atualizar', ao ficar invisivel o inimigo e excluido
+        // A classe Iterator e como um ponteiro em C que permite interajir com um certo objeto(inimigo) de uma lista de forma especifica e em sequencia
+        Iterator<Inimigo> iterator = inimigo.iterator();
+        while (iterator.hasNext()) {
+            Inimigo ini = iterator.next();
+            if (ini.isVisivel()) {
+                ini.atualizar();
+            } else {
+                iterator.remove();
+            }
+        }
+
     }
 
     private class TecladoAdapter extends KeyAdapter {
