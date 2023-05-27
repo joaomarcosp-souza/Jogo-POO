@@ -17,7 +17,7 @@ public class Personagem {
     }
 
     public void carregar() {
-        ImageIcon carregador = new ImageIcon("recursos\\falcon.png");
+        ImageIcon carregador = new ImageIcon("recursos\\sprites_naves\\falcon.png");
         this.imagem = carregador.getImage();
         this.alturaImagem = this.imagem.getWidth(null);
         this.larguraImagem = this.imagem.getHeight(null);

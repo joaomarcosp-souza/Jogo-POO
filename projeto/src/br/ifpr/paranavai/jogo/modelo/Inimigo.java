@@ -19,7 +19,7 @@ public class Inimigo {
     }
 
     public void carregar() {
-        ImageIcon carregador = new ImageIcon("recursos\\tfighterdefinitiva.png");
+        ImageIcon carregador = new ImageIcon("recursos\\sprites_inimigos\\tfighter.png");
         this.imagem = carregador.getImage();
         this.alturaImagem = this.imagem.getWidth(null);
         this.larguraImagem = this.imagem.getHeight(null);

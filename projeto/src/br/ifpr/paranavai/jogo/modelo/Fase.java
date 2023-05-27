@@ -22,7 +22,7 @@ public class Fase extends JPanel implements ActionListener {
     private Image fundo;
     private Personagem personagem;
     private List<Inimigo> inimigo;
-    private int larguraTela = 1250; // Definindo o tamanho da Tela
+    private int larguraTela = 1350; // Definindo o tamanho da Tela
     //private int alturaTela = 300; // Aqui pode ser um pouco menor do que a tela pros inimigos não nascerem em cima
                                   // da nave
 
@@ -30,7 +30,7 @@ public class Fase extends JPanel implements ActionListener {
         setFocusable(true);
         setDoubleBuffered(true);
 
-        ImageIcon carregando = new ImageIcon("recursos\\earthpixel.jpg");
+        ImageIcon carregando = new ImageIcon("recursos\\sprites_Fundos\\earthpixel.jpg");
         this.fundo = carregando.getImage();
 
         personagem = new Personagem();
