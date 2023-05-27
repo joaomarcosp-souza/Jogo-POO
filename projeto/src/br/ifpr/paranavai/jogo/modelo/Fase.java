@@ -23,14 +23,14 @@ public class Fase extends JPanel implements ActionListener {
     private Personagem personagem;
     private List<Inimigo> inimigo;
     private int larguraTela = 1250; // Definindo o tamanho da Tela
-    private int alturaTela = 300; // Aqui pode ser um pouco menor do que a tela pros inimigos não nascerem em cima
+    //private int alturaTela = 300; // Aqui pode ser um pouco menor do que a tela pros inimigos não nascerem em cima
                                   // da nave
 
     public Fase() {
         setFocusable(true);
         setDoubleBuffered(true);
 
-        ImageIcon carregando = new ImageIcon("recursos\\espaco.jpg");
+        ImageIcon carregando = new ImageIcon("recursos\\earthpixel.jpg");
         this.fundo = carregando.getImage();
 
         personagem = new Personagem();
@@ -49,20 +49,23 @@ public class Fase extends JPanel implements ActionListener {
         inimigo = new ArrayList<Inimigo>();
 
         // Tamanho dos Inimigos
-        //int larguraInimigo = 30;
+        // int larguraInimigo = 30;
         int alturaInimigo = 30;
 
-        // GERANDO INIMIGOS DENTRO DA TELA
-        for (int i = 0; i < 200; i++) {
-            int posicaoEmX = (int) (Math.random() * 8000 + 1250);
-            //int posicaoEmX = (int) (Math.random() * (larguraTela - larguraInimigo));
-            int posicaoEmY = (int) (Math.random() * (600 - alturaInimigo)); // calcula um valor aleatório que varia entre 0 e alturaTela - alturaInimigo.
-            inimigo.add(new Inimigo(posicaoEmX, posicaoEmY));
-        }
+        Timer timer = new Timer(500, new ActionListener() { //intervalo (em milissegundos) para controlar a taxa de spawn de inimigos
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int posicaoEmX = larguraTela; // Defina a posição inicial do novo inimigo
+                int posicaoEmY = (int) (Math.random() * (600 - alturaInimigo));
+                inimigo.add(new Inimigo(posicaoEmX, posicaoEmY));
+            }
+        });
+        timer.setRepeats(true);
+        timer.start();
     }
 
     // A SER FEITO AINDA
-    public void colisa() {
+    public void colisao() {
 
     }
 
@@ -82,7 +85,7 @@ public class Fase extends JPanel implements ActionListener {
         g.dispose();
     }
 
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         personagem.atuzaliza();
@@ -101,6 +104,7 @@ public class Fase extends JPanel implements ActionListener {
         }
 
     }
+
 
     private class TecladoAdapter extends KeyAdapter {
         @Override
