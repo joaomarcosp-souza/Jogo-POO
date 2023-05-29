@@ -1,28 +1,28 @@
-package br.ifpr.paranavai.jogo.modelo;
+package br.ifpr.paranavai.jogo.modelo.inimigos;
 
 import java.awt.*;
 import javax.swing.ImageIcon;
 
-public class Inimigo {
+public class Inimigo_naves {
     private int posicaoEmX, posicaoEmY;
     private int larguraImagem;
     private int alturaImagem;
-    private Image imagem;
-    private boolean visivel;
+    private Image imagem_nave;
+    private boolean visibilidade;
 
-    private static int VELOCIDADE = 2;
+    private static int VELOCIDADE = 6; //Constante que não deve ser alterada
 
-    public Inimigo(int posicaoEmX, int posicaoEmY) {
+    public Inimigo_naves(int posicaoEmX, int posicaoEmY) {
         this.posicaoEmX = posicaoEmX;
         this.posicaoEmY = posicaoEmY;
-        visivel = true;
+        this.visibilidade = true;
     }
 
     public void carregar() {
         ImageIcon carregador = new ImageIcon("recursos\\sprites_inimigos\\tfighter.png");
-        this.imagem = carregador.getImage();
-        this.alturaImagem = this.imagem.getWidth(null);
-        this.larguraImagem = this.imagem.getHeight(null);
+        this.imagem_nave = carregador.getImage();
+        this.alturaImagem = this.imagem_nave.getWidth(null);
+        this.larguraImagem = this.imagem_nave.getHeight(null);
     }
 
     public void atualizar() {
@@ -50,11 +50,11 @@ public class Inimigo {
     }
 
     public Image getImagem() {
-        return imagem;
+        return imagem_nave;
     }
 
     public void setImagem(Image imagem) {
-        this.imagem = imagem;
+        this.imagem_nave = imagem;
     }
 
     public int getLarguraImagem() {
@@ -82,11 +82,11 @@ public class Inimigo {
     }
 
     public boolean isVisivel() {
-        return visivel;
+        return visibilidade;
     }
 
     public void setVisivel(boolean visivel) {
-        this.visivel = visivel;
+        this.visibilidade = visivel;
     }
 
 
