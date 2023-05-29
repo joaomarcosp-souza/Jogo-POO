@@ -20,6 +20,7 @@ public class Inimigo_naves {
 
     public void carregar() {
         ImageIcon carregador = new ImageIcon("recursos\\sprites_inimigos\\tfighter.png");
+        //ImageIcon carregador = new ImageIcon("recursos\\sprites_inimigos\\starDestroyer.png");
         this.imagem_nave = carregador.getImage();
         this.alturaImagem = this.imagem_nave.getWidth(null);
         this.larguraImagem = this.imagem_nave.getHeight(null);
