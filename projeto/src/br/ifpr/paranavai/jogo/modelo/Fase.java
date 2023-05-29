@@ -31,7 +31,7 @@ public class Fase extends JPanel implements ActionListener {
         setFocusable(true);
         setDoubleBuffered(true);
 
-        ImageIcon carregando = new ImageIcon("recursos\\sprites_Fundos\\earthpixel.jpg");
+        ImageIcon carregando = new ImageIcon("recursos\\sprites_Fundos\\planeta.jpg");
         this.fundo = carregando.getImage();
 
         personagem = new Personagem();
