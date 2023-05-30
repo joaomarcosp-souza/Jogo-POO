@@ -8,8 +8,11 @@ import javax.swing.ImageIcon;
 public class Personagem {
     private int posicaoEmX, posicaoEmY;
     private int deslocamentoEmX, deslocamentoEmY;
-    private int larguraImagem, alturaImagem;
+    private int larguraImagem, alturaImagem, larguraImagem_Vida, alturaImagem_Vida;
     private Image imagem;
+
+    private Image imagem_vida;
+    private int vidas = 3;
 
     public Personagem() {
         this.posicaoEmX = 100;
@@ -17,10 +20,16 @@ public class Personagem {
     }
 
     public void carregar() {
-        ImageIcon carregador = new ImageIcon("recursos\\sprites_naves\\xwing.png");
+        // IMAGEM PERSONAGEM
+        ImageIcon carregador = new ImageIcon("recursos\\sprites_personagem\\xwing.png");
         this.imagem = carregador.getImage();
         this.alturaImagem = this.imagem.getWidth(null);
         this.larguraImagem = this.imagem.getHeight(null);
+        //IMAGEM VIDAS
+        ImageIcon carrega_vida = new ImageIcon("recursos\\sprites_personagem\\heart.png");
+        this.imagem_vida = carrega_vida.getImage();
+        this.alturaImagem_Vida = this.imagem_vida.getWidth(null);
+        this.larguraImagem_Vida = this.imagem_vida.getHeight(null);
     }
 
     // Classe para atualizar a posicao
@@ -40,17 +49,17 @@ public class Personagem {
         int tecla = teclado.getKeyCode();
 
         if (tecla == KeyEvent.VK_W) {
-            deslocamentoEmY = -3;
+            deslocamentoEmY = -10;
         }
         if (tecla == KeyEvent.VK_S) {
-            deslocamentoEmY = 3;
+            deslocamentoEmY = 10;
         }
 
         if (tecla == KeyEvent.VK_A) {
-            deslocamentoEmX = -3;
+            deslocamentoEmX = -10;
         }
         if (tecla == KeyEvent.VK_D) {
-            deslocamentoEmX = 3;
+            deslocamentoEmX = 10;
         }
     }
 
@@ -122,4 +131,35 @@ public class Personagem {
         this.alturaImagem = alturaImagem;
     }
 
+    public Image getImagem_vida() {
+        return imagem_vida;
+    }
+
+    public void setImagem_vida(Image imagem_vida) {
+        this.imagem_vida = imagem_vida;
+    }
+
+    public int getVidas() {
+        return vidas;
+    }
+
+    public void setVidas(int vidas) {
+        this.vidas = vidas;
+    }
+
+    public int getLarguraImagem_Vida() {
+        return larguraImagem_Vida;
+    }
+
+    public void setLarguraImagem_Vida(int larguraImagem_Vida) {
+        this.larguraImagem_Vida = larguraImagem_Vida;
+    }
+
+    public int getAlturaImagem_Vida() {
+        return alturaImagem_Vida;
+    }
+
+    public void setAlturaImagem_Vida(int alturaImagem_Vida) {
+        this.alturaImagem_Vida = alturaImagem_Vida;
+    }
 }
