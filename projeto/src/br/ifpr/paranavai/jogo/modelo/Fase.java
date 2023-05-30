@@ -24,9 +24,6 @@ import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_meteorito;
 import java.awt.Font;
 import java.awt.FontMetrics;
 
-//import java.awt.Dimension;
-//import java.awt.Toolkit;
-
 public class Fase extends JPanel implements ActionListener {
     private Image fundo;
     private Personagem personagem;
@@ -34,47 +31,43 @@ public class Fase extends JPanel implements ActionListener {
     private List<Inimigo_meteorito> inimigo_meteorito;
     private List<Inimigo_boss> inimigo_boss;
 
-    private int larguraTela = 1200; // Definindo o tamanho da Tela
+    private int larguraTela = 1200; // TAMANHO DA TELA
 
     public Fase() {
         setFocusable(true);
         setDoubleBuffered(true);
 
-        // Imagem de fundo
+        // IMAGEM DE FUNDO
         ImageIcon carregando = new ImageIcon("recursos\\sprites_Fundos\\planeta.jpg");
         this.fundo = carregando.getImage();
 
-        // Inicializa o Persnagem
+        // INICIALIZANDO O PERSONAGEM
         personagem = new Personagem();
         personagem.carregar();
 
-        //
+        //INICIALIZANDO O METODO DE LEITURA DO TECLADO
         addKeyListener(new TecladoAdapter());
 
-        // Timer
-        Timer timer = new Timer(5, this); // atualizando o personagem e redensenhado na tela em intervalos regulares.
-        timer.start(); // Iniciando
+        // ATUALIZANDO O PERSONAGEM E REDENSENHADO NA TELA EM INTERVALOS REGULARES.
+        Timer timer = new Timer(5, this); 
+        timer.start(); // START
 
-        // Metodos Informações
 
-        // Metodos Inimigos
-        inicializa_Nave_Inimiga(); // Iniciando as Naves
-        inicializa_Metorito_Inimigo(); // Iniciando os Meteorito
-        inicializa_boss();
+        // INICIALIZANDO MÉTODOS INIMIGOS
+        inicializa_Nave_Inimiga(); // NAVES
+        inicializa_Metorito_Inimigo(); // METEORITOS
+        inicializa_boss(); // BOSS(TESTE)
 
     }
 
-    // Inicializa NAVE inimiga
+    // INICIANDO POSIÇÃO DAS NAVES INIMIGAS ALEATORIAMENTE
     public void inicializa_Nave_Inimiga() {
-
-        // COMEÇO DA INICIALIZAÇÃO DAS NAVES
         inimigo_naves = new ArrayList<Inimigo_naves>();
-
         // int larguraInimigo = 30; // Tamanho inimigos
         int alturaInimigo = 30;
 
-        Timer timer = new Timer(900, new ActionListener() { // intervalo (em milissegundos) para controlar a taxa de
-                                                            // spawn de inimigos
+        // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
+        Timer timer = new Timer(900, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int posicaoEmX = larguraTela; // Defina a posição inicial do novo inimigo
@@ -86,33 +79,31 @@ public class Fase extends JPanel implements ActionListener {
         timer.start(); // FIM DOS INIMIGOS NAVE
     }
 
-    // Inicializa METEORIOTO
+    // INICIANDO POSIÇÃO DO METEORITO ALEATORIAMENTE
     public void inicializa_Metorito_Inimigo() {
         inimigo_meteorito = new ArrayList<Inimigo_meteorito>();
-
         int alturaInimigo = 50;
 
-        // Obtenha a dimensão da tela
-        // Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        // int larguraTela = (int) screenSize.getWidth();
-
-        Timer timer_Meteorito = new Timer(1200, e -> {
-            int posicaoEmY = -alturaInimigo;
-            int posicaoEmX = (int) (Math.random() * (larguraTela - alturaInimigo));
-            inimigo_meteorito.add(new Inimigo_meteorito(posicaoEmX, posicaoEmY));
+        // TIMER PARA SPAWNAR O METEORITO
+        Timer timer_Meteorito = new Timer(900, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int posicaoEmY = -alturaInimigo;
+                int posicaoEmX = (int) (Math.random() * (larguraTela - alturaInimigo));
+                inimigo_meteorito.add(new Inimigo_meteorito(posicaoEmX, posicaoEmY));
+            }
         });
         timer_Meteorito.setRepeats(true);
         timer_Meteorito.start();
-    }
+    }// FIM MÉTODO METEORITO
 
-    // Inicializa BOSS
+    // INICIALIZANDO A POSIÇÃO DO BOSS ALEATORIAMENTE
     public void inicializa_boss() {
         inimigo_boss = new ArrayList<Inimigo_boss>();
-
         int alturaInimigo = 30;
 
+        // TIMER PARA SPAWNAR O BOSS (TESTE)
         Timer timer_inimigo_boss = new Timer(500, new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 int posicaoEmX = larguraTela;
@@ -120,17 +111,13 @@ public class Fase extends JPanel implements ActionListener {
                 inimigo_boss.add(new Inimigo_boss(posicaoEmX, posicaoEmY));
             }
         });
-        timer_inimigo_boss.setRepeats(true);
-        timer_inimigo_boss.start();
-    }
-
-    // A SER FEITO AINDA
-    public void colisao() {
-
-    }
+        timer_inimigo_boss.setRepeats(true); // SETAR PARA REPETIR OU NÃO
+        timer_inimigo_boss.start(); // STARTANDO
+    }// FIM MÉTODO BOSS
 
     public void paint(Graphics g) {
-        super.paint(g); // Chama o método paint da superclasse para limpar a tela antes de a redesenhar
+        // CHAMA O MÉTODO PAINT DA SUPERCLASSE PARA LIMPAR A TELA ANTES DE A REDESENHAR
+        super.paint(g);
 
         Graphics2D graficos = (Graphics2D) g;
         graficos.drawImage(this.fundo, 0, 0, null);
@@ -158,30 +145,31 @@ public class Fase extends JPanel implements ActionListener {
         // boss.getPosicaoEmY(), null);
         // } // FIM BOSS
 
-        informacaos(graficos);
-        desenharVidas(graficos);
+        // CARREGANDO OS METODOS DAS INFORMAÇÃO DO JOGO(VIDA E PONTUAÇÃO)
+        pontos(graficos);
+        vidas(graficos);
 
         g.dispose();
     }
 
-    // 
-    public void informacaos(Graphics pont) {
+    // MÉTODO DE PONTUAÇÃO DO JOGADOR
+    public void pontos(Graphics pont) {
         // DEFINE A STRING DE EXIBIÇÃO
-            String pontos = "Pontuação: " + 1 + 1;
+        String pontos = "Pontuação: " + 150;
 
-            // CRIA UM ESTILO DE FONTE
-            Font fonte = new Font("Consoles", Font.BOLD, 25);
-            // SETA A COR DA FONTE
-            pont.setColor(getBackground().RED);
-            // SETA O ESTILO DE FONTE
-            pont.setFont(fonte);
+        // CRIA UM ESTILO DE FONTE
+        Font fonte = new Font("Consoles", Font.BOLD, 15);
+        // SETA A COR DA FONTE
+        pont.setColor(getBackground().WHITE);
+        // SETA O ESTILO DE FONTE
+        pont.setFont(fonte);
 
-            // DESENHA A STRING COM A POSIÇÃO (x,y)
-            pont.drawString(pontos, 10, 30);
+        // DESENHA A STRING COM A POSIÇÃO (x,y)
+        pont.drawString(pontos, 10, 15);
     }
 
-    // MÉTODO PARA DESENHAR VIDAS NA TELA
-    public void desenharVidas(Graphics life) {
+    // MÉTODO DA VIDA DO JOGADOR
+    public void vidas(Graphics life) {
         // DEFINE A STRING DE EXIBIÇÃO
         String vida = "Vidas";
         // CRIA UM ESTILO DE FONTE
@@ -210,15 +198,21 @@ public class Fase extends JPanel implements ActionListener {
         life.drawString(vida, personagem.getLarguraImagem_Vida() - distancia, 10);
     }
 
+    // MÉTODO DE COLISÃO (A FAZER)
+    public void colisao() {
+
+    }
+
+    // MÉTODO PARA ATUALIZAÇÃO DAS IMAGENS
     @Override
     public void actionPerformed(ActionEvent e) {
         personagem.atuzaliza();
         repaint();
 
-        // Verificando se o inimigo esta visivel e atualizando a sua posicação atraves
-        // do metodo 'Atualizar', ao ficar invisivel o inimigo e excluido
-        // A classe Iterator e como um ponteiro em C que permite interajir com um certo
-        // objeto(inimigo) de uma lista de forma especifica e em sequencia
+        // VERIFICANDO SE O INIMIGO ESTA VISIVEL E ATUALIZANDO A SUA POSICAÇÃO ATRAVES
+        // DO METODO 'ATUALIZAR', AO FICAR INVISIVEL O INIMIGO E EXCLUIDO
+        // A CLASSE ITERATOR E COMO UM PONTEIRO EM C QUE PERMITE INTERAJIR COM UM CERTO
+        // OBJETO(INIMIGO) DE UMA LISTA DE FORMA ESPECIFICA E EM SEQUENCIA
         Iterator<Inimigo_naves> iterator_naves = inimigo_naves.iterator();
         while (iterator_naves.hasNext()) {
             Inimigo_naves ini = iterator_naves.next();
@@ -229,7 +223,7 @@ public class Fase extends JPanel implements ActionListener {
             }
         } // FIM ITERATOR NAVES
 
-        // Atualiza a posição do metorito
+        // ATUALIZA A POSIÇÃO DO METORITO
         Iterator<Inimigo_meteorito> iterator_meteorito = inimigo_meteorito.iterator();
         while (iterator_meteorito.hasNext()) {
             Inimigo_meteorito mete = iterator_meteorito.next();
@@ -253,7 +247,7 @@ public class Fase extends JPanel implements ActionListener {
 
     }
 
-
+    // CHAMANDO A LEITURA DOS TECLADOS
     private class TecladoAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
