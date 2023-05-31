@@ -11,6 +11,7 @@ public class Tela_Login extends JPanel {
     private Image imagem_fundo;
     private int larguraImagem, alturaImagem;
     private Font fonte = null;
+    //private int cursor = 0;
 
     public Tela_Login() {
         ImageIcon carregando = new ImageIcon("recursos\\sprites_fundos\\fundo_home_screen.jpg");
@@ -22,7 +23,7 @@ public class Tela_Login extends JPanel {
             // CARREGA A FONTE A PARTIR DO ARQUIVO
             fonte = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\broken_console.ttf"));
             // DEFINE O TAMANHO DA FONTE DESEJADO
-            fonte = fonte.deriveFont(Font.BOLD, 85);
+           
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
@@ -33,6 +34,7 @@ public class Tela_Login extends JPanel {
         graficos.drawImage(this.imagem_fundo, 0, 0, null);
 
         titulo(graficos);
+        menu(graficos);
         g.dispose();
     }
 
@@ -42,7 +44,7 @@ public class Tela_Login extends JPanel {
         String titulo = "star invader";
         // ESTILO DA FONTE
         Font estilo = fonte;
-        
+        fonte = fonte.deriveFont(Font.BOLD, 85);
 
         // COR FONTE // SOMBRA
         t.setColor(Color.DARK_GRAY);
@@ -52,6 +54,28 @@ public class Tela_Login extends JPanel {
         // COR PRINCIPAL
         t.setColor(Color.WHITE);
         t.drawString(titulo, 300, 100);
+    }
+
+    public void menu(Graphics m){
+        String jogar = "Jogar";
+        Font estilo_menu = fonte;
+        estilo_menu = fonte.deriveFont(Font.BOLD, 50);
+        m.setFont(estilo_menu);
+        m.setColor(Color.white);
+        m.drawString(jogar, 555, 450);
+
+
+        String historico = "Historico";
+        estilo_menu = fonte.deriveFont(Font.BOLD, 50);
+        m.setFont(estilo_menu);
+        m.setColor(Color.white);
+        m.drawString(historico, 485, 505);
+
+        String sair = "Sair";
+        estilo_menu = fonte.deriveFont(Font.BOLD, 50);
+        m.setFont(estilo_menu);
+        m.setColor(Color.white);
+        m.drawString(sair, 580, 555);
     }
 
     public void botoes() {
