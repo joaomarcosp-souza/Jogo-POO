@@ -20,9 +20,9 @@ public class Tela_Login extends JPanel {
 
         try {
             // CARREGA A FONTE A PARTIR DO ARQUIVO
-            fonte = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\pixel_fonte.ttf"));
+            fonte = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\broken_console.ttf"));
             // DEFINE O TAMANHO DA FONTE DESEJADO
-            fonte = fonte.deriveFont(Font.BOLD, 90);
+            fonte = fonte.deriveFont(Font.BOLD, 85);
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
@@ -38,14 +38,14 @@ public class Tela_Login extends JPanel {
 
     public void titulo(Graphics t) {
         // TITULO DO JOGO
-        String titulo = "Star Invader";
+        String titulo = "star invader";
         // ESTILO DA FONTE
         Font estilo = fonte;
         // COR FONTE
-        t.setColor(getBackground().white);
+        t.setColor(Color.WHITE);
         t.setFont(estilo);
         // DESENHANDO O TITULO
-        t.drawString(titulo, 350, 200);
+        t.drawString(titulo, 300, 100);
     }
 
     public void botoes() {

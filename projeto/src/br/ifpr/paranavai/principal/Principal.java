@@ -8,11 +8,12 @@ import br.ifpr.paranavai.jogo.modelo.Telas.Tela_Login;
 public class Principal extends JFrame {
 
     public Principal() {
-        Tela_Login login = new Tela_Login();
-        super.add(login);
-        
+    
         Fase fase = new Fase();
         super.add(fase);
+
+        Tela_Login login = new Tela_Login();
+        super.add(login);
 
         super.setTitle("Tela Login");
         super.setSize(1300, 700);
