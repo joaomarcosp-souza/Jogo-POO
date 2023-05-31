@@ -38,13 +38,19 @@ public class Tela_Login extends JPanel {
 
     public void titulo(Graphics t) {
         // TITULO DO JOGO
+        //t.setColor(new Color(80, 96, 100));
         String titulo = "star invader";
         // ESTILO DA FONTE
         Font estilo = fonte;
-        // COR FONTE
-        t.setColor(Color.WHITE);
+        
+
+        // COR FONTE // SOMBRA
+        t.setColor(Color.DARK_GRAY);
         t.setFont(estilo);
-        // DESENHANDO O TITULO
+        t.drawString(titulo, 300+5, 100+5);
+
+        // COR PRINCIPAL
+        t.setColor(Color.WHITE);
         t.drawString(titulo, 300, 100);
     }
 
