@@ -3,6 +3,7 @@ package br.ifpr.paranavai.jogo.modelo;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Color;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_naves;
+import br.ifpr.paranavai.jogo.modelo.Jogador.Personagem;
 import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_boss;
 import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_meteorito;
 
@@ -30,7 +32,6 @@ public class Fase extends JPanel implements ActionListener {
     private List<Inimigo_naves> inimigo_naves;
     private List<Inimigo_meteorito> inimigo_meteorito;
     private List<Inimigo_boss> inimigo_boss;
-
     private int larguraTela = 1200; // TAMANHO DA TELA
 
     public Fase() {
@@ -45,13 +46,12 @@ public class Fase extends JPanel implements ActionListener {
         personagem = new Personagem();
         personagem.carregar();
 
-        //INICIALIZANDO O METODO DE LEITURA DO TECLADO
+        // INICIALIZANDO O METODO DE LEITURA DO TECLADO
         addKeyListener(new TecladoAdapter());
 
         // ATUALIZANDO O PERSONAGEM E REDENSENHADO NA TELA EM INTERVALOS REGULARES.
-        Timer timer = new Timer(5, this); 
+        Timer timer = new Timer(5, this);
         timer.start(); // START
-
 
         // INICIALIZANDO MÉTODOS INIMIGOS
         inicializa_Nave_Inimiga(); // NAVES
@@ -154,18 +154,15 @@ public class Fase extends JPanel implements ActionListener {
 
     // MÉTODO DE PONTUAÇÃO DO JOGADOR
     public void pontos(Graphics pont) {
-        // DEFINE A STRING DE EXIBIÇÃO
+        // TITULO DO JOGO
         String pontos = "Pontuação: " + 150;
-
-        // CRIA UM ESTILO DE FONTE
-        Font fonte = new Font("Consoles", Font.BOLD, 15);
-        // SETA A COR DA FONTE
-        pont.setColor(getBackground().WHITE);
-        // SETA O ESTILO DE FONTE
+        // ESTILO DA FONTE
+        Font fonte = new Font("Arial", Font.BOLD, 15);
+        // COR FONTE
+        pont.setColor(Color.WHITE);
         pont.setFont(fonte);
-
         // DESENHA A STRING COM A POSIÇÃO (x,y)
-        pont.drawString(pontos, 10, 15);
+        pont.drawString(pontos, 10, 20);
     }
 
     // MÉTODO DA VIDA DO JOGADOR
@@ -191,7 +188,7 @@ public class Fase extends JPanel implements ActionListener {
         }
 
         // SETA A COR DA FONTE
-        life.setColor(getBackground().RED);
+        life.setColor(Color.WHITE);
         // SETA O ESTILO DE FONTE
         life.setFont(estilo);
         // DESENHA A STRING COM A POSIÇÃO (x,y)

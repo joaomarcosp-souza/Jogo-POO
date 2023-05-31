@@ -1,4 +1,4 @@
-package br.ifpr.paranavai.jogo.modelo;
+package br.ifpr.paranavai.jogo.modelo.Jogador;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
