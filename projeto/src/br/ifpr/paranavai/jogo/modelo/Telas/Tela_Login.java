@@ -10,7 +10,7 @@ import java.io.IOException;
 public class Tela_Login extends JPanel {
     private Image imagem_fundo;
     private int larguraImagem, alturaImagem;
-    // private int cursor = 0;
+    private int cursor = 0;
 
     private Font pixel = null;
     private Font broken = null;
@@ -83,6 +83,12 @@ public class Tela_Login extends JPanel {
         int x = (getWidth() - stringWidth) / 2;
         int y = 450;
         m.drawString(jogar, x, y);
+        if (cursor == 0) {
+            // Desenhar o cursor (por exemplo, um sinal de maior >) na frente da string
+            int cursorWidth = fm.stringWidth(">");
+            m.drawString(">", x - cursorWidth, y);
+        }
+        
 
         String historico = "MODO INFINITO";
         estilo_menu = broken.deriveFont(Font.BOLD, 50);
@@ -93,6 +99,11 @@ public class Tela_Login extends JPanel {
         x = (getWidth() - stringWidth) / 2;
         y = 505;
         m.drawString(historico, x, y);
+        if (cursor == 1) {
+            // Desenhar o cursor (por exemplo, um sinal de maior >) na frente da string
+            int cursorWidth = fm.stringWidth(">");
+            m.drawString(">", x - cursorWidth, y);
+        }
 
         String sair = "SAIR";
         estilo_menu = broken.deriveFont(Font.BOLD, 50);
@@ -103,6 +114,11 @@ public class Tela_Login extends JPanel {
         x = (getWidth() - stringWidth) / 2;
         y = 555;
         m.drawString(sair, x, y);
+        if (cursor == 2) {
+            // Desenhar o cursor (por exemplo, um sinal de maior >) na frente da string
+            int cursorWidth = fm.stringWidth(">");
+            m.drawString(">", x - cursorWidth, y);
+        }
     }
 
     public void botoes() {
