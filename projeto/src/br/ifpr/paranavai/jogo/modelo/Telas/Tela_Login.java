@@ -24,7 +24,7 @@ public class Tela_Login extends JPanel {
         try {
             // CARREGA A FONTE A PARTIR DO ARQUIVO
             pixel = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\pixel_fonte.ttf"));
-            broken = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\broken_console.ttf"));
+            broken = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\pixel_fonte.ttf"));
             // DEFINE O TAMANHO DA FONTE DESEJADO
 
         } catch (IOException | FontFormatException e) {
@@ -42,24 +42,37 @@ public class Tela_Login extends JPanel {
     }
 
     public void titulo(Graphics t) {
-        String titulo = "STAR INVADER";
+        String titulo = "STAR WARS";
+        String subtitulo = "INVADERS";
         Font fonte = pixel;
         fonte = fonte.deriveFont(Font.BOLD, 85);
-        t.setColor(new Color(255, 209, 70));
-        t.setFont(fonte);
-        // Centralizar verticalmente
-        FontMetrics fm = t.getFontMetrics();
-        int stringWidth = fm.stringWidth(titulo);
-        int x = (getWidth() - stringWidth) / 2;
-        int y = 100 + (getHeight() - fm.getHeight()) / 2;
-        t.drawString(titulo, x + 5, y - 275);
 
+        t.setColor(new Color(255, 209, 70)); // COR DO TITULO AMARELO
+        t.setFont(fonte);
+        // CRENTALIZA VERTICALMENTE
+        FontMetrics fm = t.getFontMetrics();
+
+        int tituloWidth = fm.stringWidth(titulo); // PEGA O TAMANHO DA STRING
+        int subtituloWidth = fm.stringWidth(subtitulo); // PEGA O TAMANHO DO SUBTITULO
+        int x = (getWidth() - tituloWidth) / 2;
+        int y = 100 + (getHeight() - fm.getHeight()) / 2;
+
+        t.drawString(titulo, (x + 5), y - 280); // POSIÇÃO DO TITULO - AMARELO
+
+        // SUBTITULO COR AMARELO
         t.setColor(Color.WHITE);
-        t.drawString(titulo, x, y - 280);
+        t.drawString(subtitulo, x + (tituloWidth - subtituloWidth) / 2, y - 200);
+        // DESENHA O SUBTÍTULO NA TELA - AMARELO
+        t.setColor(new Color(255, 209, 70));
+        // t.setColor(new Color(255, 209, 70));
+        t.drawString(subtitulo, ((x + 5) + (tituloWidth - subtituloWidth) / 2), y - 200);
+
+        t.setColor(Color.WHITE); // DEFINE A COR PRINCIPAL DO TÍTULO - BRANCO
+        t.drawString(titulo, x, y - 280); // POSIÇÃO DO TÍTULO PRINCIPAL - COR BRANCA
     }
 
     public void menu(Graphics m) {
-        String jogar = "Novo Jogo";
+        String jogar = "NOVO JOGO";
         Font estilo_menu = broken;
         estilo_menu = broken.deriveFont(Font.BOLD, 50);
         m.setFont(estilo_menu);
@@ -71,7 +84,7 @@ public class Tela_Login extends JPanel {
         int y = 450;
         m.drawString(jogar, x, y);
 
-        String historico = "Modo Infinito";
+        String historico = "MODO INFINITO";
         estilo_menu = broken.deriveFont(Font.BOLD, 50);
         m.setFont(estilo_menu);
         m.setColor(Color.white);
@@ -81,7 +94,7 @@ public class Tela_Login extends JPanel {
         y = 505;
         m.drawString(historico, x, y);
 
-        String sair = "Sair";
+        String sair = "SAIR";
         estilo_menu = broken.deriveFont(Font.BOLD, 50);
         m.setFont(estilo_menu);
         m.setColor(Color.white);

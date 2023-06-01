@@ -15,7 +15,7 @@ public class Principal extends JFrame {
         Tela_Login login = new Tela_Login();
         super.add(login);
 
-        super.setTitle("Tela Login");
+        super.setTitle("Star Wars: Invader");
         super.setSize(1300, 700);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setLocationRelativeTo(null);
