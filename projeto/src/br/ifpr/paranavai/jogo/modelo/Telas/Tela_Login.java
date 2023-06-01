@@ -10,20 +10,23 @@ import java.io.IOException;
 public class Tela_Login extends JPanel {
     private Image imagem_fundo;
     private int larguraImagem, alturaImagem;
-    private Font fonte = null;
-    //private int cursor = 0;
+    // private int cursor = 0;
+
+    private Font pixel = null;
+    private Font broken = null;
 
     public Tela_Login() {
-        ImageIcon carregando = new ImageIcon("recursos\\sprites_fundos\\fundo_home_screen.jpg");
+        ImageIcon carregando = new ImageIcon("recursos\\sprites_fundos\\starwars.jpg");
         this.imagem_fundo = carregando.getImage();
         this.alturaImagem = this.imagem_fundo.getWidth(null);
         this.larguraImagem = this.imagem_fundo.getHeight(null);
 
         try {
             // CARREGA A FONTE A PARTIR DO ARQUIVO
-            fonte = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\broken_console.ttf"));
+            pixel = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\pixel_fonte.ttf"));
+            broken = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\broken_console.ttf"));
             // DEFINE O TAMANHO DA FONTE DESEJADO
-           
+
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
@@ -39,43 +42,54 @@ public class Tela_Login extends JPanel {
     }
 
     public void titulo(Graphics t) {
-        // TITULO DO JOGO
-        //t.setColor(new Color(80, 96, 100));
-        String titulo = "star invader";
-        // ESTILO DA FONTE
-        Font estilo = fonte;
+        String titulo = "STAR INVADER";
+        Font fonte = pixel;
         fonte = fonte.deriveFont(Font.BOLD, 85);
+        t.setColor(new Color(255, 209, 70));
+        t.setFont(fonte);
+        // Centralizar verticalmente
+        FontMetrics fm = t.getFontMetrics();
+        int stringWidth = fm.stringWidth(titulo);
+        int x = (getWidth() - stringWidth) / 2;
+        int y = 100 + (getHeight() - fm.getHeight()) / 2;
+        t.drawString(titulo, x + 5, y - 275);
 
-        // COR FONTE // SOMBRA
-        t.setColor(Color.DARK_GRAY);
-        t.setFont(estilo);
-        t.drawString(titulo, 300+5, 100+5);
-
-        // COR PRINCIPAL
         t.setColor(Color.WHITE);
-        t.drawString(titulo, 300, 100);
+        t.drawString(titulo, x, y - 280);
     }
 
-    public void menu(Graphics m){
-        String jogar = "Jogar";
-        Font estilo_menu = fonte;
-        estilo_menu = fonte.deriveFont(Font.BOLD, 50);
+    public void menu(Graphics m) {
+        String jogar = "Novo Jogo";
+        Font estilo_menu = broken;
+        estilo_menu = broken.deriveFont(Font.BOLD, 50);
         m.setFont(estilo_menu);
         m.setColor(Color.white);
-        m.drawString(jogar, 555, 450);
+        // Centralizar verticalmente
+        FontMetrics fm = m.getFontMetrics();
+        int stringWidth = fm.stringWidth(jogar);
+        int x = (getWidth() - stringWidth) / 2;
+        int y = 450;
+        m.drawString(jogar, x, y);
 
-
-        String historico = "Historico";
-        estilo_menu = fonte.deriveFont(Font.BOLD, 50);
+        String historico = "Modo Infinito";
+        estilo_menu = broken.deriveFont(Font.BOLD, 50);
         m.setFont(estilo_menu);
         m.setColor(Color.white);
-        m.drawString(historico, 485, 505);
+        // Centralizar verticalmente
+        stringWidth = fm.stringWidth(historico);
+        x = (getWidth() - stringWidth) / 2;
+        y = 505;
+        m.drawString(historico, x, y);
 
         String sair = "Sair";
-        estilo_menu = fonte.deriveFont(Font.BOLD, 50);
+        estilo_menu = broken.deriveFont(Font.BOLD, 50);
         m.setFont(estilo_menu);
         m.setColor(Color.white);
-        m.drawString(sair, 580, 555);
+        // Centralizar verticalmente
+        stringWidth = fm.stringWidth(sair);
+        x = (getWidth() - stringWidth) / 2;
+        y = 555;
+        m.drawString(sair, x, y);
     }
 
     public void botoes() {
@@ -106,13 +120,20 @@ public class Tela_Login extends JPanel {
         this.alturaImagem = alturaImagem;
     }
 
-    public Font getFonte() {
-        return fonte;
+    public Font getPixel() {
+        return pixel;
     }
 
-    public void setFonte(Font fonte) {
-        this.fonte = fonte;
+    public void setPixel(Font pixel) {
+        this.pixel = pixel;
     }
 
-    
+    public Font getBroken() {
+        return broken;
+    }
+
+    public void setBroken(Font broken) {
+        this.broken = broken;
+    }
+
 }
