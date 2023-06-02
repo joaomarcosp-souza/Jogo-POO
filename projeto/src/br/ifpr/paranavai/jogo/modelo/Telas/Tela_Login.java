@@ -4,6 +4,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -14,6 +15,7 @@ public class Tela_Login extends JPanel {
 
     private Font pixel = null;
     private Font broken = null;
+
 
     public Tela_Login() {
         ImageIcon carregando = new ImageIcon("recursos\\sprites_fundos\\starwars.jpg");
@@ -73,57 +75,74 @@ public class Tela_Login extends JPanel {
 
     public void menu(Graphics m) {
         String jogar = "NOVO JOGO";
-        Font estilo_menu = broken;
-        estilo_menu = broken.deriveFont(Font.BOLD, 50);
+        String historico = "MODO INFINITO";
+        String sair = "SAIR";
+
+        Font estilo_menu = broken.deriveFont(Font.BOLD, 50);
         m.setFont(estilo_menu);
-        m.setColor(Color.white);
-        // Centralizar verticalmente
         FontMetrics fm = m.getFontMetrics();
+
         int stringWidth = fm.stringWidth(jogar);
         int x = (getWidth() - stringWidth) / 2;
         int y = 450;
+
+        m.setColor(Color.white);
+        stringWidth = fm.stringWidth(jogar);
+        x = (getWidth() - stringWidth) / 2;
+        y = 450;
         m.drawString(jogar, x, y);
+        //
         if (cursor == 0) {
             // Desenhar o cursor (por exemplo, um sinal de maior >) na frente da string
             int cursorWidth = fm.stringWidth(">");
             m.drawString(">", x - cursorWidth, y);
         }
-        
+        //
 
-        String historico = "MODO INFINITO";
-        estilo_menu = broken.deriveFont(Font.BOLD, 50);
-        m.setFont(estilo_menu);
         m.setColor(Color.white);
-        // Centralizar verticalmente
         stringWidth = fm.stringWidth(historico);
         x = (getWidth() - stringWidth) / 2;
         y = 505;
         m.drawString(historico, x, y);
+        //
         if (cursor == 1) {
             // Desenhar o cursor (por exemplo, um sinal de maior >) na frente da string
             int cursorWidth = fm.stringWidth(">");
             m.drawString(">", x - cursorWidth, y);
         }
+        //
 
-        String sair = "SAIR";
-        estilo_menu = broken.deriveFont(Font.BOLD, 50);
-        m.setFont(estilo_menu);
         m.setColor(Color.white);
-        // Centralizar verticalmente
         stringWidth = fm.stringWidth(sair);
         x = (getWidth() - stringWidth) / 2;
         y = 555;
         m.drawString(sair, x, y);
+        //
         if (cursor == 2) {
             // Desenhar o cursor (por exemplo, um sinal de maior >) na frente da string
             int cursorWidth = fm.stringWidth(">");
             m.drawString(">", x - cursorWidth, y);
+        } //
+        m.dispose();
+    }
+
+    public void tecla_menu(KeyEvent teclado) {
+        int tecla = teclado.getKeyCode();
+        
+            if (tecla == KeyEvent.VK_W) {
+                cursor++;
+                if (cursor < 0) {
+                    cursor = 2;
+                }
+            }
+            if (tecla == KeyEvent.VK_S) {
+                cursor--;
+                if (cursor > 2) {
+                    cursor = 0;
+                }
+            }
         }
-    }
-
-    public void botoes() {
-
-    }
+    
 
     public Image getImagem_fundo() {
         return imagem_fundo;

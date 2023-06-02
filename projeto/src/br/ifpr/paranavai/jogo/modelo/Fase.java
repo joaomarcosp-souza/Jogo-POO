@@ -255,5 +255,7 @@ public class Fase extends JPanel implements ActionListener {
         public void keyReleased(KeyEvent e) {
             personagem.tecla_solta(e);
         }
+
+        
     }
 }
