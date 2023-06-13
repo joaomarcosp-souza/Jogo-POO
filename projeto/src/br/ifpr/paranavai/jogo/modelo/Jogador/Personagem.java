@@ -5,11 +5,17 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Personagem {
     private int posicaoEmX, posicaoEmY;
     private int deslocamentoEmX, deslocamentoEmY;
     private int larguraImagem, alturaImagem, larguraImagem_Vida, alturaImagem_Vida;
     private Image imagem;
+
+    private List<Tiro> tiros;
+    private boolean visibilidade;
 
     private Image imagem_vida;
     private int vidas = 3;
@@ -17,6 +23,9 @@ public class Personagem {
     public Personagem() {
         this.posicaoEmX = 100;
         this.posicaoEmY = 100;
+        this.visibilidade = true;
+
+        tiros = new ArrayList<Tiro>();
     }
 
     public void carregar() {
@@ -39,6 +48,11 @@ public class Personagem {
         posicaoEmY += deslocamentoEmY;
     }
 
+    // MÉTODO TIRO
+    public void tiro_simples(){
+        this.tiros.add(new Tiro(posicaoEmX+ (larguraImagem/2), posicaoEmY +(alturaImagem/2)));
+    }
+
     public Rectangle getBounds() {
         return new Rectangle(posicaoEmX, posicaoEmY, larguraImagem, alturaImagem);
         
@@ -48,6 +62,12 @@ public class Personagem {
     public void tecla_Precionada(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
 
+        //TECLA TIRO
+        if(tecla == KeyEvent.VK_SPACE){
+            tiro_simples();
+        }
+
+        //TECLAS MOVIMENTAÇÃO
         if (tecla == KeyEvent.VK_W) {
             deslocamentoEmY = -10;
         }
@@ -162,4 +182,22 @@ public class Personagem {
     public void setAlturaImagem_Vida(int alturaImagem_Vida) {
         this.alturaImagem_Vida = alturaImagem_Vida;
     }
+
+    public List<Tiro> getTiros() {
+        return tiros;
+    }
+
+    public void setTiros(List<Tiro> tiros) {
+        this.tiros = tiros;
+    }
+
+    public boolean isVisibilidade() {
+        return visibilidade;
+    }
+
+    public void setVisibilidade(boolean visibilidade) {
+        this.visibilidade = visibilidade;
+    }
+
+    
 }

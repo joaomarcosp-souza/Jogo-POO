@@ -9,7 +9,7 @@ public class Inimigo_boss {
     private Image imagem_boss;
     private boolean visibilidade;
 
-    private int velocidade = 5;
+    private int VELOCIDADE = 5;
 
     public Inimigo_boss(int posicaoEmX, int posicaoEmY){
         this.posicaoEmX = posicaoEmX;
@@ -25,7 +25,7 @@ public class Inimigo_boss {
     }
 
     public void atualizar() {
-        this.posicaoEmX -= velocidade;
+        this.posicaoEmX -= VELOCIDADE;
     }
 
     public Rectangle getBounds() {
@@ -81,10 +81,10 @@ public class Inimigo_boss {
     }
 
     public int getVelocidade() {
-        return velocidade;
+        return VELOCIDADE;
     }
 
     public void setVelocidade(int velocidade) {
-        this.velocidade = velocidade;
+        this.VELOCIDADE = velocidade;
     }
 }

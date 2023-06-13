@@ -8,6 +8,8 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
+import java.awt.event.KeyAdapter;
+
 public class Tela_Login extends JPanel {
     private Image imagem_fundo;
     private int larguraImagem, alturaImagem;
@@ -16,12 +18,13 @@ public class Tela_Login extends JPanel {
     private Font pixel = null;
     private Font broken = null;
 
-
     public Tela_Login() {
         ImageIcon carregando = new ImageIcon("recursos\\sprites_fundos\\starwars.jpg");
         this.imagem_fundo = carregando.getImage();
         this.alturaImagem = this.imagem_fundo.getWidth(null);
         this.larguraImagem = this.imagem_fundo.getHeight(null);
+
+        addKeyListener(new TecladoAdapter());
 
         try {
             // CARREGA A FONTE A PARTIR DO ARQUIVO
@@ -93,7 +96,7 @@ public class Tela_Login extends JPanel {
         m.drawString(jogar, x, y);
         //
         if (cursor == 0) {
-            // Desenhar o cursor (por exemplo, um sinal de maior >) na frente da string
+            // Desenha o cursor na frente da string
             int cursorWidth = fm.stringWidth(">");
             m.drawString(">", x - cursorWidth, y);
         }
@@ -106,7 +109,7 @@ public class Tela_Login extends JPanel {
         m.drawString(historico, x, y);
         //
         if (cursor == 1) {
-            // Desenhar o cursor (por exemplo, um sinal de maior >) na frente da string
+            // Desenha o cursor na frente da string
             int cursorWidth = fm.stringWidth(">");
             m.drawString(">", x - cursorWidth, y);
         }
@@ -119,7 +122,7 @@ public class Tela_Login extends JPanel {
         m.drawString(sair, x, y);
         //
         if (cursor == 2) {
-            // Desenhar o cursor (por exemplo, um sinal de maior >) na frente da string
+            // Desenha o cursor na frente da string
             int cursorWidth = fm.stringWidth(">");
             m.drawString(">", x - cursorWidth, y);
         } //
@@ -128,21 +131,26 @@ public class Tela_Login extends JPanel {
 
     public void tecla_menu(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
-        
-            if (tecla == KeyEvent.VK_W) {
-                cursor++;
-                if (cursor < 0) {
-                    cursor = 2;
-                }
-            }
-            if (tecla == KeyEvent.VK_S) {
-                cursor--;
-                if (cursor > 2) {
-                    cursor = 0;
-                }
+
+        if (tecla == KeyEvent.VK_W) {
+            cursor++;
+            if (cursor < 0) {
+                cursor = 2;
             }
         }
-    
+        if (tecla == KeyEvent.VK_S) {
+            cursor--;
+            if (cursor > 2) {
+                cursor = 0;
+            }
+        }
+    }
+
+    private class TecladoAdapter extends KeyAdapter {
+        @Override
+        public void keyPressed(KeyEvent e) {
+        }
+    }
 
     public Image getImagem_fundo() {
         return imagem_fundo;
