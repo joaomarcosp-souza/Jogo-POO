@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Color;
+import java.awt.Rectangle;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +30,7 @@ import java.awt.FontMetrics;
 
 public class Fase extends JPanel implements ActionListener {
     private Image fundo;
+    private Image fundo_morte;
     private Personagem personagem;
 
     private List<Inimigo_naves> inimigo_naves;
@@ -37,6 +39,8 @@ public class Fase extends JPanel implements ActionListener {
 
     private int larguraTela = 1200; // TAMANHO DA TELA
 
+    private boolean jogando;
+
     public Fase() {
         setFocusable(true);
         setDoubleBuffered(true);
@@ -44,6 +48,9 @@ public class Fase extends JPanel implements ActionListener {
         // IMAGEM DE FUNDO
         ImageIcon carregando = new ImageIcon("recursos\\sprites_Fundos\\planeta.jpg");
         this.fundo = carregando.getImage();
+
+        ImageIcon death = new ImageIcon("recursos\\sprites_fundos\\morte_tela.jpg");
+        this.fundo_morte = death.getImage();
 
         // INICIALIZANDO O PERSONAGEM
         personagem = new Personagem();
@@ -61,6 +68,7 @@ public class Fase extends JPanel implements ActionListener {
         inicializa_Metorito_Inimigo(); // METEORITOS
         inicializa_boss(); // BOSS(TESTE)
 
+        jogando = true;
     }
 
     // INICIANDO POSIÇÃO DAS NAVES INIMIGAS ALEATORIAMENTE
@@ -88,7 +96,7 @@ public class Fase extends JPanel implements ActionListener {
         int alturaInimigo = 50;
 
         // TIMER PARA SPAWNAR O METEORITO
-        Timer timer_Meteorito = new Timer(900, new ActionListener() {
+        Timer timer_Meteorito = new Timer(1500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int posicaoEmY = -alturaInimigo;
@@ -121,48 +129,53 @@ public class Fase extends JPanel implements ActionListener {
     public void paint(Graphics g) {
         // CHAMA O MÉTODO PAINT DA SUPERCLASSE PARA LIMPAR A TELA ANTES DE A REDESENHAR
         super.paint(g);
-
         Graphics2D graficos = (Graphics2D) g;
-        graficos.drawImage(this.fundo, 0, 0, null);
 
-        // CARREGANDO TIRO PERSONAGEM
-        List<Tiro> tiros = personagem.getTiros();
-        for (int i = 0; i < tiros.size(); i++) {
-            Tiro tiro = tiros.get(i);
-            tiro.carregar();
-            graficos.drawImage(tiro.getImagem(), tiro.getPosicaoEmX(), tiro.getPosicaoEmY(), null);
+        if (jogando == true) {
+            graficos.drawImage(this.fundo, 0, 0, null);
+
+            // CARREGANDO TIRO PERSONAGEM
+            List<Tiro> tiros = personagem.getTiros();
+            for (int i = 0; i < tiros.size(); i++) {
+                Tiro tiro = tiros.get(i);
+                tiro.carregar();
+                graficos.drawImage(tiro.getImagem(), tiro.getPosicaoEmX(), tiro.getPosicaoEmY(), null);
+            }
+            // CARREGANDO A IMAGEM DO PERSNAGEM
+            // ESTA AQUI EMBAIXO PARA A IMG FICAR ACIMA DA IMAGEM DO TIROW
+            graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(), null);
+
+            // CARREGANDO INIMIGO NAVE
+            for (int i = 0; i < inimigo_naves.size(); i++) {
+                Inimigo_naves ini = inimigo_naves.get(i);
+                ini.carregar();
+                graficos.drawImage(ini.getImagem(), ini.getPosicaoEmX(), ini.getPosicaoEmY(), null);
+            } // FIM NAVE
+
+            // CARREGANDO INIMIGO METEORITO
+            for (int i = 0; i < inimigo_meteorito.size(); i++) {
+                Inimigo_meteorito mete = inimigo_meteorito.get(i);
+                mete.carregar();
+                graficos.drawImage(mete.getImagem_meteoro(), mete.getPosicaoEmX(), mete.getPosicaoEmY(), null);
+            } // FIM METEORITO
+
+            // CARREGANDO INIMIGO BOSS
+            // for (int i = 0; i < inimigo_boss.size(); i++) {
+            // Inimigo_boss boss = inimigo_boss.get(i);
+            // boss.carregar();
+            // graficos.drawImage(boss.getImagem_boss(), boss.getPosicaoEmX(),
+            // boss.getPosicaoEmY(), null);
+            // } // FIM BOSS
+
+            // CARREGANDO OS METODOS DAS INFORMAÇÃO DO JOGO(VIDA E PONTUAÇÃO)
+            pontos(graficos);
+            vidas(graficos);
+        } else if (jogando == false) {
+            graficos.drawImage(this.fundo_morte, 0, 0, null);
         }
-        // CARREGANDO A IMAGEM DO PERSNAGEM
-        // ESTA AQUI EMBAIXO PARA A IMG FICAR ACIMA DA IMAGEM DO TIROW
-        graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(), null);
-
-        // CARREGANDO INIMIGO NAVE
-        for (int i = 0; i < inimigo_naves.size(); i++) {
-            Inimigo_naves ini = inimigo_naves.get(i);
-            ini.carregar();
-            graficos.drawImage(ini.getImagem(), ini.getPosicaoEmX(), ini.getPosicaoEmY(), null);
-        } // FIM NAVE
-
-        // CARREGANDO INIMIGO METEORITO
-        for (int i = 0; i < inimigo_meteorito.size(); i++) {
-            Inimigo_meteorito mete = inimigo_meteorito.get(i);
-            mete.carregar();
-            graficos.drawImage(mete.getImagem_meteoro(), mete.getPosicaoEmX(), mete.getPosicaoEmY(), null);
-        } // FIM METEORITO
-
-        // CARREGANDO INIMIGO BOSS
-        for (int i = 0; i < inimigo_boss.size(); i++) {
-            Inimigo_boss boss = inimigo_boss.get(i);
-            boss.carregar();
-            graficos.drawImage(boss.getImagem_boss(), boss.getPosicaoEmX(),
-                    boss.getPosicaoEmY(), null);
-        } // FIM BOSS
-
-        // CARREGANDO OS METODOS DAS INFORMAÇÃO DO JOGO(VIDA E PONTUAÇÃO)
-        pontos(graficos);
-        vidas(graficos);
 
         g.dispose();
+
     }
 
     // MÉTODO DE PONTUAÇÃO DO JOGADOR
@@ -208,17 +221,11 @@ public class Fase extends JPanel implements ActionListener {
         life.drawString(vida, personagem.getLarguraImagem_Vida() - distancia, 10);
     }
 
-    // MÉTODO DE COLISÃO (A FAZER)
-    public void colisao() {
-
-    }
-
     // MÉTODO PARA ATUALIZAÇÃO DAS IMAGENS
     @Override
     public void actionPerformed(ActionEvent e) {
         personagem.atuzaliza();
         repaint();
-
         // VERIFICANDO SE O INIMIGO ESTA VISIVEL E ATUALIZANDO A SUA POSICAÇÃO ATRAVES
         // DO METODO 'ATUALIZAR', AO FICAR INVISIVEL O INIMIGO E EXCLUIDO
         // A CLASSE ITERATOR E COMO UM PONTEIRO EM C QUE PERMITE INTERAJIR COM UM CERTO
@@ -226,7 +233,7 @@ public class Fase extends JPanel implements ActionListener {
         Iterator<Inimigo_naves> iterator_naves = inimigo_naves.iterator();
         while (iterator_naves.hasNext()) {
             Inimigo_naves ini = iterator_naves.next();
-            if (ini.isVisivel()) {
+            if (ini.isVisibilidade()) {
                 ini.atualizar();
             } else {
                 iterator_naves.remove();
@@ -264,6 +271,52 @@ public class Fase extends JPanel implements ActionListener {
                 boss.atualizar();
             } else {
                 iterator_boss.remove();
+            }
+        }
+        checarColisoes();
+        repaint();
+    }
+
+    public void checarColisoes() {
+        Rectangle forma_Nave_Personagem = personagem.getBounds();
+        Rectangle Forma_Inimigo_Nave;
+        Rectangle Forma_Inimig_Meteorito;
+        Rectangle forma_Tiro;
+
+        // COLISÃO DA NAVE DO PERSOANGEM COM A NAVE INIMIGA
+        for (int i = 0; i < inimigo_naves.size(); i++) {
+            Inimigo_naves temp_nave = inimigo_naves.get(i);
+            Forma_Inimigo_Nave = temp_nave.getBounds();
+            if (forma_Nave_Personagem.intersects(Forma_Inimigo_Nave)) {
+                personagem.setVisibilidade(false);
+                temp_nave.setVisibilidade(false);
+                jogando = false;
+            }
+        }
+
+        // COLISÃO DA NAVE DO PERSOANGEM COM OS METEORITOS
+        for (int k = 0; k < inimigo_meteorito.size(); k++) {
+            Inimigo_meteorito temp_mete = inimigo_meteorito.get(k);
+            Forma_Inimig_Meteorito = temp_mete.getBounds();
+            if (forma_Nave_Personagem.intersects(Forma_Inimig_Meteorito)) {
+                personagem.setVisibilidade(false);
+                temp_mete.setVisibilidade(false);
+                jogando = false;
+            }
+        }
+
+        // COLISÃO DOS TIROS COM A NAVE INIMIGA
+        List<Tiro> tiros = personagem.getTiros();
+        for (int i = 0; i < tiros.size(); i++) {
+            Tiro temp_Tiro = tiros.get(i);
+            forma_Tiro = temp_Tiro.getBounds();
+            for (int j = 0; j < inimigo_naves.size(); j++) {
+                Inimigo_naves temp_nave = inimigo_naves.get(j);
+                Forma_Inimigo_Nave = temp_nave.getBounds();
+                if (forma_Tiro.intersects(Forma_Inimigo_Nave)) {
+                    temp_nave.setVisibilidade(false);
+                    temp_Tiro.setVisibilidade(false);
+                }
             }
         }
 

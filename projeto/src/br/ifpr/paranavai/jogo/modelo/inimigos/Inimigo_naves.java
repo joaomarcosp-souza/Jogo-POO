@@ -82,13 +82,23 @@ public class Inimigo_naves {
         VELOCIDADE = vELOCIDADE;
     }
 
-    public boolean isVisivel() {
+    public Image getImagem_nave() {
+        return imagem_nave;
+    }
+
+    public void setImagem_nave(Image imagem_nave) {
+        this.imagem_nave = imagem_nave;
+    }
+
+    public boolean isVisibilidade() {
         return visibilidade;
     }
 
-    public void setVisivel(boolean visivel) {
-        this.visibilidade = visivel;
+    public void setVisibilidade(boolean visibilidade) {
+        this.visibilidade = visibilidade;
     }
+
+    
 
 
 }
