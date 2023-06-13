@@ -3,7 +3,7 @@ package br.ifpr.paranavai.principal;
 import javax.swing.JFrame;
 
 import br.ifpr.paranavai.jogo.modelo.Fase;
-import br.ifpr.paranavai.jogo.modelo.Telas.Tela_Login;
+//import br.ifpr.paranavai.jogo.modelo.Telas.Tela_Login;
 
 public class Principal extends JFrame {
     
@@ -12,7 +12,7 @@ public class Principal extends JFrame {
     
         Fase fase = new Fase();
         super.add(fase);
-        
+
        //Tela_Login login = new Tela_Login();
       //super.add(login);
 

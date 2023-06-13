@@ -1,6 +1,7 @@
 package br.ifpr.paranavai.jogo.modelo.Jogador;
 
 import java.awt.Image;
+import java.awt.*;
 
 import javax.swing.ImageIcon;
 
@@ -10,7 +11,7 @@ public class Tiro {
     private int larguraImagem, alturaImagem;
     private boolean visibilidade;
     // CONSTANTES 
-    private static int VELOCIDADE = 2;
+    private static int VELOCIDADE = 50; // VELOCIDADE DO TIRO
     private static final int LARGURA = 1300;
     //CONSTRUTOR
     public Tiro(int posicaoEmX, int posicaoEmY) {
@@ -21,7 +22,7 @@ public class Tiro {
 
     //MÉTODO PARA CARREGAR
     public void carregar() {
-        ImageIcon carregador = new ImageIcon("recursos\\sprites_tiros\\tiro1.png");
+        ImageIcon carregador = new ImageIcon("recursos\\sprites_tiros\\blaster1.png");
         this.imagem = carregador.getImage();
         
         this.alturaImagem = this.imagem.getWidth(null);
@@ -33,6 +34,11 @@ public class Tiro {
         if(this.posicaoEmX > LARGURA){
             visibilidade = false;
         }
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(posicaoEmX, posicaoEmY, larguraImagem, alturaImagem);
+
     }
 
     public Image getImagem() {

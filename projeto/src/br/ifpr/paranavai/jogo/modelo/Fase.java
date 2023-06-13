@@ -20,6 +20,7 @@ import javax.swing.Timer;
 
 import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_naves;
 import br.ifpr.paranavai.jogo.modelo.Jogador.Personagem;
+import br.ifpr.paranavai.jogo.modelo.Jogador.Tiro;
 import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_boss;
 import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_meteorito;
 
@@ -29,9 +30,11 @@ import java.awt.FontMetrics;
 public class Fase extends JPanel implements ActionListener {
     private Image fundo;
     private Personagem personagem;
+
     private List<Inimigo_naves> inimigo_naves;
     private List<Inimigo_meteorito> inimigo_meteorito;
     private List<Inimigo_boss> inimigo_boss;
+
     private int larguraTela = 1200; // TAMANHO DA TELA
 
     public Fase() {
@@ -103,7 +106,7 @@ public class Fase extends JPanel implements ActionListener {
         int alturaInimigo = 30;
 
         // TIMER PARA SPAWNAR O BOSS (TESTE)
-        Timer timer_inimigo_boss = new Timer(500, new ActionListener() {
+        Timer timer_inimigo_boss = new Timer(8000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int posicaoEmX = larguraTela;
@@ -121,6 +124,16 @@ public class Fase extends JPanel implements ActionListener {
 
         Graphics2D graficos = (Graphics2D) g;
         graficos.drawImage(this.fundo, 0, 0, null);
+
+        // CARREGANDO TIRO PERSONAGEM
+        List<Tiro> tiros = personagem.getTiros();
+        for (int i = 0; i < tiros.size(); i++) {
+            Tiro tiro = tiros.get(i);
+            tiro.carregar();
+            graficos.drawImage(tiro.getImagem(), tiro.getPosicaoEmX(), tiro.getPosicaoEmY(), null);
+        }
+        // CARREGANDO A IMAGEM DO PERSNAGEM
+        // ESTA AQUI EMBAIXO PARA A IMG FICAR ACIMA DA IMAGEM DO TIROW
         graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(), null);
 
         // CARREGANDO INIMIGO NAVE
@@ -138,12 +151,12 @@ public class Fase extends JPanel implements ActionListener {
         } // FIM METEORITO
 
         // CARREGANDO INIMIGO BOSS
-        // for (int i = 0; i < inimigo_boss.size(); i++) {
-        // Inimigo_boss boss = inimigo_boss.get(i);
-        // boss.carregar();
-        // graficos.drawImage(boss.getImagem_boss(), boss.getPosicaoEmX(),
-        // boss.getPosicaoEmY(), null);
-        // } // FIM BOSS
+        for (int i = 0; i < inimigo_boss.size(); i++) {
+            Inimigo_boss boss = inimigo_boss.get(i);
+            boss.carregar();
+            graficos.drawImage(boss.getImagem_boss(), boss.getPosicaoEmX(),
+                    boss.getPosicaoEmY(), null);
+        } // FIM BOSS
 
         // CARREGANDO OS METODOS DAS INFORMAÇÃO DO JOGO(VIDA E PONTUAÇÃO)
         pontos(graficos);
@@ -231,6 +244,18 @@ public class Fase extends JPanel implements ActionListener {
             }
         } // FIM
 
+        // ATUALIZA POSICAÇÃO DO TIRO
+        List<Tiro> tiros = personagem.getTiros();
+        Iterator<Tiro> iterator_tiro = tiros.iterator();
+        while (iterator_tiro.hasNext()) {
+            Tiro tiro = iterator_tiro.next();
+            if (tiro.isVisibilidade()) {
+                tiro.atualizar();
+            } else {
+                iterator_tiro.remove();
+            }
+        } // FIM
+
         // METODO DE ATUALIZAÇÃO DO BOSS
         Iterator<Inimigo_boss> iterator_boss = inimigo_boss.iterator();
         while (iterator_boss.hasNext()) {
@@ -256,6 +281,5 @@ public class Fase extends JPanel implements ActionListener {
             personagem.tecla_solta(e);
         }
 
-        
     }
 }
