@@ -307,15 +307,25 @@ public class Fase extends JPanel implements ActionListener {
 
         // COLISÃO DOS TIROS COM A NAVE INIMIGA
         List<Tiro> tiros = personagem.getTiros();
+        // FOR TIRO
         for (int i = 0; i < tiros.size(); i++) {
             Tiro temp_Tiro = tiros.get(i);
             forma_Tiro = temp_Tiro.getBounds();
+            // FOR NAVE INIMIGA
             for (int j = 0; j < inimigo_naves.size(); j++) {
                 Inimigo_naves temp_nave = inimigo_naves.get(j);
                 Forma_Inimigo_Nave = temp_nave.getBounds();
-                if (forma_Tiro.intersects(Forma_Inimigo_Nave)) {
-                    temp_nave.setVisibilidade(false);
-                    temp_Tiro.setVisibilidade(false);
+                // FOR METEORITO
+                for (int b = 0; b < inimigo_meteorito.size(); b++) {
+                    Inimigo_meteorito temp_mete = inimigo_meteorito.get(b);
+                    Forma_Inimig_Meteorito = temp_mete.getBounds();
+                    if (forma_Tiro.intersects(Forma_Inimigo_Nave)) {
+                        temp_nave.setVisibilidade(false);
+                        temp_Tiro.setVisibilidade(false);
+                    } else if (forma_Tiro.intersects(Forma_Inimig_Meteorito)) {
+                        temp_mete.setVisibilidade(false);
+                        temp_Tiro.setVisibilidade(false);
+                    }
                 }
             }
         }
