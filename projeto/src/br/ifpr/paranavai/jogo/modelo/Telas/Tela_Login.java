@@ -5,10 +5,10 @@ import javax.swing.JPanel;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+
 import java.io.File;
 import java.io.IOException;
 
-import java.awt.event.KeyAdapter;
 
 public class Tela_Login extends JPanel {
     private Image imagem_fundo;
@@ -24,7 +24,7 @@ public class Tela_Login extends JPanel {
         this.alturaImagem = this.imagem_fundo.getWidth(null);
         this.larguraImagem = this.imagem_fundo.getHeight(null);
 
-        addKeyListener(new TecladoAdapter());
+        // INICIALIZANDO O METODO DE LEITURA DO TECLADO
 
         try {
             // CARREGA A FONTE A PARTIR DO ARQUIVO
@@ -137,18 +137,15 @@ public class Tela_Login extends JPanel {
             if (cursor < 0) {
                 cursor = 2;
             }
+            System.out.println("PTESTES");
         }
         if (tecla == KeyEvent.VK_S) {
+
             cursor--;
             if (cursor > 2) {
                 cursor = 0;
             }
-        }
-    }
-
-    private class TecladoAdapter extends KeyAdapter {
-        @Override
-        public void keyPressed(KeyEvent e) {
+            System.out.println("AAAAAAAAA");
         }
     }
 

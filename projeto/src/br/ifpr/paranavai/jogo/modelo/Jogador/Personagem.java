@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Personagem {
+    private int pontos;
     private int posicaoEmX, posicaoEmY;
     private int deslocamentoEmX, deslocamentoEmY;
     private int larguraImagem, alturaImagem, larguraImagem_Vida, alturaImagem_Vida;
@@ -19,13 +20,11 @@ public class Personagem {
     private List<Tiro> tiros;
     private boolean visibilidade;
     private Image imagem_vida;
-    private int vidas = 3;
     private Font pixel = null;
-    private int pontos;
 
     public Personagem() {
         this.posicaoEmX = 100;
-        this.posicaoEmY = 100;
+        this.posicaoEmY = 300;
         this.visibilidade = true;
 
         tiros = new ArrayList<Tiro>();
@@ -68,6 +67,22 @@ public class Personagem {
 
     }
 
+    // MÉTODO DE PONTUAÇÃO DO JOGADOR
+    public void pontos(Graphics pont) {
+        // TITULO DO JOGO
+        String pont_string = "PONTOS: " + pontos;
+        Font fonte = pixel;
+        // ESTILO DA FONTEd
+        fonte = fonte.deriveFont(Font.BOLD, 20);
+        // COR FONTE
+        pont.setColor(new Color(255, 209, 70)); // COR DO TITULO AMARELO
+        pont.setFont(fonte);
+        // DESENHA A STRING COM A POSIÇÃO (x,y)
+        pont.drawString(pont_string, 10, 20);
+    }
+
+  
+
     // COMEÇO DO METODO MOVIMENTO
     public void tecla_Precionada(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
@@ -103,20 +118,6 @@ public class Personagem {
         if (tecla == KeyEvent.VK_A || tecla == KeyEvent.VK_D) {
             deslocamentoEmX = 0;
         }
-    }
-
-    // MÉTODO DE PONTUAÇÃO DO JOGADOR
-    public void pontos(Graphics pont) {
-        // TITULO DO JOGO
-        String pont_string = "PONTOS: " + pontos;
-        Font fonte = pixel;
-        // ESTILO DA FONTEd
-        fonte = fonte.deriveFont(Font.BOLD, 20);
-        // COR FONTE
-        pont.setColor(new Color(255, 209, 70)); // COR DO TITULO AMARELO
-        pont.setFont(fonte);
-        // DESENHA A STRING COM A POSIÇÃO (x,y)
-        pont.drawString(pont_string, 10, 20);
     }
 
     // metodos gets e sets
@@ -182,14 +183,6 @@ public class Personagem {
 
     public void setImagem_vida(Image imagem_vida) {
         this.imagem_vida = imagem_vida;
-    }
-
-    public int getVidas() {
-        return vidas;
-    }
-
-    public void setVidas(int vidas) {
-        this.vidas = vidas;
     }
 
     public int getLarguraImagem_Vida() {
