@@ -100,8 +100,5 @@ public class Tiro {
 
     public static int getLargura() {
         return LARGURA;
-    }
-
-    
-
+    } 
 }

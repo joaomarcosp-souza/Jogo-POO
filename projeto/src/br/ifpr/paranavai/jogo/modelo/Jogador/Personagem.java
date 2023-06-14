@@ -2,8 +2,6 @@ package br.ifpr.paranavai.jogo.modelo.Jogador;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.Font;
-
 import java.io.File;
 import java.io.IOException;
 import javax.swing.ImageIcon;
@@ -22,9 +20,13 @@ public class Personagem {
     private Image imagem_vida;
     private Font pixel = null;
 
+    private static final int POSICAO_INICIAL_EM_X = 100;
+    private static final int POSICAO_INICIAL_EM_Y = 300;
+    private static final int VELOCIDADE = 10;
+
     public Personagem() {
-        this.posicaoEmX = 100;
-        this.posicaoEmY = 300;
+        this.posicaoEmX = POSICAO_INICIAL_EM_X;
+        this.posicaoEmY = POSICAO_INICIAL_EM_Y;
         this.visibilidade = true;
 
         tiros = new ArrayList<Tiro>();
@@ -81,8 +83,6 @@ public class Personagem {
         pont.drawString(pont_string, 10, 20);
     }
 
-  
-
     // COMEÇO DO METODO MOVIMENTO
     public void tecla_Precionada(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
@@ -94,28 +94,37 @@ public class Personagem {
         }
 
         // TECLAS MOVIMENTAÇÃO
-        if (tecla == KeyEvent.VK_W) {
-            deslocamentoEmY = -10;
+        if (tecla == KeyEvent.VK_W || tecla == KeyEvent.VK_UP) {
+            deslocamentoEmY = -VELOCIDADE;
         }
-        if (tecla == KeyEvent.VK_S) {
-            deslocamentoEmY = 10;
+        if (tecla == KeyEvent.VK_S || tecla == KeyEvent.VK_DOWN) {
+            deslocamentoEmY = VELOCIDADE;
         }
 
-        if (tecla == KeyEvent.VK_A) {
-            deslocamentoEmX = -10;
+        if (tecla == KeyEvent.VK_A || tecla == KeyEvent.VK_LEFT) {
+            deslocamentoEmX = -VELOCIDADE;
         }
-        if (tecla == KeyEvent.VK_D) {
-            deslocamentoEmX = 10;
+        if (tecla == KeyEvent.VK_D || tecla == KeyEvent.VK_RIGHT) {
+            deslocamentoEmX = VELOCIDADE;
         }
     }
 
     public void tecla_solta(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
 
-        if (tecla == KeyEvent.VK_W || tecla == KeyEvent.VK_S) {
+        if (tecla == KeyEvent.VK_W || tecla == KeyEvent.VK_UP) {
             deslocamentoEmY = 0;
         }
-        if (tecla == KeyEvent.VK_A || tecla == KeyEvent.VK_D) {
+
+        if (tecla == KeyEvent.VK_S || tecla == KeyEvent.VK_DOWN) {
+            deslocamentoEmY = 0;
+        }
+
+        if (tecla == KeyEvent.VK_A || tecla == KeyEvent.VK_LEFT) {
+            deslocamentoEmX = 0;
+        }
+
+        if (tecla == KeyEvent.VK_D || tecla == KeyEvent.VK_RIGHT) {
             deslocamentoEmX = 0;
         }
     }
