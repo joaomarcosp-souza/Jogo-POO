@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
@@ -25,6 +25,9 @@ import br.ifpr.paranavai.jogo.modelo.Jogador.Tiro;
 import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_boss;
 import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_meteorito;
 
+import java.io.File;
+import java.io.IOException;
+
 import java.awt.Font;
 import java.awt.FontMetrics;
 
@@ -36,9 +39,8 @@ public class Fase extends JPanel implements ActionListener {
     private List<Inimigo_naves> inimigo_naves;
     private List<Inimigo_meteorito> inimigo_meteorito;
     private List<Inimigo_boss> inimigo_boss;
-
+    private int pontos = 0;
     private int larguraTela = 1200; // TAMANHO DA TELA
-
     private boolean jogando;
 
     public Fase() {
@@ -69,6 +71,7 @@ public class Fase extends JPanel implements ActionListener {
         inicializa_boss(); // BOSS(TESTE)
 
         jogando = true;
+
     }
 
     // INICIANDO POSIÇÃO DAS NAVES INIMIGAS ALEATORIAMENTE
@@ -78,7 +81,7 @@ public class Fase extends JPanel implements ActionListener {
         int alturaInimigo = 30;
 
         // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
-        Timer timer = new Timer(900, new ActionListener() {
+        Timer timer = new Timer(800, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int posicaoEmX = larguraTela; // Defina a posição inicial do novo inimigo
@@ -168,58 +171,15 @@ public class Fase extends JPanel implements ActionListener {
             // } // FIM BOSS
 
             // CARREGANDO OS METODOS DAS INFORMAÇÃO DO JOGO(VIDA E PONTUAÇÃO)
-            pontos(graficos);
+            personagem.pontos(graficos);
             vidas(graficos);
         } else if (jogando == false) {
-            graficos.drawImage(this.fundo, 0, 0, null);
-            graficos.drawImage(this.fundo_morte, 0, 0, null);
+            g.drawImage(this.fundo, 0, 0, null);
+            g.drawImage(this.fundo_morte, 0, 0, null);
         }
 
         g.dispose();
 
-    }
-
-    // MÉTODO DE PONTUAÇÃO DO JOGADOR
-    public void pontos(Graphics pont) {
-        // TITULO DO JOGO
-        String pontos = "Pontuação: " + 150;
-        // ESTILO DA FONTE
-        Font fonte = new Font("Arial", Font.BOLD, 15);
-        // COR FONTE
-        pont.setColor(Color.WHITE);
-        pont.setFont(fonte);
-        // DESENHA A STRING COM A POSIÇÃO (x,y)
-        pont.drawString(pontos, 10, 20);
-    }
-
-    // MÉTODO DA VIDA DO JOGADOR
-    public void vidas(Graphics life) {
-        // DEFINE A STRING DE EXIBIÇÃO
-        String vida = "Vidas";
-        // CRIA UM ESTILO DE FONTE
-        Font estilo = new Font("Consolas", Font.BOLD, 10);
-        // CRIA A MÉTRICA DA FONTE
-        FontMetrics metrica = this.getFontMetrics(estilo);
-
-        // OBTÉM O TAMANHO DA STRING NA TELA
-        int width = metrica.stringWidth(vida);
-        // CALCUPA A DISTÂNCIA DA BORDA PARA POSICIONAR A STRING
-        int distancia = (15 * personagem.getVidas()) + (5 * personagem.getVidas()) + 100 + width;
-
-        // PARA CADA VIDA DO JOGADOR, DESENHA UMA IMAGEM DA VIDA,
-        // ALTERANDO A POSIÇÃO COM BASE NOS CALCULOS PARA DEFINIR
-        // A POSIÇÃO DE CADA UMA EM (x,y)
-        for (int i = 0; i < personagem.getVidas(); i++) {
-            life.drawImage(personagem.getImagem_vida(), (larguraTela + 50) - width, 10, this);
-            width += personagem.getAlturaImagem_Vida() + 5;
-        }
-
-        // SETA A COR DA FONTE
-        life.setColor(Color.WHITE);
-        // SETA O ESTILO DE FONTE
-        life.setFont(estilo);
-        // DESENHA A STRING COM A POSIÇÃO (x,y)
-        life.drawString(vida, personagem.getLarguraImagem_Vida() - distancia, 10);
     }
 
     // MÉTODO PARA ATUALIZAÇÃO DAS IMAGENS
@@ -312,6 +272,8 @@ public class Fase extends JPanel implements ActionListener {
         for (int i = 0; i < tiros.size(); i++) {
             Tiro temp_Tiro = tiros.get(i);
             forma_Tiro = temp_Tiro.getBounds();
+            boolean colisao_NAVE = false; // VARIAVEL QUE VAI VERIFICAR A COLISÃO
+            boolean colisao_METEORITO = false;
             // FOR NAVE INIMIGA
             for (int j = 0; j < inimigo_naves.size(); j++) {
                 Inimigo_naves temp_nave = inimigo_naves.get(j);
@@ -323,14 +285,60 @@ public class Fase extends JPanel implements ActionListener {
                     if (forma_Tiro.intersects(Forma_Inimigo_Nave)) {
                         temp_nave.setVisibilidade(false);
                         temp_Tiro.setVisibilidade(false);
+                        colisao_NAVE = true; // COLISÃO DEU CERTO
+                        break; // SAI DO LOOP INTERNO
                     } else if (forma_Tiro.intersects(Forma_Inimig_Meteorito)) {
                         temp_mete.setVisibilidade(false);
                         temp_Tiro.setVisibilidade(false);
+                        colisao_METEORITO = true;
+                        break;
                     }
                 }
+                if (colisao_NAVE) {
+                    break; // SAI DO LOOP EXTERNO
+                }
+                if (colisao_METEORITO) {
+                    break;
+                }
+            }
+            if (colisao_NAVE) {
+                // AUMENTA OS PONTOS SE A COLISÃO FOI DETECTADA
+                personagem.setPontos(personagem.getPontos() + 10);
+            }
+            if (colisao_METEORITO) {
+                personagem.setPontos(personagem.getPontos() + 10);
             }
         }
+    }
 
+    // MÉTODO DA VIDA DO JOGADOR
+    public void vidas(Graphics life) {
+        // DEFINE A STRING DE EXIBIÇÃO
+        String vida = "Vidas";
+        // CRIA UM ESTILO DE FONTE
+        Font estilo = new Font("Consolas", Font.BOLD, 10);
+        // CRIA A MÉTRICA DA FONTE
+        FontMetrics metrica = this.getFontMetrics(estilo);
+
+        // OBTÉM O TAMANHO DA STRING NA TELA
+        int width = metrica.stringWidth(vida);
+        // CALCUPA A DISTÂNCIA DA BORDA PARA POSICIONAR A STRING
+        int distancia = (15 * personagem.getVidas()) + (5 * personagem.getVidas()) + 100 + width;
+
+        // PARA CADA VIDA DO JOGADOR, DESENHA UMA IMAGEM DA VIDA,
+        // ALTERANDO A POSIÇÃO COM BASE NOS CALCULOS PARA DEFINIR
+        // A POSIÇÃO DE CADA UMA EM (x,y)
+        for (int i = 0; i < personagem.getVidas(); i++) {
+            life.drawImage(personagem.getImagem_vida(), (larguraTela + 50) - width, 10, this);
+            width += personagem.getAlturaImagem_Vida() + 5;
+        }
+
+        // SETA A COR DA FONTE
+        life.setColor(Color.WHITE);
+        // SETA O ESTILO DE FONTE
+        life.setFont(estilo);
+        // DESENHA A STRING COM A POSIÇÃO (x,y)
+        life.drawString(vida, personagem.getLarguraImagem_Vida() - distancia, 10);
     }
 
     // CHAMANDO A LEITURA DOS TECLADOS

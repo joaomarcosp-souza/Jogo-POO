@@ -10,6 +10,7 @@ public class Tiro {
     private int posicaoEmX, posicaoEmY;
     private int larguraImagem, alturaImagem;
     private boolean visibilidade;
+
     // CONSTANTES 
     private static int VELOCIDADE = 20; // VELOCIDADE DO TIRO
     private static final int LARGURA = 1300;

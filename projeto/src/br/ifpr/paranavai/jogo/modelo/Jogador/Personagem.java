@@ -2,7 +2,10 @@ package br.ifpr.paranavai.jogo.modelo.Jogador;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.Font;
 
+import java.io.File;
+import java.io.IOException;
 import javax.swing.ImageIcon;
 
 import java.util.ArrayList;
@@ -13,12 +16,12 @@ public class Personagem {
     private int deslocamentoEmX, deslocamentoEmY;
     private int larguraImagem, alturaImagem, larguraImagem_Vida, alturaImagem_Vida;
     private Image imagem;
-
     private List<Tiro> tiros;
     private boolean visibilidade;
-
     private Image imagem_vida;
     private int vidas = 3;
+    private Font pixel = null;
+    private int pontos;
 
     public Personagem() {
         this.posicaoEmX = 100;
@@ -26,6 +29,13 @@ public class Personagem {
         this.visibilidade = true;
 
         tiros = new ArrayList<Tiro>();
+
+        try {
+            // CARREGA A FONTE A PARTIR DO ARQUIVO
+            pixel = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\pixel_fonte.ttf"));
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+        }
     }
 
     public void carregar() {
@@ -34,7 +44,7 @@ public class Personagem {
         this.imagem = carregador.getImage();
         this.alturaImagem = this.imagem.getWidth(null);
         this.larguraImagem = this.imagem.getHeight(null);
-        //IMAGEM VIDAS
+        // IMAGEM VIDAS
         ImageIcon carrega_vida = new ImageIcon("recursos\\sprites_personagem\\heart.png");
         this.imagem_vida = carrega_vida.getImage();
         this.alturaImagem_Vida = this.imagem_vida.getWidth(null);
@@ -49,25 +59,26 @@ public class Personagem {
     }
 
     // MÉTODO TIRO
-    public void tiro_simples(){
-        this.tiros.add(new Tiro(posicaoEmX+ (larguraImagem/2), posicaoEmY +(alturaImagem/2)));
+    public void tiro_simples() {
+        this.tiros.add(new Tiro(posicaoEmX + (larguraImagem / 2), posicaoEmY + (alturaImagem / 2)));
     }
 
     public Rectangle getBounds() {
         return new Rectangle(posicaoEmX, posicaoEmY, larguraImagem, alturaImagem);
-        
+
     }
 
     // COMEÇO DO METODO MOVIMENTO
     public void tecla_Precionada(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
 
-        //TECLA TIRO
-        if(tecla == KeyEvent.VK_SPACE){
+        // TECLA TIRO
+        if (tecla == KeyEvent.VK_SPACE) {
+            // dispararTiro = true;
             tiro_simples();
         }
 
-        //TECLAS MOVIMENTAÇÃO
+        // TECLAS MOVIMENTAÇÃO
         if (tecla == KeyEvent.VK_W) {
             deslocamentoEmY = -10;
         }
@@ -92,6 +103,20 @@ public class Personagem {
         if (tecla == KeyEvent.VK_A || tecla == KeyEvent.VK_D) {
             deslocamentoEmX = 0;
         }
+    }
+
+    // MÉTODO DE PONTUAÇÃO DO JOGADOR
+    public void pontos(Graphics pont) {
+        // TITULO DO JOGO
+        String pont_string = "PONTOS: " + pontos;
+        Font fonte = pixel;
+        // ESTILO DA FONTEd
+        fonte = fonte.deriveFont(Font.BOLD, 20);
+        // COR FONTE
+        pont.setColor(new Color(255, 209, 70)); // COR DO TITULO AMARELO
+        pont.setFont(fonte);
+        // DESENHA A STRING COM A POSIÇÃO (x,y)
+        pont.drawString(pont_string, 10, 20);
     }
 
     // metodos gets e sets
@@ -199,5 +224,20 @@ public class Personagem {
         this.visibilidade = visibilidade;
     }
 
-    
+    public Font getPixel() {
+        return pixel;
+    }
+
+    public void setPixel(Font pixel) {
+        this.pixel = pixel;
+    }
+
+    public int getPontos() {
+        return pontos;
+    }
+
+    public void setPontos(int pontos) {
+        this.pontos = pontos;
+    }
+
 }
