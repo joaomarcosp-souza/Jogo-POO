@@ -171,6 +171,7 @@ public class Fase extends JPanel implements ActionListener {
             vidas(graficos);
         } else if (jogando == false) {
             g.drawImage(this.fundo, 0, 0, null);
+            personagem.pontos(graficos);
             g.drawImage(this.fundo_morte, 0, 0, null);
         }
 
@@ -341,7 +342,7 @@ public class Fase extends JPanel implements ActionListener {
             }
             if (colisao_METEORITO) {
                 // AUMENTA OS PONTOS SE A COLISÃO FOI DETECTADA PARA O METEORITO
-                personagem.setPontos(personagem.getPontos() + 10);
+                personagem.setPontos(personagem.getPontos() + 20);
             }
         }
     }
