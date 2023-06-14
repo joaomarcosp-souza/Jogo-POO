@@ -92,7 +92,7 @@ public class Fase extends JPanel implements ActionListener {
     // INICIANDO POSIÇÃO DO METEORITO ALEATORIAMENTE
     public void inicializa_Metorito_Inimigo() {
         inimigo_meteorito = new ArrayList<Inimigo_meteorito>();
-        int alturaInimigo = 50;
+        int alturaInimigo = 40;
 
         // TIMER PARA SPAWNAR O METEORITO
         Timer timer_Meteorito = new Timer(1500, new ActionListener() {
