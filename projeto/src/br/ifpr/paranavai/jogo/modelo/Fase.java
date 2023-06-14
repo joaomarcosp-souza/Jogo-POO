@@ -49,7 +49,7 @@ public class Fase extends JPanel implements ActionListener {
         ImageIcon carregando = new ImageIcon("recursos\\sprites_Fundos\\planeta.jpg");
         this.fundo = carregando.getImage();
 
-        ImageIcon death = new ImageIcon("recursos\\sprites_fundos\\morte_tela.jpg");
+        ImageIcon death = new ImageIcon("recursos\\sprites_fundos\\Morte.png");
         this.fundo_morte = death.getImage();
 
         // INICIALIZANDO O PERSONAGEM
@@ -171,6 +171,7 @@ public class Fase extends JPanel implements ActionListener {
             pontos(graficos);
             vidas(graficos);
         } else if (jogando == false) {
+            graficos.drawImage(this.fundo, 0, 0, null);
             graficos.drawImage(this.fundo_morte, 0, 0, null);
         }
 
