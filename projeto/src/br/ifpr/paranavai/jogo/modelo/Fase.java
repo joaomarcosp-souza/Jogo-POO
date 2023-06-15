@@ -29,53 +29,65 @@ import java.awt.FontMetrics;
 
 public class Fase extends JPanel implements ActionListener {
     private Image fundo;
+    private Image fundo_2;
+    private Image explosao;
+    private boolean exibirExplosao;
+    private Timer timerExplosao;
     private Image fundo_morte;
+    private Image caveira_fundo;
+    private int POSICAO_CAVEIRA = 450;
     private Personagem personagem;
     private int vidas = 3;
-
     private List<Inimigo_naves> inimigo_naves;
     private List<Inimigo_meteorito> inimigo_meteorito;
     private List<Inimigo_boss> inimigo_boss;
+    private List<Rectangle> explosao_posicao;
     private int larguraTela = 1200; // TAMANHO DA TELA
     private boolean jogando;
 
     public Fase() {
         setFocusable(true);
         setDoubleBuffered(true);
-
         // IMAGEM DE FUNDO
         ImageIcon carregando = new ImageIcon("recursos\\sprites_Fundos\\planeta.jpg");
         this.fundo = carregando.getImage();
-
-        ImageIcon death = new ImageIcon("recursos\\sprites_fundos\\Morte.png");
-        this.fundo_morte = death.getImage();
-
+        // IMAGEM SEGUNDO FUNDO
+        ImageIcon fundo_2 = new ImageIcon("recursos\\sprites_Fundos\\fundo_dois.jpg");
+        this.fundo_2 = fundo_2.getImage();
+        // IMG EXPLOSÃO
+        ImageIcon explosaoIcon = new ImageIcon("recursos\\sprites_tiros\\explosao.png");
+        this.explosao = explosaoIcon.getImage();
         // INICIALIZANDO O PERSONAGEM
         personagem = new Personagem();
         personagem.carregar();
-
+        // INICIANDO A LISTA DE EXPLOSOES
+        explosao_posicao = new ArrayList<Rectangle>();
         // INICIALIZANDO O METODO DE LEITURA DO TECLADO
         addKeyListener(new TecladoAdapter());
-
         // ATUALIZANDO O PERSONAGEM E REDENSENHADO NA TELA EM INTERVALOS REGULARES.
-        Timer timer = new Timer(5, this);
+        Timer timer = new Timer(1, this);
         timer.start(); // START
-
+        // INICIALIZANDO O TEMPORAZIDOR PARA A EXPLOSÃO
         // INICIALIZANDO MÉTODOS INIMIGOS
         inicializa_Nave_Inimiga(); // NAVES
         inicializa_Metorito_Inimigo(); // METEORITOS
         inicializa_boss(); // BOSS(TESTE)
-
+        timerExplosao = new Timer(30000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                exibirExplosao = false;
+                timerExplosao.stop();
+                repaint();
+            }
+        });
+        timerExplosao.start();
+        // JOGANDO
         jogando = true;
-
     }
-
     // INICIANDO POSIÇÃO DAS NAVES INIMIGAS ALEATORIAMENTE
     public void inicializa_Nave_Inimiga() {
         inimigo_naves = new ArrayList<Inimigo_naves>();
         // int larguraInimigo = 30; // Tamanho inimigos
         int alturaInimigo = 30;
-
         // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
         Timer timer = new Timer(800, new ActionListener() {
             @Override
@@ -88,12 +100,10 @@ public class Fase extends JPanel implements ActionListener {
         timer.setRepeats(true);
         timer.start(); // FIM DOS INIMIGOS NAVE
     }
-
     // INICIANDO POSIÇÃO DO METEORITO ALEATORIAMENTE
     public void inicializa_Metorito_Inimigo() {
         inimigo_meteorito = new ArrayList<Inimigo_meteorito>();
         int alturaInimigo = 40;
-
         // TIMER PARA SPAWNAR O METEORITO
         Timer timer_Meteorito = new Timer(1500, new ActionListener() {
             @Override
@@ -106,7 +116,6 @@ public class Fase extends JPanel implements ActionListener {
         timer_Meteorito.setRepeats(true);
         timer_Meteorito.start();
     }// FIM MÉTODO METEORITO
-
     // INICIALIZANDO A POSIÇÃO DO BOSS ALEATORIAMENTE
     public void inicializa_boss() {
         inimigo_boss = new ArrayList<Inimigo_boss>();
@@ -124,15 +133,17 @@ public class Fase extends JPanel implements ActionListener {
         timer_inimigo_boss.setRepeats(true); // SETAR PARA REPETIR OU NÃO
         timer_inimigo_boss.start(); // STARTANDO
     }// FIM MÉTODO BOSS
-
     public void paint(Graphics g) {
         // CHAMA O MÉTODO PAINT DA SUPERCLASSE PARA LIMPAR A TELA ANTES DE A REDESENHAR
         super.paint(g);
         Graphics2D graficos = (Graphics2D) g;
-
+//
         if (jogando == true) {
             graficos.drawImage(this.fundo, 0, 0, null);
-
+            //
+            if (personagem.getPontos() >= 200) {
+                graficos.drawImage(this.fundo_2, 0, 0, null);
+            }
             // CARREGANDO TIRO PERSONAGEM
             List<Tiro> tiros = personagem.getTiros();
             for (int i = 0; i < tiros.size(); i++) {
@@ -142,22 +153,30 @@ public class Fase extends JPanel implements ActionListener {
             }
             // CARREGANDO A IMAGEM DO PERSNAGEM
             // ESTA AQUI EMBAIXO PARA A IMG FICAR ACIMA DA IMAGEM DO TIROW
-            graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(), null);
-
+            graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(),
+                    null);
             // CARREGANDO INIMIGO NAVE
             for (int i = 0; i < inimigo_naves.size(); i++) {
                 Inimigo_naves ini = inimigo_naves.get(i);
                 ini.carregar();
                 graficos.drawImage(ini.getImagem(), ini.getPosicaoEmX(), ini.getPosicaoEmY(), null);
             } // FIM NAVE
-
             // CARREGANDO INIMIGO METEORITO
             for (int i = 0; i < inimigo_meteorito.size(); i++) {
                 Inimigo_meteorito mete = inimigo_meteorito.get(i);
                 mete.carregar();
                 graficos.drawImage(mete.getImagem_meteoro(), mete.getPosicaoEmX(), mete.getPosicaoEmY(), null);
             } // FIM METEORITO
-
+            // DESENHA A IMAGEM DA EXPLOSÃO
+            for (int i = 0; i < tiros.size(); i++) {
+                Tiro tiro = tiros.get(i);
+                if (!tiro.isVisibilidade()) {
+                    // EXIBIE A IMAGEM DE EXPLOSAO NO LUGAR DA NAVE SE ELA FOR TRUE
+                    if (exibirExplosao) {
+                        graficos.drawImage(explosao, tiro.getPosicaoEmX(), tiro.getPosicaoEmY(), null);
+                    }
+                }
+            }
             // CARREGANDO INIMIGO BOSS
             // for (int i = 0; i < inimigo_boss.size(); i++) {
             // Inimigo_boss boss = inimigo_boss.get(i);
@@ -170,20 +189,26 @@ public class Fase extends JPanel implements ActionListener {
             personagem.pontos(graficos);
             vidas(graficos);
         } else if (jogando == false) {
+            // IMG FUNDO
             g.drawImage(this.fundo, 0, 0, null);
+            // GIF DA CAVEIRA
+            ImageIcon caveira = new ImageIcon("recursos\\sprites_fundos\\caveira.gif");
+            this.caveira_fundo = caveira.getImage();
+            g.drawImage(this.caveira_fundo, this.POSICAO_CAVEIRA, 0, null);
+            // PONTOS
             personagem.pontos(graficos);
+            // IMAGEM 'YOU DIED'
+            ImageIcon death = new ImageIcon("recursos\\sprites_fundos\\Morte.png");
+            this.fundo_morte = death.getImage();
             g.drawImage(this.fundo_morte, 0, 0, null);
         }
-
         g.dispose();
-
     }
 
     // MÉTODO PARA ATUALIZAÇÃO DAS IMAGENS
     @Override
     public void actionPerformed(ActionEvent e) {
         personagem.atuzaliza();
-        repaint();
         // VERIFICANDO SE O INIMIGO ESTA VISIVEL E ATUALIZANDO A SUA POSICAÇÃO ATRAVES
         // DO METODO 'ATUALIZAR', AO FICAR INVISIVEL O INIMIGO E EXCLUIDO
         // A CLASSE ITERATOR E COMO UM PONTEIRO EM C QUE PERMITE INTERAJIR COM UM CERTO
@@ -243,12 +268,10 @@ public class Fase extends JPanel implements ActionListener {
         Font estilo = new Font("Consolas", Font.BOLD, 10);
         // CRIA A MÉTRICA DA FONTE
         FontMetrics metrica = this.getFontMetrics(estilo);
-
         // OBTÉM O TAMANHO DA STRING NA TELA
         int width = metrica.stringWidth(vida);
         // CALCUPA A DISTÂNCIA DA BORDA PARA POSICIONAR A STRING
         int distancia = (15 * vidas) + (5 * vidas) + 100 + width;
-
         // PARA CADA VIDA DO JOGADOR, DESENHA UMA IMAGEM DA VIDA,
         // ALTERANDO A POSIÇÃO COM BASE NOS CALCULOS PARA DEFINIR
         // A POSIÇÃO DE CADA UMA EM (x,y)
@@ -256,7 +279,6 @@ public class Fase extends JPanel implements ActionListener {
             life.drawImage(personagem.getImagem_vida(), (larguraTela + 50) - width, 10, this);
             width += personagem.getAlturaImagem_Vida() + 5;
         }
-
         // SETA A COR DA FONTE
         life.setColor(Color.WHITE);
         // SETA O ESTILO DE FONTE
@@ -318,13 +340,17 @@ public class Fase extends JPanel implements ActionListener {
                     Inimigo_meteorito temp_mete = inimigo_meteorito.get(b);
                     Forma_Inimig_Meteorito = temp_mete.getBounds();
                     if (forma_Tiro.intersects(Forma_Inimigo_Nave)) {
-                        temp_nave.setVisibilidade(false);
                         temp_Tiro.setVisibilidade(false);
+                        temp_nave.setVisibilidade(false);
+                        exibirExplosao = true;
+                        timerExplosao.start();
                         colisao_NAVE = true; // COLISÃO DEU CERTO
                         break; // SAI DO LOOP INTERNO
                     } else if (forma_Tiro.intersects(Forma_Inimig_Meteorito)) {
-                        temp_mete.setVisibilidade(false);
                         temp_Tiro.setVisibilidade(false);
+                        temp_mete.setVisibilidade(false);
+                        exibirExplosao = true;
+                        timerExplosao.start();
                         colisao_METEORITO = true;
                         break;
                     }
@@ -346,18 +372,15 @@ public class Fase extends JPanel implements ActionListener {
             }
         }
     }
-
     // CHAMANDO A LEITURA DOS TECLADOS
     private class TecladoAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
             personagem.tecla_Precionada(e);
         }
-
         @Override
         public void keyReleased(KeyEvent e) {
             personagem.tecla_solta(e);
         }
-
     }
 }
