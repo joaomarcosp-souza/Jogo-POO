@@ -36,15 +36,11 @@ public class Fase extends JPanel implements ActionListener {
     private int POSICAO_CAVEIRA = 450;
     private Personagem personagem;
     private int vidas = 3;
-
-    private long tempoExibicaoExplosao;
-
     private List<Inimigo_naves> inimigo_naves;
     private List<Inimigo_meteorito> inimigo_meteorito;
     private List<Inimigo_boss> inimigo_boss;
-    private List<Rectangle> explosao_posicao;
-
     private int larguraTela = 1200; // TAMANHO DA TELA
+    private int alturaTela = 700;
     private boolean jogando;
 
     public Fase() {
@@ -61,13 +57,9 @@ public class Fase extends JPanel implements ActionListener {
 
         ImageIcon explosaoIcon = new ImageIcon("recursos\\sprites_tiros\\explosao.png");
         this.explosao = explosaoIcon.getImage();
-
         // INICIALIZANDO O PERSONAGEM
         personagem = new Personagem();
         personagem.carregar();
-
-        explosao_posicao = new ArrayList<Rectangle>();
-
         // INICIALIZANDO O METODO DE LEITURA DO TECLADO
         addKeyListener(new TecladoAdapter());
 
@@ -79,7 +71,6 @@ public class Fase extends JPanel implements ActionListener {
         inicializa_Nave_Inimiga(); // NAVES
         inicializa_Metorito_Inimigo(); // METEORITOS
         inicializa_boss(); // BOSS(TESTE)
-
         jogando = true;
 
     }
@@ -198,9 +189,21 @@ public class Fase extends JPanel implements ActionListener {
             // CARREGANDO OS METODOS DAS INFORMAÇÃO DO JOGO(VIDA E PONTUAÇÃO)
             personagem.pontos(graficos);
             vidas(graficos);
-        } else if (jogando == false) {
+        }
+
+        if (jogando == false) {
+            int larguraTela = 1300;
+            String enter = "PRESSIONE 'ENTER' PARA RESETAR.";
+            FontMetrics fm = g.getFontMetrics();
+            // PEGA O TAMANHO DA STRING E FAZ O CALCULO PARA CENTRALIZAR
+            int enterWidth = fm.stringWidth(enter);
+            int x = (larguraTela - enterWidth) / 2;
+            int y = 105 + (alturaTela - fm.getHeight()) / 2;
             // IMG FUNDO
             g.drawImage(this.fundo, 0, 0, null);
+            if (personagem.getPontos() > 200) {
+                g.drawImage(this.fundo_2, 0, 0, null);
+            }
             // GIF DA CAVEIRA
             ImageIcon caveira = new ImageIcon("recursos\\sprites_fundos\\caveira.gif");
             this.caveira_fundo = caveira.getImage();
@@ -211,10 +214,9 @@ public class Fase extends JPanel implements ActionListener {
             ImageIcon death = new ImageIcon("recursos\\sprites_fundos\\Morte.png");
             this.fundo_morte = death.getImage();
             g.drawImage(this.fundo_morte, 0, 0, null);
+            g.drawString(enter, (x - 103), y);
         }
-
         g.dispose();
-
     }
 
     // MÉTODO PARA ATUALIZAÇÃO DAS IMAGENS
@@ -277,7 +279,7 @@ public class Fase extends JPanel implements ActionListener {
     // MÉTODO DA VIDA DO JOGADOR
     public void vidas(Graphics life) {
         // DEFINE A STRING DE EXIBIÇÃO
-        String vida = "Vidas";
+        String vida = " ";
         // CRIA UM ESTILO DE FONTE
         Font estilo = new Font("Consolas", Font.BOLD, 10);
         // CRIA A MÉTRICA DA FONTE
@@ -295,7 +297,6 @@ public class Fase extends JPanel implements ActionListener {
             life.drawImage(personagem.getImagem_vida(), (larguraTela + 50) - width, 10, this);
             width += personagem.getAlturaImagem_Vida() + 5;
         }
-
         // SETA A COR DA FONTE
         life.setColor(Color.WHITE);
         // SETA O ESTILO DE FONTE
@@ -309,8 +310,6 @@ public class Fase extends JPanel implements ActionListener {
         Rectangle Forma_Inimigo_Nave;
         Rectangle Forma_Inimig_Meteorito;
         Rectangle forma_Tiro;
-        Rectangle posicaoExplosao;
-
         // COLISÃO DA NAVE DO PERSOANGEM COM A NAVE INIMIGA
         for (int i = 0; i < inimigo_naves.size(); i++) {
             Inimigo_naves temp_nave = inimigo_naves.get(i);
@@ -318,9 +317,6 @@ public class Fase extends JPanel implements ActionListener {
             if (forma_Nave_Personagem.getBounds().intersects(Forma_Inimigo_Nave.getBounds())) {
                 personagem.setVisibilidade(false);
                 temp_nave.setVisibilidade(false);
-                posicaoExplosao = new Rectangle(temp_nave.getPosicaoEmX(), temp_nave.getPosicaoEmY(),
-                        explosao.getWidth(null), explosao.getHeight(null));
-                explosao_posicao.add(posicaoExplosao);
                 if (vidas == 1) {
                     jogando = false;
                 } else {
@@ -328,7 +324,6 @@ public class Fase extends JPanel implements ActionListener {
                 }
             }
         }
-
         // COLISÃO DA NAVE DO PERSOANGEM COM OS METEORITOS
         for (int k = 0; k < inimigo_meteorito.size(); k++) {
             Inimigo_meteorito temp_mete = inimigo_meteorito.get(k);
@@ -336,9 +331,6 @@ public class Fase extends JPanel implements ActionListener {
             if (forma_Nave_Personagem.getBounds().intersects(Forma_Inimig_Meteorito.getBounds())) {
                 personagem.setVisibilidade(false);
                 temp_mete.setVisibilidade(false);
-                posicaoExplosao = new Rectangle(temp_mete.getPosicaoEmX(), temp_mete.getPosicaoEmY(),
-                        explosao.getWidth(null), explosao.getHeight(null));
-                explosao_posicao.add(posicaoExplosao);
                 if (vidas == 1) {
                     jogando = false;
                 } else {
@@ -346,7 +338,6 @@ public class Fase extends JPanel implements ActionListener {
                 }
             }
         }
-
         // COLISÃO DOS TIROS COM A NAVE INIMIGA
         List<Tiro> tiros = personagem.getTiros();
         // FOR TIRO
@@ -366,17 +357,12 @@ public class Fase extends JPanel implements ActionListener {
                     if (forma_Tiro.getBounds().intersects(Forma_Inimigo_Nave.getBounds())) {
                         temp_nave.setVisibilidade(false);
                         temp_Tiro.setVisibilidade(false);
-                        posicaoExplosao = new Rectangle(temp_nave.getPosicaoEmX(), temp_nave.getPosicaoEmY(),
-                                explosao.getWidth(null), explosao.getHeight(null));
-                        explosao_posicao.add(posicaoExplosao);
                         colisao_NAVE = true; // COLISÃO DEU CERTO
                         break; // SAI DO LOOP INTERNO
-                    } if (forma_Tiro.getBounds().intersects(Forma_Inimig_Meteorito.getBounds())) {
+                    }
+                    if (forma_Tiro.getBounds().intersects(Forma_Inimig_Meteorito.getBounds())) {
                         temp_mete.setVisibilidade(false);
                         temp_Tiro.setVisibilidade(false);
-                        posicaoExplosao = new Rectangle(temp_mete.getPosicaoEmX(), temp_mete.getPosicaoEmY(),
-                                explosao.getWidth(null), explosao.getHeight(null));
-                        explosao_posicao.add(posicaoExplosao);
                         repaint();
                         colisao_METEORITO = true;
                         break;
@@ -392,7 +378,6 @@ public class Fase extends JPanel implements ActionListener {
             if (colisao_NAVE) {
                 // AUMENTA OS PONTOS SE A COLISÃO FOI DETECTADA PARA A NAVE INIMIGA
                 personagem.setPontos(personagem.getPontos() + 10);
-
             }
             if (colisao_METEORITO) {
                 // AUMENTA OS PONTOS SE A COLISÃO FOI DETECTADA PARA O METEORITO
@@ -401,11 +386,26 @@ public class Fase extends JPanel implements ActionListener {
         }
     }
 
+    public void resetar(KeyEvent e) {
+        int tecla = e.getKeyCode();
+        if (jogando == true) {
+            //SO ESTA IMPEDINDO QUE O ENTER FUNCIONE ENQUANTO O JOGO ESTA FUCIONANDO
+        } else {
+            if (tecla == KeyEvent.VK_ENTER) {
+                vidas = 3;
+                jogando = true;
+                personagem.setPontos(0);
+            }
+        }
+
+    }
+
     // CHAMANDO A LEITURA DOS TECLADOS
     private class TecladoAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
             personagem.tecla_Precionada(e);
+            resetar(e);
         }
 
         @Override

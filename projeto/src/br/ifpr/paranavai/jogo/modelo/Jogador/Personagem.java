@@ -82,6 +82,7 @@ public class Personagem {
         // DESENHA A STRING COM A POSIÇÃO (x,y)
         pont.drawString(pont_string, 10, 20);
     }
+    
 
     // COMEÇO DO METODO MOVIMENTO
     public void tecla_Precionada(KeyEvent teclado) {

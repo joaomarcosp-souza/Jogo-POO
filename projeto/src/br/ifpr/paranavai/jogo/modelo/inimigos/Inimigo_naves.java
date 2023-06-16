@@ -74,10 +74,6 @@ public class Inimigo_naves {
         this.alturaImagem = alturaImagem;
     }
 
-    public static int getVELOCIDADE() {
-        return VELOCIDADE;
-    }
-
     public Image getImagem_nave() {
         return imagem_nave;
     }
@@ -97,8 +93,4 @@ public class Inimigo_naves {
     public static int getVelocidade() {
         return VELOCIDADE;
     }
-
-    
-
-
 }
