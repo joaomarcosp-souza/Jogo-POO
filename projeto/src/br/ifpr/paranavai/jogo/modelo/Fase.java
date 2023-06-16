@@ -29,11 +29,10 @@ import java.awt.FontMetrics;
 
 public class Fase extends JPanel implements ActionListener {
     private Image fundo;
-    private Image fundo_2;
+    private Image fundo_fase_2;
     private Image explosao;
-    private Image fundo_morte;
+    private Image banner_fundo_morte;
     private Image caveira_fundo;
-    private int POSICAO_CAVEIRA = 450;
     private Personagem personagem;
     private int vidas = 3;
     private List<Inimigo_naves> inimigo_naves;
@@ -48,15 +47,20 @@ public class Fase extends JPanel implements ActionListener {
         setDoubleBuffered(true);
 
         // IMAGEM DE FUNDO
-        ImageIcon carregando = new ImageIcon("recursos\\sprites_Fundos\\planeta.jpg");
-        this.fundo = carregando.getImage();
-
+        ImageIcon fundo_principal = new ImageIcon("recursos\\sprites_Fundos\\fundo_fase.jpg");
+        this.fundo = fundo_principal.getImage();
         // IMAGEM SEGUNDO FUNDO
-        ImageIcon fundo_2 = new ImageIcon("recursos\\sprites_Fundos\\fundo_dois.jpg");
-        this.fundo_2 = fundo_2.getImage();
-
-        ImageIcon explosaoIcon = new ImageIcon("recursos\\sprites_tiros\\explosao.png");
-        this.explosao = explosaoIcon.getImage();
+        ImageIcon fundo_fase_2 = new ImageIcon("recursos\\sprites_Fundos\\fundo_fase_dois.jpg");
+        this.fundo_fase_2 = fundo_fase_2.getImage();
+        //
+        ImageIcon explosao_img = new ImageIcon("recursos\\sprites_tiros\\explosao.png");
+        this.explosao = explosao_img.getImage();
+        // GIF DA CAVEIRA
+        ImageIcon caveira = new ImageIcon("recursos\\sprites_fundos\\caveira.gif");
+        this.caveira_fundo = caveira.getImage();
+        //'YOU DIE' IMG
+        ImageIcon death = new ImageIcon("recursos\\sprites_fundos\\banner_fundo_morte.png");
+        this.banner_fundo_morte = death.getImage();
         // INICIALIZANDO O PERSONAGEM
         personagem = new Personagem();
         personagem.carregar();
@@ -138,11 +142,10 @@ public class Fase extends JPanel implements ActionListener {
 
         if (jogando == true) {
             graficos.drawImage(this.fundo, 0, 0, null);
-
+            
             if (personagem.getPontos() >= 200) {
-                graficos.drawImage(this.fundo_2, 0, 0, null);
+                graficos.drawImage(this.fundo_fase_2, 0, 0, null);
             }
-
             // CARREGANDO TIRO PERSONAGEM
             List<Tiro> tiros = personagem.getTiros();
             for (int i = 0; i < tiros.size(); i++) {
@@ -154,22 +157,19 @@ public class Fase extends JPanel implements ActionListener {
             // ESTA AQUI EMBAIXO PARA A IMG FICAR ACIMA DA IMAGEM DO TIROW
             graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(),
                     null);
-
             // CARREGANDO INIMIGO NAVE
             for (int i = 0; i < inimigo_naves.size(); i++) {
                 Inimigo_naves ini = inimigo_naves.get(i);
                 ini.carregar();
                 graficos.drawImage(ini.getImagem(), ini.getPosicaoEmX(), ini.getPosicaoEmY(), null);
             } // FIM NAVE
-
             // CARREGANDO INIMIGO METEORITO
             for (int i = 0; i < inimigo_meteorito.size(); i++) {
                 Inimigo_meteorito mete = inimigo_meteorito.get(i);
                 mete.carregar();
                 graficos.drawImage(mete.getImagem_meteoro(), mete.getPosicaoEmX(), mete.getPosicaoEmY(), null);
             } // FIM METEORITO
-
-            // Desenhar a imagem de explosão
+            //DESENHANDO A IMG DA EXPLOSÃO - NÃO ESTA FINALIZADO
             for (int i = 0; i < tiros.size(); i++) {
                 Tiro tiro = tiros.get(i);
                 if (!tiro.isVisibilidade()) {
@@ -177,7 +177,6 @@ public class Fase extends JPanel implements ActionListener {
                     graficos.drawImage(explosao, tiro.getPosicaoEmX(), tiro.getPosicaoEmY(), null);
                 }
             }
-
             // CARREGANDO INIMIGO BOSS
             // for (int i = 0; i < inimigo_boss.size(); i++) {
             // Inimigo_boss boss = inimigo_boss.get(i);
@@ -193,28 +192,28 @@ public class Fase extends JPanel implements ActionListener {
 
         if (jogando == false) {
             int larguraTela = 1300;
+            int posicaoEmx_Caveira = 600;
+            int posicaoEmY_Caveira = 15;
             String enter = "PRESSIONE 'ENTER' PARA RESETAR.";
             FontMetrics fm = g.getFontMetrics();
             // PEGA O TAMANHO DA STRING E FAZ O CALCULO PARA CENTRALIZAR
             int enterWidth = fm.stringWidth(enter);
             int x = (larguraTela - enterWidth) / 2;
-            int y = 105 + (alturaTela - fm.getHeight()) / 2;
-            // IMG FUNDO
-            g.drawImage(this.fundo, 0, 0, null);
-            if (personagem.getPontos() > 200) {
-                g.drawImage(this.fundo_2, 0, 0, null);
+            int y = ((alturaTela + 250) - fm.getHeight()) / 2;
+            // CARREGANDO OS FUNDOS
+            if (personagem.getPontos() < 200) {
+                graficos.drawImage(this.fundo, 0, 0, null);
+            }else{
+                graficos.drawImage(this.fundo_fase_2, 0, 0, null);
             }
-            // GIF DA CAVEIRA
-            ImageIcon caveira = new ImageIcon("recursos\\sprites_fundos\\caveira.gif");
-            this.caveira_fundo = caveira.getImage();
-            g.drawImage(this.caveira_fundo, this.POSICAO_CAVEIRA, 0, null);
-            // PONTOS
+            // CARREGANDO O GIF DA CAVEIRA
+            graficos.drawImage(this.caveira_fundo, posicaoEmx_Caveira, posicaoEmY_Caveira, null);
+            //PONTOS
             personagem.pontos(graficos);
-            // IMAGEM 'YOU DIED'
-            ImageIcon death = new ImageIcon("recursos\\sprites_fundos\\Morte.png");
-            this.fundo_morte = death.getImage();
-            g.drawImage(this.fundo_morte, 0, 0, null);
-            g.drawString(enter, (x - 103), y);
+            //BANNER FUNDO 'YOU DIE'
+            graficos.drawImage(this.banner_fundo_morte, 0, 0, null);
+            // STRING PARA RESETAR O JOGO
+            graficos.drawString(enter, (x - 100), y);
         }
         g.dispose();
     }
