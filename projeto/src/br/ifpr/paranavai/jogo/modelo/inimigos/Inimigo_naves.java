@@ -10,7 +10,7 @@ public class Inimigo_naves {
     private Image imagem_nave;
     private boolean visibilidade;
 
-     private static final int VELOCIDADE = 6; //Constante que não deve ser alterada
+     private static final int VELOCIDADE = 3; //Constante que não deve ser alterada
 
     public Inimigo_naves(int posicaoEmX, int posicaoEmY) {
         this.posicaoEmX = posicaoEmX;

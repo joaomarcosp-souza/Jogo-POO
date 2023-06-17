@@ -22,7 +22,7 @@ public class Personagem {
 
     private static final int POSICAO_INICIAL_EM_X = 100;
     private static final int POSICAO_INICIAL_EM_Y = 300;
-    private static final int VELOCIDADE = 10;
+    private static final int VELOCIDADE = 5;
 
     public Personagem() {
         this.posicaoEmX = POSICAO_INICIAL_EM_X;
@@ -53,7 +53,7 @@ public class Personagem {
     }
 
     // Classe para atualizar a posicao
-    public void atuzaliza() {
+    public void atualiza() {
         // Atualiza a posição do personagem
         posicaoEmX += deslocamentoEmX;
         posicaoEmY += deslocamentoEmY;

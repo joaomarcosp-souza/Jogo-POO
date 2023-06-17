@@ -7,7 +7,6 @@ import br.ifpr.paranavai.jogo.modelo.Fase;
 public class Principal extends JFrame {
 
     public Principal() {
-
         Fase fase = new Fase();
         super.add(fase);
 

@@ -2,13 +2,10 @@ package br.ifpr.paranavai.jogo.modelo.Telas;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-
 import java.awt.*;
-import java.awt.event.KeyEvent;
 
 import java.io.File;
 import java.io.IOException;
-
 
 public class Tela_Login extends JPanel {
     private Image imagem_fundo;
@@ -19,7 +16,7 @@ public class Tela_Login extends JPanel {
     private Font broken = null;
 
     public Tela_Login() {
-        ImageIcon carregando = new ImageIcon("recursos\\sprites_fundos\\starwars.jpg");
+        ImageIcon carregando = new ImageIcon("recursos\\sprites_fundos\\fundo_menu.jpg");
         this.imagem_fundo = carregando.getImage();
         this.alturaImagem = this.imagem_fundo.getWidth(null);
         this.larguraImagem = this.imagem_fundo.getHeight(null);
@@ -43,6 +40,7 @@ public class Tela_Login extends JPanel {
 
         titulo(graficos);
         menu(graficos);
+        
         g.dispose();
     }
 
@@ -127,26 +125,6 @@ public class Tela_Login extends JPanel {
             m.drawString(">", x - cursorWidth, y);
         } //
         m.dispose();
-    }
-
-    public void tecla_menu(KeyEvent teclado) {
-        int tecla = teclado.getKeyCode();
-
-        if (tecla == KeyEvent.VK_W) {
-            cursor++;
-            if (cursor < 0) {
-                cursor = 2;
-            }
-            System.out.println("PTESTES");
-        }
-        if (tecla == KeyEvent.VK_S) {
-
-            cursor--;
-            if (cursor > 2) {
-                cursor = 0;
-            }
-            System.out.println("AAAAAAAAA");
-        }
     }
 
     public Image getImagem_fundo() {
