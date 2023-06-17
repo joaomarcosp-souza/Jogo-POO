@@ -23,7 +23,6 @@ import javax.swing.Timer;
 import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_naves;
 import br.ifpr.paranavai.jogo.modelo.Jogador.Personagem;
 import br.ifpr.paranavai.jogo.modelo.Jogador.Tiro;
-import br.ifpr.paranavai.jogo.modelo.Telas.Tela_Login;
 import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_boss;
 import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_meteorito;
 
@@ -46,13 +45,14 @@ public class Fase extends JPanel implements ActionListener {
     private List<Inimigo_boss> inimigo_boss;
     private int larguraTela = 1200; // TAMANHO DA TELA
     private int alturaTela = 700;
-    private boolean jogando;
 
     private int cursor = 0;
     private Font pixel = null;
     private Font broken = null;
 
+    private boolean jogando;
     private boolean visibilidade_fase;
+    private boolean visibilidade_tela_morte;
 
     public Fase() {
         setFocusable(true);
@@ -99,8 +99,9 @@ public class Fase extends JPanel implements ActionListener {
         inicializa_Nave_Inimiga(); // NAVES
         inicializa_Metorito_Inimigo(); // METEORITOS
         inicializa_boss(); // BOSS(TESTE)
-        visibilidade_fase = false;
-        jogando = true;
+        visibilidade_fase = true;
+        visibilidade_tela_morte = false;
+        jogando = false;
 
     }
 
@@ -166,96 +167,88 @@ public class Fase extends JPanel implements ActionListener {
         Graphics2D graficos = (Graphics2D) g;
 
         if (visibilidade_fase == true) {
-            if (jogando == true) {
-                graficos.drawImage(this.fundo, 0, 0, null);
-
-                if (personagem.getPontos() >= 200) {
-                    graficos.drawImage(this.fundo_fase_2, 0, 0, null);
-                }
-                // CARREGANDO TIRO PERSONAGEM
-                List<Tiro> tiros = personagem.getTiros();
-                for (int i = 0; i < tiros.size(); i++) {
-                    Tiro tiro = tiros.get(i);
-                    tiro.carregar();
-                    graficos.drawImage(tiro.getImagem(), tiro.getPosicaoEmX(), tiro.getPosicaoEmY(), null);
-                }
-                // CARREGANDO A IMAGEM DO PERSNAGEM
-                // ESTA AQUI EMBAIXO PARA A IMG FICAR ACIMA DA IMAGEM DO TIROW
-                graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(),
-                        null);
-                // CARREGANDO INIMIGO NAVE
-                if (visibilidade_fase == true) {
-                    if (jogando == true) {
-                        for (int i = 0; i < inimigo_naves.size(); i++) {
-                            Inimigo_naves ini = inimigo_naves.get(i);
-                            ini.carregar();
-                            graficos.drawImage(ini.getImagem(), ini.getPosicaoEmX(), ini.getPosicaoEmY(), null);
-                        } // FIM NAVE
-                          // CARREGANDO INIMIGO METEORITO
-
-                        for (int i = 0; i < inimigo_meteorito.size(); i++) {
-                            Inimigo_meteorito mete = inimigo_meteorito.get(i);
-                            mete.carregar();
-                            graficos.drawImage(mete.getImagem_meteoro(), mete.getPosicaoEmX(), mete.getPosicaoEmY(),
-                                    null);
-                        } // FIM METEORITO
-                    } else {
-                        
-                    }
-                } else {
-
-                }
-                // DESENHANDO A IMG DA EXPLOSÃO - NÃO ESTA FINALIZADO
-                for (int i = 0; i < tiros.size(); i++) {
-                    Tiro tiro = tiros.get(i);
-                    if (!tiro.isVisibilidade()) {
-                        // Exibir a explosão na posição do tiro
-                        graficos.drawImage(explosao, tiro.getPosicaoEmX(), tiro.getPosicaoEmY(), null);
-                    }
-                }
-                // CARREGANDO INIMIGO BOSS
-                // for (int i = 0; i < inimigo_boss.size(); i++) {
-                // Inimigo_boss boss = inimigo_boss.get(i);
-                // boss.carregar();
-                // graficos.drawImage(boss.getImagem_boss(), boss.getPosicaoEmX(),
-                // boss.getPosicaoEmY(), null);
-                // } // FIM BOSS
-
-                // CARREGANDO OS METODOS DAS INFORMAÇÃO DO JOGO(VIDA E PONTUAÇÃO)
-                personagem.pontos(graficos);
-                vidas(graficos);
-            }
-
-            if (jogando == false) {
-                int larguraTela = 1300;
-                int posicaoEmx_Caveira = 600;
-                int posicaoEmY_Caveira = 15;
-                String enter = "PRESSIONE 'ENTER' PARA RESETAR.";
-                FontMetrics fm = g.getFontMetrics();
-                // PEGA O TAMANHO DA STRING E FAZ O CALCULO PARA CENTRALIZAR
-                int enterWidth = fm.stringWidth(enter);
-                int x = (larguraTela - enterWidth) / 2;
-                int y = ((alturaTela + 250) - fm.getHeight()) / 2;
-                // CARREGANDO OS FUNDOS
-                if (personagem.getPontos() < 200) {
-                    graficos.drawImage(this.fundo, 0, 0, null);
-                } else {
-                    graficos.drawImage(this.fundo_fase_2, 0, 0, null);
-                }
-                // CARREGANDO O GIF DA CAVEIRA
-                graficos.drawImage(this.caveira_fundo, posicaoEmx_Caveira, posicaoEmY_Caveira, null);
-                // PONTOS
-                personagem.pontos(graficos);
-                // BANNER FUNDO 'YOU DIE'
-                graficos.drawImage(this.banner_fundo_morte, 0, 0, null);
-                // STRING PARA RESETAR O JOGO
-                graficos.drawString(enter, (x - 100), y);
-            }
-        } else {
             graficos.drawImage(this.imagem_fundo, 0, 0, null);
-
             titulo(graficos);
             menu(graficos);
+            
+        } else {
+            graficos.drawImage(this.fundo, 0, 0, null);
+
+            if (personagem.getPontos() >= 200) {
+                graficos.drawImage(this.fundo_fase_2, 0, 0, null);
+            }
+            // CARREGANDO TIRO PERSONAGEM
+            List<Tiro> tiros = personagem.getTiros();
+            for (int i = 0; i < tiros.size(); i++) {
+                Tiro tiro = tiros.get(i);
+                tiro.carregar();
+                graficos.drawImage(tiro.getImagem(), tiro.getPosicaoEmX(), tiro.getPosicaoEmY(), null);
+            }
+            // CARREGANDO A IMAGEM DO PERSNAGEM
+            // ESTA AQUI EMBAIXO PARA A IMG FICAR ACIMA DA IMAGEM DO TIROW
+            graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(),
+                    null);
+            // CARREGANDO INIMIGO NAVE
+            for (int i = 0; i < inimigo_naves.size(); i++) {
+                Inimigo_naves ini = inimigo_naves.get(i);
+                ini.carregar();
+                graficos.drawImage(ini.getImagem(), ini.getPosicaoEmX(), ini.getPosicaoEmY(), null);
+            } // FIM NAVE
+              // CARREGANDO INIMIGO METEORITO
+
+            for (int i = 0; i < inimigo_meteorito.size(); i++) {
+                Inimigo_meteorito mete = inimigo_meteorito.get(i);
+                mete.carregar();
+                graficos.drawImage(mete.getImagem_meteoro(), mete.getPosicaoEmX(), mete.getPosicaoEmY(),
+                        null);
+            } // FIM METEORITO
+
+            // DESENHANDO A IMG DA EXPLOSÃO - NÃO ESTA FINALIZADO
+            for (int i = 0; i < tiros.size(); i++) {
+                Tiro tiro = tiros.get(i);
+                if (!tiro.isVisibilidade()) {
+                    // Exibir a explosão na posição do tiro
+                    graficos.drawImage(explosao, tiro.getPosicaoEmX(), tiro.getPosicaoEmY(), null);
+                }
+            }
+            // CARREGANDO INIMIGO BOSS
+            // for (int i = 0; i < inimigo_boss.size(); i++) {
+            // Inimigo_boss boss = inimigo_boss.get(i);
+            // boss.carregar();
+            // graficos.drawImage(boss.getImagem_boss(), boss.getPosicaoEmX(),
+            // boss.getPosicaoEmY(), null);
+            // } // FIM BOSS
+
+            // CARREGANDO OS METODOS DAS INFORMAÇÃO DO JOGO(VIDA E PONTUAÇÃO)
+            personagem.pontos(graficos);
+            vidas(graficos);
+        }
+        // CARREGANDO A TELA DE MORTE CASO O JOGADOR MORRA(OBVIO)
+        if (visibilidade_tela_morte == true) {
+            int larguraTela = 1300;
+            int posicaoEmx_Caveira = 600;
+            int posicaoEmY_Caveira = 15;
+            String enter = "PRESSIONE 'ENTER' PARA RESETAR.";
+            FontMetrics fm = g.getFontMetrics();
+            // PEGA O TAMANHO DA STRING E FAZ O CALCULO PARA CENTRALIZAR
+            int enterWidth = fm.stringWidth(enter);
+            int x = (larguraTela - enterWidth) / 2;
+            int y = ((alturaTela + 250) - fm.getHeight()) / 2;
+            // CARREGANDO OS FUNDOS
+            if (personagem.getPontos() < 200) {
+                graficos.drawImage(this.fundo, 0, 0, null);
+            } else {
+                graficos.drawImage(this.fundo_fase_2, 0, 0, null);
+            }
+            // CARREGANDO O GIF DA CAVEIRA
+            graficos.drawImage(this.caveira_fundo, posicaoEmx_Caveira, posicaoEmY_Caveira, null);
+            // PONTOS
+            personagem.pontos(graficos);
+            // BANNER FUNDO 'YOU DIE'
+            graficos.drawImage(this.banner_fundo_morte, 0, 0, null);
+            // STRING PARA RESETAR O JOGO
+            graficos.drawString(enter, (x - 100), y);
+
         }
 
         g.dispose();
@@ -361,6 +354,7 @@ public class Fase extends JPanel implements ActionListener {
                 temp_nave.setVisibilidade(false);
                 if (vidas == 1) {
                     jogando = false;
+                    visibilidade_tela_morte = true;
                 } else {
                     vidas--;
                 }
@@ -375,6 +369,7 @@ public class Fase extends JPanel implements ActionListener {
                 temp_mete.setVisibilidade(false);
                 if (vidas == 1) {
                     jogando = false;
+                    visibilidade_tela_morte = true;
                 } else {
                     vidas--;
                 }
@@ -530,20 +525,20 @@ public class Fase extends JPanel implements ActionListener {
 
         if (tecla == KeyEvent.VK_ENTER) {
             if (cursor == 0) {
-                if (jogando == true && visibilidade_fase == true) {
+                if (jogando == true && visibilidade_fase == false) {
                     // BRANCO MSM
+                } else {
+                    System.out.println("Teste - opc 0" + tecla);
                 }
-                System.out.println("Teste - opc 0" + tecla);
             } else if (cursor == 1) {
-                if (jogando == true) {
-                    // BRANCO MSM
-                }
-                visibilidade_fase = true;
+                jogando = true;
+                visibilidade_fase = false;
             } else if (cursor == 2) {
-                if (jogando == true && visibilidade_fase == true) {
+                if (jogando == true && visibilidade_fase == false) {
                     // BRANCO MSM
+                } else {
+                    System.out.println("Teste - opc 2" + tecla);
                 }
-                System.out.println("Teste - opc 2" + tecla);
             }
         }
 
@@ -557,6 +552,7 @@ public class Fase extends JPanel implements ActionListener {
             if (tecla == KeyEvent.VK_ENTER) {
                 vidas = 3;
                 jogando = true;
+                visibilidade_tela_morte = false;
                 personagem.setPontos(0);
             }
         }
