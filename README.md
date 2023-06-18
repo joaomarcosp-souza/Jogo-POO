@@ -2,7 +2,7 @@
 
 Bem-vindo ao projeto Star Wars: Invader desenvolvido para as aulas de Programação Orientada a Objetos do curso de Engenharia de Software!
 
-![Menu Jogo](https://snipboard.io/qXeaI6.jpg)
+![Menu Jogo](https://snipboard.io/go5TFz.jpg)
 ![Em Jogo](https://snipboard.io/qXeaI6.jpg)
 
 ## Descrição do Projeto :book:
