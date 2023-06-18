@@ -13,7 +13,7 @@ O Space Invaders é um jogo de tiro em que o jogador controla uma espaçonave e 
 
 ## Recursos e Funcionalidades
 
-- Gráficos e sons retrô para recriar a atmosfera clássica do jogo original (<font color="red">Em Implementação</font>).
+- Gráficos e sons retrô para recriar a atmosfera clássica do jogo original (<span style="color: rgb(255, 0, 0);">Em Implementação</span>).
 - Controles intuitivos para movimentar a espaçonave e atirar nos alienígenas (<font color="green">Implementado</font>).
 - Diferentes níveis de dificuldade e modos para desafiar os jogadores (<font color="red">Em Implementação</font>).
 - Contagem de pontos para acompanhar o desempenho do jogador (<font color="green">Implementado</font>).
