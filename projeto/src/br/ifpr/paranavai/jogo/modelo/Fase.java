@@ -23,7 +23,7 @@ import javax.swing.Timer;
 import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_naves;
 import br.ifpr.paranavai.jogo.modelo.Jogador.Personagem;
 import br.ifpr.paranavai.jogo.modelo.Jogador.Tiro;
-import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_boss;
+import br.ifpr.paranavai.jogo.modelo.Telas.Tela_Login;
 import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_meteorito;
 
 import java.awt.Font;
@@ -33,16 +33,15 @@ import java.awt.FontMetrics;
 public class Fase extends JPanel implements ActionListener {
     private Image fundo;
     private Image fundo_fase_2;
-    private Image explosao;
     private Image banner_fundo_morte;
     private Image caveira_fundo;
-    private Image imagem_fundo;
 
     private Personagem personagem;
+    private Tela_Login tela_menu;
+
     private int vidas = 3;
     private List<Inimigo_naves> inimigo_naves;
     private List<Inimigo_meteorito> inimigo_meteorito;
-    private List<Inimigo_boss> inimigo_boss;
     private int larguraTela = 1200; // TAMANHO DA TELA
     private int alturaTela = 700;
 
@@ -51,8 +50,9 @@ public class Fase extends JPanel implements ActionListener {
     private Font broken = null;
 
     private boolean jogando;
-    private boolean visibilidade_fase;
     private boolean visibilidade_tela_morte;
+
+    private Image explosao;
 
     public Fase() {
         setFocusable(true);
@@ -72,12 +72,12 @@ public class Fase extends JPanel implements ActionListener {
         // 'YOU DIE' IMG
         ImageIcon death = new ImageIcon("recursos\\sprites_fundos\\banner_fundo_morte.png");
         this.banner_fundo_morte = death.getImage();
-
-        ImageIcon carregando = new ImageIcon("recursos\\sprites_fundos\\fundo_menu.jpg");
-        this.imagem_fundo = carregando.getImage();
         // INICIALIZANDO O PERSONAGEM
         personagem = new Personagem();
         personagem.carregar();
+
+        tela_menu = new Tela_Login();
+        tela_menu.carregar();
         // INICIALIZANDO O METODO DE LEITURA DO TECLADO
         addKeyListener(new TecladoAdapter());
 
@@ -95,11 +95,11 @@ public class Fase extends JPanel implements ActionListener {
         Timer timer = new Timer(5, this);
         timer.start(); // START
 
+        // Inicializar o temporizador para a explosão
+
         // INICIALIZANDO MÉTODOS INIMIGOS
         inicializa_Nave_Inimiga(); // NAVES
         inicializa_Metorito_Inimigo(); // METEORITOS
-        inicializa_boss(); // BOSS(TESTE)
-        visibilidade_fase = true;
         visibilidade_tela_morte = false;
         jogando = false;
 
@@ -143,37 +143,18 @@ public class Fase extends JPanel implements ActionListener {
         timer_Meteorito.start();
     }// FIM MÉTODO METEORITO
 
-    // INICIALIZANDO A POSIÇÃO DO BOSS ALEATORIAMENTE
-    public void inicializa_boss() {
-        inimigo_boss = new ArrayList<Inimigo_boss>();
-        int alturaInimigo = 30;
-
-        // TIMER PARA SPAWNAR O BOSS (TESTE)
-        Timer timer_inimigo_boss = new Timer(8000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int posicaoEmX = larguraTela;
-                int posicaoEmY = (int) (Math.random() * (500 - alturaInimigo));
-                inimigo_boss.add(new Inimigo_boss(posicaoEmX, posicaoEmY));
-            }
-        });
-        timer_inimigo_boss.setRepeats(true); // SETAR PARA REPETIR OU NÃO
-        timer_inimigo_boss.start(); // STARTANDO
-    }// FIM MÉTODO BOSS
-
     public void paint(Graphics g) {
         // CHAMA O MÉTODO PAINT DA SUPERCLASSE PARA LIMPAR A TELA ANTES DE A REDESENHAR
         super.paint(g);
         Graphics2D graficos = (Graphics2D) g;
 
-        if (visibilidade_fase == true) {
-            graficos.drawImage(this.imagem_fundo, 0, 0, null);
-            titulo(graficos);
-            menu(graficos);
-            
+        if (tela_menu.isVisibilidade_menu() == true) {
+            tela_menu.titulo(graficos);
+            tela_menu.menu(graficos);
+            //
         } else {
+            //
             graficos.drawImage(this.fundo, 0, 0, null);
-
             if (personagem.getPontos() >= 200) {
                 graficos.drawImage(this.fundo_fase_2, 0, 0, null);
             }
@@ -183,6 +164,9 @@ public class Fase extends JPanel implements ActionListener {
                 Tiro tiro = tiros.get(i);
                 tiro.carregar();
                 graficos.drawImage(tiro.getImagem(), tiro.getPosicaoEmX(), tiro.getPosicaoEmY(), null);
+
+                // Desenhar a imagem de explosão
+
             }
             // CARREGANDO A IMAGEM DO PERSNAGEM
             // ESTA AQUI EMBAIXO PARA A IMG FICAR ACIMA DA IMAGEM DO TIROW
@@ -203,21 +187,13 @@ public class Fase extends JPanel implements ActionListener {
                         null);
             } // FIM METEORITO
 
-            // DESENHANDO A IMG DA EXPLOSÃO - NÃO ESTA FINALIZADO
             for (int i = 0; i < tiros.size(); i++) {
                 Tiro tiro = tiros.get(i);
                 if (!tiro.isVisibilidade()) {
-                    // Exibir a explosão na posição do tiro
                     graficos.drawImage(explosao, tiro.getPosicaoEmX(), tiro.getPosicaoEmY(), null);
+
                 }
             }
-            // CARREGANDO INIMIGO BOSS
-            // for (int i = 0; i < inimigo_boss.size(); i++) {
-            // Inimigo_boss boss = inimigo_boss.get(i);
-            // boss.carregar();
-            // graficos.drawImage(boss.getImagem_boss(), boss.getPosicaoEmX(),
-            // boss.getPosicaoEmY(), null);
-            // } // FIM BOSS
 
             // CARREGANDO OS METODOS DAS INFORMAÇÃO DO JOGO(VIDA E PONTUAÇÃO)
             personagem.pontos(graficos);
@@ -296,17 +272,6 @@ public class Fase extends JPanel implements ActionListener {
             }
         } // FIM
 
-        // METODO DE ATUALIZAÇÃO DO BOSS
-        Iterator<Inimigo_boss> iterator_boss = inimigo_boss.iterator();
-        while (iterator_boss.hasNext()) {
-            Inimigo_boss boss = iterator_boss.next();
-            if (boss.isVisibilidade()) {
-                boss.atualizar();
-            } else {
-                iterator_boss.remove();
-            }
-        }
-
         checarColisoes();
         repaint();
     }
@@ -350,14 +315,15 @@ public class Fase extends JPanel implements ActionListener {
             Inimigo_naves temp_nave = inimigo_naves.get(i);
             Forma_Inimigo_Nave = temp_nave.getBounds();
             if (forma_Nave_Personagem.getBounds().intersects(Forma_Inimigo_Nave.getBounds())) {
-                personagem.setVisibilidade(false);
-                temp_nave.setVisibilidade(false);
                 if (vidas == 1) {
                     jogando = false;
                     visibilidade_tela_morte = true;
                 } else {
+
                     vidas--;
                 }
+                personagem.setVisibilidade(false);
+                temp_nave.setVisibilidade(false);
             }
         }
         // COLISÃO DA NAVE DO PERSOANGEM COM OS METEORITOS
@@ -365,14 +331,14 @@ public class Fase extends JPanel implements ActionListener {
             Inimigo_meteorito temp_mete = inimigo_meteorito.get(k);
             Forma_Inimig_Meteorito = temp_mete.getBounds();
             if (forma_Nave_Personagem.getBounds().intersects(Forma_Inimig_Meteorito.getBounds())) {
-                personagem.setVisibilidade(false);
-                temp_mete.setVisibilidade(false);
                 if (vidas == 1) {
                     jogando = false;
                     visibilidade_tela_morte = true;
                 } else {
                     vidas--;
                 }
+                temp_mete.setVisibilidade(false);
+                personagem.setVisibilidade(false);
             }
         }
         // COLISÃO DOS TIROS COM A NAVE INIMIGA
@@ -391,16 +357,15 @@ public class Fase extends JPanel implements ActionListener {
                 for (int b = 0; b < inimigo_meteorito.size(); b++) {
                     Inimigo_meteorito temp_mete = inimigo_meteorito.get(b);
                     Forma_Inimig_Meteorito = temp_mete.getBounds();
-                    if (forma_Tiro.getBounds().intersects(Forma_Inimigo_Nave.getBounds())) {
+                    if (forma_Tiro.intersects(Forma_Inimigo_Nave)) {
                         temp_nave.setVisibilidade(false);
                         temp_Tiro.setVisibilidade(false);
                         colisao_NAVE = true; // COLISÃO DEU CERTO
                         break; // SAI DO LOOP INTERNO
                     }
-                    if (forma_Tiro.getBounds().intersects(Forma_Inimig_Meteorito.getBounds())) {
+                    if (forma_Tiro.intersects(Forma_Inimig_Meteorito)) {
                         temp_mete.setVisibilidade(false);
                         temp_Tiro.setVisibilidade(false);
-                        repaint();
                         colisao_METEORITO = true;
                         break;
                     }
@@ -423,125 +388,26 @@ public class Fase extends JPanel implements ActionListener {
         }
     }
 
-    public void titulo(Graphics t) {
-        String titulo = "STAR WARS";
-        String subtitulo = "INVADERS";
-        Font fonte = pixel;
-        fonte = fonte.deriveFont(Font.BOLD, 85);
-
-        t.setColor(new Color(255, 209, 70)); // COR DO TITULO AMARELO
-        t.setFont(fonte);
-        // CRENTALIZA VERTICALMENTE
-        FontMetrics fm = t.getFontMetrics();
-
-        int tituloWidth = fm.stringWidth(titulo); // PEGA O TAMANHO DA STRING
-        int subtituloWidth = fm.stringWidth(subtitulo); // PEGA O TAMANHO DO SUBTITULO
-        int x = (getWidth() - tituloWidth) / 2;
-        int y = 100 + (getHeight() - fm.getHeight()) / 2;
-
-        t.drawString(titulo, (x + 5), y - 280); // POSIÇÃO DO TITULO - AMARELO
-
-        // SUBTITULO COR AMARELO
-        t.setColor(Color.WHITE);
-        t.drawString(subtitulo, x + (tituloWidth - subtituloWidth) / 2, y - 200);
-        // DESENHA O SUBTÍTULO NA TELA - AMARELO
-        t.setColor(new Color(255, 209, 70));
-        // t.setColor(new Color(255, 209, 70));
-        t.drawString(subtitulo, ((x + 5) + (tituloWidth - subtituloWidth) / 2), y - 200);
-
-        t.setColor(Color.WHITE); // DEFINE A COR PRINCIPAL DO TÍTULO - BRANCO
-        t.drawString(titulo, x, y - 280); // POSIÇÃO DO TÍTULO PRINCIPAL - COR BRANCA
-    }
-
-    public void menu(Graphics m) {
-        String jogar = "MODO FASES";
-        String historico = "MODO INFINITO";
-        String sair = "HISTORICO";
-
-        Font estilo_menu = broken.deriveFont(Font.BOLD, 50);
-        m.setFont(estilo_menu);
-        FontMetrics fm = m.getFontMetrics();
-
-        int stringWidth = fm.stringWidth(jogar);
-        int x = (getWidth() - stringWidth) / 2;
-        int y = 450;
-
-        m.setColor(Color.white);
-        stringWidth = fm.stringWidth(jogar);
-        x = (getWidth() - stringWidth) / 2;
-        y = 450;
-        m.drawString(jogar, x, y);
-        //
-        if (cursor == 0) {
-            // Desenha o cursor na frente da string
-            int cursorWidth = fm.stringWidth(">");
-            m.drawString(">", x - cursorWidth, y);
-        }
-        //
-
-        m.setColor(Color.white);
-        stringWidth = fm.stringWidth(historico);
-        x = (getWidth() - stringWidth) / 2;
-        y = 505;
-        m.drawString(historico, x, y);
-        //
-        if (cursor == 1) {
-            // Desenha o cursor na frente da string
-            int cursorWidth = fm.stringWidth(">");
-            m.drawString(">", x - cursorWidth, y);
-        }
-        //
-
-        m.setColor(Color.white);
-        stringWidth = fm.stringWidth(sair);
-        x = (getWidth() - stringWidth) / 2;
-        y = 555;
-        m.drawString(sair, x, y);
-        //
-        if (cursor == 2) {
-            // Desenha o cursor na frente da string
-            int cursorWidth = fm.stringWidth(">");
-            m.drawString(">", x - cursorWidth, y);
-        } //
-        m.dispose();
-    }
-
-    public void tecla_menu(KeyEvent teclado) {
-        int tecla = teclado.getKeyCode();
-
-        if (tecla == KeyEvent.VK_W) {
-            cursor--;
-            if (cursor < 0) {
-                cursor = 2;
-            }
-
-        }
-        if (tecla == KeyEvent.VK_S) {
-            cursor++;
-            if (cursor > 2) {
-                cursor = 0;
-            }
-        }
-
+    public void config_menu(KeyEvent e) {
+        int tecla = e.getKeyCode();
         if (tecla == KeyEvent.VK_ENTER) {
-            if (cursor == 0) {
-                if (jogando == true && visibilidade_fase == false) {
+            if (tela_menu.getCursor() == 0) {
+                if (jogando == true && tela_menu.isVisibilidade_menu() == false) {
                     // BRANCO MSM
                 } else {
                     System.out.println("Teste - opc 0" + tecla);
                 }
-            } else if (cursor == 1) {
+            } else if (tela_menu.getCursor() == 1) {
                 jogando = true;
-                visibilidade_fase = false;
-            } else if (cursor == 2) {
-                if (jogando == true && visibilidade_fase == false) {
+                tela_menu.setVisibilidade_menu(false);
+            } else if (tela_menu.getCursor() == 2) {
+                if (jogando == true && tela_menu.isVisibilidade_menu() == false) {
                     // BRANCO MSM
                 } else {
                     System.out.println("Teste - opc 2" + tecla);
                 }
             }
         }
-
     }
 
     public void resetar(KeyEvent e) {
@@ -556,7 +422,6 @@ public class Fase extends JPanel implements ActionListener {
                 personagem.setPontos(0);
             }
         }
-
     }
 
     // CHAMANDO A LEITURA DOS TECLADOS
@@ -565,7 +430,8 @@ public class Fase extends JPanel implements ActionListener {
         public void keyPressed(KeyEvent e) {
             personagem.tecla_Precionada(e);
             resetar(e);
-            tecla_menu(e);
+            tela_menu.tecla_menu(e);
+            config_menu(e);
         }
 
         @Override
