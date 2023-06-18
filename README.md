@@ -13,12 +13,14 @@ O Space Invaders é um jogo de tiro em que o jogador controla uma espaçonave e 
 
 ## Recursos e Funcionalidades
 
++ Implementado
+- Em Implementação
+
 - Gráficos e sons retrô para recriar a atmosfera clássica do jogo original (- Em Implementação).
 + Controles intuitivos para movimentar a espaçonave e atirar nos alienígenas (+ Implementado).
 - Diferentes níveis de dificuldade e modos para desafiar os jogadores (- Em Implementação).
 + Contagem de pontos para acompanhar o desempenho do jogador (+ Implementado).
 + Vidas e sistema de game over para aumentar a tensão e a emoção do jogo (+ Implementado - Fase de Teste).
-
 
 ## Como Executar o Jogo
 
@@ -26,8 +28,4 @@ O Space Invaders é um jogo de tiro em que o jogador controla uma espaçonave e 
 2. Certifique-se de ter o Java Development Kit (JDK) instalado em sua máquina.
 3. Abra o projeto em sua IDE de preferência (recomendamos o Visua Studio Code ou IntelliJ IDEA).
 4. Compile e execute o arquivo principal `Principal.java`.
-
-## Licença
-
-Divirta-se jogando Space Invaders e aproveite o aprendizado de Programação Orientada a Objetos!
-
+##
