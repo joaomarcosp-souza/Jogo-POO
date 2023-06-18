@@ -10,8 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
@@ -27,7 +25,6 @@ import br.ifpr.paranavai.jogo.modelo.Telas.Tela_Login;
 import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_meteorito;
 
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.FontMetrics;
 
 public class Fase extends JPanel implements ActionListener {
@@ -44,10 +41,6 @@ public class Fase extends JPanel implements ActionListener {
     private List<Inimigo_meteorito> inimigo_meteorito;
     private int larguraTela = 1200; // TAMANHO DA TELA
     private int alturaTela = 700;
-
-    private int cursor = 0;
-    private Font pixel = null;
-    private Font broken = null;
 
     private boolean jogando;
     private boolean visibilidade_tela_morte;
@@ -80,16 +73,6 @@ public class Fase extends JPanel implements ActionListener {
         tela_menu.carregar();
         // INICIALIZANDO O METODO DE LEITURA DO TECLADO
         addKeyListener(new TecladoAdapter());
-
-        try {
-            // CARREGA A FONTE A PARTIR DO ARQUIVO
-            pixel = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\pixel_fonte.ttf"));
-            broken = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\pixel_fonte.ttf"));
-            // DEFINE O TAMANHO DA FONTE DESEJADO
-
-        } catch (IOException | FontFormatException e) {
-            e.printStackTrace();
-        }
 
         // ATUALIZANDO O PERSONAGEM E REDENSENHADO NA TELA EM INTERVALOS REGULARES.
         Timer timer = new Timer(5, this);
