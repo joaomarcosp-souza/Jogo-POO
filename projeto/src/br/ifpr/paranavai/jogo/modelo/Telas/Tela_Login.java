@@ -124,14 +124,14 @@ public class Tela_Login {
     public void tecla_menu(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
 
-        if (tecla == KeyEvent.VK_W) {
+        if (tecla == KeyEvent.VK_UP) {
             cursor--;
             if (cursor < 0) {
                 cursor = 2;
             }
 
         }
-        if (tecla == KeyEvent.VK_S) {
+        if (tecla == KeyEvent.VK_DOWN) {
             cursor++;
             if (cursor > 2) {
                 cursor = 0;

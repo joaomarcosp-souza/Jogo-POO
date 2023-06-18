@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,9 @@ public class Personagem {
     private boolean visibilidade;
     private Image imagem_vida;
     private Font pixel = null;
+
+    private int VIDAS = 3;
+    private int largureTela = 1200;
 
     private static final int POSICAO_INICIAL_EM_X = 100;
     private static final int POSICAO_INICIAL_EM_Y = 300;
@@ -82,7 +86,34 @@ public class Personagem {
         // DESENHA A STRING COM A POSIÇÃO (x,y)
         pont.drawString(pont_string, 10, 20);
     }
-    
+
+    // MÉTODO DA VIDA DO JOGADOR
+    public void vidas(Graphics life) {
+        JPanel panel = new JPanel();
+        // DEFINE A STRING DE EXIBIÇÃO
+        String vida = "Vidas";
+        // CRIA UM ESTILO DE FONTE
+        Font estilo = new Font("Consolas", Font.BOLD, 10);
+        // CRIA A MÉTRICA DA FONTE
+        FontMetrics metrica = panel.getFontMetrics(estilo);
+        // OBTÉM O TAMANHO DA STRING NA TELA
+        int width = metrica.stringWidth(vida);
+        // CALCUPA A DISTÂNCIA DA BORDA PARA POSICIONAR A STRING
+        int distancia = (15 * VIDAS) + (5 * VIDAS) + 100 + width;
+        // PARA CADA VIDA DO JOGADOR, DESENHA UMA IMAGEM DA VIDA,
+        // ALTERANDO A POSIÇÃO COM BASE NOS CALCULOS PARA DEFINIR
+        // A POSIÇÃO DE CADA UMA EM (x,y)
+        for (int i = 0; i < VIDAS; i++) {
+            life.drawImage(imagem_vida, (largureTela + 30) - width, 10, null);
+            width += alturaImagem_Vida + 5;
+        }
+        // SETA A COR DA FONTE
+        life.setColor(Color.WHITE);
+        // SETA O ESTILO DE FONTE
+        life.setFont(estilo);
+        // DESENHA A STRING COM A POSIÇÃO (x,y)
+        life.drawString(vida, larguraImagem_Vida - distancia, 10);
+    }
 
     // COMEÇO DO METODO MOVIMENTO
     public void tecla_Precionada(KeyEvent teclado) {
@@ -90,7 +121,6 @@ public class Personagem {
 
         // TECLA TIRO
         if (tecla == KeyEvent.VK_SPACE) {
-            // dispararTiro = true;
             tiro_simples();
         }
 
@@ -130,85 +160,20 @@ public class Personagem {
         }
     }
 
-    // metodos gets e sets
-    public int getPosicaoEmX() {
-        return posicaoEmX;
+    public int getPontos() {
+        return pontos;
     }
 
-    public void setPosicaoEmX(int posicaoEmX) {
-        this.posicaoEmX = posicaoEmX;
+    public void setPontos(int pontos) {
+        this.pontos = pontos;
     }
 
-    public int getPosicaoEmY() {
-        return posicaoEmY;
+    public int getVIDAS() {
+        return VIDAS;
     }
 
-    public void setPosicaoEmY(int posicaoEmY) {
-        this.posicaoEmY = posicaoEmY;
-    }
-
-    public int getDeslocamentoEmX() {
-        return deslocamentoEmX;
-    }
-
-    public void setDeslocamentoEmX(int deslocamentoEmX) {
-        this.deslocamentoEmX = deslocamentoEmX;
-    }
-
-    public int getDeslocamentoEmY() {
-        return deslocamentoEmY;
-    }
-
-    public void setDeslocamentoEmY(int deslocamentoEmY) {
-        this.deslocamentoEmY = deslocamentoEmY;
-    }
-
-    public Image getImagem() {
-        return imagem;
-    }
-
-    public void setImagem(Image imagem) {
-        this.imagem = imagem;
-    }
-
-    public int getLarguraImagem() {
-        return larguraImagem;
-    }
-
-    public void setLarguraImagem(int larguraImagem) {
-        this.larguraImagem = larguraImagem;
-    }
-
-    public int getAlturaImagem() {
-        return alturaImagem;
-    }
-
-    public void setAlturaImagem(int alturaImagem) {
-        this.alturaImagem = alturaImagem;
-    }
-
-    public Image getImagem_vida() {
-        return imagem_vida;
-    }
-
-    public void setImagem_vida(Image imagem_vida) {
-        this.imagem_vida = imagem_vida;
-    }
-
-    public int getLarguraImagem_Vida() {
-        return larguraImagem_Vida;
-    }
-
-    public void setLarguraImagem_Vida(int larguraImagem_Vida) {
-        this.larguraImagem_Vida = larguraImagem_Vida;
-    }
-
-    public int getAlturaImagem_Vida() {
-        return alturaImagem_Vida;
-    }
-
-    public void setAlturaImagem_Vida(int alturaImagem_Vida) {
-        this.alturaImagem_Vida = alturaImagem_Vida;
+    public void setVIDAS(int vidas) {
+        this.VIDAS = vidas;
     }
 
     public List<Tiro> getTiros() {
@@ -227,20 +192,30 @@ public class Personagem {
         this.visibilidade = visibilidade;
     }
 
-    public Font getPixel() {
-        return pixel;
+    public int getPosicaoEmX() {
+        return posicaoEmX;
     }
 
-    public void setPixel(Font pixel) {
-        this.pixel = pixel;
+    public void setPosicaoEmX(int posicaoEmX) {
+        this.posicaoEmX = posicaoEmX;
     }
 
-    public int getPontos() {
-        return pontos;
+    public int getPosicaoEmY() {
+        return posicaoEmY;
     }
 
-    public void setPontos(int pontos) {
-        this.pontos = pontos;
+    public void setPosicaoEmY(int posicaoEmY) {
+        this.posicaoEmY = posicaoEmY;
     }
+
+    public Image getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(Image imagem) {
+        this.imagem = imagem;
+    }
+
+    
 
 }

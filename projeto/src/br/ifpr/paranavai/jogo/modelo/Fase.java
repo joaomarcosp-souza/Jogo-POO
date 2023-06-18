@@ -3,7 +3,6 @@ package br.ifpr.paranavai.jogo.modelo;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Color;
 import java.awt.Rectangle;
 
 import java.awt.event.ActionEvent;
@@ -24,7 +23,6 @@ import br.ifpr.paranavai.jogo.modelo.Jogador.Tiro;
 import br.ifpr.paranavai.jogo.modelo.Telas.Tela_Login;
 import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_meteorito;
 
-import java.awt.Font;
 import java.awt.FontMetrics;
 
 public class Fase extends JPanel implements ActionListener {
@@ -36,7 +34,6 @@ public class Fase extends JPanel implements ActionListener {
     private Personagem personagem;
     private Tela_Login tela_menu;
 
-    private int vidas = 3;
     private List<Inimigo_naves> inimigo_naves;
     private List<Inimigo_meteorito> inimigo_meteorito;
     private int larguraTela = 1200; // TAMANHO DA TELA
@@ -85,7 +82,6 @@ public class Fase extends JPanel implements ActionListener {
         inicializa_Metorito_Inimigo(); // METEORITOS
         visibilidade_tela_morte = false;
         jogando = false;
-
     }
 
     // INICIANDO POSIÇÃO DAS NAVES INIMIGAS ALEATORIAMENTE
@@ -134,10 +130,11 @@ public class Fase extends JPanel implements ActionListener {
         if (tela_menu.isVisibilidade_menu() == true) {
             tela_menu.titulo(graficos);
             tela_menu.menu(graficos);
-            //
+            jogando = false;
         } else {
             //
             graficos.drawImage(this.fundo, 0, 0, null);
+
             if (personagem.getPontos() >= 200) {
                 graficos.drawImage(this.fundo_fase_2, 0, 0, null);
             }
@@ -147,9 +144,7 @@ public class Fase extends JPanel implements ActionListener {
                 Tiro tiro = tiros.get(i);
                 tiro.carregar();
                 graficos.drawImage(tiro.getImagem(), tiro.getPosicaoEmX(), tiro.getPosicaoEmY(), null);
-
                 // Desenhar a imagem de explosão
-
             }
             // CARREGANDO A IMAGEM DO PERSNAGEM
             // ESTA AQUI EMBAIXO PARA A IMG FICAR ACIMA DA IMAGEM DO TIROW
@@ -180,7 +175,7 @@ public class Fase extends JPanel implements ActionListener {
 
             // CARREGANDO OS METODOS DAS INFORMAÇÃO DO JOGO(VIDA E PONTUAÇÃO)
             personagem.pontos(graficos);
-            vidas(graficos);
+            personagem.vidas(graficos);
         }
         // CARREGANDO A TELA DE MORTE CASO O JOGADOR MORRA(OBVIO)
         if (visibilidade_tela_morte == true) {
@@ -209,7 +204,6 @@ public class Fase extends JPanel implements ActionListener {
             graficos.drawString(enter, (x - 100), y);
 
         }
-
         g.dispose();
     }
 
@@ -217,7 +211,6 @@ public class Fase extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         personagem.atualiza();
-        repaint();
         // VERIFICANDO SE O INIMIGO ESTA VISIVEL E ATUALIZANDO A SUA POSICAÇÃO ATRAVES
         // DO METODO 'ATUALIZAR', AO FICAR INVISIVEL O INIMIGO E EXCLUIDO
         // A CLASSE ITERATOR E COMO UM PONTEIRO EM C QUE PERMITE INTERAJIR COM UM CERTO
@@ -259,35 +252,6 @@ public class Fase extends JPanel implements ActionListener {
         repaint();
     }
 
-    // MÉTODO DA VIDA DO JOGADOR
-    public void vidas(Graphics life) {
-        // DEFINE A STRING DE EXIBIÇÃO
-        String vida = " ";
-        // CRIA UM ESTILO DE FONTE
-        Font estilo = new Font("Consolas", Font.BOLD, 10);
-        // CRIA A MÉTRICA DA FONTE
-        FontMetrics metrica = this.getFontMetrics(estilo);
-
-        // OBTÉM O TAMANHO DA STRING NA TELA
-        int width = metrica.stringWidth(vida);
-        // CALCUPA A DISTÂNCIA DA BORDA PARA POSICIONAR A STRING
-        int distancia = (15 * vidas) + (5 * vidas) + 100 + width;
-
-        // PARA CADA VIDA DO JOGADOR, DESENHA UMA IMAGEM DA VIDA,
-        // ALTERANDO A POSIÇÃO COM BASE NOS CALCULOS PARA DEFINIR
-        // A POSIÇÃO DE CADA UMA EM (x,y)
-        for (int i = 0; i < vidas; i++) {
-            life.drawImage(personagem.getImagem_vida(), (larguraTela + 30) - width, 10, this);
-            width += personagem.getAlturaImagem_Vida() + 5;
-        }
-        // SETA A COR DA FONTE
-        life.setColor(Color.WHITE);
-        // SETA O ESTILO DE FONTE
-        life.setFont(estilo);
-        // DESENHA A STRING COM A POSIÇÃO (x,y)
-        life.drawString(vida, personagem.getLarguraImagem_Vida() - distancia, 10);
-    }
-
     public void checarColisoes() {
         Rectangle forma_Nave_Personagem = personagem.getBounds();
         Rectangle Forma_Inimigo_Nave;
@@ -298,12 +262,11 @@ public class Fase extends JPanel implements ActionListener {
             Inimigo_naves temp_nave = inimigo_naves.get(i);
             Forma_Inimigo_Nave = temp_nave.getBounds();
             if (forma_Nave_Personagem.getBounds().intersects(Forma_Inimigo_Nave.getBounds())) {
-                if (vidas == 1) {
+                if (personagem.getVIDAS() == 1) {
                     jogando = false;
                     visibilidade_tela_morte = true;
                 } else {
-
-                    vidas--;
+                    personagem.setVIDAS(personagem.getVIDAS() - 1);
                 }
                 personagem.setVisibilidade(false);
                 temp_nave.setVisibilidade(false);
@@ -314,11 +277,11 @@ public class Fase extends JPanel implements ActionListener {
             Inimigo_meteorito temp_mete = inimigo_meteorito.get(k);
             Forma_Inimig_Meteorito = temp_mete.getBounds();
             if (forma_Nave_Personagem.getBounds().intersects(Forma_Inimig_Meteorito.getBounds())) {
-                if (vidas == 1) {
+                if (personagem.getVIDAS() == 1) {
                     jogando = false;
                     visibilidade_tela_morte = true;
                 } else {
-                    vidas--;
+                    personagem.setVIDAS(personagem.getVIDAS() - 1);
                 }
                 temp_mete.setVisibilidade(false);
                 personagem.setVisibilidade(false);
@@ -371,50 +334,44 @@ public class Fase extends JPanel implements ActionListener {
         }
     }
 
+    // OPC DOS MENU INICIAL
     public void config_menu(KeyEvent e) {
         int tecla = e.getKeyCode();
         if (tecla == KeyEvent.VK_ENTER) {
             if (tela_menu.getCursor() == 0) {
-                if (jogando == true && tela_menu.isVisibilidade_menu() == false) {
-                    // BRANCO MSM
-                } else {
-                    System.out.println("Teste - opc 0" + tecla);
-                }
+                System.out.println("Teste - opc 0" + tecla);
             } else if (tela_menu.getCursor() == 1) {
                 jogando = true;
                 tela_menu.setVisibilidade_menu(false);
             } else if (tela_menu.getCursor() == 2) {
-                if (jogando == true && tela_menu.isVisibilidade_menu() == false) {
-                    // BRANCO MSM
-                } else {
-                    System.out.println("Teste - opc 2" + tecla);
-                }
+                System.out.println("Teste - opc 2" + tecla);
             }
         }
-    }
+    }// FIM
 
+    // METODO PROVISORIO PARA RESETAR O JOGO
     public void resetar(KeyEvent e) {
         int tecla = e.getKeyCode();
-        if (jogando == true) {
-            // SO ESTA IMPEDINDO QUE O ENTER FUNCIONE ENQUANTO O JOGO ESTA FUCIONANDO
-        } else {
-            if (tecla == KeyEvent.VK_ENTER) {
-                vidas = 3;
-                jogando = true;
-                visibilidade_tela_morte = false;
-                personagem.setPontos(0);
-            }
+        if (tecla == KeyEvent.VK_ENTER) {
+            personagem.setVIDAS(3);
+            jogando = true;
+            visibilidade_tela_morte = false;
+            personagem.setPontos(0);
         }
-    }
+    }// FIM
 
     // CHAMANDO A LEITURA DOS TECLADOS
     private class TecladoAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
-            personagem.tecla_Precionada(e);
-            resetar(e);
-            tela_menu.tecla_menu(e);
-            config_menu(e);
+            if (tela_menu.isVisibilidade_menu() == true) {
+                tela_menu.tecla_menu(e);
+                config_menu(e);
+            } else if (visibilidade_tela_morte == true) {
+                resetar(e);
+            } else {
+                personagem.tecla_Precionada(e);
+            }
         }
 
         @Override
