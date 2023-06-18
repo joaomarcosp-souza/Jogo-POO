@@ -20,7 +20,7 @@ import javax.swing.Timer;
 import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_naves;
 import br.ifpr.paranavai.jogo.modelo.Jogador.Personagem;
 import br.ifpr.paranavai.jogo.modelo.Jogador.Tiro;
-import br.ifpr.paranavai.jogo.modelo.Telas.Tela_Login;
+import br.ifpr.paranavai.jogo.modelo.Telas.Tela_Menu;
 import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_meteorito;
 
 import java.awt.FontMetrics;
@@ -32,7 +32,7 @@ public class Fase extends JPanel implements ActionListener {
     private Image caveira_fundo;
 
     private Personagem personagem;
-    private Tela_Login tela_menu;
+    private Tela_Menu tela_menu;
 
     private List<Inimigo_naves> inimigo_naves;
     private List<Inimigo_meteorito> inimigo_meteorito;
@@ -66,7 +66,7 @@ public class Fase extends JPanel implements ActionListener {
         personagem = new Personagem();
         personagem.carregar();
 
-        tela_menu = new Tela_Login();
+        tela_menu = new Tela_Menu();
         tela_menu.carregar();
         // INICIALIZANDO O METODO DE LEITURA DO TECLADO
         addKeyListener(new TecladoAdapter());

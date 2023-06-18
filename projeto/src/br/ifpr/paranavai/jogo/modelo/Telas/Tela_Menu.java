@@ -6,17 +6,15 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class Tela_Login {
+public class Tela_Menu {
     private Image imagem_fundo;
     private int larguraImagem, alturaImagem;
     private int cursor = 0;
-
     private Font pixel = null;
     private Font broken = null;
-
     private boolean visibilidade_menu;
 
-    public Tela_Login() {
+    public Tela_Menu() {
         try {
             // CARREGA A FONTE A PARTIR DO ARQUIVO
             pixel = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\pixel_fonte.ttf"));
@@ -39,7 +37,7 @@ public class Tela_Login {
 
     public void titulo(Graphics t) {
         t.drawImage(imagem_fundo, 0, 0, null);
-        
+
         String titulo = "STAR WARS";
         String subtitulo = "INVADERS";
         Font fonte = pixel;
@@ -72,7 +70,7 @@ public class Tela_Login {
     public void menu(Graphics m) {
         String jogar = "MODO FASES";
         String historico = "MODO INFINITO";
-        String sair = "SAIR";
+        String sair = "CONTROLES";
 
         Font estilo_menu = broken.deriveFont(Font.BOLD, 50);
         m.setFont(estilo_menu);
@@ -82,42 +80,39 @@ public class Tela_Login {
         int x = (alturaImagem - stringWidth) / 2;
         int y = 450;
 
+        // OPÇÃO PARA A TELA 'MODO FASES'
         m.setColor(Color.white);
         stringWidth = fm.stringWidth(jogar);
         x = (alturaImagem - stringWidth) / 2;
         y = 450;
         m.drawString(jogar, x, y);
-        //
         if (cursor == 0) {
-            // Desenha o cursor na frente da string
+            //DESENHA O CURSOR NA FRENTE DA OPÇÃO
             int cursorWidth = fm.stringWidth(">");
             m.drawString(">", x - cursorWidth, y);
         }
-        //
 
+        // OPÇÃO PARA A TELA 'MODO INFINITO'
         m.setColor(Color.white);
         stringWidth = fm.stringWidth(historico);
         x = (alturaImagem - stringWidth) / 2;
         y = 505;
         m.drawString(historico, x, y);
-        //
         if (cursor == 1) {
-            // Desenha o cursor na frente da string
             int cursorWidth = fm.stringWidth(">");
             m.drawString(">", x - cursorWidth, y);
         }
-        //
+        // OPÇÃO PARA A TELA 'CONTROLES'
         m.setColor(Color.white);
         stringWidth = fm.stringWidth(sair);
         x = (alturaImagem - stringWidth) / 2;
         y = 555;
         m.drawString(sair, x, y);
-        //
         if (cursor == 2) {
-            // Desenha o cursor na frente da string
             int cursorWidth = fm.stringWidth(">");
             m.drawString(">", x - cursorWidth, y);
-        } //
+        }
+
         m.dispose();
     }
 
