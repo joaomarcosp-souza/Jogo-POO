@@ -376,7 +376,7 @@ public class Fase extends JPanel implements ActionListener {
         }
     }
 
-    // METODO PROVISORIO PARA RESETAR O JOGO
+    // METODO PROVISORIO PARA RESETAR O JOGUINHO
     public void resetar(KeyEvent e) {
         int tecla = e.getKeyCode();
         if (tecla == KeyEvent.VK_ENTER) {
