@@ -35,8 +35,8 @@ public class Tela_Controles {
     public void carregar() {
         ImageIcon carregando = new ImageIcon("recursos\\sprites_fundos\\fundo_menu.jpg");
         this.imagem_controles = carregando.getImage();
-        this.larguraImagem = this.imagem_controles.getWidth(null);
-        this.alturaImagem = this.imagem_controles.getHeight(null);
+        this.alturaImagem = this.imagem_controles.getWidth(null);
+        this.larguraImagem = this.imagem_controles.getHeight(null);
     }
 
     public void titulo_controle(Graphics g){

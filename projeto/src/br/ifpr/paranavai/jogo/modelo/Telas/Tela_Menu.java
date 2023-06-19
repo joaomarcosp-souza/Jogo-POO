@@ -80,7 +80,6 @@ public class Tela_Menu {
         int y = 450;
 
         // OPÇÃO PARA A TELA 'MODO FASES'
-        m.setColor(Color.white);
         stringWidth = fm.stringWidth(jogar);
         x = (alturaImagem - stringWidth) / 2;
         y = 450;
@@ -91,7 +90,6 @@ public class Tela_Menu {
             m.drawString(">", x - cursorWidth, y);
         }
         // OPÇÃO PARA A TELA 'MODO INFINITO'
-        m.setColor(Color.white);
         stringWidth = fm.stringWidth(historico);
         x = (alturaImagem - stringWidth) / 2;
         y = 505;
@@ -101,7 +99,6 @@ public class Tela_Menu {
             m.drawString(">", x - cursorWidth, y);
         }
         // OPÇÃO PARA A TELA 'CONTROLES'
-        m.setColor(Color.white);
         stringWidth = fm.stringWidth(controles);
         x = (alturaImagem - stringWidth) / 2;
         y = 555;

@@ -195,12 +195,18 @@ public class Fase extends JPanel implements ActionListener {
             int larguraTela = 1300;
             int posicaoEmx_Caveira = 600;
             int posicaoEmY_Caveira = 15;
-            String enter = "PRESSIONE 'ENTER' PARA RESETAR.";
+            String enter = "'ENTER' - RESETAR PARTIDA.";
+            String voltar_menu = "'ESC' - VOLTAR AO MENU.";
             FontMetrics fm = g.getFontMetrics();
             // PEGA O TAMANHO DA STRING E FAZ O CALCULO PARA CENTRALIZAR
             int enterWidth = fm.stringWidth(enter);
             int x = (larguraTela - enterWidth) / 2;
             int y = ((alturaTela + 250) - fm.getHeight()) / 2;
+
+            int voltar_menuwidth = fm.stringWidth(voltar_menu);
+            int x2 = (larguraTela + 5 - voltar_menuwidth) / 2;
+            int y2 = ((alturaTela + 300) - fm.getHeight()) / 2;
+
             // CARREGANDO OS FUNDOS
             if (personagem.getPontos() < 200) {
                 graficos.drawImage(this.fundo, 0, 0, null);
@@ -215,6 +221,7 @@ public class Fase extends JPanel implements ActionListener {
             graficos.drawImage(this.banner_fundo_morte, 0, 0, null);
             // STRING PARA RESETAR O JOGO
             graficos.drawString(enter, (x - 100), y);
+            graficos.drawString(voltar_menu, (x2 - 100), y2);
 
         }
         g.dispose();
@@ -360,16 +367,14 @@ public class Fase extends JPanel implements ActionListener {
                 jogando = false;
                 tela_menu.setVisibilidade_menu(false);
                 tela_Controles.setControle_visibilidade(true);
-                if (tela_Controles.isControle_visibilidade() == true) {
-                    if (tecla == KeyEvent.VK_ESCAPE) {
-                        jogando = false;
-                        tela_Controles.setControle_visibilidade(false);
-                        tela_menu.setVisibilidade_menu(true);
-                    }
-                }
+            }
+        } else if (tela_Controles.isControle_visibilidade() == true) {
+            if (tecla == KeyEvent.VK_ESCAPE) {
+                tela_menu.setVisibilidade_menu(true);
+                tela_Controles.setControle_visibilidade(false);
             }
         }
-    }// FIM
+    }
 
     // METODO PROVISORIO PARA RESETAR O JOGO
     public void resetar(KeyEvent e) {
@@ -386,11 +391,13 @@ public class Fase extends JPanel implements ActionListener {
     private class TecladoAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
-            if (tela_menu.isVisibilidade_menu() == true) {
+            if (tela_menu.isVisibilidade_menu() == true ) {
                 tela_menu.tecla_menu(e);
                 config_menu(e);
             } else if (visibilidade_tela_morte == true) {
                 resetar(e);
+            } else if (tela_Controles.isControle_visibilidade() == true) {
+                config_menu(e);
             } else {
                 personagem.tecla_Precionada(e);
             }
