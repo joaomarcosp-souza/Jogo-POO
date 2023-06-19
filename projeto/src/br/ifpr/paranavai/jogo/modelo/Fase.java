@@ -360,9 +360,12 @@ public class Fase extends JPanel implements ActionListener {
                 jogando = false;
                 tela_menu.setVisibilidade_menu(false);
                 tela_Controles.setControle_visibilidade(true);
-                if (tecla == KeyEvent.VK_BACK_SPACE) {
-                    tela_menu.setVisibilidade_menu(true);
-                    tela_Controles.setControle_visibilidade(false);
+                if (tela_Controles.isControle_visibilidade() == true) {
+                    if (tecla == KeyEvent.VK_ESCAPE) {
+                        jogando = false;
+                        tela_Controles.setControle_visibilidade(false);
+                        tela_menu.setVisibilidade_menu(true);
+                    }
                 }
             }
         }
