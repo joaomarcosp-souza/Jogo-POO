@@ -20,6 +20,8 @@ import javax.swing.Timer;
 import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_naves;
 import br.ifpr.paranavai.jogo.modelo.Jogador.Personagem;
 import br.ifpr.paranavai.jogo.modelo.Jogador.Tiro;
+import br.ifpr.paranavai.jogo.modelo.Telas.Tela_Controles;
+import br.ifpr.paranavai.jogo.modelo.Telas.Tela_Historico;
 import br.ifpr.paranavai.jogo.modelo.Telas.Tela_Menu;
 import br.ifpr.paranavai.jogo.modelo.inimigos.Inimigo_meteorito;
 
@@ -33,6 +35,8 @@ public class Fase extends JPanel implements ActionListener {
 
     private Personagem personagem;
     private Tela_Menu tela_menu;
+    private Tela_Historico tela_Historico;
+    private Tela_Controles tela_Controles;
 
     private List<Inimigo_naves> inimigo_naves;
     private List<Inimigo_meteorito> inimigo_meteorito;
@@ -68,6 +72,13 @@ public class Fase extends JPanel implements ActionListener {
 
         tela_menu = new Tela_Menu();
         tela_menu.carregar();
+
+        tela_Historico = new Tela_Historico();
+        tela_Historico.carregar();
+
+        tela_Controles = new Tela_Controles();
+        tela_Controles.carregar();
+
         // INICIALIZANDO O METODO DE LEITURA DO TECLADO
         addKeyListener(new TecladoAdapter());
 
@@ -131,6 +142,8 @@ public class Fase extends JPanel implements ActionListener {
             tela_menu.titulo(graficos);
             tela_menu.menu(graficos);
             jogando = false;
+        } else if (tela_Controles.isControle_visibilidade() == true) {
+            tela_Controles.titulo_controle(graficos);
         } else {
             //
             graficos.drawImage(this.fundo, 0, 0, null);
@@ -344,7 +357,13 @@ public class Fase extends JPanel implements ActionListener {
                 jogando = true;
                 tela_menu.setVisibilidade_menu(false);
             } else if (tela_menu.getCursor() == 2) {
-                System.out.println("Teste - opc 2" + tecla);
+                jogando = false;
+                tela_menu.setVisibilidade_menu(false);
+                tela_Controles.setControle_visibilidade(true);
+                if (tecla == KeyEvent.VK_BACK_SPACE) {
+                    tela_menu.setVisibilidade_menu(true);
+                    tela_Controles.setControle_visibilidade(false);
+                }
             }
         }
     }// FIM

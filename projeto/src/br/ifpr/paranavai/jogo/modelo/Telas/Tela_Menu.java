@@ -52,9 +52,8 @@ public class Tela_Menu {
         int subtituloWidth = fm.stringWidth(subtitulo); // PEGA O TAMANHO DO SUBTITULO
         int x = (alturaImagem - tituloWidth) / 2;
         int y = 100 + (larguraImagem - fm.getHeight()) / 2;
-
+        //
         t.drawString(titulo, (x + 5), y - 280); // POSIÇÃO DO TITULO - AMARELO
-
         // SUBTITULO COR AMARELO
         t.setColor(Color.WHITE);
         t.drawString(subtitulo, x + (tituloWidth - subtituloWidth) / 2, y - 200);
@@ -70,7 +69,7 @@ public class Tela_Menu {
     public void menu(Graphics m) {
         String jogar = "MODO FASES";
         String historico = "MODO INFINITO";
-        String sair = "CONTROLES";
+        String controles = "CONTROLES";
 
         Font estilo_menu = broken.deriveFont(Font.BOLD, 50);
         m.setFont(estilo_menu);
@@ -87,11 +86,10 @@ public class Tela_Menu {
         y = 450;
         m.drawString(jogar, x, y);
         if (cursor == 0) {
-            //DESENHA O CURSOR NA FRENTE DA OPÇÃO
+            // DESENHA O CURSOR NA FRENTE DA OPÇÃO
             int cursorWidth = fm.stringWidth(">");
             m.drawString(">", x - cursorWidth, y);
         }
-
         // OPÇÃO PARA A TELA 'MODO INFINITO'
         m.setColor(Color.white);
         stringWidth = fm.stringWidth(historico);
@@ -104,15 +102,14 @@ public class Tela_Menu {
         }
         // OPÇÃO PARA A TELA 'CONTROLES'
         m.setColor(Color.white);
-        stringWidth = fm.stringWidth(sair);
+        stringWidth = fm.stringWidth(controles);
         x = (alturaImagem - stringWidth) / 2;
         y = 555;
-        m.drawString(sair, x, y);
+        m.drawString(controles, x, y);
         if (cursor == 2) {
             int cursorWidth = fm.stringWidth(">");
             m.drawString(">", x - cursorWidth, y);
         }
-
         m.dispose();
     }
 
