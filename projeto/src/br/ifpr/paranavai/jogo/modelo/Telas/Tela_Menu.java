@@ -63,64 +63,75 @@ public class Tela_Menu {
     }
 
     public void menu(Graphics m) {
-        String jogar = "MODO FASES";
-        String historico = "MODO INFINITO";
-        String controles = "CONTROLES";
+        String modo_fases = "MODO FASES";
+        String modo_infinito = "MODO INFINITO";
+        String tela_controles = "CONTROLES";
+        String tela_historico = "HISTORICO";
 
         Font estilo_menu = broken.deriveFont(Font.BOLD, 50);
         m.setFont(estilo_menu);
         FontMetrics fm = m.getFontMetrics();
-
-        int stringWidth, x, y;
+        int arruma_posicao = 50;
 
         // OPÇÃO PARA A TELA 'MODO FASES'
-        stringWidth = fm.stringWidth(jogar);
-        x = (alturaImagem - stringWidth) / 2;
-        y = 450;
-        //
+        int modo_fases_Width = fm.stringWidth(modo_fases);
+        int posicaoX_fase = (alturaImagem - modo_fases_Width) / 2;
+        int posicaoY_fase = 450;
         if (cursor == 0) {
             m.setColor(new Color(255, 209, 70));
         } else {
             m.setColor(Color.WHITE);
         }
-        //
-        m.drawString(jogar, x, y);
+        m.drawString(modo_fases, posicaoX_fase, posicaoY_fase);
         if (cursor == 0) {
             int cursorWidth = fm.stringWidth(">");
-            m.drawString(">", x - cursorWidth, y);
-        }
+            m.drawString(">", posicaoX_fase - cursorWidth, posicaoY_fase);
+        } // FIM MODO FASE
 
         // OPÇÃO PARA A TELA 'MODO INFINITO'
-        stringWidth = fm.stringWidth(historico);
-        x = (alturaImagem - stringWidth) / 2;
-        y = 505;
+        int modo_infinito_Width = fm.stringWidth(modo_infinito);
+        int posicaoX_infinito = (alturaImagem - modo_infinito_Width) / 2;
+        int posicaoY_infinito = posicaoY_fase + arruma_posicao;
         if (cursor == 1) {
             m.setColor(new Color(255, 209, 70));
         } else {
             m.setColor(Color.WHITE);
         }
-        //
-        m.drawString(historico, x, y);
+        m.drawString(modo_infinito, posicaoX_infinito, posicaoY_infinito);
         if (cursor == 1) {
             int cursorWidth = fm.stringWidth(">");
-            m.drawString(">", x - cursorWidth, y);
-        }
+            m.drawString(">", posicaoX_infinito - cursorWidth, posicaoY_infinito);
+        } // FIM
 
         // OPÇÃO PARA A TELA 'CONTROLES'
-        stringWidth = fm.stringWidth(controles);
-        x = (alturaImagem - stringWidth) / 2;
-        y = 555;
+        int controles_Width = fm.stringWidth(tela_controles);
+        int posicaoX_controles = (alturaImagem - controles_Width) / 2;
+        int posicaoY_controles = posicaoY_infinito + arruma_posicao;
         if (cursor == 2) {
             m.setColor(new Color(255, 209, 70));
         } else {
             m.setColor(Color.WHITE);
         }
-        //
-        m.drawString(controles, x, y);
+        m.drawString(tela_controles, posicaoX_controles, posicaoY_controles);
         if (cursor == 2) {
             int cursorWidth = fm.stringWidth(">");
-            m.drawString(">", x - cursorWidth, y);
+            m.drawString(">", posicaoX_controles - cursorWidth, posicaoY_controles);
+        }// FIM
+
+        // OPÇÃO PARA A TELA 'HISTORICO'
+        int historico_Width = fm.stringWidth(tela_historico);
+        int posicaoX_historico = (alturaImagem - historico_Width) / 2;
+        int posicaoY_historico = posicaoY_controles + arruma_posicao;
+        if (cursor == 3) {
+            m.setColor(new Color(255, 209, 70));
+        } else {
+            m.setColor(Color.WHITE);
         }
+        m.drawString(tela_historico, posicaoX_historico, posicaoY_historico);
+        if (cursor == 3) {
+            int cursorWidth = fm.stringWidth(">");
+            m.drawString(">", posicaoX_historico - cursorWidth, posicaoY_historico);
+        }// FIM
         m.dispose();
     }
 
@@ -130,13 +141,13 @@ public class Tela_Menu {
         if (tecla == KeyEvent.VK_UP) {
             cursor--;
             if (cursor < 0) {
-                cursor = 2;
+                cursor = 3;
             }
 
         }
         if (tecla == KeyEvent.VK_DOWN) {
             cursor++;
-            if (cursor > 2) {
+            if (cursor > 3) {
                 cursor = 0;
             }
         }

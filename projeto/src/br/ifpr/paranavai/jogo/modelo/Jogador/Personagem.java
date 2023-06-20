@@ -24,8 +24,8 @@ public class Personagem {
     private int VIDAS = 3;
     private int largureTela = 1200;
 
-    private static final int POSICAO_INICIAL_EM_X = 100;
-    private static final int POSICAO_INICIAL_EM_Y = 300;
+    private  final int POSICAO_INICIAL_EM_X = 100;
+    private  final int POSICAO_INICIAL_EM_Y = 300;
     private static final int VELOCIDADE = 5;
 
     public Personagem() {
@@ -229,11 +229,11 @@ public class Personagem {
         this.deslocamentoEmY = deslocamentoEmY;
     }
 
-    public static int getPosicaoInicialEmX() {
+    public int getPosicaoInicialEmX() {
         return POSICAO_INICIAL_EM_X;
     }
 
-    public static int getPosicaoInicialEmY() {
+    public int getPosicaoInicialEmY() {
         return POSICAO_INICIAL_EM_Y;
     }
 }
