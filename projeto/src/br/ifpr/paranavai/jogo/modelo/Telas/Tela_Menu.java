@@ -67,38 +67,55 @@ public class Tela_Menu {
         String historico = "MODO INFINITO";
         String controles = "CONTROLES";
 
-        m.setColor(new Color(255, 209, 70));
         Font estilo_menu = broken.deriveFont(Font.BOLD, 50);
         m.setFont(estilo_menu);
         FontMetrics fm = m.getFontMetrics();
 
-        int stringWidth = fm.stringWidth(jogar);
-        int x = (alturaImagem - stringWidth) / 2;
-        int y = 450;
+        int stringWidth, x, y;
 
         // OPÇÃO PARA A TELA 'MODO FASES'
         stringWidth = fm.stringWidth(jogar);
         x = (alturaImagem - stringWidth) / 2;
         y = 450;
+        //
+        if (cursor == 0) {
+            m.setColor(new Color(255, 209, 70));
+        } else {
+            m.setColor(Color.WHITE);
+        }
+        //
         m.drawString(jogar, x, y);
         if (cursor == 0) {
-            // DESENHA O CURSOR NA FRENTE DA OPÇÃO
             int cursorWidth = fm.stringWidth(">");
             m.drawString(">", x - cursorWidth, y);
         }
+
         // OPÇÃO PARA A TELA 'MODO INFINITO'
         stringWidth = fm.stringWidth(historico);
         x = (alturaImagem - stringWidth) / 2;
         y = 505;
+        if (cursor == 1) {
+            m.setColor(new Color(255, 209, 70));
+        } else {
+            m.setColor(Color.WHITE);
+        }
+        //
         m.drawString(historico, x, y);
         if (cursor == 1) {
             int cursorWidth = fm.stringWidth(">");
             m.drawString(">", x - cursorWidth, y);
         }
+
         // OPÇÃO PARA A TELA 'CONTROLES'
         stringWidth = fm.stringWidth(controles);
         x = (alturaImagem - stringWidth) / 2;
         y = 555;
+        if (cursor == 2) {
+            m.setColor(new Color(255, 209, 70));
+        } else {
+            m.setColor(Color.WHITE);
+        }
+        //
         m.drawString(controles, x, y);
         if (cursor == 2) {
             int cursorWidth = fm.stringWidth(">");

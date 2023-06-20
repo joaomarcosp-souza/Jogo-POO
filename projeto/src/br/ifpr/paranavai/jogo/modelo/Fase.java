@@ -384,31 +384,32 @@ public class Fase extends JPanel implements ActionListener {
                 tela_menu.setVisibilidade_menu(false);
                 tela_Controles.setControle_visibilidade(true);
             }
-        } else if (tela_Controles.isControle_visibilidade() == true) {
+        }
+        //
+        if (tela_Controles.isControle_visibilidade() == true) {
             if (tecla == KeyEvent.VK_ESCAPE) {
                 tela_menu.setVisibilidade_menu(true);
                 tela_Controles.setControle_visibilidade(false);
             }
         }
-    }
-
-    // METODO PROVISORIO PARA RESETAR O JOGUINHO
-    public void resetar(KeyEvent e) {
-        int tecla = e.getKeyCode();
-        if (tecla == KeyEvent.VK_ENTER) {
-            personagem.setVIDAS(3);
-            jogando = true;
-            visibilidade_tela_morte = false;
-            personagem.setPontos(0);
-        } else if (visibilidade_tela_morte == true) {
+        // MEIO QUE UM RESET NO JOGO
+        if (visibilidade_tela_morte == true) {
             if (tecla == KeyEvent.VK_ESCAPE) {
                 jogando = false;
                 visibilidade_tela_morte = false;
                 tela_menu.setVisibilidade_menu(true);
+                personagem.setVIDAS(3);
                 personagem.setPontos(0);
+            } else if (visibilidade_tela_morte == true) {
+                if (tecla == KeyEvent.VK_ENTER) {
+                    jogando = true;
+                    visibilidade_tela_morte = false;
+                    personagem.setVIDAS(3);
+                    personagem.setPontos(0);
+                }
             }
         }
-    }// FIM
+    }
 
     // CHAMANDO A LEITURA DOS TECLADOS
     private class TecladoAdapter extends KeyAdapter {
@@ -418,7 +419,6 @@ public class Fase extends JPanel implements ActionListener {
                 tela_menu.tecla_menu(e);
                 config_menu(e);
             } else if (visibilidade_tela_morte == true) {
-                resetar(e);
                 config_menu(e);
             } else if (tela_Controles.isControle_visibilidade() == true) {
                 config_menu(e);

@@ -55,22 +55,19 @@ public class Personagem {
         this.alturaImagem_Vida = this.imagem_vida.getWidth(null);
         this.larguraImagem_Vida = this.imagem_vida.getHeight(null);
     }
-
     // Classe para atualizar a posicao
     public void atualiza() {
         // Atualiza a posição do personagem
         posicaoEmX += deslocamentoEmX;
         posicaoEmY += deslocamentoEmY;
     }
-
     // MÉTODO TIRO
     public void tiro_simples() {
-        this.tiros.add(new Tiro(posicaoEmX + (larguraImagem / 2), posicaoEmY + (alturaImagem / 2)));
+        this.tiros.add(new Tiro(posicaoEmX + larguraImagem / 2, posicaoEmY + (alturaImagem / 2)));
     }
-
+    //
     public Rectangle getBounds() {
         return new Rectangle(posicaoEmX, posicaoEmY, larguraImagem, alturaImagem);
-
     }
 
     // MÉTODO DE PONTUAÇÃO DO JOGADOR
