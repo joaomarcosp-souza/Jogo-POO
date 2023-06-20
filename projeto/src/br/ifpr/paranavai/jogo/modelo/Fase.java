@@ -232,14 +232,6 @@ public class Fase extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         personagem.atualiza();
-
-        if (jogando == false) {
-            timer_inimigo_Meteorito.stop();
-            timer_inimigo_nave.stop();
-        } else {
-            timer_inimigo_Meteorito.start();
-            timer_inimigo_nave.start();
-        }
         // VERIFICANDO SE O INIMIGO ESTA VISIVEL E ATUALIZANDO A SUA POSICAÇÃO ATRAVES
         // DO METODO 'ATUALIZAR', AO FICAR INVISIVEL O INIMIGO E EXCLUIDO
         // A CLASSE ITERATOR E COMO UM PONTEIRO EM C QUE PERMITE INTERAJIR COM UM CERTO
@@ -276,6 +268,20 @@ public class Fase extends JPanel implements ActionListener {
                 iterator_tiro.remove();
             }
         } // FIM
+
+        if (jogando == false) {
+            timer_inimigo_nave.stop();
+            timer_inimigo_Meteorito.stop();
+            if (personagem.getPosicaoEmX() != personagem.getPosicaoInicialEmX()
+                    || personagem.getPosicaoEmY() != personagem.getPosicaoInicialEmY()) {
+                personagem.setPosicaoEmX(personagem.getPosicaoInicialEmX());
+                personagem.setPosicaoEmY(personagem.getPosicaoInicialEmY());
+                //
+            } else {
+                timer_inimigo_Meteorito.start();
+                timer_inimigo_nave.start();
+            }
+        }
 
         checarColisoes();
         repaint();

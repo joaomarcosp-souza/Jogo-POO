@@ -232,6 +232,11 @@ public class Personagem {
         this.deslocamentoEmY = deslocamentoEmY;
     }
 
-    
+    public static int getPosicaoInicialEmX() {
+        return POSICAO_INICIAL_EM_X;
+    }
 
+    public static int getPosicaoInicialEmY() {
+        return POSICAO_INICIAL_EM_Y;
+    }
 }
