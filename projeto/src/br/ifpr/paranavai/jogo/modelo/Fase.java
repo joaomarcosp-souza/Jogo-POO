@@ -405,6 +405,7 @@ public class Fase extends JPanel implements ActionListener {
                 jogando = false;
                 visibilidade_tela_morte = false;
                 tela_menu.setVisibilidade_menu(true);
+                personagem.setPontos(0);
             }
         }
     }// FIM
