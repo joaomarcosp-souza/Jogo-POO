@@ -145,9 +145,13 @@ public class Fase extends JPanel implements ActionListener {
             jogando = false;
         } else if (tela_Controles.isControle_visibilidade() == true) {
             tela_Controles.titulo_controle(graficos);
+
         } else if (tela_Historico.isHistorico_visibilidade() == true) {
             tela_Historico.titulo_Historico(graficos);
-        } else {
+        }
+
+        if (jogando == true) {
+            //
             graficos.drawImage(this.fundo, 0, 0, null);
 
             if (personagem.getPontos() >= 200) {
@@ -193,9 +197,7 @@ public class Fase extends JPanel implements ActionListener {
             personagem.vidas(graficos);
         }
         // CARREGANDO A TELA DE MORTE CASO O JOGADOR MORRA(OBVIO)
-        if (visibilidade_tela_morte == true)
-
-        {
+        if (visibilidade_tela_morte == true) {
             int larguraTela = 1300;
             int posicaoEmx_Caveira = 600;
             int posicaoEmY_Caveira = 15;
@@ -316,7 +318,7 @@ public class Fase extends JPanel implements ActionListener {
             Inimigo_meteorito temp_mete = inimigo_meteorito.get(k);
             Forma_Inimig_Meteorito = temp_mete.getBounds();
             if (forma_Nave_Personagem.getBounds().intersects(Forma_Inimig_Meteorito.getBounds())) {
-                if (personagem.getVIDAS() == 1) {
+                if (personagem.getVIDAS() <= 1) {
                     jogando = false;
                     visibilidade_tela_morte = true;
                 } else {
@@ -377,51 +379,57 @@ public class Fase extends JPanel implements ActionListener {
     public void config_menu(KeyEvent e) {
         int tecla = e.getKeyCode();
         if (tecla == KeyEvent.VK_ENTER) {
-            // MENU
-            if (tela_menu.getCursor() == 0) {
-                System.out.println("Em CONSTRUÇÃO");
-            } else if (tela_menu.getCursor() == 1) {
+            if (tela_menu.getCursor() == 0) { // TELA JOGO FASE - IMPLEMENTAR
+                jogando = false;
+                System.out.println("Tela Fase - Implementando");
+            } else if (tela_menu.getCursor() == 1) { // TELA JOGO
                 jogando = true;
                 tela_menu.setVisibilidade_menu(false);
-            } else if (tela_menu.getCursor() == 2) {
+            } else if (tela_menu.getCursor() == 2) { // TELA CONTROLES
                 jogando = false;
                 tela_menu.setVisibilidade_menu(false);
                 tela_Controles.setControle_visibilidade(true);
-            } else if (tela_menu.getCursor() == 3) {
+            } else if (tela_menu.getCursor() == 3) { // TELA HISTORICO - IMPLEMENTAR
                 jogando = false;
                 tela_menu.setVisibilidade_menu(false);
                 tela_Historico.setHistorico_visibilidade(true);
             }
         } // FIM
+    }
 
-        // DENTRO DAS TELAS
+    public void tela_visibilidade(KeyEvent e) {
+        int tecla = e.getKeyCode();
+
         if (tela_Controles.isControle_visibilidade() == true) {
             if (tecla == KeyEvent.VK_ESCAPE) {
                 tela_menu.setVisibilidade_menu(true);
                 tela_Controles.setControle_visibilidade(false);
             }
-        } else if (tela_Historico.isHistorico_visibilidade() == true) {
+        }
+
+        if (tela_Historico.isHistorico_visibilidade() == true) {
             if (tecla == KeyEvent.VK_ESCAPE) {
                 tela_menu.setVisibilidade_menu(true);
                 tela_Historico.setHistorico_visibilidade(false);
             }
         }
+    }
 
-        // RESET
+    public void resetar_partida(KeyEvent e) {
+        int tecla = e.getKeyCode();
+        // MEIO QUE UM RESET NO JOGO
         if (visibilidade_tela_morte == true) {
             if (tecla == KeyEvent.VK_ESCAPE) {
-                jogando = false;
-                visibilidade_tela_morte = false;
-                tela_menu.setVisibilidade_menu(true);
                 personagem.setVIDAS(3);
                 personagem.setPontos(0);
-            } else if (visibilidade_tela_morte == true) {
-                if (tecla == KeyEvent.VK_ENTER) {
-                    jogando = true;
-                    visibilidade_tela_morte = false;
-                    personagem.setVIDAS(3);
-                    personagem.setPontos(0);
-                }
+                visibilidade_tela_morte = false;
+                tela_menu.setVisibilidade_menu(true);
+            }
+            if (tecla == KeyEvent.VK_ENTER) {
+                jogando = true;
+                personagem.setVIDAS(3);
+                personagem.setPontos(0);
+                visibilidade_tela_morte = false;
             }
         }
     }
@@ -430,17 +438,22 @@ public class Fase extends JPanel implements ActionListener {
     private class TecladoAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
+            if (tela_Controles.isControle_visibilidade() == true) {
+                tela_visibilidade(e);
+            } else if (tela_Historico.isHistorico_visibilidade() == true) {
+                tela_visibilidade(e);
+            }
+            /////////
             if (tela_menu.isVisibilidade_menu() == true) {
                 tela_menu.tecla_menu(e);
                 config_menu(e);
-            } else if (visibilidade_tela_morte == true) {
-                config_menu(e);
-            } else if (tela_Controles.isControle_visibilidade() == true) {
-                config_menu(e);
-            } else if (tela_Controles.isHistorico_visibilidade() == true) {
-                config_menu(e);
-            } else {
+            }
+            if (jogando == true) {
                 personagem.tecla_Precionada(e);
+            }
+            ////////
+            if (visibilidade_tela_morte == true) {
+                resetar_partida(e);
             }
         }
 
