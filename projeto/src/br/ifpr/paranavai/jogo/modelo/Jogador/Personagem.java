@@ -216,6 +216,22 @@ public class Personagem {
         this.imagem = imagem;
     }
 
+    public int getDeslocamentoEmX() {
+        return deslocamentoEmX;
+    }
+
+    public void setDeslocamentoEmX(int deslocamentoEmX) {
+        this.deslocamentoEmX = deslocamentoEmX;
+    }
+
+    public int getDeslocamentoEmY() {
+        return deslocamentoEmY;
+    }
+
+    public void setDeslocamentoEmY(int deslocamentoEmY) {
+        this.deslocamentoEmY = deslocamentoEmY;
+    }
+
     
 
 }

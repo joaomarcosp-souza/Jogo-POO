@@ -46,6 +46,9 @@ public class Fase extends JPanel implements ActionListener {
     private boolean jogando;
     private boolean visibilidade_tela_morte;
 
+    private Timer timer_inimigo_nave;
+    private Timer timer_inimigo_Meteorito;
+
     private Image explosao;
 
     public Fase() {
@@ -102,7 +105,7 @@ public class Fase extends JPanel implements ActionListener {
         int alturaInimigo = 30;
 
         // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
-        Timer timer = new Timer(800, new ActionListener() {
+        timer_inimigo_nave = new Timer(800, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int posicaoEmX = larguraTela; // Defina a posição inicial do novo inimigo
@@ -110,8 +113,7 @@ public class Fase extends JPanel implements ActionListener {
                 inimigo_naves.add(new Inimigo_naves(posicaoEmX, posicaoEmY));
             }
         });
-        timer.setRepeats(true);
-        timer.start(); // FIM DOS INIMIGOS NAVE
+        timer_inimigo_nave.setRepeats(true);
     }
 
     // INICIANDO POSIÇÃO DO METEORITO ALEATORIAMENTE
@@ -120,7 +122,7 @@ public class Fase extends JPanel implements ActionListener {
         int alturaInimigo = 40;
 
         // TIMER PARA SPAWNAR O METEORITO
-        Timer timer_Meteorito = new Timer(1500, new ActionListener() {
+        timer_inimigo_Meteorito = new Timer(1500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -129,8 +131,7 @@ public class Fase extends JPanel implements ActionListener {
                 inimigo_meteorito.add(new Inimigo_meteorito(posicaoEmX, posicaoEmY));
             }
         });
-        timer_Meteorito.setRepeats(true);
-        timer_Meteorito.start();
+        timer_inimigo_Meteorito.setRepeats(true);
     }// FIM MÉTODO METEORITO
 
     public void paint(Graphics g) {
@@ -231,6 +232,14 @@ public class Fase extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         personagem.atualiza();
+
+        if (jogando == false) {
+            timer_inimigo_Meteorito.stop();
+            timer_inimigo_nave.stop();
+        } else {
+            timer_inimigo_Meteorito.start();
+            timer_inimigo_nave.start();
+        }
         // VERIFICANDO SE O INIMIGO ESTA VISIVEL E ATUALIZANDO A SUA POSICAÇÃO ATRAVES
         // DO METODO 'ATUALIZAR', AO FICAR INVISIVEL O INIMIGO E EXCLUIDO
         // A CLASSE ITERATOR E COMO UM PONTEIRO EM C QUE PERMITE INTERAJIR COM UM CERTO
@@ -277,6 +286,7 @@ public class Fase extends JPanel implements ActionListener {
         Rectangle Forma_Inimigo_Nave;
         Rectangle Forma_Inimig_Meteorito;
         Rectangle forma_Tiro;
+
         // COLISÃO DA NAVE DO PERSOANGEM COM A NAVE INIMIGA
         for (int i = 0; i < inimigo_naves.size(); i++) {
             Inimigo_naves temp_nave = inimigo_naves.get(i);
