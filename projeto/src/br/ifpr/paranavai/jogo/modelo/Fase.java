@@ -221,7 +221,7 @@ public class Fase extends JPanel implements ActionListener {
             graficos.drawImage(this.banner_fundo_morte, 0, 0, null);
             // STRING PARA RESETAR O JOGO
             graficos.drawString(enter, (x - 100), y);
-            graficos.drawString(voltar_menu, (x2 - 100), y2);
+            graficos.drawString(voltar_menu, (x2 - 85), y2);
 
         }
         g.dispose();
@@ -384,6 +384,12 @@ public class Fase extends JPanel implements ActionListener {
             jogando = true;
             visibilidade_tela_morte = false;
             personagem.setPontos(0);
+        } else if (visibilidade_tela_morte == true) {
+            if (tecla == KeyEvent.VK_ESCAPE) {
+                jogando = false;
+                visibilidade_tela_morte = false;
+                tela_menu.setVisibilidade_menu(true);
+            }
         }
     }// FIM
 
@@ -391,11 +397,12 @@ public class Fase extends JPanel implements ActionListener {
     private class TecladoAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
-            if (tela_menu.isVisibilidade_menu() == true ) {
+            if (tela_menu.isVisibilidade_menu() == true) {
                 tela_menu.tecla_menu(e);
                 config_menu(e);
             } else if (visibilidade_tela_morte == true) {
                 resetar(e);
+                config_menu(e);
             } else if (tela_Controles.isControle_visibilidade() == true) {
                 config_menu(e);
             } else {

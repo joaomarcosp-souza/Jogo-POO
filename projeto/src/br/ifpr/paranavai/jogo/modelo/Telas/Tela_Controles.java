@@ -17,15 +17,12 @@ public class Tela_Controles {
     private boolean historico_visibilidade;
 
     private Font pixel = null;
-    private Font broken = null;
 
     public Tela_Controles() {
         try {
             // CARREGA A FONTE A PARTIR DO ARQUIVO
             pixel = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\pixel_fonte.ttf"));
-            broken = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\pixel_fonte.ttf"));
-            // DEFINE O TAMANHO DA FONTE DESEJADO
-            
+
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
@@ -39,11 +36,10 @@ public class Tela_Controles {
         this.larguraImagem = this.imagem_controles.getHeight(null);
     }
 
-    public void titulo_controle(Graphics g){
+    public void titulo_controle(Graphics g) {
         g.drawImage(imagem_controles, 0, 0, null);
 
         String titulo = "CONTROLES";
-        String subtitulo = "FUNCIONAIS";
         Font fonte = pixel;
 
         fonte = fonte.deriveFont(Font.BOLD, 85);
@@ -54,20 +50,16 @@ public class Tela_Controles {
         FontMetrics fm = g.getFontMetrics();
 
         int tituloWidth = fm.stringWidth(titulo); // PEGA O TAMANHO DA STRING
-        int subtituloWidth = fm.stringWidth(subtitulo); // PEGA O TAMANHO DO SUBTITULO
         int x = (alturaImagem - tituloWidth) / 2;
         int y = 100 + (larguraImagem - fm.getHeight()) / 2;
         //
-        g.drawString(titulo, (x + 5), y - 280); // POSIÇÃO DO TITULO - AMARELO
-        // SUBTITULO COR AMARELO
-        g.setColor(Color.WHITE);
-        g.drawString(subtitulo, x + (tituloWidth - subtituloWidth) / 2, y - 200);
-        // DESENHA O SUBTÍTULO NA TELA - AMARELO
-        g.setColor(new Color(255, 209, 70));
-        // t.setColor(new Color(255, 209, 70));
-        g.drawString(subtitulo, ((x + 5) + (tituloWidth - subtituloWidth) / 2), y - 200);
-
         g.setColor(Color.WHITE); // DEFINE A COR PRINCIPAL DO TÍTULO - BRANCO
+        g.drawString(titulo, (x + 7), y - 280); // POSIÇÃO DO TITULO - AMARELO
+        // SUBTITULO COR AMARELO
+        // DESENHA O SUBTÍTULO NA TELA - AMARELO
+        // t.setColor(new Color(255, 209, 70));
+
+        g.setColor(new Color(255, 209, 70));
         g.drawString(titulo, x, y - 280); // POSIÇÃO DO TÍTULO PRINCIPAL - COR BRANCA
     }
 

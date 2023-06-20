@@ -37,33 +37,29 @@ public class Tela_Menu {
 
     public void titulo(Graphics t) {
         t.drawImage(imagem_fundo, 0, 0, null);
-
+        //
         String titulo = "STAR WARS";
         String subtitulo = "INVADERS";
         Font fonte = pixel;
         fonte = fonte.deriveFont(Font.BOLD, 85);
-
-        t.setColor(new Color(255, 209, 70)); // COR DO TITULO AMARELO
+        //
         t.setFont(fonte);
         // CRENTALIZA VERTICALMENTE
         FontMetrics fm = t.getFontMetrics();
-
         int tituloWidth = fm.stringWidth(titulo); // PEGA O TAMANHO DA STRING
         int subtituloWidth = fm.stringWidth(subtitulo); // PEGA O TAMANHO DO SUBTITULO
         int x = (alturaImagem - tituloWidth) / 2;
         int y = 100 + (larguraImagem - fm.getHeight()) / 2;
-        //
-        t.drawString(titulo, (x + 5), y - 280); // POSIÇÃO DO TITULO - AMARELO
-        // SUBTITULO COR AMARELO
+        // COR DO TITULO 'STAR WARS - BRANCO'
         t.setColor(Color.WHITE);
+        t.drawString(titulo, (x + 5), y - 280);
         t.drawString(subtitulo, x + (tituloWidth - subtituloWidth) / 2, y - 200);
-        // DESENHA O SUBTÍTULO NA TELA - AMARELO
-        t.setColor(new Color(255, 209, 70));
-        // t.setColor(new Color(255, 209, 70));
+        // COR DO SUBTITULO 'INVADERS - BRANCO'
+        t.setColor(Color.WHITE);
         t.drawString(subtitulo, ((x + 5) + (tituloWidth - subtituloWidth) / 2), y - 200);
-
-        t.setColor(Color.WHITE); // DEFINE A COR PRINCIPAL DO TÍTULO - BRANCO
-        t.drawString(titulo, x, y - 280); // POSIÇÃO DO TÍTULO PRINCIPAL - COR BRANCA
+        // COR DO TITULO 'STAR WARS - AMARELO'
+        t.setColor(new Color(255, 209, 70));
+        t.drawString(titulo, x, y - 280);
     }
 
     public void menu(Graphics m) {
@@ -71,6 +67,7 @@ public class Tela_Menu {
         String historico = "MODO INFINITO";
         String controles = "CONTROLES";
 
+        m.setColor(new Color(255, 209, 70));
         Font estilo_menu = broken.deriveFont(Font.BOLD, 50);
         m.setFont(estilo_menu);
         FontMetrics fm = m.getFontMetrics();
