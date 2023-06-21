@@ -9,7 +9,7 @@ import java.awt.*;
 
 import java.io.File;
 
-public class Tela_Controles {
+public class TelaControles {
     private boolean controle_visibilidade;
     private Image imagem_controles;
     private int posicaoEmX, posicaoEmY;
@@ -18,7 +18,7 @@ public class Tela_Controles {
 
     private Font pixel = null;
 
-    public Tela_Controles() {
+    public TelaControles() {
         try {
             // CARREGA A FONTE A PARTIR DO ARQUIVO
             pixel = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\pixel_fonte.ttf"));

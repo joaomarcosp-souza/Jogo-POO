@@ -26,7 +26,7 @@ public class Personagem {
 
     private  final int POSICAO_INICIAL_EM_X = 100;
     private  final int POSICAO_INICIAL_EM_Y = 300;
-    private static final int VELOCIDADE = 5;
+    private static final int VELOCIDADE = 4;
 
     public Personagem() {
         this.posicaoEmX = POSICAO_INICIAL_EM_X;

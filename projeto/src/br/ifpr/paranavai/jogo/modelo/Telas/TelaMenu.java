@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class Tela_Menu {
+public class TelaMenu {
     private Image imagem_fundo;
     private int larguraImagem, alturaImagem;
     private int cursor = 0;
@@ -14,7 +14,7 @@ public class Tela_Menu {
     private Font broken = null;
     private boolean visibilidade_menu;
 
-    public Tela_Menu() {
+    public TelaMenu() {
         try {
             // CARREGA A FONTE A PARTIR DO ARQUIVO
             pixel = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\pixel_fonte.ttf"));

@@ -3,29 +3,31 @@ package br.ifpr.paranavai.jogo.modelo.inimigos;
 import java.awt.*;
 import javax.swing.ImageIcon;
 
-public class Inimigo_meteorito {
+public class InimigoNaves {
     private int posicaoEmX, posicaoEmY;
-    private int larguraImagem, alturaImagem;
-    private Image imagem_meteoro;
+    private int larguraImagem;
+    private int alturaImagem;
+    private Image imagem_nave;
     private boolean visibilidade;
 
-     private static final int VELOCIDADE = 3; //Constante que não deve ser alterada
+     private int VELOCIDADE = 5; //Constante que não deve ser alterada
 
-    public Inimigo_meteorito(int posicaoEmX, int posicaoEmY) {
+    public InimigoNaves(int posicaoEmX, int posicaoEmY) {
         this.posicaoEmX = posicaoEmX;
         this.posicaoEmY = posicaoEmY;
         this.visibilidade = true;
     }
 
     public void carregar() {
-        ImageIcon carregador_meteorito = new ImageIcon("recursos\\sprites_inimigos\\meteorito.png");
-        this.imagem_meteoro = carregador_meteorito.getImage();
-        this.alturaImagem = this.imagem_meteoro.getWidth(null);
-        this.larguraImagem = this.imagem_meteoro.getHeight(null);
+        ImageIcon carregador = new ImageIcon("recursos\\sprites_inimigos\\tfighter.png");
+        //ImageIcon carregador = new ImageIcon("recursos\\sprites_inimigos\\starDestroyer.png");
+        this.imagem_nave = carregador.getImage();
+        this.alturaImagem = this.imagem_nave.getWidth(null);
+        this.larguraImagem = this.imagem_nave.getHeight(null);
     }
 
     public void atualizar() {
-        this.posicaoEmY += VELOCIDADE;
+        this.posicaoEmX -= VELOCIDADE;
     }
 
     public Rectangle getBounds() {
@@ -48,6 +50,14 @@ public class Inimigo_meteorito {
         this.posicaoEmY = posicaoEmY;
     }
 
+    public Image getImagem() {
+        return imagem_nave;
+    }
+
+    public void setImagem(Image imagem) {
+        this.imagem_nave = imagem;
+    }
+
     public int getLarguraImagem() {
         return larguraImagem;
     }
@@ -64,12 +74,12 @@ public class Inimigo_meteorito {
         this.alturaImagem = alturaImagem;
     }
 
-    public Image getImagem_meteoro() {
-        return imagem_meteoro;
+    public Image getImagem_nave() {
+        return imagem_nave;
     }
 
-    public void setImagem_meteoro(Image imagem_meteoro) {
-        this.imagem_meteoro = imagem_meteoro;
+    public void setImagem_nave(Image imagem_nave) {
+        this.imagem_nave = imagem_nave;
     }
 
     public boolean isVisibilidade() {
@@ -80,8 +90,17 @@ public class Inimigo_meteorito {
         this.visibilidade = visibilidade;
     }
 
-    public static int getVELOCIDADE() {
+    public  int getVelocidade() {
         return VELOCIDADE;
     }
 
+    public int getVELOCIDADE() {
+        return VELOCIDADE;
+    }
+
+    public void setVELOCIDADE(int vELOCIDADE) {
+        VELOCIDADE = vELOCIDADE;
+    }
+
+    
 }

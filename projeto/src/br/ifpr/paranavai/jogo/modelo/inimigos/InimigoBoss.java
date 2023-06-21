@@ -3,7 +3,7 @@ package br.ifpr.paranavai.jogo.modelo.inimigos;
 import java.awt.*;
 import javax.swing.ImageIcon;
 
-public class Inimigo_boss {
+public class InimigoBoss {
     private int posicaoEmX, posicaoEmY;
     private int alturaImagem, larguraImagem;
     private Image imagem_boss;
@@ -11,7 +11,7 @@ public class Inimigo_boss {
 
     private int VELOCIDADE = 5;
 
-    public Inimigo_boss(int posicaoEmX, int posicaoEmY){
+    public InimigoBoss(int posicaoEmX, int posicaoEmY){
         this.posicaoEmX = posicaoEmX;
         this.posicaoEmY = posicaoEmY;
         this.visibilidade = true;

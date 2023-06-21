@@ -4,13 +4,13 @@ import java.awt.Image;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
 
-public class Tela_Historico {
+public class TelaHistorico {
     private Image imagem_historico;
     private int posicaoEmX, posicaoEmY;
     private int larguraImagem, alturaImagem;
     private boolean historico_visibilidade;
 
-    public Tela_Historico() {
+    public TelaHistorico() {
         this.historico_visibilidade = true;
     }
 
