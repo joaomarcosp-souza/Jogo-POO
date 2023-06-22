@@ -275,6 +275,24 @@ public class Fase extends JPanel implements ActionListener {
         Rectangle Forma_Inimigo_Nave;
         Rectangle Forma_Inimig_Meteorito;
         Rectangle forma_Tiro;
+        int telaLargura = 1300; // Largura da tela
+        int telaAltura = 700; // Altura da tela
+
+        // VERIFICA COLISÃO COM A BORDA EM 'X'
+        if (personagem.getPosicaoEmX() < 0) {
+            personagem.setPosicaoEmX(0); // POSIÇÃO MÍNIMA X
+        } else if (personagem.getPosicaoEmX() + personagem.getAlturaImagem() > telaLargura) {
+            int maximoEmX = telaLargura - personagem.getAlturaImagem(); // CALCULA A POSIÇÃO MÁXIMA
+            personagem.setPosicaoEmX(maximoEmX);
+        }
+
+        // VERIFICA COLISÃO COM A BORDA EM 'Y'
+        if (personagem.getPosicaoEmY() < 0) {
+            personagem.setPosicaoEmY(0); // POSIÇÃO MÍNIMA Y
+        } else if (personagem.getPosicaoEmY() + personagem.getAlturaImagem() > telaAltura) {
+            int maximoEmY = telaAltura - personagem.getAlturaImagem();
+            personagem.setPosicaoEmY(maximoEmY);
+        }
 
         // COLISÃO DA NAVE DO PERSOANGEM COM A NAVE INIMIGA
         for (int i = 0; i < inimigo_naves.size(); i++) {
@@ -296,7 +314,7 @@ public class Fase extends JPanel implements ActionListener {
             InimigoMeteorito temp_mete = inimigo_meteorito.get(k);
             Forma_Inimig_Meteorito = temp_mete.getBounds();
             if (forma_Nave_Personagem.getBounds().intersects(Forma_Inimig_Meteorito.getBounds())) {
-                if (personagem.getVIDAS() <= 1) {
+                if (personagem.getVIDAS() == 1) {
                     jogando = false;
                     telaMorte.setTelaMorteVisibilidade(true);
                 } else {
@@ -351,6 +369,7 @@ public class Fase extends JPanel implements ActionListener {
                 personagem.setPontos(personagem.getPontos() + 20);
             }
         }
+
     }
 
     // OPC DOS MENU INICIAL

@@ -178,6 +178,22 @@ public class Personagem {
         this.pontos = pontos;
     }
 
+    public int getLarguraImagem() {
+        return larguraImagem;
+    }
+
+    public void setLarguraImagem(int larguraImagem) {
+        this.larguraImagem = larguraImagem;
+    }
+
+    public int getAlturaImagem() {
+        return alturaImagem;
+    }
+
+    public void setAlturaImagem(int alturaImagem) {
+        this.alturaImagem = alturaImagem;
+    }
+
     public int getVIDAS() {
         return VIDAS;
     }
