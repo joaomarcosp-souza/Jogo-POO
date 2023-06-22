@@ -26,7 +26,7 @@ public class TelaControles {
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
-        this.historico_visibilidade = true;
+        this.historico_visibilidade = false;
     }
 
     public void carregar() {

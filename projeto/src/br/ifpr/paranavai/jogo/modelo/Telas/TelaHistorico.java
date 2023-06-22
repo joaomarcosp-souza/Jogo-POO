@@ -1,9 +1,8 @@
 package br.ifpr.paranavai.jogo.modelo.Telas;
 
-import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.awt.Graphics;
+
 import javax.swing.ImageIcon;
 import java.awt.*;
 
@@ -24,7 +23,7 @@ public class TelaHistorico {
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
-        this.historico_visibilidade = true;
+        this.historico_visibilidade = false;
     }
 
     public void carregar() {

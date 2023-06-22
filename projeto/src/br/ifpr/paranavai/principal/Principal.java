@@ -16,7 +16,6 @@ public class Principal extends JFrame {
         super.setResizable(false);
         super.setVisible(true);
     }
-
     public static void main(String[] args) {
         new Principal();
     }

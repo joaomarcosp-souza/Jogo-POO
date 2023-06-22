@@ -24,7 +24,6 @@ public class TelaMenu {
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
-
         this.visibilidade_menu = true;
     }
 

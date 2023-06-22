@@ -17,6 +17,7 @@ public class Personagem {
     private int larguraImagem, alturaImagem, larguraImagem_Vida, alturaImagem_Vida;
     private Image imagem;
     private List<Tiro> tiros;
+    private List<Tiro> tiros_super;
     private boolean visibilidade;
     private Image imagem_vida;
     private Font pixel = null;
@@ -24,8 +25,8 @@ public class Personagem {
     private int VIDAS = 3;
     private int largureTela = 1200;
 
-    private  final int POSICAO_INICIAL_EM_X = 100;
-    private  final int POSICAO_INICIAL_EM_Y = 300;
+    private final int POSICAO_INICIAL_EM_X = 100;
+    private final int POSICAO_INICIAL_EM_Y = 300;
     private static final int VELOCIDADE = 4;
 
     public Personagem() {
@@ -34,6 +35,7 @@ public class Personagem {
         this.visibilidade = true;
 
         tiros = new ArrayList<Tiro>();
+        tiros_super = new ArrayList<Tiro>();
 
         try {
             // CARREGA A FONTE A PARTIR DO ARQUIVO
@@ -55,16 +57,23 @@ public class Personagem {
         this.alturaImagem_Vida = this.imagem_vida.getWidth(null);
         this.larguraImagem_Vida = this.imagem_vida.getHeight(null);
     }
+
     // Classe para atualizar a posicao
     public void atualiza() {
         // Atualiza a posição do personagem
         posicaoEmX += deslocamentoEmX;
         posicaoEmY += deslocamentoEmY;
     }
+
     // MÉTODO TIRO
     public void tiro_simples() {
         this.tiros.add(new Tiro(posicaoEmX + larguraImagem / 2, posicaoEmY + (alturaImagem / 2)));
     }
+
+    public void super_tiro() {
+        this.tiros_super.add(new Tiro(posicaoEmX + larguraImagem / 2, posicaoEmY + (alturaImagem / 2)));
+    }
+
     //
     public Rectangle getBounds() {
         return new Rectangle(posicaoEmX, posicaoEmY, larguraImagem, alturaImagem);
@@ -119,6 +128,10 @@ public class Personagem {
         // TECLA TIRO
         if (tecla == KeyEvent.VK_SPACE) {
             tiro_simples();
+        }
+
+        if (tecla == KeyEvent.VK_R) {
+            super_tiro();
         }
 
         // TECLAS MOVIMENTAÇÃO
@@ -236,4 +249,13 @@ public class Personagem {
     public int getPosicaoInicialEmY() {
         return POSICAO_INICIAL_EM_Y;
     }
+
+    public List<Tiro> getTiros_super() {
+        return tiros_super;
+    }
+
+    public void setTiros_super(List<Tiro> tiros_super) {
+        this.tiros_super = tiros_super;
+    }
+    
 }

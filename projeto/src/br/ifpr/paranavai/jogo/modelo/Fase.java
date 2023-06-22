@@ -22,34 +22,26 @@ import br.ifpr.paranavai.jogo.modelo.Jogador.Tiro;
 import br.ifpr.paranavai.jogo.modelo.Telas.TelaControles;
 import br.ifpr.paranavai.jogo.modelo.Telas.TelaHistorico;
 import br.ifpr.paranavai.jogo.modelo.Telas.TelaMenu;
+import br.ifpr.paranavai.jogo.modelo.Telas.TelaMorte;
 import br.ifpr.paranavai.jogo.modelo.inimigos.InimigoMeteorito;
 import br.ifpr.paranavai.jogo.modelo.inimigos.InimigoNaves;
-
-import java.awt.FontMetrics;
 
 public class Fase extends JPanel implements ActionListener {
     private Image fundo;
     private Image fundo_fase_2;
-    private Image banner_fundo_morte;
-    private Image caveira_fundo;
-
-    private Personagem personagem;
-    private TelaMenu tela_menu;
-    private TelaHistorico tela_Historico;
-    private TelaControles tela_Controles;
-
     private List<InimigoNaves> inimigo_naves;
     private List<InimigoMeteorito> inimigo_meteorito;
     private int larguraTela = 1200; // TAMANHO DA TELA
-    private int alturaTela = 700;
-
     private boolean jogando;
-    private boolean visibilidade_tela_morte;
-
     private Timer timer_inimigo_nave;
     private Timer timer_inimigo_Meteorito;
-
     private Image explosao;
+
+    private TelaMenu tela_menu;
+    private Personagem personagem;
+    private TelaHistorico tela_Historico;
+    private TelaControles tela_Controles;
+    private TelaMorte telaMorte;
 
     public Fase() {
         setFocusable(true);
@@ -63,12 +55,6 @@ public class Fase extends JPanel implements ActionListener {
         //
         ImageIcon explosao_img = new ImageIcon("recursos\\sprites_tiros\\explosao.png");
         this.explosao = explosao_img.getImage();
-        // GIF DA CAVEIRA
-        ImageIcon caveira = new ImageIcon("recursos\\sprites_fundos\\caveira.gif");
-        this.caveira_fundo = caveira.getImage();
-        // 'YOU DIE' IMG
-        ImageIcon death = new ImageIcon("recursos\\sprites_fundos\\banner_fundo_morte.png");
-        this.banner_fundo_morte = death.getImage();
         // INICIALIZANDO O PERSONAGEM
         personagem = new Personagem();
         personagem.carregar();
@@ -81,6 +67,9 @@ public class Fase extends JPanel implements ActionListener {
         //
         tela_Controles = new TelaControles();
         tela_Controles.carregar();
+
+        telaMorte = new TelaMorte();
+        telaMorte.carregar();
         // INICIALIZANDO O METODO DE LEITURA DO TECLADO
         addKeyListener(new TecladoAdapter());
         // ATUALIZANDO O PERSONAGEM E REDENSENHADO NA TELA EM INTERVALOS REGULARES.
@@ -90,9 +79,9 @@ public class Fase extends JPanel implements ActionListener {
         // INICIALIZANDO MÉTODOS INIMIGOS
         inicializa_Nave_Inimiga(); // NAVES
         inicializa_Metorito_Inimigo(); // METEORITOS
-        visibilidade_tela_morte = false;
         jogando = false;
     }
+
     // INICIANDO POSIÇÃO DAS NAVES INIMIGAS ALEATORIAMENTE
     public void inicializa_Nave_Inimiga() {
         inimigo_naves = new ArrayList<InimigoNaves>();
@@ -110,6 +99,7 @@ public class Fase extends JPanel implements ActionListener {
         });
         timer_inimigo_nave.setRepeats(true);
     }
+
     // INICIANDO POSIÇÃO DO METEORITO ALEATORIAMENTE
     public void inicializa_Metorito_Inimigo() {
         inimigo_meteorito = new ArrayList<InimigoMeteorito>();
@@ -139,9 +129,10 @@ public class Fase extends JPanel implements ActionListener {
             jogando = false;
         } else if (tela_Controles.isControle_visibilidade() == true) {
             tela_Controles.titulo_controle(graficos);
-
+            jogando = false;
         } else if (tela_Historico.isHistorico_visibilidade() == true) {
             tela_Historico.titulo_Historico(graficos);
+            jogando = false;
         }
 
         if (jogando == true) {
@@ -158,6 +149,14 @@ public class Fase extends JPanel implements ActionListener {
                 graficos.drawImage(tiro.getImagem(), tiro.getPosicaoEmX(), tiro.getPosicaoEmY(), null);
                 // Desenhar a imagem de explosão
             }
+            List<Tiro> superTiro = personagem.getTiros_super();
+            for (int i = 0; i < superTiro.size(); i++) {
+                Tiro super_Tiro = superTiro.get(i);
+                super_Tiro.carregar();
+                graficos.drawImage(super_Tiro.getImagem_super(), super_Tiro.getPosicaoEmX(), super_Tiro.getPosicaoEmY(),
+                        null);
+                // Desenhar a imagem de explosão
+            }
             // CARREGANDO A IMAGEM DO PERSNAGEM
             // ESTA AQUI EMBAIXO PARA A IMG FICAR ACIMA DA IMAGEM DO TIROW
             graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(),
@@ -168,14 +167,14 @@ public class Fase extends JPanel implements ActionListener {
                 ini.carregar();
                 graficos.drawImage(ini.getImagem(), ini.getPosicaoEmX(), ini.getPosicaoEmY(), null);
             } // FIM NAVE
-            // CARREGANDO INIMIGO METEORITO
+              // CARREGANDO INIMIGO METEORITO
             for (int i = 0; i < inimigo_meteorito.size(); i++) {
                 InimigoMeteorito mete = inimigo_meteorito.get(i);
                 mete.carregar();
                 graficos.drawImage(mete.getImagem_meteoro(), mete.getPosicaoEmX(), mete.getPosicaoEmY(),
                         null);
             } // FIM METEORITO
-            //
+              //
             for (int i = 0; i < tiros.size(); i++) {
                 Tiro tiro = tiros.get(i);
                 if (!tiro.isVisibilidade()) {
@@ -188,38 +187,9 @@ public class Fase extends JPanel implements ActionListener {
             personagem.vidas(graficos);
         }
         // CARREGANDO A TELA DE MORTE CASO O JOGADOR MORRA(OBVIO)
-        if (visibilidade_tela_morte == true) {
-            int larguraTela = 1300;
-            int posicaoEmx_Caveira = 600;
-            int posicaoEmY_Caveira = 15;
-            String enter = "'ENTER' - RESETAR PARTIDA.";
-            String voltar_menu = "'ESC' - VOLTAR AO MENU.";
-            FontMetrics fm = g.getFontMetrics();
-            // PEGA O TAMANHO DA STRING E FAZ O CALCULO PARA CENTRALIZAR
-            int enterWidth = fm.stringWidth(enter);
-            int x = (larguraTela - enterWidth) / 2;
-            int y = ((alturaTela + 250) - fm.getHeight()) / 2;
-
-            int voltar_menuwidth = fm.stringWidth(voltar_menu);
-            int x2 = (larguraTela + 5 - voltar_menuwidth) / 2;
-            int y2 = ((alturaTela + 300) - fm.getHeight()) / 2;
-
-            // CARREGANDO OS FUNDOS
-            if (personagem.getPontos() < 200) {
-                graficos.drawImage(this.fundo, 0, 0, null);
-            } else {
-                graficos.drawImage(this.fundo_fase_2, 0, 0, null);
-            }
-            // CARREGANDO O GIF DA CAVEIRA
-            graficos.drawImage(this.caveira_fundo, posicaoEmx_Caveira, posicaoEmY_Caveira, null);
-            // PONTOS
+        if (telaMorte.isTelaMorteVisibilidade() == true) {
+            telaMorte.fundoTelaMorte(graficos);
             personagem.pontos(graficos);
-            // BANNER FUNDO 'YOU DIE'
-            graficos.drawImage(this.banner_fundo_morte, 0, 0, null);
-            // STRING PARA RESETAR O JOGO
-            graficos.drawString(enter, (x - 100), y);
-            graficos.drawString(voltar_menu, (x2 - 85), y2);
-
         }
         g.dispose();
     }
@@ -230,7 +200,7 @@ public class Fase extends JPanel implements ActionListener {
         personagem.atualiza();
         // VEREFICA SE O INIMIGO ESTA VISIVEL E ATUALIZA A SUA POSICAÇÃO ATRAVES
         // DO METODO 'ATUALIZAR', AO FICAR INVISIVEL O INIMIGO E EXCLUIDO
-        
+
         // A CLASSE ITERATOR E COMO UM PONTEIRO EM C QUE PERMITE INTERAJIR COM UM CERTO
         // OBJETO(INIMIGO) DE UMA LISTA DE FORMA ESPECIFICA E EM SEQUENCIA
         Iterator<InimigoNaves> iterator_naves = inimigo_naves.iterator();
@@ -268,6 +238,16 @@ public class Fase extends JPanel implements ActionListener {
             }
         } // FIM
 
+        List<Tiro> super_tiro = personagem.getTiros_super();
+        Iterator<Tiro> iterator_super = super_tiro.iterator();
+        while (iterator_super.hasNext()) {
+            Tiro tiro_super = iterator_super.next();
+            if (tiro_super.isSuper_visibilidade()) {
+                tiro_super.atualizarSuper();
+            } else {
+                iterator_super.remove();
+            }
+        } // FIM
         if (jogando == false) {
             // PARA O SPAWN DE INIMIGOS
             timer_inimigo_nave.stop();
@@ -303,7 +283,7 @@ public class Fase extends JPanel implements ActionListener {
             if (forma_Nave_Personagem.getBounds().intersects(Forma_Inimigo_Nave.getBounds())) {
                 if (personagem.getVIDAS() == 1) {
                     jogando = false;
-                    visibilidade_tela_morte = true;
+                    telaMorte.setTelaMorteVisibilidade(true);
                 } else {
                     personagem.setVIDAS(personagem.getVIDAS() - 1);
                 }
@@ -318,7 +298,7 @@ public class Fase extends JPanel implements ActionListener {
             if (forma_Nave_Personagem.getBounds().intersects(Forma_Inimig_Meteorito.getBounds())) {
                 if (personagem.getVIDAS() <= 1) {
                     jogando = false;
-                    visibilidade_tela_morte = true;
+                    telaMorte.setTelaMorteVisibilidade(true);
                 } else {
                     personagem.setVIDAS(personagem.getVIDAS() - 1);
                 }
@@ -372,83 +352,83 @@ public class Fase extends JPanel implements ActionListener {
             }
         }
     }
+
     // OPC DOS MENU INICIAL
     public void config_menu(KeyEvent e) {
         int tecla = e.getKeyCode();
         if (tecla == KeyEvent.VK_ENTER) {
             if (tela_menu.getCursor() == 0) { // TELA JOGO FASE - IMPLEMENTAR
-                jogando = false;
                 System.out.println("Tela Fase - Implementando");
             } else if (tela_menu.getCursor() == 1) { // TELA JOGO
                 jogando = true;
                 tela_menu.setVisibilidade_menu(false);
             } else if (tela_menu.getCursor() == 2) { // TELA CONTROLES
-                jogando = false;
                 tela_menu.setVisibilidade_menu(false);
                 tela_Controles.setControle_visibilidade(true);
             } else if (tela_menu.getCursor() == 3) { // TELA HISTORICO - IMPLEMENTAR
-                jogando = false;
                 tela_menu.setVisibilidade_menu(false);
                 tela_Historico.setHistorico_visibilidade(true);
             }
         } // FIM
     }
+
     public void tela_visibilidade(KeyEvent e) {
         int tecla = e.getKeyCode();
 
         if (tela_Controles.isControle_visibilidade() == true) {
             if (tecla == KeyEvent.VK_ESCAPE) {
-                tela_menu.setVisibilidade_menu(true);
                 tela_Controles.setControle_visibilidade(false);
+                tela_menu.setVisibilidade_menu(true);
             }
         }
         if (tela_Historico.isHistorico_visibilidade() == true) {
             if (tecla == KeyEvent.VK_ESCAPE) {
-                tela_menu.setVisibilidade_menu(true);
                 tela_Historico.setHistorico_visibilidade(false);
+                tela_menu.setVisibilidade_menu(true);
             }
         }
     }
+
     public void resetar_partida(KeyEvent e) {
         int tecla = e.getKeyCode();
-        // MEIO QUE UM RESET NO JOGO
-        if (visibilidade_tela_morte == true) {
+        if (telaMorte.isTelaMorteVisibilidade() == true) {
             if (tecla == KeyEvent.VK_ESCAPE) {
-                tela_menu.setVisibilidade_menu(true);
-                personagem.setVIDAS(3);
                 personagem.setPontos(0);
-                visibilidade_tela_morte = false;
+                personagem.setVIDAS(3);
+                telaMorte.setTelaMorteVisibilidade(false);
+                tela_menu.setVisibilidade_menu(true);
             }
             if (tecla == KeyEvent.VK_ENTER) {
                 jogando = true;
-                personagem.setVIDAS(3);
                 personagem.setPontos(0);
-                visibilidade_tela_morte = false;
+                personagem.setVIDAS(3);
+                telaMorte.setTelaMorteVisibilidade(false);
             }
         }
     }
+
     // CHAMANDO A LEITURA DOS TECLADOS
     private class TecladoAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
-            if (tela_Controles.isControle_visibilidade() == true) {
-                tela_visibilidade(e);
-            } else if (tela_Historico.isHistorico_visibilidade() == true) {
-                tela_visibilidade(e);
-            }
-            /////////
             if (tela_menu.isVisibilidade_menu() == true) {
                 tela_menu.tecla_menu(e);
                 config_menu(e);
             }
+            if (tela_Controles.isControle_visibilidade() == true) {
+                tela_visibilidade(e);
+            }
+            if (tela_Historico.isHistorico_visibilidade() == true) {
+                tela_visibilidade(e);
+            }
             if (jogando == true) {
                 personagem.tecla_Precionada(e);
             }
-            ////////
-            if (visibilidade_tela_morte == true) {
+            if (telaMorte.isTelaMorteVisibilidade() == true) {
                 resetar_partida(e);
             }
         }
+
         @Override
         public void keyReleased(KeyEvent e) {
             personagem.tecla_solta(e);
