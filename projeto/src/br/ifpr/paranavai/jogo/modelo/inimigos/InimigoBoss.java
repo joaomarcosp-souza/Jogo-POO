@@ -20,7 +20,7 @@ public class InimigoBoss {
     public void carregar(){
         ImageIcon carregador_boss = new ImageIcon("recursos\\sprites_inimigos\\starDestroyer.png");
         this.imagem_boss = carregador_boss.getImage();
-        this.alturaImagem = imagem_boss.getWidth(null);
+        this.larguraImagem = imagem_boss.getWidth(null);
         this.alturaImagem = imagem_boss.getHeight(null);
     }
 

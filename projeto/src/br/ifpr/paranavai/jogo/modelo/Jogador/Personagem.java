@@ -49,13 +49,13 @@ public class Personagem {
         // IMAGEM PERSONAGEM
         ImageIcon carregador = new ImageIcon("recursos\\sprites_personagem\\xwing.png");
         this.imagem = carregador.getImage();
-        this.alturaImagem = this.imagem.getWidth(null);
-        this.larguraImagem = this.imagem.getHeight(null);
+        this.larguraImagem = this.imagem.getWidth(null);
+        this.alturaImagem = this.imagem.getHeight(null);
         // IMAGEM VIDAS
         ImageIcon carrega_vida = new ImageIcon("recursos\\sprites_personagem\\heart.png");
         this.imagem_vida = carrega_vida.getImage();
-        this.alturaImagem_Vida = this.imagem_vida.getWidth(null);
-        this.larguraImagem_Vida = this.imagem_vida.getHeight(null);
+        this.larguraImagem_Vida = this.imagem_vida.getWidth(null);
+        this.alturaImagem_Vida = this.imagem_vida.getHeight(null);
     }
 
     // Classe para atualizar a posicao
@@ -168,6 +168,7 @@ public class Personagem {
         if (tecla == KeyEvent.VK_D || tecla == KeyEvent.VK_RIGHT) {
             deslocamentoEmX = 0;
         }
+
     }
 
     public int getPontos() {

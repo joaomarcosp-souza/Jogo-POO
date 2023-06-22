@@ -18,10 +18,10 @@ public class InimigoMeteorito {
     }
 
     public void carregar() {
-        ImageIcon carregador_meteorito = new ImageIcon("recursos\\sprites_inimigos\\meteorito.png");
+        ImageIcon carregador_meteorito = new ImageIcon("recursos\\sprites_inimigos\\meteorito01.png");
         this.imagem_meteoro = carregador_meteorito.getImage();
-        this.alturaImagem = this.imagem_meteoro.getWidth(null);
-        this.larguraImagem = this.imagem_meteoro.getHeight(null);
+        this.larguraImagem = this.imagem_meteoro.getWidth(null);
+        this.alturaImagem = this.imagem_meteoro.getHeight(null);
     }
 
     public void atualizar() {

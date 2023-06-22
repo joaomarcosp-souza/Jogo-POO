@@ -53,7 +53,7 @@ public class TelaMorte {
         int alturaTela = 600;
         g.setColor(new Color(255, 209, 70));
         // Set font for the strings
-        g.setFont(pixel.deriveFont(Font.PLAIN, 30));
+        g.setFont(pixel.deriveFont(Font.PLAIN, 25));
         FontMetrics fm = g.getFontMetrics();
         // CENTRALIZANDO PARA CADA STRING
         int enterX = (larguraTela - fm.stringWidth(enter)) / 2;

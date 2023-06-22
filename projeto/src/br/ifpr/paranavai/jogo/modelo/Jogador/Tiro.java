@@ -28,26 +28,14 @@ public class Tiro {
     public void carregar() {
         ImageIcon carregador = new ImageIcon("recursos\\sprites_tiros\\blaster1.png");
         this.imagem = carregador.getImage();
-        this.alturaImagem = this.imagem.getWidth(null);
-        this.larguraImagem = this.imagem.getHeight(null);
-
-        ImageIcon carregador_super = new ImageIcon("recursos\\sprites_tiros\\bluetiro.png");
-        this.imagem_super = carregador_super.getImage();
-        this.alturaImagem_super = this.imagem_super.getWidth(null);
-        this.larguraImagem_super = this.imagem_super.getHeight(null);
+        this.larguraImagem = this.imagem.getWidth(null);
+        this.alturaImagem = this.imagem.getHeight(null);
     }
 
     public void atualizar() {
         this.posicaoEmX += VELOCIDADE;
         if (this.posicaoEmX > LARGURA) {
             visibilidade = false;
-        }
-    }
-
-    public void atualizarSuper() {
-        this.posicaoEmX += VELOCIDADE;
-        if (this.posicaoEmX > LARGURA) {
-            this.super_visibilidade = false;
         }
     }
 
