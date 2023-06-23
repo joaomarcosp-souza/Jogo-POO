@@ -80,8 +80,4 @@ public class InimigoMeteorito {
         this.visibilidade = visibilidade;
     }
 
-    public static int getVELOCIDADE() {
-        return VELOCIDADE;
-    }
-
 }

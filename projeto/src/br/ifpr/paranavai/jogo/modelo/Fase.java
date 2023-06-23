@@ -36,7 +36,6 @@ public class Fase extends JPanel implements ActionListener {
     private boolean jogando;
     private Timer timer_inimigo_nave;
     private Timer timer_inimigo_Meteorito;
-    private Image explosao;
 
     private TelaMenu tela_menu;
     private Personagem personagem;
@@ -54,8 +53,8 @@ public class Fase extends JPanel implements ActionListener {
         ImageIcon fundo_fase_2 = new ImageIcon("recursos\\sprites_Fundos\\fundo_fase_dois.jpg");
         this.fundo_fase_2 = fundo_fase_2.getImage();
         //
-        ImageIcon explosao_img = new ImageIcon("recursos\\sprites_tiros\\explosao.png");
-        this.explosao = explosao_img.getImage();
+        // ImageIcon explosao_img = new
+        // ImageIcon("recursos\\sprites_tiros\\explosao.png");
         // INICIALIZANDO O PERSONAGEM
         personagem = new Personagem();
         personagem.carregar();
@@ -89,7 +88,7 @@ public class Fase extends JPanel implements ActionListener {
 
         // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
         timer_inimigo_nave = new Timer(600, new ActionListener() {
-            int y = 650;
+            int y = 600;
             int alturaInimigo = 10;
 
             @Override
@@ -173,31 +172,23 @@ public class Fase extends JPanel implements ActionListener {
                 graficos.drawImage(mete.getImagem_meteoro(), mete.getPosicaoEmX(), mete.getPosicaoEmY(),
                         null);
             } // FIM METEORITO
-              //
-            for (int i = 0; i < tiros.size(); i++) {
-                Tiro tiro = tiros.get(i);
-                if (!tiro.isVisibilidade()) {
-                    graficos.drawImage(explosao, tiro.getPosicaoEmX(), tiro.getPosicaoEmY(), null);
-
-                }
-            }
 
             // HITBOX
             graficos.setColor(Color.RED);
             Rectangle hitboxPersonagem = personagem.getBounds();
             graficos.drawRect(hitboxPersonagem.x, hitboxPersonagem.y,
-            hitboxPersonagem.width, hitboxPersonagem.height);
+                    hitboxPersonagem.width, hitboxPersonagem.height);
 
             graficos.setColor(Color.BLUE);
             for (InimigoNaves ini : inimigo_naves) {
-            Rectangle hitboxInimigo = ini.getBounds();
-            graficos.drawRect(hitboxInimigo.x, hitboxInimigo.y, hitboxInimigo.width,
-            hitboxInimigo.height);
+                Rectangle hitboxInimigo = ini.getBounds();
+                graficos.drawRect(hitboxInimigo.x, hitboxInimigo.y, hitboxInimigo.width,
+                        hitboxInimigo.height);
             }
             for (InimigoMeteorito mete : inimigo_meteorito) {
-            Rectangle hitboxInimigo = mete.getBounds();
-            graficos.drawRect(hitboxInimigo.x, hitboxInimigo.y, hitboxInimigo.width,
-            hitboxInimigo.height);
+                Rectangle hitboxInimigo = mete.getBounds();
+                graficos.drawRect(hitboxInimigo.x, hitboxInimigo.y, hitboxInimigo.width,
+                        hitboxInimigo.height);
             }
 
             // CARREGANDO OS METODOS DAS INFORMAÇÃO DO JOGO(VIDA E PONTUAÇÃO)
@@ -206,12 +197,8 @@ public class Fase extends JPanel implements ActionListener {
         }
         // CARREGANDO A TELA DE MORTE CASO O JOGADOR MORRA(OBVIO)
         if (telaMorte.isTelaMorteVisibilidade() == true) {
-            if (personagem.getPontos() < 200) {
-                graficos.drawImage(this.fundo, 0, 0, null);
-            } else {
-                graficos.drawImage(this.fundo_fase_2, 0, 0, null);
-            }
-            telaMorte.fundoTelaMorte(graficos);
+            telaMorte.mensagem(graficos);
+            telaMorte.opcoesMenu(graficos);
             personagem.pontos(graficos);
         }
         g.dispose();
@@ -287,8 +274,8 @@ public class Fase extends JPanel implements ActionListener {
         Rectangle forma_Nave_Personagem = personagem.getBounds();
         Rectangle Forma_Inimigo_Nave;
         Rectangle Forma_Inimig_Meteorito;
-        int telaLargura = 1300; // Largura da tela
-        int telaAltura = 720; // Altura da tela
+        int telaLargura = 1250; // Largura da tela
+        int telaAltura = 665; // Altura da tela
 
         // VERIFICA COLISÃO COM A BORDA EM 'X'
         if (personagem.getPosicaoEmX() < 0) {
@@ -359,7 +346,6 @@ public class Fase extends JPanel implements ActionListener {
                 }
             }
         }
-
     }
 
     // OPC DOS MENU INICIAL
@@ -378,7 +364,7 @@ public class Fase extends JPanel implements ActionListener {
                 tela_menu.setVisibilidade_menu(false);
                 tela_Historico.setHistorico_visibilidade(true);
             }
-        } // FIM
+        }
     }
 
     public void tela_visibilidade(KeyEvent e) {
@@ -398,21 +384,24 @@ public class Fase extends JPanel implements ActionListener {
         }
     }
 
-    public void resetar_partida(KeyEvent e) {
+    public void menuResetar(KeyEvent e) {
         int tecla = e.getKeyCode();
         if (telaMorte.isTelaMorteVisibilidade() == true) {
-            if (tecla == KeyEvent.VK_ESCAPE) {
-                personagem.setPontos(0);
-                personagem.setVIDAS(3);
-                telaMorte.setTelaMorteVisibilidade(false);
-                tela_menu.setVisibilidade_menu(true);
-            }
             if (tecla == KeyEvent.VK_ENTER) {
-                jogando = true;
-                personagem.setPontos(0);
-                personagem.setVIDAS(3);
-                telaMorte.setTelaMorteVisibilidade(false);
+                if (telaMorte.getCursor() == 0) {
+                    jogando = true;
+                    personagem.setPontos(0);
+                    personagem.setVIDAS(3);
+                    telaMorte.setTelaMorteVisibilidade(false);
+                }
+                if (telaMorte.getCursor() == 1) {
+                    personagem.setPontos(0);
+                    personagem.setVIDAS(3);
+                    telaMorte.setTelaMorteVisibilidade(false);
+                    tela_menu.setVisibilidade_menu(true);
+                }
             }
+
         }
     }
 
@@ -431,17 +420,18 @@ public class Fase extends JPanel implements ActionListener {
                 tela_visibilidade(e);
             }
             if (jogando == true) {
-                personagem.tecla_Precionada(e);
+                personagem.mover(e);
+                personagem.atirar(e);
             }
             if (telaMorte.isTelaMorteVisibilidade() == true) {
-                resetar_partida(e);
+                menuResetar(e);
+                telaMorte.menuMorto(e);
             }
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            personagem.tecla_solta(e);
+            personagem.parar(e);
         }
-
     }
 }

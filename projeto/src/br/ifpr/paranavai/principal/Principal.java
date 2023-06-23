@@ -10,7 +10,7 @@ public class Principal extends JFrame {
         super.add(fase);
 
         super.setTitle("Star Wars: Invader");
-        super.setSize(1300, 750);
+        super.setSize(1300, 700);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setLocationRelativeTo(null);
         super.setResizable(false);

@@ -7,14 +7,12 @@ public class InimigoBoss {
     private int posicaoEmX, posicaoEmY;
     private int alturaImagem, larguraImagem;
     private Image imagem_boss;
-    private boolean visibilidade;
 
-    private int VELOCIDADE = 5;
+    private static final int VELOCIDADE = 5;
 
     public InimigoBoss(int posicaoEmX, int posicaoEmY){
         this.posicaoEmX = posicaoEmX;
         this.posicaoEmY = posicaoEmY;
-        this.visibilidade = true;
     }
 
     public void carregar(){
@@ -32,59 +30,4 @@ public class InimigoBoss {
         return new Rectangle(posicaoEmX, posicaoEmY, larguraImagem, alturaImagem);
     }
 
-    public int getPosicaoEmX() {
-        return posicaoEmX;
-    }
-
-    public void setPosicaoEmX(int posicaoEmX) {
-        this.posicaoEmX = posicaoEmX;
-    }
-
-    public int getPosicaoEmY() {
-        return posicaoEmY;
-    }
-
-    public void setPosicaoEmY(int posicaoEmY) {
-        this.posicaoEmY = posicaoEmY;
-    }
-
-    public int getAlturaImagem() {
-        return alturaImagem;
-    }
-
-    public void setAlturaImagem(int alturaImagem) {
-        this.alturaImagem = alturaImagem;
-    }
-
-    public int getLarguraImagem() {
-        return larguraImagem;
-    }
-
-    public void setLarguraImagem(int larguraImagem) {
-        this.larguraImagem = larguraImagem;
-    }
-
-    public Image getImagem_boss() {
-        return imagem_boss;
-    }
-
-    public void setImagem_boss(Image imagem_boss) {
-        this.imagem_boss = imagem_boss;
-    }
-
-    public boolean isVisibilidade() {
-        return visibilidade;
-    }
-
-    public void setVisibilidade(boolean visibilidade) {
-        this.visibilidade = visibilidade;
-    }
-
-    public int getVelocidade() {
-        return VELOCIDADE;
-    }
-
-    public void setVelocidade(int velocidade) {
-        this.VELOCIDADE = velocidade;
-    }
 }

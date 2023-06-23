@@ -11,14 +11,15 @@ import java.io.IOException;
 
 import javax.swing.ImageIcon;
 
+import java.awt.event.KeyEvent;
+
 public class TelaMorte {
-    private Image banner_fundo_morte;
-    private Image caveira_fundo;
-    private int posicaoEmX, posicaoEmY;
-    private int larguraImagem, alturaImagem;
     private boolean telaMorteVisibilidade;
-    private int posicaoEmx_Caveira = 600;
-    private int posicaoEmY_Caveira = 15;
+    private int cursor;
+    private Image imagem;
+    private int alturaImagem, larguraImagem;
+    private static final int larguraTela = 1300;
+    private static final int alturaTela = 600;
 
     private Font pixel = null;
     Image teste;
@@ -35,85 +36,90 @@ public class TelaMorte {
     }
 
     public void carregar() {
-        ImageIcon caveira = new ImageIcon("recursos\\sprites_fundos\\caveira.gif");
-        this.caveira_fundo = caveira.getImage();
-        // 'YOU DIE' IMG
-        ImageIcon banner_fundo = new ImageIcon("recursos\\sprites_fundos\\banner_fundo_morte.png");
-        this.banner_fundo_morte = banner_fundo.getImage();
-
-        ImageIcon teste_care = new ImageIcon("recursos\\sprites_fundos\\fundo_morte.gif");
-        this.teste = teste_care.getImage();
+        ImageIcon carregando = new ImageIcon("recursos\\sprites_fundos\\fundo_menu.jpg");
+        this.imagem = carregando.getImage();
+        this.alturaImagem = this.imagem.getWidth(null);
+        this.larguraImagem = this.imagem.getHeight(null);
     }
 
-    public void fundoTelaMorte(Graphics g) {
-        String enter = "'ENTER' - RESETAR PARTIDA.";
-        String voltar_menu = "'ESC' - VOLTAR AO MENU.";
+    public void mensagem(Graphics t) {
+        t.drawImage(imagem, 0, 0, null);
+        int alturaTela = 400;
+        String tituloPricipal = "GAME";
 
-        int larguraTela = 1300;
-        int alturaTela = 600;
-        g.setColor(new Color(255, 209, 70));
-        // Set font for the strings
-        g.setFont(pixel.deriveFont(Font.PLAIN, 25));
+        String SubTitulo = "OVER";
+
+        t.setColor(new Color(255, 209, 70));
+        t.setFont(pixel.deriveFont(Font.PLAIN, 120));
+
+        FontMetrics fm = t.getFontMetrics();
+        int tituloPricipalX = (larguraTela - fm.stringWidth(tituloPricipal)) / 2;
+        int subTituloX = (larguraTela - fm.stringWidth(SubTitulo)) / 2;
+        int y = (alturaTela - fm.getHeight()) / 2;
+
+        t.drawString(tituloPricipal, tituloPricipalX, y);
+        t.setColor(Color.white);
+        t.drawString(SubTitulo, subTituloX, y + 100);
+    }
+
+    public void opcoesMenu(Graphics g) {
+        String frase = "JOGAR NOVAMENTE?";
+        String sim = "SIM";
+        String nao = "NAO";
+
+        g.setFont(pixel.deriveFont(Font.PLAIN, 35));
         FontMetrics fm = g.getFontMetrics();
-        // CENTRALIZANDO PARA CADA STRING
-        int enterX = (larguraTela - fm.stringWidth(enter)) / 2;
-        int voltarMenuX = (larguraTela - fm.stringWidth(voltar_menu)) / 2;
-        int y = alturaTela; // POSICÇÃO CENTRAL VERTICAL
-
-        g.drawImage(teste, 0, 0, null);
-        g.drawImage(this.caveira_fundo, posicaoEmx_Caveira, posicaoEmY_Caveira, null);
-        g.drawImage(this.banner_fundo_morte, 0, 0, null);
-
-        g.drawString(enter, enterX, y);
-        g.drawString(voltar_menu, voltarMenuX, y + 30);
+        // COMEÇO DA FRASE
+        int posicaoFraseEmX = (larguraTela - fm.stringWidth(frase)) / 2;
+        int posicaoFraseEmY = alturaTela - 100;
+        g.drawString(frase, posicaoFraseEmX - 5, posicaoFraseEmY);
+        // DECLARAÇÃO DAS OPÇÕES
+        int simWidth = fm.stringWidth(sim);
+        int naoWidth = fm.stringWidth(nao);
+        int totalWidth = simWidth + naoWidth + 100;
+        // COMEÇO DA OPÇÃO 'SIM'
+        int posicaoSimEmX = (larguraTela - totalWidth) / 2;
+        int posicaoSimEmY = posicaoFraseEmY + 100;
+        if (cursor == 0) {
+            g.setColor(new Color(255, 209, 70));
+        } else {
+            g.setColor(Color.WHITE);
+        }
+        g.drawString(sim, posicaoSimEmX, posicaoSimEmY);
+        if (cursor == 0) {
+            int cursorWidth = fm.stringWidth(">");
+            g.drawString(">", posicaoSimEmX - cursorWidth, posicaoSimEmY);
+        }
+        // COMEÇO DA OPÇÃO 'NÃO'
+        int posicaoNaoEmX = posicaoSimEmX + simWidth + 100;
+        int posicaoNaoEmY = posicaoSimEmY;
+        if (cursor == 1) {
+            g.setColor(new Color(255, 209, 70));
+        } else {
+            g.setColor(Color.WHITE);
+        }
+        g.drawString(nao, posicaoNaoEmX, posicaoNaoEmY);
+        if (cursor == 1) {
+            int cursorWidth = fm.stringWidth(">");
+            g.drawString(">", posicaoNaoEmX - cursorWidth, posicaoNaoEmY);
+        }
     }
 
-    public Image getBanner_fundo_morte() {
-        return banner_fundo_morte;
-    }
+    public void menuMorto(KeyEvent teclado) {
+        int tecla = teclado.getKeyCode();
 
-    public void setBanner_fundo_morte(Image banner_fundo_morte) {
-        this.banner_fundo_morte = banner_fundo_morte;
-    }
-
-    public Image getCaveira_fundo() {
-        return caveira_fundo;
-    }
-
-    public void setCaveira_fundo(Image caveira_fundo) {
-        this.caveira_fundo = caveira_fundo;
-    }
-
-    public int getPosicaoEmX() {
-        return posicaoEmX;
-    }
-
-    public void setPosicaoEmX(int posicaoEmX) {
-        this.posicaoEmX = posicaoEmX;
-    }
-
-    public int getPosicaoEmY() {
-        return posicaoEmY;
-    }
-
-    public void setPosicaoEmY(int posicaoEmY) {
-        this.posicaoEmY = posicaoEmY;
-    }
-
-    public int getLarguraImagem() {
-        return larguraImagem;
-    }
-
-    public void setLarguraImagem(int larguraImagem) {
-        this.larguraImagem = larguraImagem;
-    }
-
-    public int getAlturaImagem() {
-        return alturaImagem;
-    }
-
-    public void setAlturaImagem(int alturaImagem) {
-        this.alturaImagem = alturaImagem;
+        if (tecla == KeyEvent.VK_LEFT) {
+            cursor--;
+            if (cursor < 0) {
+                cursor = 1;
+            }
+        }
+        if (tecla == KeyEvent.VK_RIGHT) {
+            cursor++;
+            if (cursor > 1) {
+                cursor = 0;
+            }
+        }
     }
 
     public boolean isTelaMorteVisibilidade() {
@@ -124,28 +130,12 @@ public class TelaMorte {
         this.telaMorteVisibilidade = telaMorteVisibilidade;
     }
 
-    public int getPosicaoEmx_Caveira() {
-        return posicaoEmx_Caveira;
+    public int getCursor() {
+        return cursor;
     }
 
-    public void setPosicaoEmx_Caveira(int posicaoEmx_Caveira) {
-        this.posicaoEmx_Caveira = posicaoEmx_Caveira;
-    }
-
-    public int getPosicaoEmY_Caveira() {
-        return posicaoEmY_Caveira;
-    }
-
-    public void setPosicaoEmY_Caveira(int posicaoEmY_Caveira) {
-        this.posicaoEmY_Caveira = posicaoEmY_Caveira;
-    }
-
-    public Font getPixel() {
-        return pixel;
-    }
-
-    public void setPixel(Font pixel) {
-        this.pixel = pixel;
+    public void setCursor(int cursor) {
+        this.cursor = cursor;
     }
 
 }

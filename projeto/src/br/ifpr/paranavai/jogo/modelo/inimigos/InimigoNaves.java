@@ -10,7 +10,7 @@ public class InimigoNaves {
     private Image imagem_nave;
     private boolean visibilidade;
 
-     private int VELOCIDADE = 5; //Constante que não deve ser alterada
+    private static final int VELOCIDADE = 5;
 
     public InimigoNaves(int posicaoEmX, int posicaoEmY) {
         this.posicaoEmX = posicaoEmX;
@@ -97,10 +97,4 @@ public class InimigoNaves {
     public int getVELOCIDADE() {
         return VELOCIDADE;
     }
-
-    public void setVELOCIDADE(int vELOCIDADE) {
-        VELOCIDADE = vELOCIDADE;
-    }
-
-    
 }

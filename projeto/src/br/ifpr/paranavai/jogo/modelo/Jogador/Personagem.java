@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +42,7 @@ public class Personagem {
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
+
     }
 
     public void carregar() {
@@ -58,81 +58,18 @@ public class Personagem {
         this.alturaImagem_Vida = this.imagem_vida.getHeight(null);
     }
 
-    // Classe para atualizar a posicao
-    public void atualiza() {
-        // Atualiza a posição do personagem
-        posicaoEmX += deslocamentoEmX;
-        posicaoEmY += deslocamentoEmY;
-    }
-
-    // MÉTODO TIRO
-    public void tiro_simples() {
-        this.tiros.add(new Tiro(posicaoEmX + larguraImagem / 2, posicaoEmY + (alturaImagem / 2)));
-    }
-
-    public void super_tiro() {
-        this.tiros_super.add(new Tiro(posicaoEmX + larguraImagem / 2, posicaoEmY + (alturaImagem / 2)));
-    }
-
-    //
+    // CAIXA PARA COLISÃO
     public Rectangle getBounds() {
         return new Rectangle(posicaoEmX, posicaoEmY, larguraImagem, alturaImagem);
     }
-
-    // MÉTODO DE PONTUAÇÃO DO JOGADOR
-    public void pontos(Graphics pont) {
-        // TITULO DO JOGO
-        String pont_string = "PONTOS: " + pontos;
-        Font fonte = pixel;
-        // ESTILO DA FONTEd
-        fonte = fonte.deriveFont(Font.BOLD, 20);
-        // COR FONTE
-        pont.setColor(new Color(255, 209, 70)); // COR DO TITULO AMARELO
-        pont.setFont(fonte);
-        // DESENHA A STRING COM A POSIÇÃO (x,y)
-        pont.drawString(pont_string, 10, 20);
+    // MÉTODO PARA ATUALIZAR O MOVIMENTO DO PERSONAGEM
+    public void atualiza() {
+        posicaoEmX += deslocamentoEmX;
+        posicaoEmY += deslocamentoEmY;
     }
-
-    // MÉTODO DA VIDA DO JOGADOR
-    public void vidas(Graphics life) {
-        JPanel panel = new JPanel();
-        // DEFINE A STRING DE EXIBIÇÃO
-        String vida = "Vidas";
-        // CRIA UM ESTILO DE FONTE
-        Font estilo = new Font("Consolas", Font.BOLD, 10);
-        // CRIA A MÉTRICA DA FONTE
-        FontMetrics metrica = panel.getFontMetrics(estilo);
-        // OBTÉM O TAMANHO DA STRING NA TELA
-        int width = metrica.stringWidth(vida);
-        // CALCUPA A DISTÂNCIA DA BORDA PARA POSICIONAR A STRING
-        int distancia = (15 * VIDAS) + (5 * VIDAS) + 100 + width;
-        // PARA CADA VIDA DO JOGADOR, DESENHA UMA IMAGEM DA VIDA,
-        // ALTERANDO A POSIÇÃO COM BASE NOS CALCULOS PARA DEFINIR
-        // A POSIÇÃO DE CADA UMA EM (x,y)
-        for (int i = 0; i < VIDAS; i++) {
-            life.drawImage(imagem_vida, (largureTela + 30) - width, 10, null);
-            width += alturaImagem_Vida + 5;
-        }
-        // SETA A COR DA FONTE
-        life.setColor(Color.WHITE);
-        // SETA O ESTILO DE FONTE
-        life.setFont(estilo);
-        // DESENHA A STRING COM A POSIÇÃO (x,y)
-        life.drawString(vida, larguraImagem_Vida - distancia, 10);
-    }
-
-    // COMEÇO DO METODO MOVIMENTO
-    public void tecla_Precionada(KeyEvent teclado) {
+    // METODO MOVIMENTO
+    public void mover(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
-
-        // TECLA TIRO
-        if (tecla == KeyEvent.VK_SPACE) {
-            tiro_simples();
-        }
-
-        if (tecla == KeyEvent.VK_R) {
-            super_tiro();
-        }
 
         // TECLAS MOVIMENTAÇÃO
         if (tecla == KeyEvent.VK_W || tecla == KeyEvent.VK_UP) {
@@ -150,7 +87,7 @@ public class Personagem {
         }
     }
 
-    public void tecla_solta(KeyEvent teclado) {
+    public void parar(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
 
         if (tecla == KeyEvent.VK_W || tecla == KeyEvent.VK_UP) {
@@ -168,7 +105,55 @@ public class Personagem {
         if (tecla == KeyEvent.VK_D || tecla == KeyEvent.VK_RIGHT) {
             deslocamentoEmX = 0;
         }
+    }
 
+    // MÉTODO TIRO
+    public void tiro_simples() {
+        this.tiros.add(new Tiro(posicaoEmX + larguraImagem / 2, posicaoEmY + (alturaImagem / 2)));
+    }
+
+    public void atirar(KeyEvent teclado) {
+        int tecla = teclado.getKeyCode();
+
+        if (tecla == KeyEvent.VK_SPACE) {
+            tiro_simples();
+        }
+    }
+
+    // DESENHA A PONTUAÇÃO DO PERSONAGEM NA TELA
+    public void pontos(Graphics g) {
+        String pontosSTR = "PONTOS: " + pontos;
+        g.setFont(pixel.deriveFont(Font.PLAIN, 22));
+        g.setColor(new Color(255, 209, 70));
+        g.drawString(pontosSTR, 20, 25);
+    }
+
+    // DESENHA A IMG DE VIDAS DO PERSONAGEM
+    public void vidas(Graphics life) {
+        JPanel panel = new JPanel();
+        // DEFINE A STRING DE EXIBIÇÃO
+        String vida = "Vidas";
+        // CRIA UM ESTILO DE FONTE
+        Font estilo = new Font("Consolas", Font.BOLD, 10);
+        // CRIA A MÉTRICA DA FONTE
+        FontMetrics metrica = panel.getFontMetrics(estilo);
+        // OBTÉM O TAMANHO DA STRING NA TELA
+        int width = metrica.stringWidth(vida);
+        // CALCUPA A DISTÂNCIA DA BORDA PARA POSICIONAR A VIDA
+        int distancia = (15 * VIDAS) + (5 * VIDAS) + 100 + width;
+        // PARA CADA VIDA DO JOGADOR, DESENHA UMA IMAGEM DA VIDA,
+        // ALTERANDO A POSIÇÃO COM BASE NOS CALCULOS PARA DEFINIR
+        // A POSIÇÃO DE CADA UMA EM (x,y)
+        for (int i = 0; i < VIDAS; i++) {
+            life.drawImage(imagem_vida, (largureTela + 30) - width, 10, null);
+            width += alturaImagem_Vida + 5;
+        }
+        // SETA A COR DA FONTE
+        life.setColor(Color.WHITE);
+        // SETA O ESTILO DE FONTE
+        life.setFont(estilo);
+        // DESENHA A STRING COM A POSIÇÃO (x,y)
+        life.drawString(vida, larguraImagem_Vida - distancia, 10);
     }
 
     public int getPontos() {
@@ -243,22 +228,6 @@ public class Personagem {
         this.imagem = imagem;
     }
 
-    public int getDeslocamentoEmX() {
-        return deslocamentoEmX;
-    }
-
-    public void setDeslocamentoEmX(int deslocamentoEmX) {
-        this.deslocamentoEmX = deslocamentoEmX;
-    }
-
-    public int getDeslocamentoEmY() {
-        return deslocamentoEmY;
-    }
-
-    public void setDeslocamentoEmY(int deslocamentoEmY) {
-        this.deslocamentoEmY = deslocamentoEmY;
-    }
-
     public int getPosicaoInicialEmX() {
         return POSICAO_INICIAL_EM_X;
     }
@@ -274,5 +243,5 @@ public class Personagem {
     public void setTiros_super(List<Tiro> tiros_super) {
         this.tiros_super = tiros_super;
     }
-    
+
 }
