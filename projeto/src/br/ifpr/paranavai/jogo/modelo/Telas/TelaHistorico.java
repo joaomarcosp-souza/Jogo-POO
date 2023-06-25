@@ -35,26 +35,20 @@ public class TelaHistorico {
 
     public void titulo_Historico(Graphics g) {
         g.drawImage(imagem_historico, 0, 0, null);
-
         String titulo = "HISTORICO";
+        
         Font fonte = pixel;
-
         fonte = fonte.deriveFont(Font.BOLD, 85);
-
         g.setColor(new Color(255, 209, 70)); // COR DO TITULO AMARELO
         g.setFont(fonte);
         // CRENTALIZA VERTICALMENTE
         FontMetrics fm = g.getFontMetrics();
-
         int tituloWidth = fm.stringWidth(titulo); // PEGA O TAMANHO DA STRING
         int x = (alturaImagem - tituloWidth) / 2;
         int y = 100 + (larguraImagem - fm.getHeight()) / 2;
-        //
+
         g.setColor(Color.WHITE); // DEFINE A COR PRINCIPAL DO TÍTULO - BRANCO
-        g.drawString(titulo, (x + 7), y - 280); // POSIÇÃO DO TITULO - AMARELO
-        // SUBTITULO COR AMARELO
-        // DESENHA O SUBTÍTULO NA TELA - AMARELO
-        // t.setColor(new Color(255, 209, 70));
+        g.drawString(titulo, (x + 5), y - 280); // POSIÇÃO DO TITULO - AMARELO
         g.setColor(new Color(255, 209, 70));
         g.drawString(titulo, x, y - 280); // POSIÇÃO DO TÍTULO PRINCIPAL - COR BRANCA
     }

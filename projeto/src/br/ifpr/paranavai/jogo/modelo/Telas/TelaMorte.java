@@ -20,9 +20,7 @@ public class TelaMorte {
     private int alturaImagem, larguraImagem;
     private static final int larguraTela = 1300;
     private static final int alturaTela = 600;
-
     private Font pixel = null;
-    Image teste;
 
     public TelaMorte() {
         try {
@@ -46,10 +44,9 @@ public class TelaMorte {
         t.drawImage(imagem, 0, 0, null);
         int alturaTela = 400;
         String tituloPricipal = "GAME";
-
+        String tituloPricipal_2 = "GAME";
         String SubTitulo = "OVER";
 
-        t.setColor(new Color(255, 209, 70));
         t.setFont(pixel.deriveFont(Font.PLAIN, 120));
 
         FontMetrics fm = t.getFontMetrics();
@@ -57,6 +54,9 @@ public class TelaMorte {
         int subTituloX = (larguraTela - fm.stringWidth(SubTitulo)) / 2;
         int y = (alturaTela - fm.getHeight()) / 2;
 
+        t.setColor(Color.white);
+        t.drawString(tituloPricipal_2, tituloPricipalX + 5, y);
+        t.setColor(new Color(255, 209, 70));
         t.drawString(tituloPricipal, tituloPricipalX, y);
         t.setColor(Color.white);
         t.drawString(SubTitulo, subTituloX, y + 100);
@@ -136,6 +136,22 @@ public class TelaMorte {
 
     public void setCursor(int cursor) {
         this.cursor = cursor;
+    }
+
+    public int getAlturaImagem() {
+        return alturaImagem;
+    }
+
+    public void setAlturaImagem(int alturaImagem) {
+        this.alturaImagem = alturaImagem;
+    }
+
+    public int getLarguraImagem() {
+        return larguraImagem;
+    }
+
+    public void setLarguraImagem(int larguraImagem) {
+        this.larguraImagem = larguraImagem;
     }
 
 }
