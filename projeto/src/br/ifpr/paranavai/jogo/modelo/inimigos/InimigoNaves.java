@@ -9,6 +9,7 @@ public class InimigoNaves {
     private int alturaImagem;
     private Image imagem_nave;
     private boolean visibilidade;
+    private int VIDASINIMIGOS = 2;
 
     private static final int VELOCIDADE = 5;
 
@@ -20,7 +21,8 @@ public class InimigoNaves {
 
     public void carregar() {
         ImageIcon carregador = new ImageIcon("recursos\\sprites_inimigos\\tfighter.png");
-        //ImageIcon carregador = new ImageIcon("recursos\\sprites_inimigos\\starDestroyer.png");
+        // ImageIcon carregador = new
+        // ImageIcon("recursos\\sprites_inimigos\\starDestroyer.png");
         this.imagem_nave = carregador.getImage();
         this.larguraImagem = this.imagem_nave.getWidth(null);
         this.alturaImagem = this.imagem_nave.getHeight(null);
@@ -58,14 +60,6 @@ public class InimigoNaves {
         this.imagem_nave = imagem;
     }
 
-    public int getLarguraImagem() {
-        return larguraImagem;
-    }
-
-    public void setLarguraImagem(int larguraImagem) {
-        this.larguraImagem = larguraImagem;
-    }
-
     public int getAlturaImagem() {
         return alturaImagem;
     }
@@ -90,11 +84,12 @@ public class InimigoNaves {
         this.visibilidade = visibilidade;
     }
 
-    public  int getVelocidade() {
-        return VELOCIDADE;
+    public int getVIDASINIMIGOS() {
+        return VIDASINIMIGOS;
     }
 
-    public int getVELOCIDADE() {
-        return VELOCIDADE;
+    public void setVIDASINIMIGOS(int vIDASINIMIGOS) {
+        VIDASINIMIGOS = vIDASINIMIGOS;
     }
+
 }

@@ -20,7 +20,6 @@ public class Personagem {
     private boolean visibilidade;
     private Image imagem_vida;
     private Font pixel = null;
-
     private int VIDAS = 3;
     private int largureTela = 1200;
 

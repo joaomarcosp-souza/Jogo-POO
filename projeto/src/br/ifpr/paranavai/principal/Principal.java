@@ -1,7 +1,6 @@
 package br.ifpr.paranavai.principal;
 
 import javax.swing.JFrame;
-import br.ifpr.paranavai.jogo.modelo.Fase;
 
 public class Principal extends JFrame {
 

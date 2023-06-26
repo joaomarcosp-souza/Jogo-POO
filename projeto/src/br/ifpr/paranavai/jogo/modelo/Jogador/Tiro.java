@@ -9,8 +9,9 @@ public class Tiro {
     private Image imagem;
     private Image imagem_super;
     private int posicaoEmX, posicaoEmY;
-    private int larguraImagem, larguraImagem_super, alturaImagem, alturaImagem_super;
-    private boolean visibilidade, super_visibilidade;
+    private int larguraImagem, larguraImagem_super, alturaImagem;
+    private boolean visibilidade;
+    
 
     // CONSTANTES
     private static int VELOCIDADE = 20; // VELOCIDADE DO TIRO
@@ -21,7 +22,6 @@ public class Tiro {
         this.posicaoEmX = posicaoEmX;
         this.posicaoEmY = posicaoEmY;
         this.visibilidade = true;
-        this.super_visibilidade = true;
     }
 
     // MÉTODO PARA CARREGAR
@@ -117,22 +117,6 @@ public class Tiro {
 
     public void setLarguraImagem_super(int larguraImagem_super) {
         this.larguraImagem_super = larguraImagem_super;
-    }
-
-    public int getAlturaImagem_super() {
-        return alturaImagem_super;
-    }
-
-    public void setAlturaImagem_super(int alturaImagem_super) {
-        this.alturaImagem_super = alturaImagem_super;
-    }
-
-    public boolean isSuper_visibilidade() {
-        return super_visibilidade;
-    }
-
-    public void setSuper_visibilidade(boolean super_visibilidade) {
-        this.super_visibilidade = super_visibilidade;
     }
     
 }
