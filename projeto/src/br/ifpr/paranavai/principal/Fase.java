@@ -87,8 +87,8 @@ public class Fase extends JPanel implements ActionListener {
         inimigo_naves = new ArrayList<InimigoNaves>();
 
         // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
-        timer_inimigo_nave = new Timer(600, new ActionListener() {
-            int y = 600;
+        timer_inimigo_nave = new Timer(500, new ActionListener() {
+            int y = 620;
             int alturaInimigo = 10;
 
             @Override
@@ -219,9 +219,9 @@ public class Fase extends JPanel implements ActionListener {
             if (ini.isVisibilidade()) {
                 ini.atualizar();
             } else {
+                System.out.println("removeu");
                 iterator_naves.remove();
             }
-
         } // FIM ITERATOR NAVES
 
         // ATUALIZA A POSIÇÃO DO METORITO

@@ -26,6 +26,9 @@ public class InimigoMeteorito {
 
     public void atualizar() {
         this.posicaoEmY += VELOCIDADE;
+        if (this.posicaoEmY > 700) {
+            visibilidade = false;
+        }
     }
 
     public Rectangle getBounds() {

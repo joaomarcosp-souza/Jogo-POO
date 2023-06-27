@@ -11,10 +11,9 @@ public class Tiro {
     private int posicaoEmX, posicaoEmY;
     private int larguraImagem, larguraImagem_super, alturaImagem;
     private boolean visibilidade;
-    
 
     // CONSTANTES
-    private static int VELOCIDADE = 20; // VELOCIDADE DO TIRO
+    private static int VELOCIDADE = 15; // VELOCIDADE DO TIRO
     private static final int LARGURA = 1300;
 
     // CONSTRUTOR
@@ -91,14 +90,6 @@ public class Tiro {
         this.visibilidade = visibilidade;
     }
 
-    public static int getVELOCIDADE() {
-        return VELOCIDADE;
-    }
-
-    public static void setVELOCIDADE(int vELOCIDADE) {
-        VELOCIDADE = vELOCIDADE;
-    }
-
     public static int getLargura() {
         return LARGURA;
     }
@@ -118,5 +109,4 @@ public class Tiro {
     public void setLarguraImagem_super(int larguraImagem_super) {
         this.larguraImagem_super = larguraImagem_super;
     }
-    
 }

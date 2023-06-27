@@ -30,6 +30,9 @@ public class InimigoNaves {
 
     public void atualizar() {
         this.posicaoEmX -= VELOCIDADE;
+        if (this.posicaoEmX < -50) {
+            visibilidade = false;
+        }
     }
 
     public Rectangle getBounds() {
