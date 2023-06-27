@@ -243,4 +243,8 @@ public class Personagem {
         this.tiros_super = tiros_super;
     }
 
+    public Font getPixel() {
+        return pixel;
+    }
+    
 }

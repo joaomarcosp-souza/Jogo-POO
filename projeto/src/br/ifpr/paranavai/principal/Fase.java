@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Color;
+import java.awt.Font;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,7 +37,6 @@ public class Fase extends JPanel implements ActionListener {
     private boolean jogando;
     private Timer timer_inimigo_nave;
     private Timer timer_inimigo_Meteorito;
-
     private TelaMenu tela_menu;
     private Personagem personagem;
     private TelaHistorico tela_Historico;
@@ -108,7 +108,6 @@ public class Fase extends JPanel implements ActionListener {
     public void inicializa_Metorito_Inimigo() {
         inimigo_meteorito = new ArrayList<InimigoMeteorito>();
         int alturaInimigo = 10;
-
         // TIMER PARA SPAWNAR O METEORITO
         timer_inimigo_Meteorito = new Timer(5000, new ActionListener() {
             @Override
@@ -140,9 +139,7 @@ public class Fase extends JPanel implements ActionListener {
             tela_Historico.titulo_Historico(graficos);
             jogando = false;
         }
-
         if (jogando == true) {
-            //
             graficos.drawImage(this.fundo, 0, 0, null);
             if (personagem.getPontos() >= 200) {
                 graficos.drawImage(this.fundo_fase_2, 0, 0, null);
@@ -164,6 +161,11 @@ public class Fase extends JPanel implements ActionListener {
                 InimigoNaves ini = inimigo_naves.get(i);
                 ini.carregar();
                 graficos.drawImage(ini.getImagem(), ini.getPosicaoEmX(), ini.getPosicaoEmY(), null);
+                if (!ini.isVisibilidade()) {
+                    graficos.setColor(Color.white);
+                    graficos.setFont(personagem.getPixel().deriveFont(Font.PLAIN, 35));
+                    graficos.drawString("+10", ini.getPosicaoEmX(), ini.getPosicaoEmY());
+                }
             } // FIM NAVE
               // CARREGANDO INIMIGO METEORITO
             for (int i = 0; i < inimigo_meteorito.size(); i++) {
@@ -171,9 +173,13 @@ public class Fase extends JPanel implements ActionListener {
                 mete.carregar();
                 graficos.drawImage(mete.getImagem_meteoro(), mete.getPosicaoEmX(), mete.getPosicaoEmY(),
                         null);
+                if (!mete.isVisibilidade()) {
+                    graficos.setColor(Color.white);
+                    graficos.setFont(personagem.getPixel().deriveFont(Font.PLAIN, 35));
+                    graficos.drawString("+20", mete.getPosicaoEmX(), mete.getPosicaoEmY());
+                }
             } // FIM METEORITO
-
-            // HITBOX
+              // HITBOX
             graficos.setColor(Color.RED);
             Rectangle hitboxPersonagem = personagem.getBounds();
             graficos.drawRect(hitboxPersonagem.x, hitboxPersonagem.y,
@@ -219,7 +225,6 @@ public class Fase extends JPanel implements ActionListener {
             if (ini.isVisibilidade()) {
                 ini.atualizar();
             } else {
-                System.out.println("removeu");
                 iterator_naves.remove();
             }
         } // FIM ITERATOR NAVES

@@ -10,6 +10,7 @@ public class InimigoNaves {
     private Image imagem_nave;
     private boolean visibilidade;
     private int VIDASINIMIGOS = 2;
+    private int tempoVisivel;
 
     private static final int VELOCIDADE = 5;
 
@@ -95,4 +96,12 @@ public class InimigoNaves {
         VIDASINIMIGOS = vIDASINIMIGOS;
     }
 
+    public int getTempoVisivel() {
+        return tempoVisivel;
+    }
+
+    public void setTempoVisivel(int tempoVisivel) {
+        this.tempoVisivel = tempoVisivel;
+    }
+    
 }
