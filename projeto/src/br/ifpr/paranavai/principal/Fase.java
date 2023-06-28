@@ -80,13 +80,13 @@ public class Fase extends JPanel implements ActionListener {
         timer.start(); // START
 
         // INICIALIZANDO MÉTODOS INIMIGOS
-        inicializa_Nave_Inimiga(); // NAVES
-        inicializa_Metorito_Inimigo(); // METEORITOS
+        InicializaNaveInimiga(); // NAVES
+        InicializaMeteorito(); // METEORITOS
         jogando = false;
     }
 
     // INICIANDO POSIÇÃO DAS NAVES INIMIGAS ALEATORIAMENTE
-    public void inicializa_Nave_Inimiga() {
+    public void InicializaNaveInimiga() {
         inimigo_naves = new ArrayList<InimigoNaves>();
 
         // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
@@ -108,7 +108,7 @@ public class Fase extends JPanel implements ActionListener {
     }
 
     // INICIANDO POSIÇÃO DO METEORITO ALEATORIAMENTE
-    public void inicializa_Metorito_Inimigo() {
+    public void InicializaMeteorito() {
         inimigo_meteorito = new ArrayList<InimigoMeteorito>();
         int alturaInimigo = 100;
         // TIMER PARA SPAWNAR O METEORITO
@@ -126,9 +126,8 @@ public class Fase extends JPanel implements ActionListener {
         timer_inimigo_Meteorito.setRepeats(true);
     }// FIM MÉTODO METEORITO
 
-    public void paint(Graphics g) {
-        // CHAMA O MÉTODO PAINT DA SUPERCLASSE PARA LIMPAR A TELA ANTES DE A REDESENHAR
-        super.paint(g);
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         Graphics2D graficos = (Graphics2D) g;
 
         if (tela_menu.isVisibilidade_menu() == true) {
@@ -153,7 +152,6 @@ public class Fase extends JPanel implements ActionListener {
                 Tiro tiro = tiros.get(i);
                 tiro.carregar();
                 graficos.drawImage(tiro.getImagem(), tiro.getPosicaoEmX(), tiro.getPosicaoEmY(), null);
-                // Desenhar a imagem de explosão
             }
             // CARREGANDO A IMAGEM DO PERSNAGEM
             // ESTA AQUI EMBAIXO PARA A IMG FICAR ACIMA DA IMAGEM DO TIROW
@@ -219,7 +217,6 @@ public class Fase extends JPanel implements ActionListener {
         personagem.atualiza();
         // VEREFICA SE O INIMIGO ESTA VISIVEL E ATUALIZA A SUA POSICAÇÃO ATRAVES
         // DO METODO 'ATUALIZAR', AO FICAR INVISIVEL O INIMIGO E EXCLUIDO
-
         // A CLASSE ITERATOR E COMO UM PONTEIRO EM C QUE PERMITE INTERAJIR COM UM CERTO
         // OBJETO(INIMIGO) DE UMA LISTA DE FORMA ESPECIFICA E EM SEQUENCIA
         Iterator<InimigoNaves> iterator_naves = inimigo_naves.iterator();
@@ -255,6 +252,32 @@ public class Fase extends JPanel implements ActionListener {
                 iterator_tiro.remove();
             }
         } // FIM
+
+        checarColisoes();
+        gerenciarInimigos();
+        repaint();
+    }
+
+    public void gerenciarInimigos() {
+        if (personagem.getPontos() >= 350) {
+            int aumentoVelocidade = 5;
+            inimigo_naves.forEach(temp_nave -> temp_nave.setVELOCIDADE(aumentoVelocidade));
+        }
+        if (personagem.getPontos() > 600) {
+            int aumentoVelocidade = 6;
+            inimigo_naves.forEach(temp_nave -> temp_nave.setVELOCIDADE(aumentoVelocidade));
+            inimigo_meteorito.forEach(temp_mete -> temp_mete.setVELOCIDADE(aumentoVelocidade));
+        }
+        if (personagem.getPontos() > 750) {
+            int aumentoVelocidade = 7;
+            inimigo_naves.forEach(temp_nave -> temp_nave.setVELOCIDADE(aumentoVelocidade));
+        }
+        if (personagem.getPontos() > 1000) {
+            int aumentoVelocidade = 8;
+            inimigo_naves.forEach(temp_nave -> temp_nave.setVELOCIDADE(aumentoVelocidade));
+            inimigo_meteorito.forEach(temp_mete -> temp_mete.setVELOCIDADE(aumentoVelocidade));
+        }
+
         if (jogando == false) {
             // PARA O SPAWN DE INIMIGOS
             timer_inimigo_nave.stop();
@@ -272,31 +295,6 @@ public class Fase extends JPanel implements ActionListener {
             if (personagem.getPontos() > 200) {
                 timer_inimigo_Meteorito.start();
             }
-        }
-        checarColisoes();
-        ChecarVelocidade();
-        repaint();
-    }
-
-    public void ChecarVelocidade() {
-        if (personagem.getPontos() >= 350) {
-            double aumentoVelocidade = 5;
-            inimigo_naves.forEach(temp_nave -> temp_nave.setVELOCIDADE(aumentoVelocidade));
-        }
-
-        if (personagem.getPontos() > 600) {
-            double aumentoVelocidade = 6;
-            inimigo_naves.forEach(temp_nave -> temp_nave.setVELOCIDADE(aumentoVelocidade));
-        }
-
-        if (personagem.getPontos() > 750) {
-            double aumentoVelocidade = 7;
-            inimigo_naves.forEach(temp_nave -> temp_nave.setVELOCIDADE(aumentoVelocidade));
-        }
-
-        if (personagem.getPontos() > 1000) {
-            double aumentoVelocidade = 8;
-            inimigo_naves.forEach(temp_nave -> temp_nave.setVELOCIDADE(aumentoVelocidade));
         }
     }
 

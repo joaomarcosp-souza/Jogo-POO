@@ -9,7 +9,7 @@ public class InimigoMeteorito {
     private Image imagem_meteoro;
     private boolean visibilidade;
 
-     private static final int VELOCIDADE = 3; //Constante que não deve ser alterada
+     private int VELOCIDADE = 3; //Constante que não deve ser alterada
 
     public InimigoMeteorito(int posicaoEmX, int posicaoEmY) {
         this.posicaoEmX = posicaoEmX;
@@ -82,5 +82,15 @@ public class InimigoMeteorito {
     public void setVisibilidade(boolean visibilidade) {
         this.visibilidade = visibilidade;
     }
+
+    public int getVELOCIDADE() {
+        return VELOCIDADE;
+    }
+
+    public void setVELOCIDADE(int velocidade) {
+        this.VELOCIDADE = velocidade;
+    }
+
+    
 
 }
