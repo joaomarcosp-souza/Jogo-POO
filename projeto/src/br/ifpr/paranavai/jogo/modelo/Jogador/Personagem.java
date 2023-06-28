@@ -25,7 +25,7 @@ public class Personagem {
 
     private final int POSICAO_INICIAL_EM_X = 100;
     private final int POSICAO_INICIAL_EM_Y = 300;
-    private static final int VELOCIDADE = 4;
+    private static final int VELOCIDADE = 5;
 
     public Personagem() {
         this.posicaoEmX = POSICAO_INICIAL_EM_X;
@@ -69,7 +69,6 @@ public class Personagem {
     // METODO MOVIMENTO
     public void mover(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
-
         // TECLAS MOVIMENTAÇÃO
         if (tecla == KeyEvent.VK_W || tecla == KeyEvent.VK_UP) {
             deslocamentoEmY = -VELOCIDADE;
@@ -77,7 +76,6 @@ public class Personagem {
         if (tecla == KeyEvent.VK_S || tecla == KeyEvent.VK_DOWN) {
             deslocamentoEmY = VELOCIDADE;
         }
-
         if (tecla == KeyEvent.VK_A || tecla == KeyEvent.VK_LEFT) {
             deslocamentoEmX = -VELOCIDADE;
         }
@@ -92,15 +90,12 @@ public class Personagem {
         if (tecla == KeyEvent.VK_W || tecla == KeyEvent.VK_UP) {
             deslocamentoEmY = 0;
         }
-
         if (tecla == KeyEvent.VK_S || tecla == KeyEvent.VK_DOWN) {
             deslocamentoEmY = 0;
         }
-
         if (tecla == KeyEvent.VK_A || tecla == KeyEvent.VK_LEFT) {
             deslocamentoEmX = 0;
         }
-
         if (tecla == KeyEvent.VK_D || tecla == KeyEvent.VK_RIGHT) {
             deslocamentoEmX = 0;
         }
@@ -113,7 +108,6 @@ public class Personagem {
 
     public void atirar(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
-
         if (tecla == KeyEvent.VK_SPACE) {
             tiro_simples();
         }

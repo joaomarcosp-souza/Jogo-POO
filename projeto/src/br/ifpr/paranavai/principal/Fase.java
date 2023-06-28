@@ -43,6 +43,9 @@ public class Fase extends JPanel implements ActionListener {
     private TelaControles tela_Controles;
     private TelaMorte telaMorte;
 
+    private int delayInimigoNave = 500;
+    private int delayInimigoMeteorito = 2500;
+
     public Fase() {
         setFocusable(true);
         setDoubleBuffered(true);
@@ -87,9 +90,9 @@ public class Fase extends JPanel implements ActionListener {
         inimigo_naves = new ArrayList<InimigoNaves>();
 
         // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
-        timer_inimigo_nave = new Timer(500, new ActionListener() {
-            int y = 620;
-            int alturaInimigo = 10;
+        timer_inimigo_nave = new Timer(delayInimigoNave, new ActionListener() {
+            int y = 630;
+            int alturaInimigo = 80;
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,9 +110,9 @@ public class Fase extends JPanel implements ActionListener {
     // INICIANDO POSIÇÃO DO METEORITO ALEATORIAMENTE
     public void inicializa_Metorito_Inimigo() {
         inimigo_meteorito = new ArrayList<InimigoMeteorito>();
-        int alturaInimigo = 10;
+        int alturaInimigo = 100;
         // TIMER PARA SPAWNAR O METEORITO
-        timer_inimigo_Meteorito = new Timer(5000, new ActionListener() {
+        timer_inimigo_Meteorito = new Timer(delayInimigoMeteorito, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int posicaoEmY = -alturaInimigo;
@@ -164,7 +167,7 @@ public class Fase extends JPanel implements ActionListener {
                 if (!ini.isVisibilidade()) {
                     graficos.setColor(Color.white);
                     graficos.setFont(personagem.getPixel().deriveFont(Font.PLAIN, 35));
-                    graficos.drawString("+10", ini.getPosicaoEmX(), ini.getPosicaoEmY());
+                    graficos.drawString("+10", ini.getPosicaoEmX() + 3, ini.getPosicaoEmY() + 3);
                 }
             } // FIM NAVE
               // CARREGANDO INIMIGO METEORITO
@@ -176,7 +179,7 @@ public class Fase extends JPanel implements ActionListener {
                 if (!mete.isVisibilidade()) {
                     graficos.setColor(Color.white);
                     graficos.setFont(personagem.getPixel().deriveFont(Font.PLAIN, 35));
-                    graficos.drawString("+20", mete.getPosicaoEmX(), mete.getPosicaoEmY());
+                    graficos.drawString("+20", mete.getPosicaoEmX() + 3, mete.getPosicaoEmY() + 3);
                 }
             } // FIM METEORITO
               // HITBOX
@@ -252,11 +255,9 @@ public class Fase extends JPanel implements ActionListener {
                 iterator_tiro.remove();
             }
         } // FIM
-
         if (jogando == false) {
             // PARA O SPAWN DE INIMIGOS
             timer_inimigo_nave.stop();
-            timer_inimigo_Meteorito.stop();
             // LIMPA A LISTA DE INMIGOS CASO O JOGADOR ESTEJA MORTO
             inimigo_naves.clear();
             inimigo_meteorito.clear();
@@ -265,14 +266,38 @@ public class Fase extends JPanel implements ActionListener {
                     || personagem.getPosicaoEmY() != personagem.getPosicaoInicialEmY()) {
                 personagem.setPosicaoEmX(personagem.getPosicaoInicialEmX());
                 personagem.setPosicaoEmY(personagem.getPosicaoInicialEmY());
-            } else {
+            }
+        } else {
+            timer_inimigo_nave.start();
+            if (personagem.getPontos() > 200) {
                 timer_inimigo_Meteorito.start();
-                timer_inimigo_nave.start();
             }
         }
-
         checarColisoes();
+        ChecarVelocidade();
         repaint();
+    }
+
+    public void ChecarVelocidade() {
+        if (personagem.getPontos() >= 350) {
+            double aumentoVelocidade = 5;
+            inimigo_naves.forEach(temp_nave -> temp_nave.setVELOCIDADE(aumentoVelocidade));
+        }
+
+        if (personagem.getPontos() > 600) {
+            double aumentoVelocidade = 6;
+            inimigo_naves.forEach(temp_nave -> temp_nave.setVELOCIDADE(aumentoVelocidade));
+        }
+
+        if (personagem.getPontos() > 750) {
+            double aumentoVelocidade = 7;
+            inimigo_naves.forEach(temp_nave -> temp_nave.setVELOCIDADE(aumentoVelocidade));
+        }
+
+        if (personagem.getPontos() > 1000) {
+            double aumentoVelocidade = 8;
+            inimigo_naves.forEach(temp_nave -> temp_nave.setVELOCIDADE(aumentoVelocidade));
+        }
     }
 
     public void checarColisoes() {
@@ -296,7 +321,6 @@ public class Fase extends JPanel implements ActionListener {
             int maximoEmY = telaAltura - personagem.getAlturaImagem();
             personagem.setPosicaoEmY(maximoEmY);
         }
-
         // COLISÃO DA NAVE DO PERSOANGEM COM A NAVE INIMIGA
         for (int i = 0; i < inimigo_naves.size(); i++) {
             InimigoNaves temp_nave = inimigo_naves.get(i);
@@ -359,10 +383,11 @@ public class Fase extends JPanel implements ActionListener {
                 }
             }
         }
+
     }
 
     // OPC DOS MENU INICIAL
-    public void config_menu(KeyEvent e) {
+    public void MenuInicial(KeyEvent e) {
         int tecla = e.getKeyCode();
         if (tecla == KeyEvent.VK_ENTER) {
             if (tela_menu.getCursor() == 0) { // TELA JOGO FASE - IMPLEMENTAR
@@ -380,7 +405,7 @@ public class Fase extends JPanel implements ActionListener {
         }
     }
 
-    public void tela_visibilidade(KeyEvent e) {
+    public void VisibilidadeTelas(KeyEvent e) {
         int tecla = e.getKeyCode();
 
         if (tela_Controles.isControle_visibilidade() == true) {
@@ -397,7 +422,7 @@ public class Fase extends JPanel implements ActionListener {
         }
     }
 
-    public void menuResetar(KeyEvent e) {
+    public void MenuTelaMorte(KeyEvent e) {
         int tecla = e.getKeyCode();
         if (telaMorte.isTelaMorteVisibilidade() == true) {
             if (tecla == KeyEvent.VK_ENTER) {
@@ -424,20 +449,20 @@ public class Fase extends JPanel implements ActionListener {
         public void keyPressed(KeyEvent e) {
             if (tela_menu.isVisibilidade_menu() == true) {
                 tela_menu.tecla_menu(e);
-                config_menu(e);
+                MenuInicial(e);
             }
             if (tela_Controles.isControle_visibilidade() == true) {
-                tela_visibilidade(e);
+                VisibilidadeTelas(e);
             }
             if (tela_Historico.isHistorico_visibilidade() == true) {
-                tela_visibilidade(e);
+                VisibilidadeTelas(e);
             }
             if (jogando == true) {
                 personagem.mover(e);
                 personagem.atirar(e);
             }
             if (telaMorte.isTelaMorteVisibilidade() == true) {
-                menuResetar(e);
+                MenuTelaMorte(e);
                 telaMorte.menuMorto(e);
             }
         }

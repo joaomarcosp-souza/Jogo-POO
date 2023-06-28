@@ -12,7 +12,7 @@ public class InimigoNaves {
     private int VIDASINIMIGOS = 2;
     private int tempoVisivel;
 
-    private static final int VELOCIDADE = 5;
+    private double VELOCIDADE = 3.5;
 
     public InimigoNaves(int posicaoEmX, int posicaoEmY) {
         this.posicaoEmX = posicaoEmX;
@@ -103,5 +103,13 @@ public class InimigoNaves {
     public void setTempoVisivel(int tempoVisivel) {
         this.tempoVisivel = tempoVisivel;
     }
-    
+
+    public double getVELOCIDADE() {
+        return VELOCIDADE;
+    }
+
+    public void setVELOCIDADE(double VELOCIDADE) {
+        this.VELOCIDADE = VELOCIDADE;
+    }
+
 }
