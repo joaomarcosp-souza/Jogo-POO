@@ -2,10 +2,12 @@ package br.ifpr.paranavai.principal;
 
 import javax.swing.JFrame;
 
+import br.ifpr.paranavai.jogo.modelo.Fases.FaseInfinita;
+
 public class Principal extends JFrame {
 
     public Principal() {
-        Fase fase = new Fase();
+        FaseInfinita fase = new FaseInfinita();
         super.add(fase);
 
         super.setTitle("Star Wars: Invader");
