@@ -3,7 +3,7 @@ package br.ifpr.paranavai.jogo.modelo.inimigos;
 import java.awt.Image;
 import java.awt.Rectangle;
 
-public abstract class EntidadeInimigo {
+public abstract class InimigosEntidade {
     // POSIÇÃO NA TELA
     protected int posicaoEmX;
     protected int posicaoEmY;
@@ -13,9 +13,10 @@ public abstract class EntidadeInimigo {
     protected boolean visibilidade;
     // INFORMAÇÕES BASICAS DO INIMIGO
     protected int VELOCIDADE;
+    protected int VIDASINIMIGOS;
 
     // CONSTRUTOR
-    public EntidadeInimigo() {
+    public InimigosEntidade() {
         this.visibilidade = true;
     }
 
@@ -85,5 +86,14 @@ public abstract class EntidadeInimigo {
     public void setVELOCIDADE(int vELOCIDADE) {
         VELOCIDADE = vELOCIDADE;
     }
+
+    public int getVIDASINIMIGOS() {
+        return VIDASINIMIGOS;
+    }
+
+    public void setVIDASINIMIGOS(int vIDASINIMIGOS) {
+        VIDASINIMIGOS = vIDASINIMIGOS;
+    }
+    
 
 }

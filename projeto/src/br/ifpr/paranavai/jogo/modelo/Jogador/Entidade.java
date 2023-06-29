@@ -1,19 +1,37 @@
 package br.ifpr.paranavai.jogo.modelo.Jogador;
 
+import java.io.File;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.io.IOException;
+import java.awt.FontFormatException;
 
 public abstract class Entidade {
+    // INFO DA CLASSE PERSONAGEM
+    protected int VIDAS;
     protected int pontos;
-    protected int posicaoEmX, posicaoEmY;
-    protected int deslocamentoEmX, deslocamentoEmY;
-    protected int larguraImagem, alturaImagem, larguraImagem_Vida, alturaImagem_Vida;
+    // INFORMAÇÕES DAS IMAGENS
     protected Image imagem;
-    protected boolean visibilidade;
     protected Image imagem_vida;
-    protected int VELOCIDADE = 5;
+    protected int posicaoEmX, posicaoEmY;
+    protected int larguraImagem, alturaImagem;
+    protected int larguraImagem_Vida, alturaImagem_Vida;
+    // VELOCIDADES PERSONAGEM 
+    protected int deslocamentoEmX, deslocamentoEmY;
+    protected int VELOCIDADE;
+    //
+    protected boolean visibilidade;
+    protected Font pixel = null;
 
-    public Entidade(){
+    public Entidade() {
+        // CARREGANDO UMA NOVA FONTE
+        try {
+            // CARREGA A FONTE A PARTIR DO ARQUIVO
+            pixel = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\pixel_fonte.ttf"));
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+        }
         this.visibilidade = true;
     }
 
@@ -123,10 +141,32 @@ public abstract class Entidade {
         this.imagem_vida = imagem_vida;
     }
 
-    public  int getVelocidade() {
+    public int getVelocidade() {
         return VELOCIDADE;
     }
 
-    
+    public int getVELOCIDADE() {
+        return VELOCIDADE;
+    }
+
+    public void setVELOCIDADE(int vELOCIDADE) {
+        VELOCIDADE = vELOCIDADE;
+    }
+
+    public Font getPixel() {
+        return pixel;
+    }
+
+    public void setPixel(Font pixel) {
+        this.pixel = pixel;
+    }
+
+    public int getVIDAS() {
+        return VIDAS;
+    }
+
+    public void setVIDAS(int vIDAS) {
+        VIDAS = vIDAS;
+    }
 
 }

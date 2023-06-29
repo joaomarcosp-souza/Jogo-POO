@@ -2,45 +2,31 @@ package br.ifpr.paranavai.jogo.modelo.Telas;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
 import javax.swing.ImageIcon;
-
 import java.awt.event.KeyEvent;
 
-public class TelaMorte {
-    private boolean telaMorteVisibilidade;
-    private int cursor;
-    private Image imagem;
-    private int alturaImagem, larguraImagem;
+public class FimDeJogo extends TelasEntidade{
+
     private static final int larguraTela = 1300;
     private static final int alturaTela = 600;
-    private Font pixel = null;
+    
 
-    public TelaMorte() {
-        try {
-            // CARREGA A FONTE A PARTIR DO ARQUIVO
-            pixel = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\pixel_fonte.ttf"));
-
-        } catch (IOException | FontFormatException e) {
-            e.printStackTrace();
-        }
-        this.telaMorteVisibilidade = false;
+    public FimDeJogo() {
+        this.visibilidade = false;
     }
 
+    @Override
     public void carregar() {
-        ImageIcon carregando = new ImageIcon("recursos\\sprites_fundos\\fundo_menu.jpg");
+        ImageIcon carregando = new ImageIcon("recursos\\sprites_fundos\\FundoMenu.jpg");
         this.imagem = carregando.getImage();
         this.alturaImagem = this.imagem.getWidth(null);
         this.larguraImagem = this.imagem.getHeight(null);
     }
 
-    public void mensagem(Graphics t) {
+    @Override
+    public void titulo(Graphics t) {
         t.drawImage(imagem, 0, 0, null);
         int alturaTela = 400;
         String tituloPricipal = "GAME";
@@ -62,7 +48,8 @@ public class TelaMorte {
         t.drawString(SubTitulo, subTituloX, y + 100);
     }
 
-    public void opcoesMenu(Graphics g) {
+    @Override
+    public void menu(Graphics g) {
         String frase = "JOGAR NOVAMENTE?";
         String sim = "SIM";
         String nao = "NAO";
@@ -121,37 +108,4 @@ public class TelaMorte {
             }
         }
     }
-
-    public boolean isTelaMorteVisibilidade() {
-        return telaMorteVisibilidade;
-    }
-
-    public void setTelaMorteVisibilidade(boolean telaMorteVisibilidade) {
-        this.telaMorteVisibilidade = telaMorteVisibilidade;
-    }
-
-    public int getCursor() {
-        return cursor;
-    }
-
-    public void setCursor(int cursor) {
-        this.cursor = cursor;
-    }
-
-    public int getAlturaImagem() {
-        return alturaImagem;
-    }
-
-    public void setAlturaImagem(int alturaImagem) {
-        this.alturaImagem = alturaImagem;
-    }
-
-    public int getLarguraImagem() {
-        return larguraImagem;
-    }
-
-    public void setLarguraImagem(int larguraImagem) {
-        this.larguraImagem = larguraImagem;
-    }
-
 }

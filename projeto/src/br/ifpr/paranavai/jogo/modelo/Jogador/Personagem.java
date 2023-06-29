@@ -1,50 +1,43 @@
 package br.ifpr.paranavai.jogo.modelo.Jogador;
 
-import java.awt.*;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.IOException;
+
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Personagem extends Entidade{
-    private int VIDAS = 3;
-    private Font pixel = null;
+public class Personagem extends Entidade {
     private List<Tiro> tiros;
     private int LARGURATELA = 1200;
-    // POSIÇÕES INICIAIS DO PERSONAGEM
-    private final int POSICAO_INICIAL_EM_X = 100;
-    private final int POSICAO_INICIAL_EM_Y = 300;
-    
-    //CONTRUTOR
+    private final int POSICAOINICIALX = 100;
+    private final int POSICAOINICIALY = 300;
+
+    // CONTRUTOR
     public Personagem() {
-        this.posicaoEmX = POSICAO_INICIAL_EM_X;
-        this.posicaoEmY = POSICAO_INICIAL_EM_Y;
+        this.posicaoEmX = POSICAOINICIALX;
+        this.posicaoEmY = POSICAOINICIALY;
         this.visibilidade = true;
         this.VELOCIDADE = 5;
+        this.VIDAS = 3;
         tiros = new ArrayList<Tiro>();
-
-        //CARREGANDO UMA NOVA FONTE
-        try {
-            // CARREGA A FONTE A PARTIR DO ARQUIVO
-            pixel = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\pixel_fonte.ttf"));
-        } catch (IOException | FontFormatException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public void carregar() {
         // IMAGEM PERSONAGEM
-        ImageIcon carregador = new ImageIcon("recursos\\sprites_personagem\\xwing.png");
+        ImageIcon carregador = new ImageIcon("recursos\\sprites_personagem\\navePrincipal.png");
         this.imagem = carregador.getImage();
         this.larguraImagem = this.imagem.getWidth(null);
         this.alturaImagem = this.imagem.getHeight(null);
         // IMAGEM VIDAS
-        ImageIcon carrega_vida = new ImageIcon("recursos\\sprites_personagem\\heart.png");
-        this.imagem_vida = carrega_vida.getImage();
+        ImageIcon carregadorVida = new ImageIcon("recursos\\sprites_personagem\\coracao.png");
+        this.imagem_vida = carregadorVida.getImage();
         this.larguraImagem_Vida = this.imagem_vida.getWidth(null);
         this.alturaImagem_Vida = this.imagem_vida.getHeight(null);
     }
@@ -93,6 +86,7 @@ public class Personagem extends Entidade{
     public void tiro_simples() {
         this.tiros.add(new Tiro(posicaoEmX + larguraImagem / 2, posicaoEmY + (alturaImagem / 2)));
     }
+
     // MÉTODO TECLA PARA ATIRAR
     public void atirar(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
@@ -108,6 +102,7 @@ public class Personagem extends Entidade{
         g.setColor(new Color(255, 209, 70));
         g.drawString(pontosSTR, 20, 25);
     }
+
     // MÉTODO DE VIDA DO PERSONAGEM
     public void vidas(Graphics life) {
         JPanel panel = new JPanel();
@@ -135,7 +130,7 @@ public class Personagem extends Entidade{
         // DESENHA A STRING COM A POSIÇÃO (x,y)
         life.drawString(vida, larguraImagem_Vida - distancia, 10);
     }
-    
+
     // MÉTODOS GETTERS E SETTERS EXCLUISIVOS PERSONAGEM
     public List<Tiro> getTiros() {
         return tiros;
@@ -145,27 +140,11 @@ public class Personagem extends Entidade{
         this.tiros = tiros;
     }
 
-    public Font getPixel() {
-        return pixel;
+    public int getPOSICAOINICIALX() {
+        return POSICAOINICIALX;
     }
 
-    public void setPixel(Font pixel) {
-        this.pixel = pixel;
-    }
-
-    public int getVIDAS() {
-        return VIDAS;
-    }
-
-    public void setVIDAS(int vIDAS) {
-        VIDAS = vIDAS;
-    }
-
-    public int getPOSICAO_INICIAL_EM_X() {
-        return POSICAO_INICIAL_EM_X;
-    }
-
-    public int getPOSICAO_INICIAL_EM_Y() {
-        return POSICAO_INICIAL_EM_Y;
+    public int getPOSICAOINICIALY() {
+        return POSICAOINICIALY;
     }
 }

@@ -2,14 +2,13 @@ package br.ifpr.paranavai.jogo.modelo.inimigos;
 
 import javax.swing.ImageIcon;
 
-public class InimigoNaves extends EntidadeInimigo{
-    // ATRIBUTO 'UNICO DO INIMIGO'
-    private int VIDASINIMIGOS = 2;
+public class Naves extends InimigosEntidade {
 
-    public InimigoNaves(int posicaoEmX, int posicaoEmY) {
+    public Naves(int posicaoEmX, int posicaoEmY) {
         this.posicaoEmX = posicaoEmX;
         this.posicaoEmY = posicaoEmY;
-        this.VELOCIDADE = 3;
+        this.VELOCIDADE = 4;
+        this.VIDASINIMIGOS = 2;
         this.visibilidade = true;
     }
 
@@ -27,14 +26,5 @@ public class InimigoNaves extends EntidadeInimigo{
         if (this.posicaoEmX < -50) {
             visibilidade = false;
         }
-    }
-
-    // GETTERS E SETTER DA CLASSE INIMIGA NAVE
-    public int getVIDASINIMIGOS() {
-        return VIDASINIMIGOS;
-    }
-
-    public void setVIDASINIMIGOS(int vIDASINIMIGOS) {
-        VIDASINIMIGOS = vIDASINIMIGOS;
     }
 }
