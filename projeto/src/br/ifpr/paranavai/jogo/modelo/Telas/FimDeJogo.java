@@ -7,11 +7,10 @@ import java.awt.Graphics;
 import javax.swing.ImageIcon;
 import java.awt.event.KeyEvent;
 
-public class FimDeJogo extends TelasEntidade{
+public class FimDeJogo extends TelasEntidade {
 
     private static final int larguraTela = 1300;
     private static final int alturaTela = 600;
-    
 
     public FimDeJogo() {
         this.visibilidade = false;
@@ -26,26 +25,26 @@ public class FimDeJogo extends TelasEntidade{
     }
 
     @Override
-    public void titulo(Graphics t) {
-        t.drawImage(imagem, 0, 0, null);
+    public void titulo(Graphics g) {
+        g.drawImage(imagem, 0, 0, null);
         int alturaTela = 400;
         String tituloPricipal = "GAME";
         String tituloPricipal_2 = "GAME";
         String SubTitulo = "OVER";
 
-        t.setFont(pixel.deriveFont(Font.PLAIN, 120));
+        g.setFont(pixel.deriveFont(Font.PLAIN, 120));
 
-        FontMetrics fm = t.getFontMetrics();
+        FontMetrics fm = g.getFontMetrics();
         int tituloPricipalX = (larguraTela - fm.stringWidth(tituloPricipal)) / 2;
         int subTituloX = (larguraTela - fm.stringWidth(SubTitulo)) / 2;
         int y = (alturaTela - fm.getHeight()) / 2;
 
-        t.setColor(Color.white);
-        t.drawString(tituloPricipal_2, tituloPricipalX + 5, y);
-        t.setColor(new Color(255, 209, 70));
-        t.drawString(tituloPricipal, tituloPricipalX, y);
-        t.setColor(Color.white);
-        t.drawString(SubTitulo, subTituloX, y + 100);
+        g.setColor(Color.white);
+        g.drawString(tituloPricipal_2, tituloPricipalX + 5, y);
+        g.setColor(getCorAmarela());
+        g.drawString(tituloPricipal, tituloPricipalX, y);
+        g.setColor(Color.white);
+        g.drawString(SubTitulo, subTituloX, y + 100);
     }
 
     @Override

@@ -13,7 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Personagem extends Entidade {
+    // VARIAVEIS PARA O TIRO
     private List<Tiro> tiros;
+    private long tempoUltimoTiro;
+    private long delayTiro;
+    // TELA
     private int LARGURATELA = 1200;
     private final int POSICAOINICIALX = 100;
     private final int POSICAOINICIALY = 300;
@@ -23,6 +27,7 @@ public class Personagem extends Entidade {
         this.posicaoEmX = POSICAOINICIALX;
         this.posicaoEmY = POSICAOINICIALY;
         this.visibilidade = true;
+        this.delayTiro = 150;
         this.VELOCIDADE = 5;
         this.VIDAS = 3;
         tiros = new ArrayList<Tiro>();
@@ -89,10 +94,19 @@ public class Personagem extends Entidade {
 
     // MÉTODO TECLA PARA ATIRAR
     public void atirar(KeyEvent teclado) {
+        long tempoAtual = System.currentTimeMillis();
         int tecla = teclado.getKeyCode();
-        if (tecla == KeyEvent.VK_SPACE) {
-            tiro_simples();
+
+        if (tempoAtual - tempoUltimoTiro < delayTiro) {
+            return;
+        } else {
+            if (tecla == KeyEvent.VK_SPACE) {
+                tiro_simples();
+            }
         }
+
+        tempoUltimoTiro = tempoAtual;
+
     }
 
     // MÉTODO DE PONTUAÇÃO DO PERSONAGEM

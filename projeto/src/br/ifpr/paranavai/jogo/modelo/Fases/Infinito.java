@@ -28,7 +28,7 @@ import br.ifpr.paranavai.jogo.modelo.Telas.FimDeJogo;
 import br.ifpr.paranavai.jogo.modelo.inimigos.Meteorito;
 import br.ifpr.paranavai.jogo.modelo.inimigos.Naves;
 
-public class ModoInfinito extends JPanel implements ActionListener {
+public class Infinito extends JPanel implements ActionListener {
     private Image fundo;
     private Image fundo2;
     private List<Naves> inimigo_naves;
@@ -47,7 +47,7 @@ public class ModoInfinito extends JPanel implements ActionListener {
     private int delayInimigoNave = 500;
     private int delayInimigoMeteorito = 2500;
 
-    public ModoInfinito() {
+    public Infinito() {
         setFocusable(true);
         setDoubleBuffered(true);
         // IMAGEM DE FUNDO
@@ -452,18 +452,14 @@ public class ModoInfinito extends JPanel implements ActionListener {
             if (telaMenu.isVisibilidade() == true) {
                 telaMenu.tecla_menu(e);
                 MenuInicial(e);
-            }
-            if (telaControles.isVisibilidade() == true) {
+            } else if (telaControles.isVisibilidade() == true) {
                 VisibilidadeTelas(e);
-            }
-            if (telaHistorico.isVisibilidade() == true) {
+            } else if (telaHistorico.isVisibilidade() == true) {
                 VisibilidadeTelas(e);
-            }
-            if (jogando == true) {
+            } else if (jogando == true) {
                 personagem.mover(e);
                 personagem.atirar(e);
-            }
-            if (fimDeJogo.isVisibilidade() == true) {
+            } else if (fimDeJogo.isVisibilidade() == true) {
                 MenuTelaMorte(e);
                 fimDeJogo.menuMorto(e);
             }

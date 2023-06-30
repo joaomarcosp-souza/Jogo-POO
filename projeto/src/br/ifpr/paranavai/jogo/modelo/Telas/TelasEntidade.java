@@ -3,6 +3,7 @@ package br.ifpr.paranavai.jogo.modelo.Telas;
 import java.io.File;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.io.IOException;
 import java.awt.FontFormatException;
@@ -14,6 +15,9 @@ public abstract class TelasEntidade {
     protected boolean visibilidade;
     protected int cursor = 0;
     protected Font pixel = null;
+    private static final Color COR_AMARELA = new Color(255, 209, 70);
+
+    private static final int TITULO_SIZE = 85;
 
     public TelasEntidade() {
         try {
@@ -97,4 +101,12 @@ public abstract class TelasEntidade {
         this.cursor = cursor;
     }
 
+    public static int getTituloSize() {
+        return TITULO_SIZE;
+    }
+
+    public static Color getCorAmarela() {
+        return COR_AMARELA;
+    }
+    
 }

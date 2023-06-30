@@ -2,12 +2,12 @@ package br.ifpr.paranavai.principal;
 
 import javax.swing.JFrame;
 
-import br.ifpr.paranavai.jogo.modelo.Fases.ModoInfinito;
+import br.ifpr.paranavai.jogo.modelo.Fases.Infinito;
 
 public class Principal extends JFrame {
 
     public Principal() {
-        ModoInfinito fase = new ModoInfinito();
+        Infinito fase = new Infinito();
         super.add(fase);
 
         super.setTitle("Star Wars: Invader");
@@ -17,6 +17,7 @@ public class Principal extends JFrame {
         super.setResizable(false);
         super.setVisible(true);
     }
+
     public static void main(String[] args) {
         new Principal();
     }

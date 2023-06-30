@@ -24,11 +24,8 @@ public class Controles extends TelasEntidade {
     public void titulo(Graphics g) {
         g.drawImage(imagem, 0, 0, null);
         String titulo = "CONTROLES";
-
-        Font fonte = pixel;
-        fonte = fonte.deriveFont(Font.BOLD, 85);
-        g.setColor(new Color(255, 209, 70)); // COR DO TITULO AMARELO
-        g.setFont(fonte);
+        g.setColor(getCorAmarela());
+        g.setFont(pixel.deriveFont(Font.BOLD, 85));
         // CRENTALIZA VERTICALMENTE
         FontMetrics fm = g.getFontMetrics();
         int tituloWidth = fm.stringWidth(titulo); // PEGA O TAMANHO DA STRING
@@ -37,7 +34,7 @@ public class Controles extends TelasEntidade {
 
         g.setColor(Color.WHITE);
         g.drawString(titulo, (x + 5), y - 280);
-        g.setColor(new Color(255, 209, 70));
+        g.setColor(getCorAmarela());
         g.drawString(titulo, x, y - 280);
     }
 

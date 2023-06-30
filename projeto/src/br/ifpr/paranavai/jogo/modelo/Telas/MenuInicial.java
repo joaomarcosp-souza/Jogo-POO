@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 
-public class MenuInicial extends TelasEntidade{
+public class MenuInicial extends TelasEntidade {
     private int cursor = 0;
 
     public MenuInicial() {
@@ -68,7 +68,7 @@ public class MenuInicial extends TelasEntidade{
         int posicaoX_fase = (alturaImagem - modo_fases_Width) / 2;
         int posicaoY_fase = 450;
         if (cursor == 0) {
-            g.setColor(new Color(255, 209, 70));
+            g.setColor(getCorAmarela());
         } else {
             g.setColor(Color.WHITE);
         }
@@ -83,7 +83,7 @@ public class MenuInicial extends TelasEntidade{
         int posicaoX_infinito = (alturaImagem - modo_infinito_Width) / 2;
         int posicaoY_infinito = posicaoY_fase + arruma_posicao;
         if (cursor == 1) {
-            g.setColor(new Color(255, 209, 70));
+            g.setColor(getCorAmarela());
         } else {
             g.setColor(Color.WHITE);
         }
@@ -98,7 +98,7 @@ public class MenuInicial extends TelasEntidade{
         int posicaoX_controles = (alturaImagem - controles_Width) / 2;
         int posicaoY_controles = posicaoY_infinito + arruma_posicao;
         if (cursor == 2) {
-            g.setColor(new Color(255, 209, 70));
+            g.setColor(getCorAmarela());
         } else {
             g.setColor(Color.WHITE);
         }
@@ -106,14 +106,14 @@ public class MenuInicial extends TelasEntidade{
         if (cursor == 2) {
             int cursorWidth = fm.stringWidth(">");
             g.drawString(">", posicaoX_controles - cursorWidth, posicaoY_controles);
-        }// FIM
+        } // FIM
 
         // OPÇÃO PARA A TELA 'HISTORICO'
         int historico_Width = fm.stringWidth(tela_historico);
         int posicaoX_historico = (alturaImagem - historico_Width) / 2;
         int posicaoY_historico = posicaoY_controles + arruma_posicao;
         if (cursor == 3) {
-            g.setColor(new Color(255, 209, 70));
+            g.setColor(getCorAmarela());
         } else {
             g.setColor(Color.WHITE);
         }
@@ -149,5 +149,5 @@ public class MenuInicial extends TelasEntidade{
     public void setCursor(int cursor) {
         this.cursor = cursor;
     }
-    
+
 }
