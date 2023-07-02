@@ -4,10 +4,11 @@ import javax.swing.ImageIcon;
 
 public class Naves extends InimigosEntidade {
 
+
     public Naves(int posicaoEmX, int posicaoEmY) {
         this.posicaoEmX = posicaoEmX;
         this.posicaoEmY = posicaoEmY;
-        this.VELOCIDADE = 4;
+        this.VELOCIDADE = 3;
         this.VIDASINIMIGOS = 2;
         this.visibilidade = true;
     }

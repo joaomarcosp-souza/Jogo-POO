@@ -1,4 +1,4 @@
-package br.ifpr.paranavai.jogo.modelo.Fases;
+package br.ifpr.paranavai.jogo.modelo.Modos;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -137,12 +137,16 @@ public class Infinito extends JPanel implements ActionListener {
             telaMenu.menu(graficos);
             jogando = false;
         } else if (telaControles.isVisibilidade() == true) {
+            graficos.drawImage(telaControles.getImagem(), 0, 0, null);
             // CARRREGANDO OS COMPONENTES DA CLASSE 'CONTROLES(EM IMPLEMENTAÇÃO)'
             telaControles.titulo(graficos);
+            telaControles.menu(graficos);
             jogando = false;
         } else if (telaHistorico.isVisibilidade() == true) {
+            graficos.drawImage(telaHistorico.getImagem(), 0, 0, null);
             // CARRREGANDO OS COMPONENTES DA CLASSE 'HISTORICO(EM IMPLEMENTAÇÃO)'
             telaHistorico.titulo(graficos);
+            telaHistorico.menu(graficos);
             jogando = false;
         }
         if (jogando == true) {
@@ -262,23 +266,18 @@ public class Infinito extends JPanel implements ActionListener {
     }
 
     public void gerenciarInimigos() {
-        if (personagem.getPontos() >= 300) {
-            int aumentoVelocidade = 5;
-            inimigo_naves.forEach(temp_nave -> temp_nave.setVELOCIDADE(aumentoVelocidade));
-        }
-        if (personagem.getPontos() > 600) {
-            int aumentoVelocidade = 6;
-            inimigo_naves.forEach(temp_nave -> temp_nave.setVELOCIDADE(aumentoVelocidade));
-            inimigo_meteorito.forEach(temp_mete -> temp_mete.setVELOCIDADE(aumentoVelocidade));
-        }
-        if (personagem.getPontos() > 900) {
-            int aumentoVelocidade = 7;
-            inimigo_naves.forEach(temp_nave -> temp_nave.setVELOCIDADE(aumentoVelocidade));
-        }
-        if (personagem.getPontos() > 1000) {
-            int aumentoVelocidade = 8;
-            inimigo_naves.forEach(temp_nave -> temp_nave.setVELOCIDADE(aumentoVelocidade));
-            inimigo_meteorito.forEach(temp_mete -> temp_mete.setVELOCIDADE(aumentoVelocidade));
+
+        // ALTERA A VELOCIDADE DA NAVE INIMIGA COM BASE NOS PONTOS GANHOS DO PERSONAGEM
+        int[] pontosPersonagem = { 300, 600, 900, 1000};
+        int[] ajusteVelocidades = { 4, 5, 6, 7};
+        for (int i = 0; i < pontosPersonagem.length; i++) {
+            if (personagem.getPontos() > pontosPersonagem[i]) {
+                int aumentoVelocidade = ajusteVelocidades[i];
+                inimigo_naves.forEach(temp_nave -> temp_nave.setVELOCIDADE(aumentoVelocidade));
+                if (i >= 1) {
+                    inimigo_meteorito.forEach(temp_mete -> temp_mete.setVELOCIDADE(aumentoVelocidade));
+                }
+            }
         }
 
         if (jogando == false) {
@@ -306,8 +305,12 @@ public class Infinito extends JPanel implements ActionListener {
         Rectangle forma_Nave_Personagem = personagem.getBounds();
         Rectangle Forma_Inimigo_Nave;
         Rectangle Forma_Inimig_Meteorito;
+        // TELA
         int telaLargura = 1250; // Largura da tela
         int telaAltura = 665; // Altura da tela
+        // VALORES PARA CADA INIMIGO DESTRUIDO
+        int VALORNAVES = 10;
+        int VALORMETEORITO = 20;
 
         // VERIFICA COLISÃO COM A BORDA EM 'X'
         if (personagem.getPosicaoEmX() < 0) {
@@ -358,7 +361,7 @@ public class Infinito extends JPanel implements ActionListener {
             for (Tiro tiro : personagem.getTiros()) {
                 Rectangle formaTiro = tiro.getBounds();
                 if (formaTiro.intersects(formaInimigoNave)) {
-                    personagem.setPontos(personagem.getPontos() + 10);
+                    personagem.setPontos(personagem.getPontos() + VALORNAVES);
                     if (personagem.getPontos() < 200) {
                         inimigoNave.setVisibilidade(false);
                     } else if (personagem.getPontos() > 200) {
@@ -381,11 +384,10 @@ public class Infinito extends JPanel implements ActionListener {
                 if (formaTiro.intersects(formaInimigoMeteorito)) {
                     inimigoMeteorito.setVisibilidade(false);
                     tiro.setVisibilidade(false);
-                    personagem.setPontos(personagem.getPontos() + 20);
+                    personagem.setPontos(personagem.getPontos() + VALORMETEORITO);
                 }
             }
         }
-
     }
 
     // OPC DOS MENU INICIAL
@@ -430,13 +432,13 @@ public class Infinito extends JPanel implements ActionListener {
             if (tecla == KeyEvent.VK_ENTER) {
                 if (fimDeJogo.getCursor() == 0) {
                     jogando = true;
-                    personagem.setPontos(0);
-                    personagem.setVIDAS(3);
+                    personagem.setPontos(personagem.getPONTOSINICIAIS());
+                    personagem.setVIDAS(personagem.getVIDAINICIAL());
                     fimDeJogo.setVisibilidade(false);
                 }
                 if (fimDeJogo.getCursor() == 1) {
-                    personagem.setPontos(0);
-                    personagem.setVIDAS(3);
+                    personagem.setPontos(personagem.getPONTOSINICIAIS());
+                    personagem.setVIDAS(personagem.getVIDAINICIAL());
                     fimDeJogo.setVisibilidade(false);
                     telaMenu.setVisibilidade(true);
                 }
@@ -450,7 +452,6 @@ public class Infinito extends JPanel implements ActionListener {
         @Override
         public void keyPressed(KeyEvent e) {
             if (telaMenu.isVisibilidade() == true) {
-                telaMenu.tecla_menu(e);
                 MenuInicial(e);
             } else if (telaControles.isVisibilidade() == true) {
                 VisibilidadeTelas(e);
@@ -461,7 +462,7 @@ public class Infinito extends JPanel implements ActionListener {
                 personagem.atirar(e);
             } else if (fimDeJogo.isVisibilidade() == true) {
                 MenuTelaMorte(e);
-                fimDeJogo.menuMorto(e);
+                fimDeJogo.controleMenu(e);
             }
         }
 

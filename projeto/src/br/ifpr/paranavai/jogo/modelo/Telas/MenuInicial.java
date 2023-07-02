@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 
 public class MenuInicial extends TelasEntidade {
-    private int cursor = 0;
 
     public MenuInicial() {
         this.visibilidade = true;
@@ -30,102 +29,92 @@ public class MenuInicial extends TelasEntidade {
         // CONFIGURAÇÕES FONT
         String titulo = "STAR WARS";
         String subtitulo = "INVADERS";
-        Font fonte = pixel;
-        fonte = fonte.deriveFont(Font.BOLD, 85);
+        Font fonte = getPixel().deriveFont(Font.BOLD, getTitulosize() + 10);
         g.setFont(fonte);
         // CRENTALIZA VERTICALMENTE
         FontMetrics fm = g.getFontMetrics();
-        int tituloWidth = fm.stringWidth(titulo); // PEGA O TAMANHO DA STRING
         int subtituloWidth = fm.stringWidth(subtitulo); // PEGA O TAMANHO DO SUBTITULO
-        int x = (alturaImagem - tituloWidth) / 2;
-        int y = 100 + (larguraImagem - fm.getHeight()) / 2;
+        int x = (getLARGURAJANELA() - fm.stringWidth(titulo)) / 2;
         // COR DO TITULO 'STAR WARS - BRANCO'
         g.setColor(Color.WHITE);
-        g.drawString(titulo, (x + 5), y - 280);
-        g.drawString(subtitulo, x + (tituloWidth - subtituloWidth) / 2, y - 200);
-        // COR DO SUBTITULO 'INVADERS - BRANCO'
-        g.setColor(Color.WHITE);
-        g.drawString(subtitulo, ((x + 5) + (tituloWidth - subtituloWidth) / 2), y - 200);
+        g.drawString(titulo, (x + 5), Y);
+        // TITULO 'INVADERS'
+        g.drawString(subtitulo, x + (fm.stringWidth(titulo) - subtituloWidth) / 2, Y + 80);
         // COR DO TITULO 'STAR WARS - AMARELO'
-        g.setColor(new Color(255, 209, 70));
-        g.drawString(titulo, x, y - 280);
+        g.setColor(getCorAmarela());
+        g.drawString(titulo, x, Y);
     }
 
     @Override
     public void menu(Graphics g) {
-        String modo_fases = "MODO FASES";
-        String modo_infinito = "MODO INFINITO";
-        String tela_controles = "CONTROLES";
-        String tela_historico = "HISTORICO";
+        String MODOFASES = "MODO FASES";
+        String MODOINFINITO = "MODO INFINITO";
+        String telaControle = "CONTROLES";
+        String telaHistorico = "HISTORICO";
+        int corrige = 50;
+        Font menuConfig = getPixel().deriveFont(Font.BOLD, getMenusize());
 
-        Font estilo_menu = pixel.deriveFont(Font.BOLD, 50);
-        g.setFont(estilo_menu);
+        g.setFont(menuConfig);
         FontMetrics fm = g.getFontMetrics();
-        int arruma_posicao = 50;
-
         // OPÇÃO PARA A TELA 'MODO FASES'
-        int modo_fases_Width = fm.stringWidth(modo_fases);
-        int posicaoX_fase = (alturaImagem - modo_fases_Width) / 2;
-        int posicaoY_fase = 450;
+        int posicaoX = (getLARGURAJANELA() - fm.stringWidth(MODOFASES)) / 2;
+        int posicaoY = 550;
         if (cursor == 0) {
             g.setColor(getCorAmarela());
         } else {
             g.setColor(Color.WHITE);
         }
-        g.drawString(modo_fases, posicaoX_fase, posicaoY_fase);
+        g.drawString(MODOFASES, posicaoX, posicaoY);
         if (cursor == 0) {
             int cursorWidth = fm.stringWidth(">");
-            g.drawString(">", posicaoX_fase - cursorWidth, posicaoY_fase);
+            g.drawString(">", posicaoX - cursorWidth, posicaoY);
         } // FIM MODO FASE
 
         // OPÇÃO PARA A TELA 'MODO INFINITO'
-        int modo_infinito_Width = fm.stringWidth(modo_infinito);
-        int posicaoX_infinito = (alturaImagem - modo_infinito_Width) / 2;
-        int posicaoY_infinito = posicaoY_fase + arruma_posicao;
+        int posicaoX_infinito = (getLARGURAJANELA() - fm.stringWidth(MODOINFINITO)) / 2;
+        int posicaoY_infinito = posicaoY + corrige;
         if (cursor == 1) {
             g.setColor(getCorAmarela());
         } else {
             g.setColor(Color.WHITE);
         }
-        g.drawString(modo_infinito, posicaoX_infinito, posicaoY_infinito);
+        g.drawString(MODOINFINITO, posicaoX_infinito, posicaoY_infinito);
         if (cursor == 1) {
             int cursorWidth = fm.stringWidth(">");
             g.drawString(">", posicaoX_infinito - cursorWidth, posicaoY_infinito);
         } // FIM
 
         // OPÇÃO PARA A TELA 'CONTROLES'
-        int controles_Width = fm.stringWidth(tela_controles);
-        int posicaoX_controles = (alturaImagem - controles_Width) / 2;
-        int posicaoY_controles = posicaoY_infinito + arruma_posicao;
+        int posicaoXcontrole = (getLARGURAJANELA() - fm.stringWidth(telaControle)) / 2;
+        int posicaoYcontrole = posicaoY_infinito + corrige;
         if (cursor == 2) {
             g.setColor(getCorAmarela());
         } else {
             g.setColor(Color.WHITE);
         }
-        g.drawString(tela_controles, posicaoX_controles, posicaoY_controles);
+        g.drawString(telaControle, posicaoXcontrole, posicaoYcontrole);
         if (cursor == 2) {
             int cursorWidth = fm.stringWidth(">");
-            g.drawString(">", posicaoX_controles - cursorWidth, posicaoY_controles);
+            g.drawString(">", posicaoXcontrole - cursorWidth, posicaoYcontrole);
         } // FIM
 
         // OPÇÃO PARA A TELA 'HISTORICO'
-        int historico_Width = fm.stringWidth(tela_historico);
-        int posicaoX_historico = (alturaImagem - historico_Width) / 2;
-        int posicaoY_historico = posicaoY_controles + arruma_posicao;
+        int posicaoXhistorico = (getLARGURAJANELA() - fm.stringWidth(telaHistorico)) / 2;
+        int posicaoYhistorico = posicaoYcontrole + corrige;
         if (cursor == 3) {
             g.setColor(getCorAmarela());
         } else {
             g.setColor(Color.WHITE);
         }
-        g.drawString(tela_historico, posicaoX_historico, posicaoY_historico);
+        g.drawString(telaHistorico, posicaoXhistorico, posicaoYhistorico);
         if (cursor == 3) {
             int cursorWidth = fm.stringWidth(">");
-            g.drawString(">", posicaoX_historico - cursorWidth, posicaoY_historico);
+            g.drawString(">", posicaoXhistorico - cursorWidth, posicaoYhistorico);
         }
         g.dispose();
     }
 
-    public void tecla_menu(KeyEvent teclado) {
+    public void controleMenu(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
 
         if (tecla == KeyEvent.VK_UP) {
@@ -141,13 +130,4 @@ public class MenuInicial extends TelasEntidade {
             }
         }
     }
-
-    public int getCursor() {
-        return cursor;
-    }
-
-    public void setCursor(int cursor) {
-        this.cursor = cursor;
-    }
-
 }

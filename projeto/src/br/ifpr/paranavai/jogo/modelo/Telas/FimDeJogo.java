@@ -9,8 +9,7 @@ import java.awt.event.KeyEvent;
 
 public class FimDeJogo extends TelasEntidade {
 
-    private static final int larguraTela = 1300;
-    private static final int alturaTela = 600;
+    private int TITULOSIZE = 120;
 
     public FimDeJogo() {
         this.visibilidade = false;
@@ -27,24 +26,22 @@ public class FimDeJogo extends TelasEntidade {
     @Override
     public void titulo(Graphics g) {
         g.drawImage(imagem, 0, 0, null);
-        int alturaTela = 400;
+        int OFFSETY = 100;
         String tituloPricipal = "GAME";
         String tituloPricipal_2 = "GAME";
         String SubTitulo = "OVER";
 
-        g.setFont(pixel.deriveFont(Font.PLAIN, 120));
-
+        g.setFont(pixel.deriveFont(Font.PLAIN, TITULOSIZE));
         FontMetrics fm = g.getFontMetrics();
-        int tituloPricipalX = (larguraTela - fm.stringWidth(tituloPricipal)) / 2;
-        int subTituloX = (larguraTela - fm.stringWidth(SubTitulo)) / 2;
-        int y = (alturaTela - fm.getHeight()) / 2;
+        int tituloPricipalX = (LARGURAJANELA - fm.stringWidth(tituloPricipal)) / 2;
+        int subTituloX = (LARGURAJANELA - fm.stringWidth(SubTitulo)) / 2;
 
         g.setColor(Color.white);
-        g.drawString(tituloPricipal_2, tituloPricipalX + 5, y);
+        g.drawString(tituloPricipal_2, tituloPricipalX + 5, Y + 5);
         g.setColor(getCorAmarela());
-        g.drawString(tituloPricipal, tituloPricipalX, y);
+        g.drawString(tituloPricipal, tituloPricipalX, Y + 5);
         g.setColor(Color.white);
-        g.drawString(SubTitulo, subTituloX, y + 100);
+        g.drawString(SubTitulo, subTituloX, Y + OFFSETY);
     }
 
     @Override
@@ -52,46 +49,46 @@ public class FimDeJogo extends TelasEntidade {
         String frase = "JOGAR NOVAMENTE?";
         String sim = "SIM";
         String nao = "NAO";
+        int OFFSETY = 200;
 
+        // COMEÇO DA FRASE
         g.setFont(pixel.deriveFont(Font.PLAIN, 35));
         FontMetrics fm = g.getFontMetrics();
-        // COMEÇO DA FRASE
-        int posicaoFraseEmX = (larguraTela - fm.stringWidth(frase)) / 2;
-        int posicaoFraseEmY = alturaTela - 100;
-        g.drawString(frase, posicaoFraseEmX - 5, posicaoFraseEmY);
-        // DECLARAÇÃO DAS OPÇÕES
+        int posicaoEmX = (LARGURAJANELA - fm.stringWidth(frase)) / 2;
+        int posicaoEmY = ALTURAJANELA - OFFSETY;
+        g.drawString(frase, posicaoEmX, posicaoEmY);
+
+        // Centralização das opções SIM e NÃO
+        int fraseCenterX = posicaoEmX + fm.stringWidth(frase) / 2;
         int simWidth = fm.stringWidth(sim);
         int naoWidth = fm.stringWidth(nao);
-        int totalWidth = simWidth + naoWidth + 100;
-        // COMEÇO DA OPÇÃO 'SIM'
-        int posicaoSimEmX = (larguraTela - totalWidth) / 2;
-        int posicaoSimEmY = posicaoFraseEmY + 100;
+
+        int totalWidth = simWidth + naoWidth;
+        int posicaoXsim = fraseCenterX - totalWidth / 2;
+        int posicaoYsim = posicaoEmY + 50;
         if (cursor == 0) {
-            g.setColor(new Color(255, 209, 70));
+            g.setColor(getCorAmarela());
+            int cursorWidth = fm.stringWidth(">");
+            g.drawString(">", posicaoXsim - cursorWidth, posicaoYsim);
         } else {
             g.setColor(Color.WHITE);
         }
-        g.drawString(sim, posicaoSimEmX, posicaoSimEmY);
-        if (cursor == 0) {
-            int cursorWidth = fm.stringWidth(">");
-            g.drawString(">", posicaoSimEmX - cursorWidth, posicaoSimEmY);
-        }
-        // COMEÇO DA OPÇÃO 'NÃO'
-        int posicaoNaoEmX = posicaoSimEmX + simWidth + 100;
-        int posicaoNaoEmY = posicaoSimEmY;
+        g.drawString(sim, posicaoXsim, posicaoYsim);
+        
+        // CONFIGURAÇÕES OPC 'NÃO'
+        int posicaoXnao = posicaoXsim + simWidth + 100; // Adiciona um espaço extra entre as opções
+        int posicaoYnao = posicaoYsim;
         if (cursor == 1) {
-            g.setColor(new Color(255, 209, 70));
+            g.setColor(getCorAmarela());
+            int cursorWidth = fm.stringWidth(">");
+            g.drawString(">", posicaoXnao - cursorWidth, posicaoYnao);
         } else {
             g.setColor(Color.WHITE);
         }
-        g.drawString(nao, posicaoNaoEmX, posicaoNaoEmY);
-        if (cursor == 1) {
-            int cursorWidth = fm.stringWidth(">");
-            g.drawString(">", posicaoNaoEmX - cursorWidth, posicaoNaoEmY);
-        }
+        g.drawString(nao, posicaoXnao, posicaoYnao);
     }
 
-    public void menuMorto(KeyEvent teclado) {
+    public void controleMenu(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
 
         if (tecla == KeyEvent.VK_LEFT) {

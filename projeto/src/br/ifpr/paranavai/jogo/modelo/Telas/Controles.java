@@ -3,11 +3,13 @@ package br.ifpr.paranavai.jogo.modelo.Telas;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Graphics;
+
 import javax.swing.ImageIcon;
 import java.awt.FontMetrics;
 
 public class Controles extends TelasEntidade {
 
+    //CONSTRUTOR 
     public Controles() {
         this.visibilidade = false;
     }
@@ -22,24 +24,31 @@ public class Controles extends TelasEntidade {
 
     @Override
     public void titulo(Graphics g) {
-        g.drawImage(imagem, 0, 0, null);
         String titulo = "CONTROLES";
         g.setColor(getCorAmarela());
-        g.setFont(pixel.deriveFont(Font.BOLD, 85));
+        g.setFont(pixel.deriveFont(Font.BOLD, getTitulosize()));
         // CRENTALIZA VERTICALMENTE
         FontMetrics fm = g.getFontMetrics();
         int tituloWidth = fm.stringWidth(titulo); // PEGA O TAMANHO DA STRING
-        int x = (alturaImagem - tituloWidth) / 2;
-        int y = 100 + (larguraImagem - fm.getHeight()) / 2;
-
+        int x = (LARGURAJANELA - tituloWidth) / 2;
         g.setColor(Color.WHITE);
-        g.drawString(titulo, (x + 5), y - 280);
+        g.drawString(titulo, (x + 5), Y);
         g.setColor(getCorAmarela());
-        g.drawString(titulo, x, y - 280);
+        g.drawString(titulo, x, Y);
     }
 
     @Override
     public void menu(Graphics g) {
-        // SEM MENU AQUI POR ENQUANTO
+        g.setFont(pixel.deriveFont(Font.BOLD, 30));
+        String textoBotao = "ESC";
+        FontMetrics fm = g.getFontMetrics();
+        int posicaoBotaoX = getBotao().x + (getBotaowidth() - fm.stringWidth(textoBotao)) / 2;
+        int posicaoBotaoY = (getBotao().y + 5) + (getBotaoheight() - fm.getHeight()) / 2 + fm.getAscent();
+        g.setColor(getCorAmarela());
+        g.fillRect(getBotao().x, getBotao().y, getBotaowidth(), getBotaoheight());
+        g.setColor(Color.GRAY);
+        g.drawString(textoBotao, posicaoBotaoX + 2, posicaoBotaoY);
+        g.setColor(Color.WHITE);
+        g.drawString(textoBotao, posicaoBotaoX, posicaoBotaoY);
     }
 }

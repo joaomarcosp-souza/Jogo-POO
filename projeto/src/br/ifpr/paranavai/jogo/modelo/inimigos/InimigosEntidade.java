@@ -8,12 +8,14 @@ public abstract class InimigosEntidade {
     protected int posicaoEmX;
     protected int posicaoEmY;
     // TAMANHO DA IMAGEM
-    protected int larguraImagem, alturaImagem;
-    protected Image imagem;
+    protected int larguraImagem,larguraImagemExplosao, alturaImagem, alturaImagemExplosao;
+    protected Image imagem, imagemExplosao;
     protected boolean visibilidade;
+
     // INFORMAÇÕES BASICAS DO INIMIGO
     protected int VELOCIDADE;
     protected int VIDASINIMIGOS;
+
 
     // CONSTRUTOR
     public InimigosEntidade() {
@@ -94,6 +96,28 @@ public abstract class InimigosEntidade {
     public void setVIDASINIMIGOS(int vIDASINIMIGOS) {
         VIDASINIMIGOS = vIDASINIMIGOS;
     }
-    
 
+    public Image getImagemExplosao() {
+        return imagemExplosao;
+    }
+
+    public void setImagemExplosao(Image imagemExplosao) {
+        this.imagemExplosao = imagemExplosao;
+    }
+
+    public int getLarguraImagemExplosao() {
+        return larguraImagemExplosao;
+    }
+
+    public void setLarguraImagemExplosao(int larguraImagemExplosao) {
+        this.larguraImagemExplosao = larguraImagemExplosao;
+    }
+
+    public int getAlturaImagemExplosao() {
+        return alturaImagemExplosao;
+    }
+
+    public void setAlturaImagemExplosao(int alturaImagemExplosao) {
+        this.alturaImagemExplosao = alturaImagemExplosao;
+    }
 }

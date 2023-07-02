@@ -21,15 +21,20 @@ public class Personagem extends Entidade {
     private int LARGURATELA = 1200;
     private final int POSICAOINICIALX = 100;
     private final int POSICAOINICIALY = 300;
+    // VALORES PARA CADA 
+    private final int VIDAINICIAL = 3;
+    private final int PONTOSINICIAIS = 0;
+    private final int VELOCIDADEINICIAL = 3;
 
     // CONTRUTOR
     public Personagem() {
         this.posicaoEmX = POSICAOINICIALX;
         this.posicaoEmY = POSICAOINICIALY;
         this.visibilidade = true;
-        this.delayTiro = 150;
-        this.VELOCIDADE = 5;
-        this.VIDAS = 3;
+        this.delayTiro = 100;
+        this.VELOCIDADE = VELOCIDADEINICIAL;
+        this.VIDAS = VIDAINICIAL;
+        this.pontos = PONTOSINICIAIS;
         tiros = new ArrayList<Tiro>();
     }
 
@@ -160,5 +165,13 @@ public class Personagem extends Entidade {
 
     public int getPOSICAOINICIALY() {
         return POSICAOINICIALY;
+    }
+
+    public int getVIDAINICIAL() {
+        return VIDAINICIAL;
+    }
+
+    public int getPONTOSINICIAIS() {
+        return PONTOSINICIAIS;
     }
 }
