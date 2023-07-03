@@ -2,20 +2,18 @@ package br.ifpr.paranavai.jogo.modelo.Jogador;
 
 import javax.swing.ImageIcon;
 
-public class Tiro extends Entidade {
+public class TiroEspecial extends Entidade {
 
-    // CONSTRUTOR
-    public Tiro(int posicaoEmX, int posicaoEmY) {
+    public TiroEspecial(int posicaoEmX, int posicaoEmY) {
         this.posicaoEmX = posicaoEmX;
         this.posicaoEmY = posicaoEmY;
         this.visibilidade = true;
-        this.VELOCIDADE = 8;
+        this.VELOCIDADE = 10;
     }
 
-    // MÉTODO PARA CARREGAR
     @Override
     public void carregar() {
-        ImageIcon carregador = new ImageIcon("recursos\\sprites_tiros\\tiro.png");
+        ImageIcon carregador = new ImageIcon("recursos\\sprites_tiros\\super.png");
         this.imagem = carregador.getImage();
         this.larguraImagem = this.imagem.getWidth(null);
         this.alturaImagem = this.imagem.getHeight(null);
@@ -28,4 +26,5 @@ public class Tiro extends Entidade {
             visibilidade = false;
         }
     }
+
 }

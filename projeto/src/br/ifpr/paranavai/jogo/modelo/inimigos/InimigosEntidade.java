@@ -11,12 +11,9 @@ public abstract class InimigosEntidade {
     protected int larguraImagem,larguraImagemExplosao, alturaImagem, alturaImagemExplosao;
     protected Image imagem, imagemExplosao;
     protected boolean visibilidade;
-
     // INFORMAÇÕES BASICAS DO INIMIGO
     protected int VELOCIDADE;
     protected int VIDASINIMIGOS;
-
-
     // CONSTRUTOR
     public InimigosEntidade() {
         this.visibilidade = true;

@@ -17,6 +17,8 @@ public abstract class Entidade {
     protected int posicaoEmX, posicaoEmY;
     protected int larguraImagem, alturaImagem;
     protected int larguraImagem_Vida, alturaImagem_Vida;
+    private int LARGURATELA = 1600;
+
     // VELOCIDADES PERSONAGEM 
     protected int deslocamentoEmX, deslocamentoEmY;
     protected int VELOCIDADE;
@@ -168,5 +170,15 @@ public abstract class Entidade {
     public void setVIDAS(int vIDAS) {
         VIDAS = vIDAS;
     }
+
+    public int getLARGURATELA() {
+        return LARGURATELA;
+    }
+
+    public void setLARGURATELA(int lARGURATELA) {
+        LARGURATELA = lARGURATELA;
+    }
+
+    
 
 }

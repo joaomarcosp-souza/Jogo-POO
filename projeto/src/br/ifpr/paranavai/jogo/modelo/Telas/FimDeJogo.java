@@ -76,7 +76,7 @@ public class FimDeJogo extends TelasEntidade {
         g.drawString(sim, posicaoXsim, posicaoYsim);
         
         // CONFIGURAÇÕES OPC 'NÃO'
-        int posicaoXnao = posicaoXsim + simWidth + 100; // Adiciona um espaço extra entre as opções
+        int posicaoXnao = posicaoXsim + simWidth + 25; // Adiciona um espaço extra entre as opções
         int posicaoYnao = posicaoYsim;
         if (cursor == 1) {
             g.setColor(getCorAmarela());

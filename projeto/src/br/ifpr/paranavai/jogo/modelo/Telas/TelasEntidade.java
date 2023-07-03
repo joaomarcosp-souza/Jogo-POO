@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.awt.FontFormatException;
 
 public abstract class TelasEntidade {
-    // TEALA
+    // TELA
     protected int Y = 100; // POSIÇÃO DOS TIRULOS
     protected Image imagem;
     protected int posicaoEmX, posicaoEmY;
@@ -23,7 +23,7 @@ public abstract class TelasEntidade {
     protected static final Color COR_AMARELA = new Color(255, 209, 70); // COR
     protected static final int TITULOSIZE = 85;
     protected static final int MENUSIZE = 50;
-    //BOTAO
+    // BOTAO
     private Rectangle botao;
     private static final int BOTAOWIDTH = 70;
     private static final int BOTAOHEIGHT = 40;
@@ -172,5 +172,4 @@ public abstract class TelasEntidade {
         return BOTAO_Y;
     }
 
-    
 }

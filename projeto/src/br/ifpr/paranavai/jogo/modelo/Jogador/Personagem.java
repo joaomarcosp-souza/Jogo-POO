@@ -1,27 +1,23 @@
 package br.ifpr.paranavai.jogo.modelo.Jogador;
 
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
-
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Personagem extends Entidade {
     // VARIAVEIS PARA O TIRO
     private List<Tiro> tiros;
+    private List<TiroEspecial> supertiro;
     private long tempoUltimoTiro;
     private long delayTiro;
     // TELA
-    private int LARGURATELA = 1200;
     private final int POSICAOINICIALX = 100;
     private final int POSICAOINICIALY = 300;
-    // VALORES PARA CADA 
+    // VALORES PARA CADA
     private final int VIDAINICIAL = 3;
     private final int PONTOSINICIAIS = 0;
     private final int VELOCIDADEINICIAL = 3;
@@ -36,6 +32,7 @@ public class Personagem extends Entidade {
         this.VIDAS = VIDAINICIAL;
         this.pontos = PONTOSINICIAIS;
         tiros = new ArrayList<Tiro>();
+        supertiro = new ArrayList<TiroEspecial>();
     }
 
     @Override
@@ -97,21 +94,27 @@ public class Personagem extends Entidade {
         this.tiros.add(new Tiro(posicaoEmX + larguraImagem / 2, posicaoEmY + (alturaImagem / 2)));
     }
 
+    // MÉTODO TIRO ESPECIAL
+    public void superTiro() {
+        this.supertiro.add(new TiroEspecial(posicaoEmX + larguraImagem / 2, posicaoEmY + (alturaImagem / 2)));
+    }
+
     // MÉTODO TECLA PARA ATIRAR
-    public void atirar(KeyEvent teclado) {
+    public void tiroNormal(KeyEvent teclado) {
         long tempoAtual = System.currentTimeMillis();
         int tecla = teclado.getKeyCode();
-
         if (tempoAtual - tempoUltimoTiro < delayTiro) {
             return;
         } else {
             if (tecla == KeyEvent.VK_SPACE) {
                 tiro_simples();
             }
+
+            if (tecla == KeyEvent.VK_R) {
+                superTiro();
+            }
         }
-
         tempoUltimoTiro = tempoAtual;
-
     }
 
     // MÉTODO DE PONTUAÇÃO DO PERSONAGEM
@@ -124,30 +127,18 @@ public class Personagem extends Entidade {
 
     // MÉTODO DE VIDA DO PERSONAGEM
     public void vidas(Graphics life) {
-        JPanel panel = new JPanel();
-        // DEFINE A STRING DE EXIBIÇÃO
-        String vida = "Vidas";
-        // CRIA UM ESTILO DE FONTE
-        Font estilo = new Font("Consolas", Font.BOLD, 10);
-        // CRIA A MÉTRICA DA FONTE
-        FontMetrics metrica = panel.getFontMetrics(estilo);
-        // OBTÉM O TAMANHO DA STRING NA TELA
-        int width = metrica.stringWidth(vida);
+        int diferenca = 60;
         // CALCUPA A DISTÂNCIA DA BORDA PARA POSICIONAR A VIDA
-        int distancia = (15 * VIDAS) + (5 * VIDAS) + 100 + width;
+        int distancia = (15 * VIDAS) + (5 * VIDAS) + diferenca;
         // PARA CADA VIDA DO JOGADOR, DESENHA UMA IMAGEM DA VIDA,
         // ALTERANDO A POSIÇÃO COM BASE NOS CALCULOS PARA DEFINIR
         // A POSIÇÃO DE CADA UMA EM (x,y)
         for (int i = 0; i < VIDAS; i++) {
-            life.drawImage(imagem_vida, (LARGURATELA + 30) - width, 10, null);
-            width += alturaImagem_Vida + 5;
+            life.drawImage(imagem_vida, (getLARGURATELA()) - diferenca, 10, null);
+            diferenca += alturaImagem_Vida + 5;
         }
-        // SETA A COR DA FONTE
-        life.setColor(Color.WHITE);
-        // SETA O ESTILO DE FONTE
-        life.setFont(estilo);
-        // DESENHA A STRING COM A POSIÇÃO (x,y)
-        life.drawString(vida, larguraImagem_Vida - distancia, 10);
+        // DESENHA AS IMAGENS COM BASE NA POSIÇÃO (x,y)
+        life.drawString("", larguraImagem_Vida - distancia, 10);
     }
 
     // MÉTODOS GETTERS E SETTERS EXCLUISIVOS PERSONAGEM
@@ -173,5 +164,13 @@ public class Personagem extends Entidade {
 
     public int getPONTOSINICIAIS() {
         return PONTOSINICIAIS;
+    }
+
+    public List<TiroEspecial> getSupertiro() {
+        return supertiro;
+    }
+
+    public void setSupertiro(List<TiroEspecial> supertiro) {
+        this.supertiro = supertiro;
     }
 }

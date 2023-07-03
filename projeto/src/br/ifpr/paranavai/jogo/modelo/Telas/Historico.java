@@ -9,7 +9,7 @@ import java.awt.FontMetrics;
 
 public class Historico extends TelasEntidade {
 
-    //CONSTRUTOR 
+    // CONSTRUTOR
     public Historico() {
         this.visibilidade = false;
     }
@@ -36,14 +36,15 @@ public class Historico extends TelasEntidade {
 
     @Override
     public void menu(Graphics g) {
-       g.setFont(pixel.deriveFont(Font.BOLD, 30));
+        int tamanhoStringBotao = 30;
+        g.setFont(pixel.deriveFont(Font.BOLD, tamanhoStringBotao));
         String textoBotao = "ESC";
         FontMetrics fm = g.getFontMetrics();
         int posicaoBotaoX = getBotao().x + (getBotaowidth() - fm.stringWidth(textoBotao)) / 2;
         int posicaoBotaoY = (getBotao().y + 5) + (getBotaoheight() - fm.getHeight()) / 2 + fm.getAscent();
         g.setColor(getCorAmarela());
         g.fillRect(getBotao().x, getBotao().y, getBotaowidth(), getBotaoheight());
-        g.setColor(Color.GRAY);
+        g.setColor(Color.BLACK);
         g.drawString(textoBotao, posicaoBotaoX + 2, posicaoBotaoY);
         g.setColor(Color.WHITE);
         g.drawString(textoBotao, posicaoBotaoX, posicaoBotaoY);
