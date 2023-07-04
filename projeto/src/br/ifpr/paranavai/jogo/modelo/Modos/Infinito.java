@@ -3,7 +3,7 @@ package br.ifpr.paranavai.jogo.modelo.Modos;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Color;
+//import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -85,17 +85,27 @@ public class Infinito extends JPanel implements ActionListener {
         inimigo_naves = new ArrayList<Naves>();
         // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
         timer_inimigo_nave = new Timer(delayInimigoNave, new ActionListener() {
-            int y = 1400;
+            int y = 730;
             int alturaInimigo = 80;
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                int vidaInimigos = 1;
                 int posicaoEmX = personagem.getLARGURATELA(); // Defina a posição inicial do novo inimigo
                 int posicaoEmY = (int) (Math.random() * (y - alturaInimigo));
-                if (posicaoEmY < 10 || posicaoEmY > 1400) {
+                if (posicaoEmY < 10 || posicaoEmY > 750) {
                     posicaoEmY = 50;
                 }
-                inimigo_naves.add(new Naves(posicaoEmX, posicaoEmY));
+
+                if (personagem.getPontos() > 100) {
+                    vidaInimigos = 2;
+                }
+
+                if (personagem.getPontos() > 120) {
+                    vidaInimigos = 3;
+                }
+
+                inimigo_naves.add(new Naves(posicaoEmX, posicaoEmY, vidaInimigos));
             }
         });
         timer_inimigo_nave.setRepeats(true);
@@ -180,34 +190,36 @@ public class Infinito extends JPanel implements ActionListener {
                 Naves ini = inimigo_naves.get(i);
                 ini.carregar();
                 graficos.drawImage(ini.getImagem(), ini.getPosicaoEmX(), ini.getPosicaoEmY(), null);
+                ini.vidas(graficos);
             }
             // FIM METEORO E NAVES INIMIGAS
 
-            graficos.setColor(Color.RED);
-            Rectangle hitboxPersonagem = personagem.getBounds();
-            graficos.drawRect(hitboxPersonagem.x, hitboxPersonagem.y,
-                    hitboxPersonagem.width, hitboxPersonagem.height);
-            graficos.setColor(Color.BLUE);
+            // graficos.setColor(Color.RED);
+            // Rectangle hitboxPersonagem = personagem.getBounds();
+            // graficos.drawRect(hitboxPersonagem.x, hitboxPersonagem.y,
+            // hitboxPersonagem.width, hitboxPersonagem.height);
+            // graficos.setColor(Color.BLUE);
 
-            for (Naves ini : inimigo_naves) {
-                Rectangle hitboxInimigo = ini.getBounds();
-                graficos.drawRect(hitboxInimigo.x, hitboxInimigo.y, hitboxInimigo.width,
-                        hitboxInimigo.height);
-            }
-            for (Meteorito mete : inimigo_meteorito) {
-                Rectangle hitboxInimigo = mete.getBounds();
-                graficos.drawRect(hitboxInimigo.x, hitboxInimigo.y, hitboxInimigo.width,
-                        hitboxInimigo.height);
-            }
-            for (Tiro mete : tiros) {
-                Rectangle hitboxInimigo = mete.getBounds();
-                graficos.drawRect(hitboxInimigo.x, hitboxInimigo.y, hitboxInimigo.width,
-                        hitboxInimigo.height);
-            }
+            // for (Naves ini : inimigo_naves) {
+            // Rectangle hitboxInimigo = ini.getBounds();
+            // graficos.drawRect(hitboxInimigo.x, hitboxInimigo.y, hitboxInimigo.width,
+            // hitboxInimigo.height);
+            // }
+            // for (Meteorito mete : inimigo_meteorito) {
+            // Rectangle hitboxInimigo = mete.getBounds();
+            // graficos.drawRect(hitboxInimigo.x, hitboxInimigo.y, hitboxInimigo.width,
+            // hitboxInimigo.height);
+            // }
+            // for (Tiro mete : tiros) {
+            // Rectangle hitboxInimigo = mete.getBounds();
+            // graficos.drawRect(hitboxInimigo.x, hitboxInimigo.y, hitboxInimigo.width,
+            // hitboxInimigo.height);
+            // }
 
             // CARREGANDO OS COMPONENTES DA CLASSE PERSONAGEM(VIDA E PONTUAÇÃO)
             personagem.pontos(graficos);
             personagem.vidas(graficos);
+
         }
         // CARREGANDO A TELA DE MORTE CASO O JOGADOR MORRA(OBVIO)
         if (fimDeJogo.isVisibilidade() == true) {
@@ -259,6 +271,7 @@ public class Infinito extends JPanel implements ActionListener {
         } // FIM
 
         // ATUALIZA POSICAÇÃO DO TIRO ESPECIAL
+
         List<TiroEspecial> tirosEspecial = personagem.getSupertiro();
         Iterator<TiroEspecial> iterator_tirosEspecial = tirosEspecial.iterator();
         while (iterator_tirosEspecial.hasNext()) {
@@ -271,14 +284,14 @@ public class Infinito extends JPanel implements ActionListener {
         } // FIM
 
         // CARREGANDO DEMAIS METODOS DA CLASSE
+        gerenciaFase();
         checarColisoes();
-        gerenciarInimigos();
         // REPINTANDO OS OBJETOS
         personagem.atualizar();
         repaint();
     }
 
-    public void gerenciarInimigos() {
+    public void gerenciaFase() {
         // ALTERA A VELOCIDADE DA NAVE INIMIGA COM BASE NOS PONTOS GANHOS DO PERSONAGEM
         int[] pontosPersonagem = { 300, 600, 900, 1000 };
         int[] ajusteVelocidades = { 4, 5, 6, 7 };
@@ -292,11 +305,12 @@ public class Infinito extends JPanel implements ActionListener {
             }
         }
 
+        // CONTROLE DA FASE
         if (jogando == false) {
             // PARA O SPAWN DE INIMIGOS
             timer_inimigo_nave.stop();
             timer_inimigo_Meteorito.stop();
-            // LIMPA A LISTA DE INMIGOS CASO O JOGADOR ESTEJA MORTO
+            // LIMPA A LISTA DE INMIGOS
             inimigo_naves.clear();
             inimigo_meteorito.clear();
             // RESETA A POSIÇÃO DO JOGADOR
@@ -307,7 +321,7 @@ public class Infinito extends JPanel implements ActionListener {
             }
         } else {
             timer_inimigo_nave.start();
-            if (personagem.getPontos() > 200) {
+            if (personagem.getPontos() > 300) {
                 timer_inimigo_Meteorito.start();
             }
         }
@@ -319,7 +333,7 @@ public class Infinito extends JPanel implements ActionListener {
         Rectangle Forma_Inimig_Meteorito;
         // TELA
         int telaLargura = 1600; // Largura da tela
-        int telaAltura = 785; // Altura da tela
+        int telaAltura = 800; // Altura da tela
         // VALORES PARA CADA INIMIGO DESTRUIDO
         int VALORNAVES = 10;
         int VALORMETEORITO = 20;
@@ -338,21 +352,32 @@ public class Infinito extends JPanel implements ActionListener {
             int maximoEmY = telaAltura - personagem.getAlturaImagem();
             personagem.setPosicaoEmY(maximoEmY);
         }
-        // COLISÃO DA NAVE DO PERSOANGEM COM A NAVE INIMIGA
+
+        // COLISÃO PERSONAGEM COM A NAVE INIMIGA
+        // COLISÃO PERSONAGEM COM A NAVE INIMIGA
         for (int i = 0; i < inimigo_naves.size(); i++) {
             Naves temp_nave = inimigo_naves.get(i);
             Forma_Inimigo_Nave = temp_nave.getBounds();
             if (forma_Nave_Personagem.getBounds().intersects(Forma_Inimigo_Nave.getBounds())) {
+                // VERIFICA A VIDA DO PERSONAGEM
                 if (personagem.getVIDAS() == 1) {
                     jogando = false;
                     fimDeJogo.setVisibilidade(true);
+                    personagem.setVisibilidade(false);
                 } else {
                     personagem.setVIDAS(personagem.getVIDAS() - 1);
                 }
-                personagem.setVisibilidade(false);
-                temp_nave.setVisibilidade(false);
+                // VERIFICA A VIDA DA NAVE INIMIGA
+                if (temp_nave.getVidaInimigos() == 1) {
+                    temp_nave.setVisibilidade(false);
+                    personagem.setPontos(personagem.getPontos() + VALORNAVES);
+                } else {
+                    temp_nave.setVidaInimigos(temp_nave.getVidaInimigos() - 1);
+                }
             }
         }
+
+        // VEREFICA A COLISÃO DO PERSONAGEM COM O METEORITO
         for (int k = 0; k < inimigo_meteorito.size(); k++) {
             Meteorito temp_mete = inimigo_meteorito.get(k);
             Forma_Inimig_Meteorito = temp_mete.getBounds();
@@ -367,21 +392,18 @@ public class Infinito extends JPanel implements ActionListener {
                 personagem.setVisibilidade(false);
             }
         }
-        // VEREFICA COLISÃO COM INIMIGOS METEORITO
+
+        // VEREFICA COLISÃO DOS TIROS COM OS INIMIGOS
         for (Naves inimigoNave : inimigo_naves) {
             Rectangle formaInimigoNave = inimigoNave.getBounds();
             for (Tiro tiro : personagem.getTiros()) {
                 Rectangle formaTiro = tiro.getBounds();
                 if (formaTiro.intersects(formaInimigoNave)) {
-                    personagem.setPontos(personagem.getPontos() + VALORNAVES);
-                    if (personagem.getPontos() < 200) {
+                    if (inimigoNave.getVidaInimigos() == 1) {
                         inimigoNave.setVisibilidade(false);
-                    } else if (personagem.getPontos() > 200) {
-                        if (inimigoNave.getVIDASINIMIGOS() == 1) {
-                            inimigoNave.setVisibilidade(false);
-                        } else {
-                            inimigoNave.setVIDASINIMIGOS(inimigoNave.getVIDASINIMIGOS() - 1);
-                        }
+                        personagem.setPontos(personagem.getPontos() + VALORNAVES);
+                    } else {
+                        inimigoNave.setVidaInimigos(inimigoNave.getVidaInimigos() - 1);
                     }
                     tiro.setVisibilidade(false);
                 }
@@ -471,6 +493,7 @@ public class Infinito extends JPanel implements ActionListener {
             } else if (jogando == true) {
                 personagem.mover(e);
                 personagem.tiroNormal(e);
+                personagem.tiroEspecial(e);
             } else if (fimDeJogo.isVisibilidade() == true) {
                 fimDeJogoMENU(e); // MÉTODOS
                 fimDeJogo.controleMenu(e); // MÉTODO DA CLASSE

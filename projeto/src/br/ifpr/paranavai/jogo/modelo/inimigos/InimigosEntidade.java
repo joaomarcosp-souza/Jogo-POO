@@ -13,7 +13,7 @@ public abstract class InimigosEntidade {
     protected boolean visibilidade;
     // INFORMAÇÕES BASICAS DO INIMIGO
     protected int VELOCIDADE;
-    protected int VIDASINIMIGOS;
+    protected int vidaInimigos;
     // CONSTRUTOR
     public InimigosEntidade() {
         this.visibilidade = true;
@@ -86,14 +86,6 @@ public abstract class InimigosEntidade {
         VELOCIDADE = vELOCIDADE;
     }
 
-    public int getVIDASINIMIGOS() {
-        return VIDASINIMIGOS;
-    }
-
-    public void setVIDASINIMIGOS(int vIDASINIMIGOS) {
-        VIDASINIMIGOS = vIDASINIMIGOS;
-    }
-
     public Image getImagemExplosao() {
         return imagemExplosao;
     }
@@ -116,5 +108,13 @@ public abstract class InimigosEntidade {
 
     public void setAlturaImagemExplosao(int alturaImagemExplosao) {
         this.alturaImagemExplosao = alturaImagemExplosao;
+    }
+
+    public int getVidaInimigos() {
+        return vidaInimigos;
+    }
+
+    public void setVidaInimigos(int vidaInimigos) {
+        this.vidaInimigos = vidaInimigos;
     }
 }

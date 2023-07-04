@@ -12,8 +12,9 @@ public class Personagem extends Entidade {
     // VARIAVEIS PARA O TIRO
     private List<Tiro> tiros;
     private List<TiroEspecial> supertiro;
-    private long tempoUltimoTiro;
+    private long tempoUltimoTiroNormal, tempoUltimoTiroSuper;
     private long delayTiro;
+    private long delaySuper;
     // TELA
     private final int POSICAOINICIALX = 100;
     private final int POSICAOINICIALY = 300;
@@ -26,11 +27,12 @@ public class Personagem extends Entidade {
     public Personagem() {
         this.posicaoEmX = POSICAOINICIALX;
         this.posicaoEmY = POSICAOINICIALY;
+        this.delayTiro = 200;
+        this.delaySuper = 2500;
         this.visibilidade = true;
-        this.delayTiro = 100;
-        this.VELOCIDADE = VELOCIDADEINICIAL;
         this.VIDAS = VIDAINICIAL;
         this.pontos = PONTOSINICIAIS;
+        this.VELOCIDADE = VELOCIDADEINICIAL;
         tiros = new ArrayList<Tiro>();
         supertiro = new ArrayList<TiroEspecial>();
     }
@@ -99,22 +101,32 @@ public class Personagem extends Entidade {
         this.supertiro.add(new TiroEspecial(posicaoEmX + larguraImagem / 2, posicaoEmY + (alturaImagem / 2)));
     }
 
-    // MÉTODO TECLA PARA ATIRAR
+    // MÉTODO ATIRAR
     public void tiroNormal(KeyEvent teclado) {
-        long tempoAtual = System.currentTimeMillis();
         int tecla = teclado.getKeyCode();
-        if (tempoAtual - tempoUltimoTiro < delayTiro) {
+        long tempoAtual = System.currentTimeMillis();
+        if (tempoAtual - tempoUltimoTiroNormal < delayTiro) {
             return;
         } else {
             if (tecla == KeyEvent.VK_SPACE) {
                 tiro_simples();
             }
+        }
+        tempoUltimoTiroNormal = tempoAtual;
+    }
 
+    // MÉTODO SUPER TIRO
+    public void tiroEspecial(KeyEvent teclado) {
+        int tecla = teclado.getKeyCode();
+        long tempoAtual = System.currentTimeMillis();
+        if (tempoAtual - tempoUltimoTiroSuper < delaySuper) {
+            return;
+        } else {
             if (tecla == KeyEvent.VK_R) {
                 superTiro();
             }
         }
-        tempoUltimoTiro = tempoAtual;
+        tempoUltimoTiroSuper = tempoAtual;
     }
 
     // MÉTODO DE PONTUAÇÃO DO PERSONAGEM
@@ -126,7 +138,7 @@ public class Personagem extends Entidade {
     }
 
     // MÉTODO DE VIDA DO PERSONAGEM
-    public void vidas(Graphics life) {
+    public void vidas(Graphics g) {
         int diferenca = 60;
         // CALCUPA A DISTÂNCIA DA BORDA PARA POSICIONAR A VIDA
         int distancia = (15 * VIDAS) + (5 * VIDAS) + diferenca;
@@ -134,11 +146,15 @@ public class Personagem extends Entidade {
         // ALTERANDO A POSIÇÃO COM BASE NOS CALCULOS PARA DEFINIR
         // A POSIÇÃO DE CADA UMA EM (x,y)
         for (int i = 0; i < VIDAS; i++) {
-            life.drawImage(imagem_vida, (getLARGURATELA()) - diferenca, 10, null);
+            g.drawImage(imagem_vida, (getLARGURATELA()) - diferenca, 10, null);
             diferenca += alturaImagem_Vida + 5;
+            if(VIDAS == 2){
+                g.drawImage(imagem, (getLARGURATELA()) - diferenca, 10, null);
+                diferenca += alturaImagem_Vida + 5;
+            }
         }
         // DESENHA AS IMAGENS COM BASE NA POSIÇÃO (x,y)
-        life.drawString("", larguraImagem_Vida - distancia, 10);
+        g.drawString("", larguraImagem_Vida - distancia, 10);
     }
 
     // MÉTODOS GETTERS E SETTERS EXCLUISIVOS PERSONAGEM
