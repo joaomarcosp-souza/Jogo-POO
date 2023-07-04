@@ -30,8 +30,8 @@ public class Infinito extends JPanel implements ActionListener {
     private Image fundo;
     private Image fundo2;
     // LISTA PARA INIMIGOS
-    private List<Naves> inimigo_naves;
-    private List<Meteorito> inimigo_meteorito;
+    private List<Naves> NaveInimiga;
+    private List<Meteorito> MeteoritoInimigo;
     private boolean jogando;
     // INSTANCIAS
     private MenuInicial telaMenu;
@@ -40,20 +40,27 @@ public class Infinito extends JPanel implements ActionListener {
     private Controles telaControles;
     private FimDeJogo fimDeJogo;
     // TIMERS
-    private Timer timer_inimigo_nave;
-    private Timer timer_inimigo_Meteorito;
+    private Timer TimerNaveInimiga;
+    private Timer TimerMeteorito;
     private int delayInimigoNave = 450;
     private int delayInimigoMeteorito = 2500;
     private Timer timerGlobal;
 
+    // 'TIMER' PARA A COLISAO
     private long ultimaColisao;
-    private long delayColisao;
+    private int delayColisao;
+    // ATRIBUTOS PARA O EFEITO 'PISCANDO'
+    private boolean piscando;
+    private Timer timerPiscar;
+    private int delayPiscando = 500;
+    private int contadorPiscar = 0; // Reinicia o contador de piscar
+    private boolean permitirPiscar = false;
 
     public Infinito() {
         setFocusable(true);
         setDoubleBuffered(true);
         // VALOR DO DELAY PARA A COLISAO
-        this.delayColisao = 250;
+        this.delayColisao = 1000;
         // IMAGEM DE FUNDO
         ImageIcon carregando = new ImageIcon("recursos\\sprites_Fundos\\FundoUm.jpg");
         this.fundo = carregando.getImage();
@@ -81,6 +88,16 @@ public class Infinito extends JPanel implements ActionListener {
         timerGlobal = new Timer(5, this);
         timerGlobal.start(); // START
 
+        // TIMER PARA O EFEITO DE PISCANDO
+        piscando = false;
+        timerPiscar = new Timer(delayPiscando, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                piscando = !piscando; // Alterna a visibilidade do personagem
+            }
+        });
+        timerPiscar.setRepeats(true);
+
         // INICIALIZANDO MÉTODOS INIMIGOS
         InicializaNaveInimiga(); // NAVES
         InicializaMeteorito(); // METEORITOS
@@ -89,9 +106,9 @@ public class Infinito extends JPanel implements ActionListener {
 
     // INICIANDO POSIÇÃO DAS NAVES INIMIGAS ALEATORIAMENTE
     public void InicializaNaveInimiga() {
-        inimigo_naves = new ArrayList<Naves>();
+        NaveInimiga = new ArrayList<Naves>();
         // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
-        timer_inimigo_nave = new Timer(delayInimigoNave, new ActionListener() {
+        TimerNaveInimiga = new Timer(delayInimigoNave, new ActionListener() {
             int y = 730;
             int alturaInimigo = 80;
 
@@ -112,18 +129,18 @@ public class Infinito extends JPanel implements ActionListener {
                     vidaInimigos = 3;
                 }
 
-                inimigo_naves.add(new Naves(posicaoEmX, posicaoEmY, vidaInimigos));
+                NaveInimiga.add(new Naves(posicaoEmX, posicaoEmY, vidaInimigos));
             }
         });
-        timer_inimigo_nave.setRepeats(true);
+        TimerNaveInimiga.setRepeats(true);
     }
 
     // INICIANDO POSIÇÃO DO METEORITO ALEATORIAMENTE
     public void InicializaMeteorito() {
-        inimigo_meteorito = new ArrayList<Meteorito>();
+        MeteoritoInimigo = new ArrayList<Meteorito>();
         int alturaInimigo = 100;
         // TIMER PARA SPAWNAR O METEORITO
-        timer_inimigo_Meteorito = new Timer(delayInimigoMeteorito, new ActionListener() {
+        TimerMeteorito = new Timer(delayInimigoMeteorito, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int posicaoEmY = -alturaInimigo;
@@ -131,10 +148,10 @@ public class Infinito extends JPanel implements ActionListener {
                 if (posicaoEmX < 10 || posicaoEmX > 1200) {
                     posicaoEmX = 100;
                 }
-                inimigo_meteorito.add(new Meteorito(posicaoEmX, posicaoEmY));
+                MeteoritoInimigo.add(new Meteorito(posicaoEmX, posicaoEmY));
             }
         });
-        timer_inimigo_Meteorito.setRepeats(true);
+        TimerMeteorito.setRepeats(true);
     }// FIM MÉTODO METEORITO
 
     public void paintComponent(Graphics g) {
@@ -181,20 +198,23 @@ public class Infinito extends JPanel implements ActionListener {
                 graficos.drawImage(tiroEspecial.getImagem(),
                         tiroEspecial.getPosicaoEmX(), tiroEspecial.getPosicaoEmY(), null);
             }
-            // CARREGANDO A IMAGEM DO PERSONAGEM
-            graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(),
-                    null);
+
+            // CARREGANDO A IMAGEM DO PERSONAGEM SOMENTE SE NÃO ESTIVER PISCANDO
+            if (!piscando) {
+                graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(),
+                        null);
+            }
 
             // COMEÇO METEORO E NAVES INIMIGAS
-            for (int i = 0; i < inimigo_meteorito.size(); i++) {
-                Meteorito mete = inimigo_meteorito.get(i);
+            for (int i = 0; i < MeteoritoInimigo.size(); i++) {
+                Meteorito mete = MeteoritoInimigo.get(i);
                 mete.carregar();
                 graficos.drawImage(mete.getImagem(), mete.getPosicaoEmX(), mete.getPosicaoEmY(),
                         null);
             }
 
-            for (int i = 0; i < inimigo_naves.size(); i++) {
-                Naves ini = inimigo_naves.get(i);
+            for (int i = 0; i < NaveInimiga.size(); i++) {
+                Naves ini = NaveInimiga.get(i);
                 ini.carregar();
                 graficos.drawImage(ini.getImagem(), ini.getPosicaoEmX(), ini.getPosicaoEmY(), null);
                 ini.vidas(graficos);
@@ -244,7 +264,7 @@ public class Infinito extends JPanel implements ActionListener {
         // DO METODO 'ATUALIZAR', AO FICAR INVISIVEL O INIMIGO E EXCLUIDO
         // A CLASSE ITERATOR E COMO UM PONTEIRO EM C QUE PERMITE INTERAJIR COM UM CERTO
         // OBJETO(INIMIGO) DE UMA LISTA DE FORMA ESPECIFICA E EM SEQUENCIA
-        Iterator<Naves> iterator_naves = inimigo_naves.iterator();
+        Iterator<Naves> iterator_naves = NaveInimiga.iterator();
         while (iterator_naves.hasNext()) {
             Naves ini = iterator_naves.next();
             if (ini.isVisibilidade()) {
@@ -255,7 +275,7 @@ public class Infinito extends JPanel implements ActionListener {
         } // FIM NAVES
 
         // ATUALIZA A POSIÇÃO DO METEORO
-        Iterator<Meteorito> iterator_meteorito = inimigo_meteorito.iterator();
+        Iterator<Meteorito> iterator_meteorito = MeteoritoInimigo.iterator();
         while (iterator_meteorito.hasNext()) {
             Meteorito mete = iterator_meteorito.next();
             if (mete.isVisibilidade()) {
@@ -305,21 +325,22 @@ public class Infinito extends JPanel implements ActionListener {
         for (int i = 0; i < pontosPersonagem.length; i++) {
             if (personagem.getPontos() > pontosPersonagem[i]) {
                 int aumentoVelocidade = ajusteVelocidades[i];
-                inimigo_naves.forEach(temp_nave -> temp_nave.setVELOCIDADE(aumentoVelocidade));
+                NaveInimiga.forEach(temp_nave -> temp_nave.setVELOCIDADE(aumentoVelocidade));
                 if (i >= 1) {
-                    inimigo_meteorito.forEach(temp_mete -> temp_mete.setVELOCIDADE(aumentoVelocidade));
+                    MeteoritoInimigo.forEach(temp_mete -> temp_mete.setVELOCIDADE(aumentoVelocidade));
                 }
             }
         }
 
         // CONTROLE DA FASE
         if (jogando == false) {
+            timerPiscar.stop();
             // PARA O SPAWN DE INIMIGOS
-            timer_inimigo_nave.stop();
-            timer_inimigo_Meteorito.stop();
+            TimerNaveInimiga.stop();
+            TimerMeteorito.stop();
             // LIMPA A LISTA DE INMIGOS
-            inimigo_naves.clear();
-            inimigo_meteorito.clear();
+            NaveInimiga.clear();
+            MeteoritoInimigo.clear();
             // RESETA A POSIÇÃO DO JOGADOR
             if (personagem.getPosicaoEmX() != personagem.getPOSICAOINICIALX()
                     || personagem.getPosicaoEmY() != personagem.getPOSICAOINICIALY()) {
@@ -327,11 +348,23 @@ public class Infinito extends JPanel implements ActionListener {
                 personagem.setPosicaoEmY(personagem.getPOSICAOINICIALY());
             }
         } else {
-            timer_inimigo_nave.start();
+            TimerNaveInimiga.start();
             if (personagem.getPontos() > 300) {
-                timer_inimigo_Meteorito.start();
+                TimerMeteorito.start();
             }
         }
+
+        if (contadorPiscar % 2 == 1) {
+            piscando = false; // SE FOR IMPAR O PERSONAGEM TA VISIVEL
+        } else {
+            piscando = true;
+        }
+        repaint();
+        if (contadorPiscar == 5) {
+            timerPiscar.stop();
+            piscando = false;
+        }
+        contadorPiscar++;
     }
 
     public void checarColisoes() {
@@ -361,13 +394,15 @@ public class Infinito extends JPanel implements ActionListener {
         }
 
         // COLISÃO PERSONAGEM COM A NAVE INIMIGA
-        for (int i = 0; i < inimigo_naves.size(); i++) {
-            Naves temp_nave = inimigo_naves.get(i);
+        for (int i = 0; i < NaveInimiga.size(); i++) {
+            Naves temp_nave = NaveInimiga.get(i);
             Forma_Inimigo_Nave = temp_nave.getBounds();
             long tempoAtual = System.currentTimeMillis();
             if (tempoAtual - ultimaColisao < delayColisao) {
                 return;
             } else {
+                contadorPiscar = 0; // REINICIA O CONTADOR
+                timerPiscar.start(); // INICIA O TIMER
                 if (forma_Nave_Personagem.getBounds().intersects(Forma_Inimigo_Nave.getBounds())) {
                     // VERIFICA A VIDA DO PERSONAGEM
                     if (personagem.getVIDAS() == 1) {
@@ -387,11 +422,13 @@ public class Infinito extends JPanel implements ActionListener {
                     ultimaColisao = tempoAtual;
                 }
             }
+            timerPiscar.stop(); // Para o Timer de piscar
+            piscando = false; // Garante que o personagem não fique invisível após o piscar
         }
 
         // VEREFICA A COLISÃO DO PERSONAGEM COM O METEORITO
-        for (int k = 0; k < inimigo_meteorito.size(); k++) {
-            Meteorito temp_mete = inimigo_meteorito.get(k);
+        for (int k = 0; k < MeteoritoInimigo.size(); k++) {
+            Meteorito temp_mete = MeteoritoInimigo.get(k);
             Forma_Inimig_Meteorito = temp_mete.getBounds();
             if (forma_Nave_Personagem.getBounds().intersects(Forma_Inimig_Meteorito.getBounds())) {
                 if (personagem.getVIDAS() == 1) {
@@ -406,7 +443,7 @@ public class Infinito extends JPanel implements ActionListener {
         }
 
         // VEREFICA COLISÃO DOS TIROS COM OS INIMIGOS
-        for (Naves inimigoNave : inimigo_naves) {
+        for (Naves inimigoNave : NaveInimiga) {
             Rectangle formaInimigoNave = inimigoNave.getBounds();
             for (Tiro tiro : personagem.getTiros()) {
                 Rectangle formaTiro = tiro.getBounds();
@@ -423,7 +460,7 @@ public class Infinito extends JPanel implements ActionListener {
         }
 
         // VEREFICA COLISÃO COM INIMIGOS METEORITO
-        for (Meteorito inimigoMeteorito : inimigo_meteorito) {
+        for (Meteorito inimigoMeteorito : MeteoritoInimigo) {
             Rectangle formaInimigoMeteorito = inimigoMeteorito.getBounds();
             for (Tiro tiro : personagem.getTiros()) {
                 Rectangle formaTiro = tiro.getBounds();
