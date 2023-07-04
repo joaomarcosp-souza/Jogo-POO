@@ -44,10 +44,16 @@ public class Infinito extends JPanel implements ActionListener {
     private Timer timer_inimigo_Meteorito;
     private int delayInimigoNave = 450;
     private int delayInimigoMeteorito = 2500;
+    private Timer timerGlobal;
+
+    private long ultimaColisao;
+    private long delayColisao;
 
     public Infinito() {
         setFocusable(true);
         setDoubleBuffered(true);
+        // VALOR DO DELAY PARA A COLISAO
+        this.delayColisao = 250;
         // IMAGEM DE FUNDO
         ImageIcon carregando = new ImageIcon("recursos\\sprites_Fundos\\FundoUm.jpg");
         this.fundo = carregando.getImage();
@@ -72,8 +78,9 @@ public class Infinito extends JPanel implements ActionListener {
         // INICIALIZANDO O METODO DE LEITURA DO TECLADO
         addKeyListener(new TecladoAdapter());
         // ATUALIZANDO O PERSONAGEM E REDENSENHADO NA TELA EM INTERVALOS REGULARES.
-        Timer timer = new Timer(5, this);
-        timer.start(); // START
+        timerGlobal = new Timer(5, this);
+        timerGlobal.start(); // START
+
         // INICIALIZANDO MÉTODOS INIMIGOS
         InicializaNaveInimiga(); // NAVES
         InicializaMeteorito(); // METEORITOS
@@ -97,10 +104,10 @@ public class Infinito extends JPanel implements ActionListener {
                     posicaoEmY = 50;
                 }
 
+                // ALTERA A VIDA DO INIMIGO
                 if (personagem.getPontos() > 100) {
                     vidaInimigos = 2;
                 }
-
                 if (personagem.getPontos() > 120) {
                     vidaInimigos = 3;
                 }
@@ -354,25 +361,30 @@ public class Infinito extends JPanel implements ActionListener {
         }
 
         // COLISÃO PERSONAGEM COM A NAVE INIMIGA
-        // COLISÃO PERSONAGEM COM A NAVE INIMIGA
         for (int i = 0; i < inimigo_naves.size(); i++) {
             Naves temp_nave = inimigo_naves.get(i);
             Forma_Inimigo_Nave = temp_nave.getBounds();
-            if (forma_Nave_Personagem.getBounds().intersects(Forma_Inimigo_Nave.getBounds())) {
-                // VERIFICA A VIDA DO PERSONAGEM
-                if (personagem.getVIDAS() == 1) {
-                    jogando = false;
-                    fimDeJogo.setVisibilidade(true);
-                    personagem.setVisibilidade(false);
-                } else {
-                    personagem.setVIDAS(personagem.getVIDAS() - 1);
-                }
-                // VERIFICA A VIDA DA NAVE INIMIGA
-                if (temp_nave.getVidaInimigos() == 1) {
-                    temp_nave.setVisibilidade(false);
-                    personagem.setPontos(personagem.getPontos() + VALORNAVES);
-                } else {
-                    temp_nave.setVidaInimigos(temp_nave.getVidaInimigos() - 1);
+            long tempoAtual = System.currentTimeMillis();
+            if (tempoAtual - ultimaColisao < delayColisao) {
+                return;
+            } else {
+                if (forma_Nave_Personagem.getBounds().intersects(Forma_Inimigo_Nave.getBounds())) {
+                    // VERIFICA A VIDA DO PERSONAGEM
+                    if (personagem.getVIDAS() == 1) {
+                        jogando = false;
+                        fimDeJogo.setVisibilidade(true);
+                        personagem.setVisibilidade(false);
+                    } else {
+                        personagem.setVIDAS(personagem.getVIDAS() - 1);
+                    }
+                    // VERIFICA A VIDA DA NAVE INIMIGA
+                    if (temp_nave.getVidaInimigos() == 1) {
+                        temp_nave.setVisibilidade(false);
+                        personagem.setPontos(personagem.getPontos() + VALORNAVES);
+                    } else {
+                        temp_nave.setVidaInimigos(temp_nave.getVidaInimigos() - 1);
+                    }
+                    ultimaColisao = tempoAtual;
                 }
             }
         }
