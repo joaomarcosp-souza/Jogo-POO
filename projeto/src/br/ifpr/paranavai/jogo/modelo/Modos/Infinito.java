@@ -55,13 +55,13 @@ public class Infinito extends JPanel implements ActionListener {
     private boolean piscando;
     private Timer timerPiscar;
     private int delayPiscando = 500;
-    private int contadorPiscar = 0; // Reinicia o contador de piscar
+    private int contadorPiscar = 0;
 
     public Infinito() {
         setFocusable(true);
         setDoubleBuffered(true);
         // VALOR DO DELAY PARA A COLISAO
-        this.delayColisao = 1000;
+        this.delayColisao = 1500;
         // IMAGEM DE FUNDO
         ImageIcon carregando = new ImageIcon("recursos\\sprites_Fundos\\FundoUm.jpg");
         this.fundo = carregando.getImage();
@@ -119,16 +119,16 @@ public class Infinito extends JPanel implements ActionListener {
                 int posicaoEmX = personagem.getLARGURATELA(); // POSICÃO INICIAL DO PERSONAGEM
                 int posicaoEmY = (int) (Math.random() * (y - alturaInimigo));
                 if (posicaoEmY < 10 || posicaoEmY > 750) {
-                    posicaoEmY = 50;
+                    posicaoEmY = (int) (Math.random() * (y - alturaInimigo));
                 }
-
-                // ALTERA A VIDA DO INIMIGO
-                if (personagem.getPontos() > 500) {
+                // AUMENTA A VIDA DO INIMIGO
+                if (personagem.getPontos() > 50) {
                     vidaInimigos = 2;
                 }
-                if (personagem.getPontos() > 1000) {
+                if (personagem.getPontos() > 100) {
                     vidaInimigos = 3;
                 }
+                // Calcula a quantidade de vida restante em relação à vida máxima
                 NaveInimiga.add(new Naves(posicaoEmX, posicaoEmY, vidaInimigos));
             }
         });
@@ -146,7 +146,7 @@ public class Infinito extends JPanel implements ActionListener {
                 int posicaoEmY = -alturaInimigo;
                 int posicaoEmX = (int) (Math.random() * (personagem.getLARGURATELA() - alturaInimigo));
                 if (posicaoEmX < 10 || posicaoEmX > 1200) {
-                    posicaoEmX = 100;
+                    posicaoEmX = (int) (Math.random() * (personagem.getLARGURATELA() - alturaInimigo));
                 }
                 MeteoritoInimigo.add(new Meteorito(posicaoEmX, posicaoEmY));
             }
@@ -539,8 +539,8 @@ public class Infinito extends JPanel implements ActionListener {
                 personagem.tiroNormal(e);
                 personagem.tiroEspecial(e);
             } else if (fimDeJogo.isVisibilidade() == true) {
-                fimDeJogoMENU(e); // MÉTODOS
-                fimDeJogo.controleMenu(e); // MÉTODO DA CLASSE
+                fimDeJogoMENU(e);
+                fimDeJogo.controleMenu(e);
             }
         }
 

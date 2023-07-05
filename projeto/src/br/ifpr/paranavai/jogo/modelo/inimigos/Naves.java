@@ -3,6 +3,7 @@ package br.ifpr.paranavai.jogo.modelo.inimigos;
 import javax.swing.ImageIcon;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Color;
 
 public class Naves extends InimigosEntidade {
 
@@ -39,19 +40,23 @@ public class Naves extends InimigosEntidade {
         }
     }
 
-    public void vidas(Graphics life) {
-        int diferenca = 2;
-        // CALCUPA A DISTÂNCIA DA BORDA PARA POSICIONAR A VIDA
-        int distancia = (5 * vidaInimigos) + (1 * vidaInimigos) + diferenca;
-        // PARA CADA VIDA DO JOGADOR, DESENHA UMA IMAGEM DA VIDA,
-        // ALTERANDO A POSIÇÃO COM BASE NOS CALCULOS PARA DEFINIR
-        // A POSIÇÃO DE CADA UMA EM (x,y)
-        for (int i = 0; i < vidaInimigos; i++) {
-            life.drawImage(imagemVida, posicaoEmX + (larguraImgVida - diferenca), posicaoEmY + 85, null);
-            diferenca += alturaImagem + 5;
+    // VIDA NAVE
+    public void vidas(Graphics g) {
+        int tamanhoCubo = 10; // TAMANHO DO CUBO
+        int espacamentoCubo = 5; // ESPAÇAMENTO
+
+        // CALCULANDO A POSIÇÃO DO CUBOD
+        int numVidas = vidaInimigos;
+        int posicaoCuboX = posicaoEmX - ((tamanhoCubo + espacamentoCubo) * numVidas) / 2;
+        int posicaoCuboY = posicaoEmY + alturaImagem + 5;
+
+        for (int i = 0; i < numVidas; i++) {
+            // CALCULA A POSIÇÃO DO CUBO ATUAL
+            int cuboPosX = posicaoCuboX + (tamanhoCubo + espacamentoCubo) * i;
+
+            g.setColor(Color.RED);
+            g.fillRect((cuboPosX + 44), posicaoCuboY, tamanhoCubo, tamanhoCubo);
         }
-        // DESENHA AS IMAGENS COM BASE NA POSIÇÃO (x,y)
-        life.drawString("", alturaImagem - distancia, 10);
     }
 
     // GETTERS E SETTERS

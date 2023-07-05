@@ -140,8 +140,6 @@ public class Personagem extends Entidade {
     // MÉTODO DE VIDA DO PERSONAGEM
     public void vidas(Graphics g) {
         int diferenca = 65;
-        // CALCUPA A DISTÂNCIA DA BORDA PARA POSICIONAR A VIDA
-        int distancia = (15 * VIDAS) + (5 * VIDAS) + diferenca;
         // PARA CADA VIDA DO JOGADOR, DESENHA UMA IMAGEM DA VIDA,
         // ALTERANDO A POSIÇÃO COM BASE NOS CALCULOS PARA DEFINIR
         // A POSIÇÃO DE CADA UMA EM (x,y)
@@ -149,8 +147,6 @@ public class Personagem extends Entidade {
             g.drawImage(imagem_vida, (getLARGURATELA()) - diferenca, 10, null);
             diferenca += alturaImagem_Vida + 5;
         }
-        // DESENHA AS IMAGENS COM BASE NA POSIÇÃO (x,y)
-        g.drawString("", larguraImagem_Vida - distancia, 10);
     }
 
     // MÉTODOS GETTERS E SETTERS EXCLUISIVOS PERSONAGEM
