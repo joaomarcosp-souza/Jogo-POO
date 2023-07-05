@@ -78,5 +78,4 @@ public class Naves extends InimigosEntidade {
     public void setAlturaImgVida(int alturaImgVida) {
         this.alturaImgVida = alturaImgVida;
     }
-
 }

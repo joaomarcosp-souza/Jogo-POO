@@ -19,9 +19,9 @@ public class Personagem extends Entidade {
     private final int POSICAOINICIALX = 100;
     private final int POSICAOINICIALY = 300;
     // VALORES PARA CADA
-    private final int VIDAINICIAL = 3;
+    private final int VIDAINICIAL = 4;
     private final int PONTOSINICIAIS = 0;
-    private final int VELOCIDADEINICIAL = 3;
+    private final int VELOCIDADEINICIAL = 4;
 
     // CONTRUTOR
     public Personagem() {
