@@ -2,12 +2,12 @@ package br.ifpr.paranavai.jogo.modelo.Telas;
 
 import java.awt.Font;
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.Graphics;
-
-import javax.swing.ImageIcon;
 import java.awt.FontMetrics;
+import javax.swing.ImageIcon;
 
-public class Historico extends TelasEntidade {
+public class Historico extends EntidadeTelas {
 
     // CONSTRUTOR
     public Historico() {
@@ -16,22 +16,26 @@ public class Historico extends TelasEntidade {
 
     @Override
     public void carregar() {
-        ImageIcon carregando = new ImageIcon("recursos\\sprites_fundos\\FundoMenu.jpg");
+        ImageIcon carregando = new ImageIcon("recursos\\Sprites\\Fundos\\FundoMenu.jpg");
         this.imagem = carregando.getImage();
-        this.larguraImagem = this.imagem.getWidth(null);
-        this.alturaImagem = this.imagem.getHeight(null);
-    }
+        // REDIMENSIONA O TAMANHO DA IMAGEM PARA O TAMANHO DA TELA
+        this.imagem = this.imagem.getScaledInstance(
+                telaTamanho.getLARGURATELA(), telaTamanho.getALTURATELA(), Image.SCALE_FAST);
+        this.alturaImagem = this.imagem.getWidth(null);
+        this.larguraImagem = this.imagem.getHeight(null);
+    };
 
     @Override
     public void titulo(Graphics g) {
         String titulo = "HISTORICO";
         g.setFont(pixel.deriveFont(Font.BOLD, getTitulosize()));
         FontMetrics fm = g.getFontMetrics();
-        int x = (LARGURAJANELA - fm.stringWidth(titulo)) / 2;
+        int posicaoTituloX = (telaTamanho.getLARGURATELA() - fm.stringWidth(titulo)) / 2;
+        // TITULO
         g.setColor(Color.WHITE);
-        g.drawString(titulo, (x + 5), Y);
+        g.drawString(titulo, (posicaoTituloX + 5), posicaoTituloY);
         g.setColor(getCorAmarela());
-        g.drawString(titulo, x, Y);
+        g.drawString(titulo, posicaoTituloX, posicaoTituloY);
     }
 
     @Override
@@ -42,10 +46,10 @@ public class Historico extends TelasEntidade {
         FontMetrics fm = g.getFontMetrics();
         int posicaoBotaoX = getBotao().x + (getBotaowidth() - fm.stringWidth(textoBotao)) / 2;
         int posicaoBotaoY = (getBotao().y + 5) + (getBotaoheight() - fm.getHeight()) / 2 + fm.getAscent();
+        // PREENCHE O RETANGULO
         g.setColor(getCorAmarela());
         g.fillRect(getBotao().x, getBotao().y, getBotaowidth(), getBotaoheight());
-        g.setColor(Color.BLACK);
-        g.drawString(textoBotao, posicaoBotaoX + 2, posicaoBotaoY);
+        // DESENHA
         g.setColor(Color.WHITE);
         g.drawString(textoBotao, posicaoBotaoX, posicaoBotaoY);
     }

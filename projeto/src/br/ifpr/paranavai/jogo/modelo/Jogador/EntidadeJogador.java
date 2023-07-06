@@ -5,9 +5,12 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.io.IOException;
+
+import br.ifpr.paranavai.principal.TamanhoTela;
+
 import java.awt.FontFormatException;
 
-public abstract class Entidade {
+public abstract class EntidadeJogador {
     // INFO DA CLASSE PERSONAGEM
     protected int VIDAS;
     protected int pontos;
@@ -17,16 +20,16 @@ public abstract class Entidade {
     protected int posicaoEmX, posicaoEmY;
     protected int larguraImagem, alturaImagem;
     protected int larguraImagem_Vida, alturaImagem_Vida;
-    private int LARGURATELA = 1600;
-
-    // VELOCIDADES PERSONAGEM 
+    // VELOCIDADES PERSONAGEM
     protected int deslocamentoEmX, deslocamentoEmY;
     protected int VELOCIDADE;
     //
     protected boolean visibilidade;
     protected Font pixel = null;
 
-    public Entidade() {
+    protected TamanhoTela telaTamanho;
+
+    public EntidadeJogador() {
         // CARREGANDO UMA NOVA FONTE
         try {
             // CARREGA A FONTE A PARTIR DO ARQUIVO
@@ -34,6 +37,10 @@ public abstract class Entidade {
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
+        // INICIANDO
+        telaTamanho = new TamanhoTela();
+        telaTamanho.carregar();
+        // VISIBILIDADE DA TELA
         this.visibilidade = true;
     }
 
@@ -170,15 +177,4 @@ public abstract class Entidade {
     public void setVIDAS(int vIDAS) {
         VIDAS = vIDAS;
     }
-
-    public int getLARGURATELA() {
-        return LARGURATELA;
-    }
-
-    public void setLARGURATELA(int lARGURATELA) {
-        LARGURATELA = lARGURATELA;
-    }
-
-    
-
 }

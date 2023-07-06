@@ -4,44 +4,51 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import javax.swing.ImageIcon;
 import java.awt.event.KeyEvent;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 
-public class FimDeJogo extends TelasEntidade {
+public class FimDeJogo extends EntidadeTelas {
 
     private int TITULOSIZE = 120;
 
+    
+
+    // CONSTRUTOR
     public FimDeJogo() {
         this.visibilidade = false;
     }
 
     @Override
     public void carregar() {
-        ImageIcon carregando = new ImageIcon("recursos\\sprites_fundos\\FundoMenu.jpg");
+        ImageIcon carregando = new ImageIcon("recursos\\Sprites\\Fundos\\FundoMenu.jpg");
         this.imagem = carregando.getImage();
+        // REDIMENSIONA O TAMANHO DA IMAGEM PARA O TAMANHO DA TELA
+        this.imagem = this.imagem.getScaledInstance(
+                telaTamanho.getLARGURATELA(), telaTamanho.getALTURATELA(), Image.SCALE_FAST);
         this.alturaImagem = this.imagem.getWidth(null);
         this.larguraImagem = this.imagem.getHeight(null);
-    }
+    };
 
     @Override
     public void titulo(Graphics g) {
         g.drawImage(imagem, 0, 0, null);
-        int OFFSETY = 100;
         String tituloPricipal = "GAME";
-        String tituloPricipal_2 = "GAME";
         String SubTitulo = "OVER";
+        int OFFSETY = 100;
 
         g.setFont(pixel.deriveFont(Font.PLAIN, TITULOSIZE));
         FontMetrics fm = g.getFontMetrics();
-        int tituloPricipalX = (LARGURAJANELA - fm.stringWidth(tituloPricipal)) / 2;
-        int subTituloX = (LARGURAJANELA - fm.stringWidth(SubTitulo)) / 2;
-
-        g.setColor(Color.white);
-        g.drawString(tituloPricipal_2, tituloPricipalX + 5, Y + 5);
+        int tituloPricipalX = (telaTamanho.getLARGURATELA() - fm.stringWidth(tituloPricipal)) / 2;
+        int subTituloX = (telaTamanho.getLARGURATELA() - fm.stringWidth(SubTitulo)) / 2;
+        // EFEITO PARA O TITULO
+        g.setColor(Color.WHITE);
+        g.drawString(tituloPricipal, tituloPricipalX + 5, posicaoTituloY);
+        // TITULO PRINCIPAL
         g.setColor(getCorAmarela());
-        g.drawString(tituloPricipal, tituloPricipalX, Y + 5);
-        g.setColor(Color.white);
-        g.drawString(SubTitulo, subTituloX, Y + OFFSETY);
+        g.drawString(tituloPricipal, tituloPricipalX, (posicaoTituloY + 5));
+        g.setColor(Color.WHITE);
+        g.drawString(SubTitulo, subTituloX, (posicaoTituloY + OFFSETY));
     }
 
     @Override
@@ -54,8 +61,8 @@ public class FimDeJogo extends TelasEntidade {
         // COMEÇO DA FRASE
         g.setFont(pixel.deriveFont(Font.PLAIN, 35));
         FontMetrics fm = g.getFontMetrics();
-        int posicaoEmX = (LARGURAJANELA - fm.stringWidth(frase)) / 2;
-        int posicaoEmY = ALTURAJANELA - OFFSETY;
+        int posicaoEmX = (telaTamanho.getLARGURATELA() - fm.stringWidth(frase)) / 2;
+        int posicaoEmY = telaTamanho.getALTURATELA() - OFFSETY;
         g.drawString(frase, posicaoEmX, posicaoEmY);
 
         // Centralização das opções SIM e NÃO
@@ -74,7 +81,7 @@ public class FimDeJogo extends TelasEntidade {
             g.setColor(Color.WHITE);
         }
         g.drawString(sim, posicaoXsim, posicaoYsim);
-        
+
         // CONFIGURAÇÕES OPC 'NÃO'
         int posicaoXnao = posicaoXsim + simWidth + 25; // Adiciona um espaço extra entre as opções
         int posicaoYnao = posicaoYsim;

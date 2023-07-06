@@ -1,18 +1,18 @@
-package br.ifpr.paranavai.jogo.modelo.inimigos;
+package br.ifpr.paranavai.jogo.modelo.Inimigos;
 
 import javax.swing.ImageIcon;
 
-public class Chefao extends InimigosEntidade{
+public class Chefao extends EntidadeInimigos{
 
     public Chefao(int posicaoEmX, int posicaoEmY){
         this.posicaoEmX = posicaoEmX;
         this.posicaoEmY = posicaoEmY;
-        this.VELOCIDADE = 5;
+        this.velocidade = 5;
     }
 
     @Override
     public void carregar(){
-        ImageIcon carregador = new ImageIcon("recursos\\sprites_inimigos\\chefao.png");
+        ImageIcon carregador = new ImageIcon("recursos\\Sprites\\Inimigos\\chefao.png");
         this.imagem = carregador.getImage();
         this.larguraImagem = imagem.getWidth(null);
         this.alturaImagem = imagem.getHeight(null);
@@ -20,6 +20,6 @@ public class Chefao extends InimigosEntidade{
 
     @Override
     public void atualizar() {
-        this.posicaoEmX -= VELOCIDADE;
+        this.posicaoEmX -= velocidade;
     }
 }

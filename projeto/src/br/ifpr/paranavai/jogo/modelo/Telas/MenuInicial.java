@@ -1,26 +1,30 @@
 package br.ifpr.paranavai.jogo.modelo.Telas;
 
 import java.awt.Font;
+import java.awt.Color;
+import java.awt.Image;
 import java.awt.Graphics;
 import java.awt.FontMetrics;
-import java.awt.Color;
+import javax.swing.ImageIcon;
 import java.awt.event.KeyEvent;
 
-import javax.swing.ImageIcon;
+public class MenuInicial extends EntidadeTelas {
 
-public class MenuInicial extends TelasEntidade {
-
+    // CONSTRUTOR
     public MenuInicial() {
         this.visibilidade = true;
     }
 
     @Override
     public void carregar() {
-        ImageIcon carregando = new ImageIcon("recursos\\sprites_fundos\\FundoMenu.jpg");
+        ImageIcon carregando = new ImageIcon("recursos\\Sprites\\Fundos\\FundoMenuInicial.gif");
         this.imagem = carregando.getImage();
+        // REDIMENSIONA O TAMANHO DA IMAGEM PARA O TAMANHO DA TELA
+        this.imagem = this.imagem.getScaledInstance(
+                telaTamanho.getLARGURATELA(), telaTamanho.getALTURATELA(), Image.SCALE_FAST);
         this.alturaImagem = this.imagem.getWidth(null);
         this.larguraImagem = this.imagem.getHeight(null);
-    }
+    };
 
     @Override
     public void titulo(Graphics g) {
@@ -29,20 +33,21 @@ public class MenuInicial extends TelasEntidade {
         // CONFIGURAÇÕES FONT
         String titulo = "STAR WARS";
         String subtitulo = "INVADERS";
-        Font fonte = getPixel().deriveFont(Font.BOLD, getTitulosize() + 10);
+        Font fonte = getPixel().deriveFont(Font.BOLD, getTitulosize());
         g.setFont(fonte);
         // CRENTALIZA VERTICALMENTE
         FontMetrics fm = g.getFontMetrics();
-        int subtituloWidth = fm.stringWidth(subtitulo); // PEGA O TAMANHO DO SUBTITULO
-        int x = (getLARGURAJANELA() - fm.stringWidth(titulo)) / 2;
+        int posicaoTituloX = (telaTamanho.getLARGURATELA() - fm.stringWidth(titulo)) / 2;
+        int subTituloLargura = fm.stringWidth(subtitulo); // PEGA O TAMANHO DO SUBTITULO
         // COR DO TITULO 'STAR WARS - BRANCO'
         g.setColor(Color.WHITE);
-        g.drawString(titulo, (x + 5), Y);
+        g.drawString(titulo, (posicaoTituloX + 5), posicaoTituloY);
         // TITULO 'INVADERS'
-        g.drawString(subtitulo, x + (fm.stringWidth(titulo) - subtituloWidth) / 2, Y + 80);
+        g.drawString(subtitulo, posicaoTituloX + (fm.stringWidth(titulo) - subTituloLargura) / 2,
+                (posicaoTituloY + 80));
         // COR DO TITULO 'STAR WARS - AMARELO'
         g.setColor(getCorAmarela());
-        g.drawString(titulo, x, Y);
+        g.drawString(titulo, posicaoTituloX, posicaoTituloY);
     }
 
     @Override
@@ -51,14 +56,14 @@ public class MenuInicial extends TelasEntidade {
         String MODOINFINITO = "MODO INFINITO";
         String telaControle = "CONTROLES";
         String telaHistorico = "HISTORICO";
-        int corrige = 50;
+        int offSetY = 50;
         Font menuConfig = getPixel().deriveFont(Font.BOLD, getMenusize());
 
         g.setFont(menuConfig);
         FontMetrics fm = g.getFontMetrics();
         // OPÇÃO PARA A TELA 'MODO FASES'
-        int posicaoX = (getLARGURAJANELA() - fm.stringWidth(MODOFASES)) / 2;
-        int posicaoY = 550;
+        int posicaoX = (telaTamanho.getLARGURATELA() - fm.stringWidth(MODOFASES)) / 2;
+        int posicaoY = telaTamanho.getALTURATELA() - 200;
         if (cursor == 0) {
             g.setColor(getCorAmarela());
         } else {
@@ -71,8 +76,8 @@ public class MenuInicial extends TelasEntidade {
         } // FIM MODO FASE
 
         // OPÇÃO PARA A TELA 'MODO INFINITO'
-        int posicaoX_infinito = (getLARGURAJANELA() - fm.stringWidth(MODOINFINITO)) / 2;
-        int posicaoY_infinito = posicaoY + corrige;
+        int posicaoX_infinito = (telaTamanho.getLARGURATELA() - fm.stringWidth(MODOINFINITO)) / 2;
+        int posicaoY_infinito = posicaoY + offSetY;
         if (cursor == 1) {
             g.setColor(getCorAmarela());
         } else {
@@ -85,8 +90,8 @@ public class MenuInicial extends TelasEntidade {
         } // FIM
 
         // OPÇÃO PARA A TELA 'CONTROLES'
-        int posicaoXcontrole = (getLARGURAJANELA() - fm.stringWidth(telaControle)) / 2;
-        int posicaoYcontrole = posicaoY_infinito + corrige;
+        int posicaoXcontrole = (telaTamanho.getLARGURATELA() - fm.stringWidth(telaControle)) / 2;
+        int posicaoYcontrole = posicaoY_infinito + offSetY;
         if (cursor == 2) {
             g.setColor(getCorAmarela());
         } else {
@@ -99,8 +104,8 @@ public class MenuInicial extends TelasEntidade {
         } // FIM
 
         // OPÇÃO PARA A TELA 'HISTORICO'
-        int posicaoXhistorico = (getLARGURAJANELA() - fm.stringWidth(telaHistorico)) / 2;
-        int posicaoYhistorico = posicaoYcontrole + corrige;
+        int posicaoXhistorico = (telaTamanho.getLARGURATELA() - fm.stringWidth(telaHistorico)) / 2;
+        int posicaoYhistorico = posicaoYcontrole + offSetY;
         if (cursor == 3) {
             g.setColor(getCorAmarela());
         } else {
@@ -117,6 +122,7 @@ public class MenuInicial extends TelasEntidade {
     public void controleMenu(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
 
+        // CONTROLA A POSIÇÃO DO CURSOR PRA ELE NÃO SAIR DAS OPCÕES
         if (tecla == KeyEvent.VK_UP) {
             cursor--;
             if (cursor < 0) {

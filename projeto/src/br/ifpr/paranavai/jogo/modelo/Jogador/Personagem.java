@@ -8,16 +8,19 @@ import javax.swing.ImageIcon;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Personagem extends Entidade {
+public class Personagem extends EntidadeJogador {
     // VARIAVEIS PARA O TIRO
     private List<Tiro> tiros;
     private List<TiroEspecial> supertiro;
-    private long tempoUltimoTiroNormal, tempoUltimoTiroSuper;
+    // TIMER DO ULTIMO TIRO
+    private long tempoUltimoTiroSuper;
+    private long tempoUltimoTiroNormal;
+    // TIMER DOS TIROS
     private long delayTiro;
     private long delaySuper;
     // TELA
     private final int POSICAOINICIALX = 100;
-    private final int POSICAOINICIALY = 300;
+    private final int POSICAOINICIALY = telaTamanho.getALTURATELA() / 2;
     // VALORES PARA CADA
     private final int VIDAINICIAL = 4;
     private final int PONTOSINICIAIS = 0;
@@ -40,12 +43,12 @@ public class Personagem extends Entidade {
     @Override
     public void carregar() {
         // IMAGEM PERSONAGEM
-        ImageIcon carregador = new ImageIcon("recursos\\sprites_personagem\\navePrincipal.png");
+        ImageIcon carregador = new ImageIcon("recursos\\Sprites\\Personagem\\navePrincipal.png");
         this.imagem = carregador.getImage();
         this.larguraImagem = this.imagem.getWidth(null);
         this.alturaImagem = this.imagem.getHeight(null);
         // IMAGEM VIDAS
-        ImageIcon carregadorVida = new ImageIcon("recursos\\sprites_personagem\\coracao.png");
+        ImageIcon carregadorVida = new ImageIcon("recursos\\Sprites\\Personagem\\coracao.png");
         this.imagem_vida = carregadorVida.getImage();
         this.larguraImagem_Vida = this.imagem_vida.getWidth(null);
         this.alturaImagem_Vida = this.imagem_vida.getHeight(null);
@@ -139,12 +142,12 @@ public class Personagem extends Entidade {
 
     // MÉTODO DE VIDA DO PERSONAGEM
     public void vidas(Graphics g) {
-        int diferenca = 65;
+        int diferenca = 70;
         // PARA CADA VIDA DO JOGADOR, DESENHA UMA IMAGEM DA VIDA,
         // ALTERANDO A POSIÇÃO COM BASE NOS CALCULOS PARA DEFINIR
         // A POSIÇÃO DE CADA UMA EM (x,y)
         for (int i = 0; i < VIDAS; i++) {
-            g.drawImage(imagem_vida, (getLARGURATELA()) - diferenca, 10, null);
+            g.drawImage(imagem_vida, telaTamanho.getLARGURATELA() - diferenca, 10, null);
             diferenca += alturaImagem_Vida + 5;
         }
     }

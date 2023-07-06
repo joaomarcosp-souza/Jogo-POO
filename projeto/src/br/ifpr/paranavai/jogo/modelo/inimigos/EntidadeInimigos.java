@@ -1,25 +1,29 @@
-package br.ifpr.paranavai.jogo.modelo.inimigos;
+package br.ifpr.paranavai.jogo.modelo.Inimigos;
 
 import java.awt.Image;
 import java.awt.Rectangle;
 
-public abstract class InimigosEntidade {
-    // POSIÇÃO NA TELA
+public abstract class EntidadeInimigos {
+    // POSIÇÃO DOS INIMIGOS NA TELA
     protected int posicaoEmX;
     protected int posicaoEmY;
-    // TAMANHO DA IMAGEM
-    protected int larguraImagem,larguraImagemExplosao, alturaImagem, alturaImagemExplosao;
-    protected Image imagem, imagemExplosao;
+    // INFORMAÇÕES DAS IMAGENS
+    protected Image imagem;
+    protected int larguraImagem, alturaImagem;
+    // IMG EXPLOSAO
+    protected Image imagemExplosao;
+    protected int larguraImagemExplosao, alturaImagemExplosao;
     protected boolean visibilidade;
-    // INFORMAÇÕES BASICAS DO INIMIGO
-    protected int VELOCIDADE;
-    protected int vidaInimigos;
+    // STATUS DOS INIMIGOS
+    protected int velocidade;
+    protected int inimigosvida;
+
     // CONSTRUTOR
-    public InimigosEntidade() {
+    public EntidadeInimigos() {
         this.visibilidade = true;
     }
 
-    // MÉTODO ABSTRATO BASICO DE CARREGAR E ATUALIZAR
+    // MÉTODO ABSTRATO BASICO PARA 'CARREGAR' É 'ATUALIZAR'
     public abstract void carregar();
 
     public abstract void atualizar();
@@ -78,14 +82,6 @@ public abstract class InimigosEntidade {
         this.visibilidade = visibilidade;
     }
 
-    public int getVELOCIDADE() {
-        return VELOCIDADE;
-    }
-
-    public void setVELOCIDADE(int vELOCIDADE) {
-        VELOCIDADE = vELOCIDADE;
-    }
-
     public Image getImagemExplosao() {
         return imagemExplosao;
     }
@@ -110,11 +106,20 @@ public abstract class InimigosEntidade {
         this.alturaImagemExplosao = alturaImagemExplosao;
     }
 
-    public int getVidaInimigos() {
-        return vidaInimigos;
+    public int getVelocidade() {
+        return velocidade;
     }
 
-    public void setVidaInimigos(int vidaInimigos) {
-        this.vidaInimigos = vidaInimigos;
+    public void setVelocidade(int velocidade) {
+        this.velocidade = velocidade;
     }
+
+    public int getInimigosvida() {
+        return inimigosvida;
+    }
+
+    public void setInimigosvida(int inimigosvida) {
+        this.inimigosvida = inimigosvida;
+    }
+
 }

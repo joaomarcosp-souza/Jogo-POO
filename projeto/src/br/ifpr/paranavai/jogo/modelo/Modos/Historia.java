@@ -1,5 +1,5 @@
 package br.ifpr.paranavai.jogo.modelo.Modos;
 
-public class Fases {
+public class Historia {
     
 }

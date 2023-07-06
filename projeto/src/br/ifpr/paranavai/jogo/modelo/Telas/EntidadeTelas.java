@@ -7,15 +7,18 @@ import java.awt.Rectangle;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.IOException;
+
+import br.ifpr.paranavai.principal.TamanhoTela;
+
 import java.awt.FontFormatException;
 
-public abstract class TelasEntidade {
+public abstract class EntidadeTelas {
     // TELA
-    protected int Y = 100; // POSIÇÃO DOS TIRULOS
+    protected int posicaoTituloY = 100; // POSIÇÃO DOS TITULOS EM 'Y'
     protected Image imagem;
-    protected int posicaoEmX, posicaoEmY;
-    protected int larguraImagem, alturaImagem;
-    protected int LARGURAJANELA = 1600, ALTURAJANELA = 800;
+    protected int posicaoEmX, posicaoEmY; // POSIÇÃO DOS INIMIGOS
+    protected int larguraImagem, alturaImagem; // LARGURA E ALTURA PARA AS IMGS
+    // PEGA A LARGURA E ALTURA DA TELA DO COMPUTADOR AUTOMATICAMENTE
     protected boolean visibilidade;
     protected Font pixel = null;
     // MENU
@@ -23,25 +26,32 @@ public abstract class TelasEntidade {
     protected static final Color COR_AMARELA = new Color(255, 209, 70); // COR
     protected static final int TITULOSIZE = 85;
     protected static final int MENUSIZE = 50;
-    // BOTAO
+    // DIMENSÕES DO BOTÃO
     private Rectangle botao;
     private static final int BOTAOWIDTH = 70;
     private static final int BOTAOHEIGHT = 40;
     private static final int BOTAO_X = 5;
     private static final int BOTAO_Y = 5;
+    // INSTANCIA
+    protected TamanhoTela telaTamanho;
 
-    public TelasEntidade() {
+    public EntidadeTelas() {
         try {
-            // CARREGA A FONTE A PARTIR DO ARQUIVO
+            // CARREGA UMA NOVA FONTE A PARTIR DO ARQUIVO
             pixel = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\Fontes\\pixel_fonte.ttf"));
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
+        // DIMENSÕES DO BOTAO 'VOLTAR'
         this.botao = new Rectangle(BOTAO_X, BOTAO_Y, BOTAOWIDTH, BOTAOHEIGHT); // TAMANHO E POSIÇÃO DO BOTÃO
+        // CARREGANDO A CONFIG DA TELACONFIGURAÇÃO
+        telaTamanho = new TamanhoTela();
+        telaTamanho.carregar();
+        // VISIBILIDADE DA CLASSE
         this.visibilidade = true;
     }
 
-    // MÉTODO ABSTRATO BASICO DE CARREGAR E TITULO
+    // MÉTODO ABSTRATO BASICO PARA CRIAR OS MÉTODOS 'TITULO', 'MENU' E 'CARREGAR'
     public abstract void carregar();
 
     public abstract void titulo(Graphics g);
@@ -116,30 +126,6 @@ public abstract class TelasEntidade {
         return COR_AMARELA;
     }
 
-    public int getLARGURAJANELA() {
-        return LARGURAJANELA;
-    }
-
-    public void setLARGURAJANELA(int lARGURAJANELA) {
-        LARGURAJANELA = lARGURAJANELA;
-    }
-
-    public int getALTURAJANELA() {
-        return ALTURAJANELA;
-    }
-
-    public void setALTURAJANELA(int aLTURAJANELA) {
-        ALTURAJANELA = aLTURAJANELA;
-    }
-
-    public int getY() {
-        return Y;
-    }
-
-    public void setY(int y) {
-        Y = y;
-    }
-
     public static int getTitulosize() {
         return TITULOSIZE;
     }
@@ -172,4 +158,11 @@ public abstract class TelasEntidade {
         return BOTAO_Y;
     }
 
+    public int getPosicaoTituloY() {
+        return posicaoTituloY;
+    }
+
+    public void setPosicaoTituloY(int posicaoTituloY) {
+        this.posicaoTituloY = posicaoTituloY;
+    }
 }
