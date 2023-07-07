@@ -184,6 +184,7 @@ public class Infinito extends JPanel implements ActionListener {
             // CARRREGANDO OS COMPONENTES DA CLASSE 'CONTROLES(EM IMPLEMENTAÇÃO)'
             telaControles.titulo(graficos);
             telaControles.menu(graficos);
+
             jogando = false;
         } else if (telaHistorico.isVisibilidade() == true) {
             graficos.drawImage(telaHistorico.getImagem(), 0, 0, null);

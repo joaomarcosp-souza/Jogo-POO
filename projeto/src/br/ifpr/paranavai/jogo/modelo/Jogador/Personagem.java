@@ -24,7 +24,7 @@ public class Personagem extends EntidadeJogador {
     // VALORES PARA CADA
     private final int VIDAINICIAL = 4;
     private final int PONTOSINICIAIS = 0;
-    private final int VELOCIDADEINICIAL = 4;
+    private final int VELOCIDADEINICIAL = 3;
 
     // CONTRUTOR
     public Personagem() {

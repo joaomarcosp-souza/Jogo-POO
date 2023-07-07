@@ -4,9 +4,9 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 public class TamanhoTela {
-    int LARGURATELA;
-    int ALTURATELA;
-    Dimension tamanhoTela;
+    public int LARGURATELA;
+    public int ALTURATELA;
+    public Dimension tamanhoTela;
 
     public void carregar() {
         tamanhoTela = Toolkit.getDefaultToolkit().getScreenSize();

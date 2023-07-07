@@ -12,8 +12,6 @@ public class FimDeJogo extends EntidadeTelas {
 
     private int TITULOSIZE = 120;
 
-    
-
     // CONSTRUTOR
     public FimDeJogo() {
         this.visibilidade = false;
@@ -21,7 +19,7 @@ public class FimDeJogo extends EntidadeTelas {
 
     @Override
     public void carregar() {
-        ImageIcon carregando = new ImageIcon("recursos\\Sprites\\Fundos\\FundoMenu.jpg");
+        ImageIcon carregando = new ImageIcon("recursos\\Sprites\\Fundos\\vader.gif");
         this.imagem = carregando.getImage();
         // REDIMENSIONA O TAMANHO DA IMAGEM PARA O TAMANHO DA TELA
         this.imagem = this.imagem.getScaledInstance(
