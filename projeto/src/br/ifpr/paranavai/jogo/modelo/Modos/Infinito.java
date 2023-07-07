@@ -19,7 +19,7 @@ import br.ifpr.paranavai.jogo.modelo.Invasores.Meteorito;
 import br.ifpr.paranavai.jogo.modelo.Invasores.Naves;
 import br.ifpr.paranavai.jogo.modelo.Jogador.Personagem;
 import br.ifpr.paranavai.jogo.modelo.Jogador.Tiro;
-import br.ifpr.paranavai.jogo.modelo.Jogador.TiroEspecial;
+import br.ifpr.paranavai.jogo.modelo.Jogador.SuperTiro;
 import br.ifpr.paranavai.jogo.modelo.Telas.Controles;
 import br.ifpr.paranavai.jogo.modelo.Telas.Historico;
 import br.ifpr.paranavai.jogo.modelo.Telas.MenuInicial;
@@ -127,7 +127,7 @@ public class Infinito extends JPanel implements ActionListener {
         NaveInimiga = new ArrayList<Naves>();
         // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
         TimerNaveInimiga = new Timer(delayInimigoNave, new ActionListener() {
-            int alturaInimigo = 88;
+            int alturaInimigo = 80;
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -208,9 +208,9 @@ public class Infinito extends JPanel implements ActionListener {
                 graficos.drawImage(tiro.getImagem(), tiro.getPosicaoEmX(), tiro.getPosicaoEmY(), null);
             }
             // CARREGANDO TIRO ESPECIAL
-            List<TiroEspecial> tiroSuper = personagem.getSupertiro();
+            List<SuperTiro> tiroSuper = personagem.getSupertiro();
             for (int i = 0; i < tiroSuper.size(); i++) {
-                TiroEspecial tiroEspecial = tiroSuper.get(i);
+                SuperTiro tiroEspecial = tiroSuper.get(i);
                 tiroEspecial.carregar();
                 graficos.drawImage(tiroEspecial.getImagem(),
                         tiroEspecial.getPosicaoEmX(), tiroEspecial.getPosicaoEmY(), null);
@@ -314,10 +314,10 @@ public class Infinito extends JPanel implements ActionListener {
         } // FIM
 
         // ATUALIZA POSICAÇÃO DO TIRO ESPECIAL
-        List<TiroEspecial> tirosEspecial = personagem.getSupertiro();
-        Iterator<TiroEspecial> iteratorTiroEspecial = tirosEspecial.iterator();
+        List<SuperTiro> tirosEspecial = personagem.getSupertiro();
+        Iterator<SuperTiro> iteratorTiroEspecial = tirosEspecial.iterator();
         while (iteratorTiroEspecial.hasNext()) {
-            TiroEspecial tiroSuper = iteratorTiroEspecial.next();
+            SuperTiro tiroSuper = iteratorTiroEspecial.next();
             if (tiroSuper.isVisibilidade()) {
                 tiroSuper.atualizar();
             } else {
@@ -417,12 +417,12 @@ public class Infinito extends JPanel implements ActionListener {
                 timerPiscar.start(); // INICIA O TIMER
                 if (personagemForma.getBounds().intersects(naveInimigaForma.getBounds())) {
                     // VERIFICA A VIDA DO PERSONAGEM
-                    if (personagem.getVIDAS() == 1) {
+                    if (personagem.getVida() == 1) {
                         jogando = false;
                         fimDeJogo.setVisibilidade(true);
                         personagem.setVisibilidade(false);
                     } else {
-                        personagem.setVIDAS(personagem.getVIDAS() - 1);
+                        personagem.setVida(personagem.getVida() - 1);
                     }
                     // VERIFICA A VIDA DA NAVE INIMIGA
                     if (naveTemporaria.getInimigosvida() == 1) {
@@ -443,11 +443,11 @@ public class Infinito extends JPanel implements ActionListener {
             Meteorito meteritoTemporario = MeteoritoInimigo.get(k);
             meteoritoForma = meteritoTemporario.getBounds();
             if (personagemForma.getBounds().intersects(meteoritoForma.getBounds())) {
-                if (personagem.getVIDAS() == 1) {
+                if (personagem.getVida() == 1) {
                     jogando = false;
                     fimDeJogo.setVisibilidade(true);
                 } else {
-                    personagem.setVIDAS(personagem.getVIDAS() - 1);
+                    personagem.setVida(personagem.getVida() - 1);
                 }
                 meteritoTemporario.setVisibilidade(false);
                 personagem.setVisibilidade(false);
@@ -526,13 +526,13 @@ public class Infinito extends JPanel implements ActionListener {
             if (tecla == KeyEvent.VK_ENTER) {
                 if (fimDeJogo.getCursor() == 0) {
                     jogando = true;
-                    personagem.setPontos(personagem.getPONTOSINICIAIS());
-                    personagem.setVIDAS(personagem.getVIDAINICIAL());
+                    personagem.setPontos(0);
+                    personagem.setVida(personagem.getVIDAINICIAL());
                     fimDeJogo.setVisibilidade(false);
                 }
                 if (fimDeJogo.getCursor() == 1) {
-                    personagem.setPontos(personagem.getPONTOSINICIAIS());
-                    personagem.setVIDAS(personagem.getVIDAINICIAL());
+                    personagem.setPontos(0);
+                    personagem.setVida(personagem.getVIDAINICIAL());
                     fimDeJogo.setVisibilidade(false);
                     telaMenu.setVisibilidade(true);
                 }
@@ -553,8 +553,7 @@ public class Infinito extends JPanel implements ActionListener {
                 VisibilidadeTelas(e);
             } else if (jogando == true) {
                 personagem.mover(e);
-                personagem.tiroNormal(e);
-                personagem.tiroEspecial(e);
+                personagem.atirar(e);
             } else if (fimDeJogo.isVisibilidade() == true) {
                 fimDeJogoMENU(e);
                 fimDeJogo.controleMenu(e);

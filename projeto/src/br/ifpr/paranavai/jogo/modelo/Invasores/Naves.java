@@ -10,7 +10,7 @@ public class Naves extends EntidadeInimigos {
         this.posicaoEmX = posicaoEmX;
         this.posicaoEmY = posicaoEmY;
         this.inimigosvida = INIMIGOSVIDA;
-        this.velocidade = 2;
+        this.velocidade = 4;
         this.visibilidade = true;
     }
 

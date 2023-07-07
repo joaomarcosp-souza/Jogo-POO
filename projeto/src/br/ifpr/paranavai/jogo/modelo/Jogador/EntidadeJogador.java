@@ -11,21 +11,11 @@ import br.ifpr.paranavai.principal.TamanhoTela;
 import java.awt.FontFormatException;
 
 public abstract class EntidadeJogador {
-    // INFO DA CLASSE PERSONAGEM
-    protected int VIDAS;
-    protected int pontos;
-    // INFORMAÇÕES DAS IMAGENS
-    protected Image imagem;
-    protected Image imagem_vida;
-    protected int posicaoEmX, posicaoEmY;
-    protected int larguraImagem, alturaImagem;
-    protected int larguraImagem_Vida, alturaImagem_Vida;
-    // VELOCIDADES PERSONAGEM
-    protected int deslocamentoEmX, deslocamentoEmY;
-    protected int VELOCIDADE;
-    //
-    protected boolean visibilidade;
-    protected Font pixel = null;
+    private Font pixel = null;
+    private Image imagem;
+    private boolean visibilidade;
+    private int posicaoEmX, posicaoEmY;
+    private int larguraImagem, alturaImagem;
 
     protected TamanhoTela telaTamanho;
 
@@ -54,14 +44,6 @@ public abstract class EntidadeJogador {
         return new Rectangle(posicaoEmX, posicaoEmY, larguraImagem, alturaImagem);
     }
 
-    public int getPontos() {
-        return pontos;
-    }
-
-    public void setPontos(int pontos) {
-        this.pontos = pontos;
-    }
-
     public int getPosicaoEmX() {
         return posicaoEmX;
     }
@@ -76,22 +58,6 @@ public abstract class EntidadeJogador {
 
     public void setPosicaoEmY(int posicaoEmY) {
         this.posicaoEmY = posicaoEmY;
-    }
-
-    public int getDeslocamentoEmX() {
-        return deslocamentoEmX;
-    }
-
-    public void setDeslocamentoEmX(int deslocamentoEmX) {
-        this.deslocamentoEmX = deslocamentoEmX;
-    }
-
-    public int getDeslocamentoEmY() {
-        return deslocamentoEmY;
-    }
-
-    public void setDeslocamentoEmY(int deslocamentoEmY) {
-        this.deslocamentoEmY = deslocamentoEmY;
     }
 
     public int getLarguraImagem() {
@@ -110,22 +76,6 @@ public abstract class EntidadeJogador {
         this.alturaImagem = alturaImagem;
     }
 
-    public int getLarguraImagem_Vida() {
-        return larguraImagem_Vida;
-    }
-
-    public void setLarguraImagem_Vida(int larguraImagem_Vida) {
-        this.larguraImagem_Vida = larguraImagem_Vida;
-    }
-
-    public int getAlturaImagem_Vida() {
-        return alturaImagem_Vida;
-    }
-
-    public void setAlturaImagem_Vida(int alturaImagem_Vida) {
-        this.alturaImagem_Vida = alturaImagem_Vida;
-    }
-
     public Image getImagem() {
         return imagem;
     }
@@ -142,39 +92,11 @@ public abstract class EntidadeJogador {
         this.visibilidade = visibilidade;
     }
 
-    public Image getImagem_vida() {
-        return imagem_vida;
-    }
-
-    public void setImagem_vida(Image imagem_vida) {
-        this.imagem_vida = imagem_vida;
-    }
-
-    public int getVelocidade() {
-        return VELOCIDADE;
-    }
-
-    public int getVELOCIDADE() {
-        return VELOCIDADE;
-    }
-
-    public void setVELOCIDADE(int vELOCIDADE) {
-        VELOCIDADE = vELOCIDADE;
-    }
-
     public Font getPixel() {
         return pixel;
     }
 
     public void setPixel(Font pixel) {
         this.pixel = pixel;
-    }
-
-    public int getVIDAS() {
-        return VIDAS;
-    }
-
-    public void setVIDAS(int vIDAS) {
-        VIDAS = vIDAS;
     }
 }

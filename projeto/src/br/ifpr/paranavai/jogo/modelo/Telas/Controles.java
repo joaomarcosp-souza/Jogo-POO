@@ -46,7 +46,7 @@ public class Controles extends EntidadeTelas {
         g.setFont(pixel.deriveFont(Font.BOLD, tamanhoStringBotao));
         String textoBotao = "ESC";
         FontMetrics fm = g.getFontMetrics();
-        int posicaoBotaoX = getBotao().x + (getBotaowidth() - fm.stringWidth(textoBotao)) / 2;
+        int posicaoBotaoX = (getBotao().x + 3) + (getBotaowidth() - fm.stringWidth(textoBotao)) / 2;
         int posicaoBotaoY = (getBotao().y + 5) + (getBotaoheight() - fm.getHeight()) / 2 + fm.getAscent();
         g.setColor(getCorAmarela());
         g.fillRect(getBotao().x, getBotao().y, getBotaowidth(), getBotaoheight());

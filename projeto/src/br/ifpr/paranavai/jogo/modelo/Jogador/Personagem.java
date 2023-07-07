@@ -1,79 +1,81 @@
 package br.ifpr.paranavai.jogo.modelo.Jogador;
 
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
-import javax.swing.ImageIcon;
-import java.util.ArrayList;
+import java.awt.Graphics;
 import java.util.List;
+import java.util.ArrayList;
+import javax.swing.ImageIcon;
+import java.awt.event.KeyEvent;
+import java.awt.Image;
 
 public class Personagem extends EntidadeJogador {
-    // VARIAVEIS PARA O TIRO
     private List<Tiro> tiros;
-    private List<TiroEspecial> supertiro;
-    // TIMER DO ULTIMO TIRO
-    private long tempoUltimoTiroSuper;
-    private long tempoUltimoTiroNormal;
-    // TIMER DOS TIROS
+    private List<SuperTiro> supertiro;
     private long delayTiro;
-    private long delaySuper;
-    // TELA
-    private final int POSICAOINICIALX = 100;
+    private long ultimoTiro;
+    private int vida;
+    private int pontos;
+    private int velocidade;
+    private int deslocamentoEmX, deslocamentoEmY;
+    private Image IMAGEM_VIDA;
+    private int ALTURA_IMAGEM_VIDA;
+    private boolean supertiroUsado = false;
+
+    private static final int VIDAINICIAL = 4;
+    private static final int PONTOSINICIAIS = 0;
+    private static final int POSICAOINICIALX = 100;
     private final int POSICAOINICIALY = telaTamanho.getALTURATELA() / 2;
-    // VALORES PARA CADA
-    private final int VIDAINICIAL = 4;
-    private final int PONTOSINICIAIS = 0;
     private final int VELOCIDADEINICIAL = 3;
 
     // CONTRUTOR
     public Personagem() {
-        this.posicaoEmX = POSICAOINICIALX;
-        this.posicaoEmY = POSICAOINICIALY;
+        super.setPosicaoEmX(POSICAOINICIALX);
+        super.setPosicaoEmY(POSICAOINICIALY);
+        super.setVisibilidade(true);
+
         this.delayTiro = 200;
-        this.delaySuper = 2500;
-        this.visibilidade = true;
-        this.VIDAS = VIDAINICIAL;
+        this.vida = VIDAINICIAL;
         this.pontos = PONTOSINICIAIS;
-        this.VELOCIDADE = VELOCIDADEINICIAL;
+        this.velocidade = VELOCIDADEINICIAL;
+
         tiros = new ArrayList<Tiro>();
-        supertiro = new ArrayList<TiroEspecial>();
+        supertiro = new ArrayList<SuperTiro>();
     }
 
     @Override
     public void carregar() {
         // IMAGEM PERSONAGEM
-        ImageIcon carregador = new ImageIcon("recursos\\Sprites\\Personagem\\navePrincipal.png");
-        this.imagem = carregador.getImage();
-        this.larguraImagem = this.imagem.getWidth(null);
-        this.alturaImagem = this.imagem.getHeight(null);
+        ImageIcon carregando = new ImageIcon("recursos\\Sprites\\Personagem\\navePrincipal.png");
+        super.setImagem(carregando.getImage());
+        super.setLarguraImagem(super.getImagem().getWidth(null));
+        super.setAlturaImagem(super.getImagem().getHeight(null));
         // IMAGEM VIDAS
         ImageIcon carregadorVida = new ImageIcon("recursos\\Sprites\\Personagem\\coracao.png");
-        this.imagem_vida = carregadorVida.getImage();
-        this.larguraImagem_Vida = this.imagem_vida.getWidth(null);
-        this.alturaImagem_Vida = this.imagem_vida.getHeight(null);
+        this.IMAGEM_VIDA = carregadorVida.getImage();
+        this.ALTURA_IMAGEM_VIDA = this.IMAGEM_VIDA.getHeight(null);
     }
 
     @Override
     public void atualizar() {
-        posicaoEmX += deslocamentoEmX;
-        posicaoEmY += deslocamentoEmY;
+        super.setPosicaoEmX(super.getPosicaoEmX() + deslocamentoEmX);
+        super.setPosicaoEmY(super.getPosicaoEmY() + deslocamentoEmY);
     }
 
     // METODO MOVIMENTO
     public void mover(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
         if (tecla == KeyEvent.VK_W || tecla == KeyEvent.VK_UP) {
-            deslocamentoEmY = -VELOCIDADE;
+            deslocamentoEmY = -velocidade;
         }
         if (tecla == KeyEvent.VK_S || tecla == KeyEvent.VK_DOWN) {
-            deslocamentoEmY = VELOCIDADE;
+            deslocamentoEmY = velocidade;
         }
         if (tecla == KeyEvent.VK_A || tecla == KeyEvent.VK_LEFT) {
-            deslocamentoEmX = -VELOCIDADE;
+            deslocamentoEmX = -velocidade;
         }
         if (tecla == KeyEvent.VK_D || tecla == KeyEvent.VK_RIGHT) {
-            deslocamentoEmX = VELOCIDADE;
+            deslocamentoEmX = velocidade;
         }
     }
 
@@ -94,48 +96,40 @@ public class Personagem extends EntidadeJogador {
         }
     }
 
-    // MÉTODO TIRO
-    public void tiro_simples() {
-        this.tiros.add(new Tiro(posicaoEmX + larguraImagem / 2, posicaoEmY + (alturaImagem / 2)));
-    }
-
-    // MÉTODO TIRO ESPECIAL
-    public void superTiro() {
-        this.supertiro.add(new TiroEspecial(posicaoEmX + larguraImagem / 2, posicaoEmY + (alturaImagem / 2)));
-    }
-
     // MÉTODO ATIRAR
-    public void tiroNormal(KeyEvent teclado) {
+    public void atirar(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
         long tempoAtual = System.currentTimeMillis();
-        if (tempoAtual - tempoUltimoTiroNormal < delayTiro) {
+
+        int centroPersonagemX = super.getPosicaoEmX() + super.getLarguraImagem() / 2;
+        int centroPersonagemY = super.getPosicaoEmY() + super.getAlturaImagem() / 2;
+
+        if (tempoAtual - ultimoTiro < delayTiro) {
             return;
         } else {
             if (tecla == KeyEvent.VK_SPACE) {
-                tiro_simples();
+                Tiro tiro = new Tiro(centroPersonagemX, centroPersonagemY);
+                this.tiros.add(tiro);
+            }
+            // SUPER TIRO
+            if (tecla == KeyEvent.VK_R && this.getPontos() % 100 == 0 && !supertiroUsado) {
+                SuperTiro tiro = new SuperTiro(centroPersonagemX, centroPersonagemY);
+                this.supertiro.add(tiro);
+                supertiroUsado = true; // DEFINE O SUPERTIRO COMO USADO
             }
         }
-        tempoUltimoTiroNormal = tempoAtual;
-    }
-
-    // MÉTODO SUPER TIRO
-    public void tiroEspecial(KeyEvent teclado) {
-        int tecla = teclado.getKeyCode();
-        long tempoAtual = System.currentTimeMillis();
-        if (tempoAtual - tempoUltimoTiroSuper < delaySuper) {
-            return;
-        } else {
-            if (tecla == KeyEvent.VK_R) {
-                superTiro();
-            }
+        ultimoTiro = tempoAtual;
+        // VERIFICANDO SE A PONTUAÇÃO NÃO E MAIS VALIDA E REDEFININDO A VARIAVEL
+        // supertiroUsado
+        if (this.getPontos() % 100 != 0) {
+            supertiroUsado = false;
         }
-        tempoUltimoTiroSuper = tempoAtual;
     }
 
     // MÉTODO DE PONTUAÇÃO DO PERSONAGEM
     public void pontos(Graphics g) {
         String pontosSTR = "PONTOS: " + pontos;
-        g.setFont(pixel.deriveFont(Font.PLAIN, 22));
+        g.setFont(super.getPixel().deriveFont(Font.PLAIN, 22));
         g.setColor(new Color(255, 209, 70));
         g.drawString(pontosSTR, 20, 25);
     }
@@ -145,10 +139,9 @@ public class Personagem extends EntidadeJogador {
         int diferenca = 70;
         // PARA CADA VIDA DO JOGADOR, DESENHA UMA IMAGEM DA VIDA,
         // ALTERANDO A POSIÇÃO COM BASE NOS CALCULOS PARA DEFINIR
-        // A POSIÇÃO DE CADA UMA EM (x,y)
-        for (int i = 0; i < VIDAS; i++) {
-            g.drawImage(imagem_vida, telaTamanho.getLARGURATELA() - diferenca, 10, null);
-            diferenca += alturaImagem_Vida + 5;
+        for (int i = 0; i < this.vida; i++) {
+            g.drawImage(IMAGEM_VIDA, telaTamanho.getLARGURATELA() - diferenca, 10, null);
+            diferenca += ALTURA_IMAGEM_VIDA + 5;
         }
     }
 
@@ -173,15 +166,32 @@ public class Personagem extends EntidadeJogador {
         return VIDAINICIAL;
     }
 
-    public int getPONTOSINICIAIS() {
-        return PONTOSINICIAIS;
-    }
-
-    public List<TiroEspecial> getSupertiro() {
+    public List<SuperTiro> getSupertiro() {
         return supertiro;
     }
 
-    public void setSupertiro(List<TiroEspecial> supertiro) {
+    public void setSupertiro(List<SuperTiro> supertiro) {
         this.supertiro = supertiro;
     }
+
+    public int getPontos() {
+        return pontos;
+    }
+
+    public void setPontos(int pontos) {
+        this.pontos = pontos;
+    }
+
+    public int getVida() {
+        return vida;
+    }
+
+    public void setVida(int vida) {
+        this.vida = vida;
+    }
+
+    public static int getPontosiniciais() {
+        return PONTOSINICIAIS;
+    }
+
 }

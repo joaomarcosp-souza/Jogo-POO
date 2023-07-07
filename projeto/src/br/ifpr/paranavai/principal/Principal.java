@@ -3,6 +3,9 @@ package br.ifpr.paranavai.principal;
 import javax.swing.JFrame;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+//import java.awt.GraphicsDevice;
+//import java.awt.GraphicsEnvironment;
+
 import br.ifpr.paranavai.jogo.modelo.Modos.Infinito;
 
 public class Principal extends JFrame {
@@ -11,7 +14,9 @@ public class Principal extends JFrame {
         Infinito fase = new Infinito();
         super.add(fase);
         super.setTitle("Star Wars: Invader");
-        // OBTEM O TAMANHO DA TELA
+        // TESTE TELA CHEIA
+        // GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        // PEGA O TAMANHO DA TELA
         Dimension telaTamanho = Toolkit.getDefaultToolkit().getScreenSize();
         int telaLargura = (int) telaTamanho.getWidth();
         int telaAltura = (int) telaTamanho.getHeight();
@@ -19,8 +24,10 @@ public class Principal extends JFrame {
         super.setSize(telaLargura, telaAltura);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setLocationRelativeTo(null);
-        super.setResizable(false);
+        super.setFocusableWindowState(true);
         super.setVisible(true);
+        // TELA CHEIA
+        // device.setFullScreenWindow(this);
     }
 
     public static void main(String[] args) {

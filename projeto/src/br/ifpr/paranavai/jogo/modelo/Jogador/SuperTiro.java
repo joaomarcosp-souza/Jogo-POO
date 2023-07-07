@@ -2,10 +2,10 @@ package br.ifpr.paranavai.jogo.modelo.Jogador;
 
 import javax.swing.ImageIcon;
 
-public class Tiro extends EntidadeJogador {
-    private static final int VELOCIDADETIRO = 8;
+public class SuperTiro extends EntidadeJogador {
+    private static final int VELOCIDADETIRO = 10;
 
-    public Tiro(int posicaoEmX, int posicaoEmY) {
+    public SuperTiro(int posicaoEmX, int posicaoEmY) {
         super.setPosicaoEmX(posicaoEmX);
         super.setPosicaoEmY(posicaoEmY);
         super.setVisibilidade(true);
@@ -13,7 +13,7 @@ public class Tiro extends EntidadeJogador {
 
     @Override
     public void carregar() {
-        ImageIcon carregador = new ImageIcon("recursos\\Sprites\\Tiros\\tiro.png");
+        ImageIcon carregador = new ImageIcon("recursos\\Sprites\\Tiros\\super.png");
         super.setImagem(carregador.getImage());
         super.setLarguraImagem(super.getImagem().getWidth(null));
         super.setAlturaImagem(super.getImagem().getHeight(null));
