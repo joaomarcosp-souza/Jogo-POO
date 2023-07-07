@@ -15,8 +15,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import br.ifpr.paranavai.jogo.modelo.Inimigos.Meteorito;
-import br.ifpr.paranavai.jogo.modelo.Inimigos.Naves;
+import br.ifpr.paranavai.jogo.modelo.Invasores.Meteorito;
+import br.ifpr.paranavai.jogo.modelo.Invasores.Naves;
 import br.ifpr.paranavai.jogo.modelo.Jogador.Personagem;
 import br.ifpr.paranavai.jogo.modelo.Jogador.Tiro;
 import br.ifpr.paranavai.jogo.modelo.Jogador.TiroEspecial;
