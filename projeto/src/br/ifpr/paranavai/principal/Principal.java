@@ -27,7 +27,7 @@ public class Principal extends JFrame {
         super.setLocationRelativeTo(null);
         super.setFocusableWindowState(true);
         super.setVisible(true);
-        super.setResizable(true);
+        super.setResizable(false);
         // TELA CHEIA
         // device.setFullScreenWindow(this);
     }
