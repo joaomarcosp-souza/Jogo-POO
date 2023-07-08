@@ -20,18 +20,19 @@ public class Personagem extends EntidadeJogador {
     private int deslocamentoEmY;
     private int alturaImagemVida;
     private boolean supertiroUsado = false;
+    private boolean jogando;
     private List<SuperTiro> supertiro;
     // POSIÇÃO DOS SUPER TIROS
-    private final int ANGULO1 = -25;
+    private final int ANGULO1 = -15;
     private final int ANGULO2 = 0;
-    private final int ANGULO3 = 25;
+    private final int ANGULO3 = 15;
     // VARIAVEIS INICIAIS QUE NÃO SERÃO ALTERADAS
     private Image IMAGEM_VIDA;
-    private static final int VIDAINICIAL = 1;
+    private final int VELOCIDADEINICIAL = 3;
+    private static final int VIDAINICIAL = 4;
     private static final int PONTOSINICIAIS = 0;
     private static final int POSICAOINICIALX = 100;
     private final int POSICAOINICIALY = super.getTelaTamanho().ALTURA_TELA / 2;
-    private final int VELOCIDADEINICIAL = 3;
     // CAMINHO PARA AS IMAGENS
     private static final String NAVEIMG_JOGADOR = "recursos\\Sprites\\Personagem\\navePrincipal.png";
     private static final String VIDAIMG_JOGADOR = "recursos\\Sprites\\Personagem\\coracao.png";
@@ -42,6 +43,7 @@ public class Personagem extends EntidadeJogador {
         super.setVisibilidade(true);
 
         this.delayTiro = 200;
+        this.jogando = false;
         this.vida = VIDAINICIAL;
         this.pontos = PONTOSINICIAIS;
         this.velocidade = VELOCIDADEINICIAL;
@@ -144,8 +146,8 @@ public class Personagem extends EntidadeJogador {
         g.setColor(new Color(255, 209, 70));
         g.drawString(pontosSTR, 20, 25);
     }
-    
-     // MÉTODO PARA DESENHAR A VIDA DO JOGADOR
+
+    // MÉTODO PARA DESENHAR A VIDA DO JOGADOR
     public void desenhaVida(Graphics g) {
         int diferenca = 70;
         // PARA CADA VIDA DO JOGADOR, DESENHA UMA IMAGEM DA VIDA,
@@ -203,6 +205,14 @@ public class Personagem extends EntidadeJogador {
 
     public static int getPontosiniciais() {
         return PONTOSINICIAIS;
+    }
+
+    public boolean isJogando() {
+        return jogando;
+    }
+
+    public void setJogando(boolean jogando) {
+        this.jogando = jogando;
     }
 
 }

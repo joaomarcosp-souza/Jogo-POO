@@ -7,7 +7,7 @@ public class Meteorito extends EntidadeInimigos {
     public Meteorito(int posicaoEmX, int posicaoEmY) {
         this.posicaoEmX = posicaoEmX;
         this.posicaoEmY = posicaoEmY;
-        this.velocidade = 3;
+        this.velocidade = 1;
         this.visibilidade = true;
     }
 
