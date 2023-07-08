@@ -15,7 +15,8 @@ public class Principal extends JFrame {
         super.add(fase);
         super.setTitle("Star Wars: Invader");
         // TESTE TELA CHEIA
-        // GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        // GraphicsDevice device =
+        // GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         // PEGA O TAMANHO DA TELA
         Dimension telaTamanho = Toolkit.getDefaultToolkit().getScreenSize();
         int telaLargura = (int) telaTamanho.getWidth();
@@ -26,6 +27,7 @@ public class Principal extends JFrame {
         super.setLocationRelativeTo(null);
         super.setFocusableWindowState(true);
         super.setVisible(true);
+        super.setResizable(true);
         // TELA CHEIA
         // device.setFullScreenWindow(this);
     }

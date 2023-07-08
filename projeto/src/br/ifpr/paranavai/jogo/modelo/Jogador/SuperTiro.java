@@ -22,7 +22,7 @@ public class SuperTiro extends EntidadeJogador {
     @Override
     public void atualizar() {
         super.setPosicaoEmX(super.getPosicaoEmX() + VELOCIDADETIRO);
-        if (super.getPosicaoEmX() > telaTamanho.getLARGURATELA()) {
+        if (super.getPosicaoEmX() > getTelaTamanho().LARGURA_TELA) {
             super.setVisibilidade(false);
         }
     }

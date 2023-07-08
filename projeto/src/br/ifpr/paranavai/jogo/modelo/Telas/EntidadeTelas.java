@@ -7,57 +7,56 @@ import java.awt.Rectangle;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.IOException;
-
-import br.ifpr.paranavai.principal.TamanhoTela;
-
 import java.awt.FontFormatException;
+import br.ifpr.paranavai.principal.TamanhoTela;
 
 public abstract class EntidadeTelas {
     // TELA
-    protected int posicaoTituloY = 100; // POSIÇÃO DOS TITULOS EM 'Y'
-    protected Image imagem;
-    protected int posicaoEmX, posicaoEmY; // POSIÇÃO DOS INIMIGOS
-    protected int larguraImagem, alturaImagem; // LARGURA E ALTURA PARA AS IMGS
+    private Image imagem;
+    private int posicaoTituloY = 100; // POSIÇÃO DOS TITULOS EM 'Y'
+    private int posicaoEmX, posicaoEmY;
+    private int larguraImagem, alturaImagem;
     // PEGA A LARGURA E ALTURA DA TELA DO COMPUTADOR AUTOMATICAMENTE
-    protected boolean visibilidade;
-    protected Font pixel = null;
+    private boolean visibilidade;
     // MENU
-    protected int cursor = 0;
-    protected static final Color COR_AMARELA = new Color(255, 209, 70); // COR
-    protected static final int TITULOSIZE = 85;
-    protected static final int MENUSIZE = 50;
+    private int cursor = 0;
+    private static final int MENU_TAMANHO = 50;
+    private static final int TITULO_TAMANHO = 85;
+    private static final Color COR_AMARELA = new Color(255, 209, 70); // COR
     // DIMENSÕES DO BOTÃO
     private Rectangle botao;
-    private static final int BOTAOWIDTH = 70;
-    private static final int BOTAOHEIGHT = 40;
+    private static final int TAMANHO_FONTE_BOTAO = 30;
+    private static final int BOTAO_LARGURA = 70;
+    private static final int BOTAO_ALTURA = 40;
     private static final int BOTAO_X = 5;
     private static final int BOTAO_Y = 5;
+    private static Font PIXEL = null;
     // INSTANCIA
-    protected TamanhoTela telaTamanho;
+    private TamanhoTela telaTamanho;
 
     public EntidadeTelas() {
         try {
             // CARREGA UMA NOVA FONTE A PARTIR DO ARQUIVO
-            pixel = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\Fontes\\pixel_fonte.ttf"));
+            PIXEL = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\Fontes\\pixel_fonte.ttf"));
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
-        // DIMENSÕES DO BOTAO 'VOLTAR'
-        this.botao = new Rectangle(BOTAO_X, BOTAO_Y, BOTAOWIDTH, BOTAOHEIGHT); // TAMANHO E POSIÇÃO DO BOTÃO
-        // CARREGANDO A CONFIG DA TELACONFIGURAÇÃO
+
         telaTamanho = new TamanhoTela();
         telaTamanho.carregar();
-        // VISIBILIDADE DA CLASSE
         this.visibilidade = true;
+        // DIMENSÕES DO BOTAO 'VOLTAR'
+        this.botao = new Rectangle(BOTAO_X, BOTAO_Y, BOTAO_LARGURA, BOTAO_ALTURA);
     }
 
-    // MÉTODO ABSTRATO BASICO PARA CRIAR OS MÉTODOS 'TITULO', 'MENU' E 'CARREGAR'
+    // MÉTODOS ABSTRATOS
     public abstract void carregar();
 
     public abstract void titulo(Graphics g);
 
     public abstract void menu(Graphics g);
 
+    // GETTERS E SETTERS
     public Image getImagem() {
         return imagem;
     }
@@ -106,32 +105,8 @@ public abstract class EntidadeTelas {
         this.visibilidade = visibilidade;
     }
 
-    public Font getPixel() {
-        return pixel;
-    }
-
-    public void setPixel(Font pixel) {
-        this.pixel = pixel;
-    }
-
-    public int getCursor() {
-        return cursor;
-    }
-
-    public void setCursor(int cursor) {
-        this.cursor = cursor;
-    }
-
     public static Color getCorAmarela() {
         return COR_AMARELA;
-    }
-
-    public static int getTitulosize() {
-        return TITULOSIZE;
-    }
-
-    public static int getMenusize() {
-        return MENUSIZE;
     }
 
     public Rectangle getBotao() {
@@ -142,12 +117,12 @@ public abstract class EntidadeTelas {
         this.botao = botao;
     }
 
-    public static int getBotaowidth() {
-        return BOTAOWIDTH;
+    public static int getBotaoLargura() {
+        return BOTAO_LARGURA;
     }
 
-    public static int getBotaoheight() {
-        return BOTAOHEIGHT;
+    public static int getBotaoAltura() {
+        return BOTAO_ALTURA;
     }
 
     public static int getBotaoX() {
@@ -165,4 +140,43 @@ public abstract class EntidadeTelas {
     public void setPosicaoTituloY(int posicaoTituloY) {
         this.posicaoTituloY = posicaoTituloY;
     }
+
+    public TamanhoTela getTelaTamanho() {
+        return telaTamanho;
+    }
+
+    public void setTelaTamanho(TamanhoTela telaTamanho) {
+        this.telaTamanho = telaTamanho;
+    }
+
+    public static int getTamanhoFonteBotao() {
+        return TAMANHO_FONTE_BOTAO;
+    }
+
+    public int getCursor() {
+        return cursor;
+    }
+
+    public void setCursor(int cursor) {
+        this.cursor = cursor;
+    }
+
+    public static int getMenuTamanho() {
+        return MENU_TAMANHO;
+    }
+
+    public static int getTituloTamanho() {
+        return TITULO_TAMANHO;
+    }
+
+    public static Font getPIXEL() {
+        return PIXEL;
+    }
+
+    public static void setPIXEL(Font pIXEL) {
+        PIXEL = pIXEL;
+    }
+
+    
+    
 }

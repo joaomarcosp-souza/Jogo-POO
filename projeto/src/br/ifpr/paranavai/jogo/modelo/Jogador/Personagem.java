@@ -22,11 +22,11 @@ public class Personagem extends EntidadeJogador {
     private int ALTURA_IMAGEM_VIDA;
     private boolean supertiroUsado = false;
 
-    private static final int VIDAINICIAL = 4;
+    private static final int VIDAINICIAL = 1;
     private static final int PONTOSINICIAIS = 0;
     private static final int POSICAOINICIALX = 100;
-    private final int POSICAOINICIALY = telaTamanho.getALTURATELA() / 2;
-    private final int VELOCIDADEINICIAL = 3;
+    private final int POSICAOINICIALY = getTelaTamanho().ALTURA_TELA / 2;
+    private final int VELOCIDADEINICIAL = 4;
 
     // CONTRUTOR
     public Personagem() {
@@ -127,20 +127,19 @@ public class Personagem extends EntidadeJogador {
     }
 
     // MÉTODO DE PONTUAÇÃO DO PERSONAGEM
-    public void pontos(Graphics g) {
+    public void desenhaPontos(Graphics g) {
         String pontosSTR = "PONTOS: " + pontos;
         g.setFont(super.getPixel().deriveFont(Font.PLAIN, 22));
         g.setColor(new Color(255, 209, 70));
         g.drawString(pontosSTR, 20, 25);
     }
 
-    // MÉTODO DE VIDA DO PERSONAGEM
-    public void vidas(Graphics g) {
+    public void desenhaVida(Graphics g) {
         int diferenca = 70;
         // PARA CADA VIDA DO JOGADOR, DESENHA UMA IMAGEM DA VIDA,
         // ALTERANDO A POSIÇÃO COM BASE NOS CALCULOS PARA DEFINIR
         for (int i = 0; i < this.vida; i++) {
-            g.drawImage(IMAGEM_VIDA, telaTamanho.getLARGURATELA() - diferenca, 10, null);
+            g.drawImage(IMAGEM_VIDA, getTelaTamanho().LARGURA_TELA - diferenca, 10, null);
             diferenca += ALTURA_IMAGEM_VIDA + 5;
         }
     }

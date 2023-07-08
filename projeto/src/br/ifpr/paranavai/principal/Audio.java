@@ -11,10 +11,10 @@ public class Audio {
     private URL musicaURL;
 
     public Audio() {
-        musicaURL = getClass().getResource("recursos\\Audios\\teste.wav");
+        musicaURL = getClass().getResource("recursos\\Musica\\starwarsmusica.wav");
     }
 
-     public void carregar() {
+    public void carregar() {
         try {
             AudioInputStream ais = AudioSystem.getAudioInputStream(musicaURL);
             clip = AudioSystem.getClip();
@@ -30,7 +30,7 @@ public class Audio {
         if (clip != null) {
             clip.start();
         } else {
-            System.out.println("Sem arquivo carregado 'TOCAR'");
+            System.out.println("Sem arquivo carregado - 'TOCAR'");
         }
     }
 
@@ -38,7 +38,7 @@ public class Audio {
         if (clip != null) {
             clip.loop(Clip.LOOP_CONTINUOUSLY);
         } else {
-            System.out.println("Sem arquivo carregado 'LOOP'");
+            System.out.println("Sem arquivo carregado - 'LOOP'");
         }
     }
 

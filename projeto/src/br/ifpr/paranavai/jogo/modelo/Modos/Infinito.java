@@ -94,10 +94,10 @@ public class Infinito extends JPanel implements ActionListener {
 
         // RESCALONAMENTO DAS IMAGENS DE FUNDO
         this.fundo = this.fundo.getScaledInstance(
-                telaTamanho.getLARGURATELA(), telaTamanho.getALTURATELA(), Image.SCALE_FAST);
+                telaTamanho.getLARGURA_TELA(), telaTamanho.getALTURA_TELA(), Image.SCALE_FAST);
         // FUNDO 2
         this.segundoFundo = this.segundoFundo.getScaledInstance(
-                telaTamanho.getLARGURATELA(), telaTamanho.getALTURATELA(), Image.SCALE_FAST);
+                telaTamanho.getLARGURA_TELA(), telaTamanho.getALTURA_TELA(), Image.SCALE_FAST);
 
         // INICIALIZANDO CLASSE DE LEITURA DO TECLADO
         addKeyListener(new TecladoAdapter());
@@ -132,10 +132,10 @@ public class Infinito extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int vidaInimigos = 1;
-                int posicaoEmX = telaTamanho.getLARGURATELA(); // POSICÃO INICIAL DO PERSONAGEM
-                int posicaoEmY = (int) (Math.random() * ((telaTamanho.getALTURATELA()) - alturaInimigo));
-                if (posicaoEmY < 0 || posicaoEmY > telaTamanho.getALTURATELA()) {
-                    posicaoEmY = (int) (Math.random() * ((telaTamanho.getALTURATELA()) - alturaInimigo));
+                int posicaoEmX = telaTamanho.getLARGURA_TELA(); // POSICÃO INICIAL DO PERSONAGEM
+                int posicaoEmY = (int) (Math.random() * ((telaTamanho.getALTURA_TELA()) - alturaInimigo));
+                if (posicaoEmY < 0 || posicaoEmY > telaTamanho.getALTURA_TELA()) {
+                    posicaoEmY = (int) (Math.random() * ((telaTamanho.getALTURA_TELA()) - alturaInimigo));
                 }
                 // AUMENTA A VIDA DO INIMIGO
                 if (personagem.getPontos() > 50) {
@@ -160,9 +160,9 @@ public class Infinito extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int posicaoEmY = -alturaInimigo;
-                int posicaoEmX = (int) (Math.random() * (telaTamanho.getLARGURATELA() - alturaInimigo));
-                if (posicaoEmX < 0 || posicaoEmX > telaTamanho.getLARGURATELA()) {
-                    posicaoEmX = (int) (Math.random() * (telaTamanho.getLARGURATELA() - alturaInimigo));
+                int posicaoEmX = (int) (Math.random() * (telaTamanho.getLARGURA_TELA() - alturaInimigo));
+                if (posicaoEmX < 0 || posicaoEmX > telaTamanho.getLARGURA_TELA()) {
+                    posicaoEmX = (int) (Math.random() * (telaTamanho.getLARGURA_TELA() - alturaInimigo));
                 }
                 MeteoritoInimigo.add(new Meteorito(posicaoEmX, posicaoEmY));
             }
@@ -261,14 +261,14 @@ public class Infinito extends JPanel implements ActionListener {
             // }
 
             // CARREGANDO OS COMPONENTES DA CLASSE PERSONAGEM(VIDA E PONTUAÇÃO)
-            personagem.pontos(graficos);
-            personagem.vidas(graficos);
+            personagem.desenhaPontos(graficos);
+            personagem.desenhaVida(graficos);
         }
         // CARREGANDO A TELA DE MORTE CASO O JOGADOR MORRA(OBVIO)
         if (fimDeJogo.isVisibilidade() == true) {
             fimDeJogo.titulo(graficos);
             fimDeJogo.menu(graficos);
-            personagem.pontos(graficos);
+            personagem.desenhaPontos(graficos);
         }
         g.dispose();
     }
@@ -393,15 +393,15 @@ public class Infinito extends JPanel implements ActionListener {
         // VERIFICA COLISÃO COM A BORDA EM 'X'
         if (personagem.getPosicaoEmX() < 0) {
             personagem.setPosicaoEmX(0); // POSIÇÃO MÍNIMA X
-        } else if (personagem.getPosicaoEmX() + personagem.getAlturaImagem() > telaTamanho.getLARGURATELA()) {
-            int maximoEmX = telaTamanho.getLARGURATELA() - personagem.getAlturaImagem(); // CALCULA A POSIÇÃO MÁXIMA
+        } else if (personagem.getPosicaoEmX() + personagem.getAlturaImagem() > telaTamanho.getLARGURA_TELA()) {
+            int maximoEmX = telaTamanho.getLARGURA_TELA() - personagem.getAlturaImagem(); // CALCULA A POSIÇÃO MÁXIMA
             personagem.setPosicaoEmX(maximoEmX);
         }
         // VERIFICA COLISÃO COM A BORDA EM 'Y'
         if (personagem.getPosicaoEmY() < 0) {
             personagem.setPosicaoEmY(0); // POSIÇÃO MÍNIMA Y
-        } else if (personagem.getPosicaoEmY() + personagem.getAlturaImagem() > telaTamanho.getALTURATELA()) {
-            int maximoEmY = telaTamanho.getALTURATELA() - personagem.getAlturaImagem();
+        } else if (personagem.getPosicaoEmY() + personagem.getAlturaImagem() > telaTamanho.getALTURA_TELA()) {
+            int maximoEmY = telaTamanho.getALTURA_TELA() - personagem.getAlturaImagem();
             personagem.setPosicaoEmY(maximoEmY);
         }
 

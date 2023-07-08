@@ -17,7 +17,7 @@ public abstract class EntidadeJogador {
     private int posicaoEmX, posicaoEmY;
     private int larguraImagem, alturaImagem;
 
-    protected TamanhoTela telaTamanho;
+    private TamanhoTela telaTamanho;
 
     public EntidadeJogador() {
         // CARREGANDO UMA NOVA FONTE
@@ -99,4 +99,14 @@ public abstract class EntidadeJogador {
     public void setPixel(Font pixel) {
         this.pixel = pixel;
     }
+
+    public TamanhoTela getTelaTamanho() {
+        return telaTamanho;
+    }
+
+    public void setTelaTamanho(TamanhoTela telaTamanho) {
+        this.telaTamanho = telaTamanho;
+    }
+
+    
 }

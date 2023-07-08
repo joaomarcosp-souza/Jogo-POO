@@ -1,56 +1,65 @@
 package br.ifpr.paranavai.jogo.modelo.Telas;
 
-import java.awt.Font;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.FontMetrics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class Controles extends EntidadeTelas {
+    // VARIAVEIS PARA CORRIGIR A POSIÇÃO DE ALGUNS ITENS
+    private int offSetBotaoX = 3;
+    private int offSetBotaoY = 5;
+    private int offsetTituloX = 5;
+    // TEXTOS DA CLASSE
+    private static final String TEXTO_BOTAO = "ESC";
+    private static final String TITULO = "CONTROLE";
+    // CAMINHO IMAGEM DE FUNDO
+    private static final String IMAGEM_FUNDO = "recursos\\Sprites\\Fundos\\FundoMenu.jpg";
+    // FONTES
+    private Font FONTE_TITULOS = getPIXEL().deriveFont(Font.BOLD, super.getTituloTamanho());
+    private Font FONTE_BOTAO = getPIXEL().deriveFont(Font.BOLD, super.getTamanhoFonteBotao());
 
-    // CONSTRUTOR
     public Controles() {
-        this.visibilidade = false;
+        super.setVisibilidade(false);
     }
 
     @Override
     public void carregar() {
-        ImageIcon carregando = new ImageIcon("recursos\\Sprites\\Fundos\\FundoMenu.jpg");
-        this.imagem = carregando.getImage();
+        ImageIcon carregando = new ImageIcon(IMAGEM_FUNDO);
+        super.setImagem(carregando.getImage());
+        super.setLarguraImagem(super.getImagem().getWidth(null));
+        super.setAlturaImagem(super.getImagem().getHeight(null));
         // REDIMENSIONA O TAMANHO DA IMAGEM PARA O TAMANHO DA TELA
-        this.imagem = this.imagem.getScaledInstance(
-                telaTamanho.getLARGURATELA(), telaTamanho.getALTURATELA(), Image.SCALE_FAST);
-        this.alturaImagem = this.imagem.getWidth(null);
-        this.larguraImagem = this.imagem.getHeight(null);
+        super.setImagem(super.getImagem().getScaledInstance(getTelaTamanho().LARGURA_TELA, getTelaTamanho().ALTURA_TELA,
+                Image.SCALE_FAST));
     };
 
     @Override
     public void titulo(Graphics g) {
-        String titulo = "CONTROLES";
-        g.setColor(getCorAmarela());
-        g.setFont(pixel.deriveFont(Font.BOLD, getTitulosize()));
+        g.setColor(super.getCorAmarela());
+        g.setFont(FONTE_TITULOS);
         // CRENTALIZA VERTICALMENTE
         FontMetrics fm = g.getFontMetrics();
-        int tituloLargura = fm.stringWidth(titulo); // PEGA O TAMANHO DA STRING
-        int posicaoTituloX = (telaTamanho.getLARGURATELA() - tituloLargura) / 2;
+        int tituloLargura = fm.stringWidth(TITULO); // PEGA O TAMANHO DA STRING
+        int posicaoTituloX = (getTelaTamanho().LARGURA_TELA - tituloLargura) / 2;
         g.setColor(Color.WHITE);
-        g.drawString(titulo, (posicaoTituloX + 5), posicaoTituloY);
+        g.drawString(TITULO, (posicaoTituloX + offsetTituloX), super.getPosicaoTituloY());
         g.setColor(getCorAmarela());
-        g.drawString(titulo, posicaoTituloX, posicaoTituloY);
+        g.drawString(TITULO, posicaoTituloX, super.getPosicaoTituloY());
     }
 
     @Override
     public void menu(Graphics g) {
-        int tamanhoStringBotao = 30;
-        g.setFont(pixel.deriveFont(Font.BOLD, tamanhoStringBotao));
-        String textoBotao = "ESC";
+        g.setFont(FONTE_BOTAO);
         FontMetrics fm = g.getFontMetrics();
-        int posicaoBotaoX = (getBotao().x + 3) + (getBotaowidth() - fm.stringWidth(textoBotao)) / 2;
-        int posicaoBotaoY = (getBotao().y + 5) + (getBotaoheight() - fm.getHeight()) / 2 + fm.getAscent();
+        int posicaoBotaoX = (getBotao().x + offSetBotaoX) + (super.getBotaoLargura() - fm.stringWidth(TEXTO_BOTAO)) / 2;
+        int posicaoBotaoY = (getBotao().y + offSetBotaoY) + (super.getBotaoAltura() - fm.getHeight()) / 2
+                + fm.getAscent();
         g.setColor(getCorAmarela());
-        g.fillRect(getBotao().x, getBotao().y, getBotaowidth(), getBotaoheight());
+        g.fillRect(getBotao().x, getBotao().y, super.getBotaoLargura(), super.getBotaoAltura());
         g.setColor(Color.WHITE);
-        g.drawString(textoBotao, posicaoBotaoX, posicaoBotaoY);
+        g.drawString(TEXTO_BOTAO, posicaoBotaoX, posicaoBotaoY);
     }
 }
