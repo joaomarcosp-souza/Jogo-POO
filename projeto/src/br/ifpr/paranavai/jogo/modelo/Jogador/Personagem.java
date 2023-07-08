@@ -10,25 +10,32 @@ import java.awt.event.KeyEvent;
 import java.awt.Image;
 
 public class Personagem extends EntidadeJogador {
-    private List<Tiro> tiros;
-    private List<SuperTiro> supertiro;
-    private long delayTiro;
-    private long ultimoTiro;
     private int vida;
     private int pontos;
     private int velocidade;
-    private int deslocamentoEmX, deslocamentoEmY;
-    private Image IMAGEM_VIDA;
-    private int ALTURA_IMAGEM_VIDA;
+    private long delayTiro;
+    private long ultimoTiro;
+    private List<Tiro> tiros;
+    private int deslocamentoEmX;
+    private int deslocamentoEmY;
+    private int alturaImagemVida;
     private boolean supertiroUsado = false;
-
+    private List<SuperTiro> supertiro;
+    // POSIÇÃO DOS SUPER TIROS
+    private final int ANGULO1 = -25;
+    private final int ANGULO2 = 0;
+    private final int ANGULO3 = 25;
+    // VARIAVEIS INICIAIS QUE NÃO SERÃO ALTERADAS
+    private Image IMAGEM_VIDA;
     private static final int VIDAINICIAL = 1;
     private static final int PONTOSINICIAIS = 0;
     private static final int POSICAOINICIALX = 100;
-    private final int POSICAOINICIALY = getTelaTamanho().ALTURA_TELA / 2;
-    private final int VELOCIDADEINICIAL = 4;
+    private final int POSICAOINICIALY = super.getTelaTamanho().ALTURA_TELA / 2;
+    private final int VELOCIDADEINICIAL = 3;
+    // CAMINHO PARA AS IMAGENS
+    private static final String NAVEIMG_JOGADOR = "recursos\\Sprites\\Personagem\\navePrincipal.png";
+    private static final String VIDAIMG_JOGADOR = "recursos\\Sprites\\Personagem\\coracao.png";
 
-    // CONTRUTOR
     public Personagem() {
         super.setPosicaoEmX(POSICAOINICIALX);
         super.setPosicaoEmY(POSICAOINICIALY);
@@ -45,15 +52,15 @@ public class Personagem extends EntidadeJogador {
 
     @Override
     public void carregar() {
-        // IMAGEM PERSONAGEM
-        ImageIcon carregando = new ImageIcon("recursos\\Sprites\\Personagem\\navePrincipal.png");
+        // IMAGEM NAVE
+        ImageIcon carregando = new ImageIcon(NAVEIMG_JOGADOR);
         super.setImagem(carregando.getImage());
         super.setLarguraImagem(super.getImagem().getWidth(null));
         super.setAlturaImagem(super.getImagem().getHeight(null));
-        // IMAGEM VIDAS
-        ImageIcon carregadorVida = new ImageIcon("recursos\\Sprites\\Personagem\\coracao.png");
-        this.IMAGEM_VIDA = carregadorVida.getImage();
-        this.ALTURA_IMAGEM_VIDA = this.IMAGEM_VIDA.getHeight(null);
+        // IMAGEM VIDA
+        ImageIcon carregaVida = new ImageIcon(VIDAIMG_JOGADOR);
+        this.IMAGEM_VIDA = carregaVida.getImage();
+        this.alturaImagemVida = this.IMAGEM_VIDA.getHeight(null);
     }
 
     @Override
@@ -62,7 +69,6 @@ public class Personagem extends EntidadeJogador {
         super.setPosicaoEmY(super.getPosicaoEmY() + deslocamentoEmY);
     }
 
-    // METODO MOVIMENTO
     public void mover(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
         if (tecla == KeyEvent.VK_W || tecla == KeyEvent.VK_UP) {
@@ -96,7 +102,7 @@ public class Personagem extends EntidadeJogador {
         }
     }
 
-    // MÉTODO ATIRAR
+    // MÉTODO ATIRAR TANTO 'TIRO NORMAL' QUANTO O 'SUPER TIRO'
     public void atirar(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
         long tempoAtual = System.currentTimeMillis();
@@ -113,38 +119,44 @@ public class Personagem extends EntidadeJogador {
             }
             // SUPER TIRO
             if (tecla == KeyEvent.VK_R && this.getPontos() % 100 == 0 && !supertiroUsado) {
-                SuperTiro tiro = new SuperTiro(centroPersonagemX, centroPersonagemY);
-                this.supertiro.add(tiro);
-                supertiroUsado = true; // DEFINE O SUPERTIRO COMO USADO
+                SuperTiro superTiro1 = new SuperTiro(centroPersonagemX, centroPersonagemY, this.ANGULO1);
+                SuperTiro superTiro2 = new SuperTiro(centroPersonagemX, centroPersonagemY, this.ANGULO2);
+                SuperTiro superTiro3 = new SuperTiro(centroPersonagemX, centroPersonagemY, this.ANGULO3);
+                // ADCIONA OS TIROS
+                this.supertiro.add(superTiro1);
+                this.supertiro.add(superTiro2);
+                this.supertiro.add(superTiro3);
+                // DEFINE O SUPERTIRO COMO USADO
+                supertiroUsado = true;
             }
         }
         ultimoTiro = tempoAtual;
         // VERIFICANDO SE A PONTUAÇÃO NÃO E MAIS VALIDA E REDEFININDO A VARIAVEL
-        // supertiroUsado
         if (this.getPontos() % 100 != 0) {
             supertiroUsado = false;
         }
     }
 
-    // MÉTODO DE PONTUAÇÃO DO PERSONAGEM
+    // MÉTODO PARA DESENHAR A PONTUAÇÃO DO JOGADOR
     public void desenhaPontos(Graphics g) {
         String pontosSTR = "PONTOS: " + pontos;
         g.setFont(super.getPixel().deriveFont(Font.PLAIN, 22));
         g.setColor(new Color(255, 209, 70));
         g.drawString(pontosSTR, 20, 25);
     }
-
+    
+     // MÉTODO PARA DESENHAR A VIDA DO JOGADOR
     public void desenhaVida(Graphics g) {
         int diferenca = 70;
         // PARA CADA VIDA DO JOGADOR, DESENHA UMA IMAGEM DA VIDA,
         // ALTERANDO A POSIÇÃO COM BASE NOS CALCULOS PARA DEFINIR
         for (int i = 0; i < this.vida; i++) {
             g.drawImage(IMAGEM_VIDA, getTelaTamanho().LARGURA_TELA - diferenca, 10, null);
-            diferenca += ALTURA_IMAGEM_VIDA + 5;
+            diferenca += alturaImagemVida + 5;
         }
     }
 
-    // MÉTODOS GETTERS E SETTERS EXCLUISIVOS PERSONAGEM
+    // MÉTODOS GETTERS E SETTERS
     public List<Tiro> getTiros() {
         return tiros;
     }

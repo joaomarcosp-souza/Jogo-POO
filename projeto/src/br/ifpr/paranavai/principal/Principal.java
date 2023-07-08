@@ -14,21 +14,18 @@ public class Principal extends JFrame {
         Infinito fase = new Infinito();
         super.add(fase);
         super.setTitle("Star Wars: Invader");
-        // TESTE TELA CHEIA
-        // GraphicsDevice device =
-        // GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        // PEGA O TAMANHO DA TELA
+        super.setVisible(true);
+        // PEGA O TAMANHO DO MONITOR PRINCIPAL
         Dimension telaTamanho = Toolkit.getDefaultToolkit().getScreenSize();
         int telaLargura = (int) telaTamanho.getWidth();
         int telaAltura = (int) telaTamanho.getHeight();
-        // CRIA O TAMANHO DO JFRAME COM BASE NO TAMANHO DA TELA DO COMPUTADOR
+        // CRIA O TAMANHO DA JANELA JFRAME COM BASE NO TAMANHO DO MONITOR
         super.setSize(telaLargura, telaAltura);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setLocationRelativeTo(null);
-        super.setFocusableWindowState(true);
-        super.setVisible(true);
         super.setResizable(false);
-        // TELA CHEIA
+        // TELA CHEIA TESTE
+        // GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         // device.setFullScreenWindow(this);
     }
 

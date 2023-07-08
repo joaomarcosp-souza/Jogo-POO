@@ -22,11 +22,11 @@ public class MenuInicial extends EntidadeTelas {
     // TITULO MENU
     private static final String TITULO = "STAR WARS";
     private static final String SUBTITULO = "INVADERS";
-    // CAMINHO IMAGEM DE FUNDO
-    private static final String IMAGEM_FUNDO = "recursos\\Sprites\\Fundos\\FundoMenuInicial.gif";
     // FONTES
     private Font FONTE_TITULOS = getPIXEL().deriveFont(Font.BOLD, super.getTituloTamanho());
     private Font FONTE_MENU = getPIXEL().deriveFont(Font.BOLD, super.getMenuTamanho());
+    // CAMINHO IMAGEM DE FUNDO
+    private static final String IMAGEM_FUNDO = "recursos\\Sprites\\Fundos\\FundoMenuInicial.gif";
 
     public MenuInicial() {
         setVisibilidade(true);

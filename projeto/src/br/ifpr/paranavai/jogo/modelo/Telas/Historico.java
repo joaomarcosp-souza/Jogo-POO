@@ -15,11 +15,11 @@ public class Historico extends EntidadeTelas {
     // TEXTOS DA CLASSE
     private static final String TEXTO_BOTAO = "ESC";
     private static final String TITULO = "HISTORICO";
-    // CAMINHO IMAGEM DE FUNDO
-    private static final String IMAGEM_FUNDO = "recursos\\Sprites\\Fundos\\FundoMenu.jpg";
     // FONTES
     private Font FONTE_TITULOS = getPIXEL().deriveFont(Font.BOLD, super.getTituloTamanho());
     private Font FONTE_BOTAO = getPIXEL().deriveFont(Font.BOLD, super.getTamanhoFonteBotao());
+    // CAMINHO IMAGEM DE FUNDO
+    private static final String IMAGEM_FUNDO = "recursos\\Sprites\\Fundos\\FundoMenu.jpg";
 
     public Historico() {
         super.setVisibilidade(false);

@@ -16,18 +16,17 @@ public class FimDeJogo extends EntidadeTelas {
     private static final int offSubTituloY = 80;
     private static final int espacamentoYsim = 40;
     // OPÇÕES EM TEXTO
-    // OPÇÕES EM TEXTO
     private static final String OPC_SIM = "SIM";
     private static final String OPC_NAO = "NAO";
     private static final String MENSAGEM = "JOGAR NOVAMENTE?";
     // TITULO
     private static final String TITULO_PRINCIPAL = "GAME";
     private static final String SUBTITULO = "OVER";
-    // CAMINHO IMAGEM DE FUNDO
-    private static final String IMAGEM_FUNDO = "recursos\\Sprites\\Fundos\\vader.gif";
     // FONTES
     private Font FONTE_TITULOS = getPIXEL().deriveFont(Font.BOLD, super.getTituloTamanho());
     private Font FONTE_MENU = getPIXEL().deriveFont(Font.BOLD, super.getTamanhoFonteBotao());
+    // CAMINHO IMAGEM DE FUNDO
+    private static final String IMAGEM_FUNDO = "recursos\\Sprites\\Fundos\\vader.gif";
 
     public FimDeJogo() {
         super.setVisibilidade(false);
