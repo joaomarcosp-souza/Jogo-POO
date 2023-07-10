@@ -6,7 +6,7 @@ public class SuperTiro extends EntidadeJogador {
 
     private int angulo;
     private static final int VELOCIDADETIRO = 4;
-    private static final String IMAGEM_TIROSUPER = "recursos\\Sprites\\Tiros\\super.png";
+    private static final String IMAGEM_TIROSUPER = "recursos\\Sprites\\Tiros\\superTiro.gif";
 
     public SuperTiro(int posicaoEmX, int posicaoEmY, int angulo) {
         super.setPosicaoEmX(posicaoEmX);

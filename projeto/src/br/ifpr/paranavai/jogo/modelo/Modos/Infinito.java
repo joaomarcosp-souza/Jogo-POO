@@ -3,6 +3,7 @@ package br.ifpr.paranavai.jogo.modelo.Modos;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,8 +45,8 @@ public class Infinito extends JPanel implements ActionListener {
     // TIMERS INIMIGOS
     private Timer TimerNaveInimiga;
     private Timer TimerMeteorito;
-    private int delayInimigoNave = 500;
-    private int delayInimigoMeteorito = 1000;
+    private int delayInimigoNave = 1000;
+    private int delayInimigoMeteorito = 3000;
     private Timer timerGlobal;
     // 'TIMER' PARA A COLISAO
     private long ultimaColisao;
@@ -132,10 +133,10 @@ public class Infinito extends JPanel implements ActionListener {
                     posicaoEmY = (int) (Math.random() * ((telaTamanho.getALTURA_TELA()) - alturaInimigo));
                 }
                 // AUMENTA A VIDA DO INIMIGO
-                if (personagem.getPontos() > 50) {
+                if (personagem.getPontos() > 300) {
                     vidaInimigos = 2;
                 }
-                if (personagem.getPontos() > 100) {
+                if (personagem.getPontos() > 900) {
                     vidaInimigos = 3;
                 }
                 NaveInimiga.add(new Naves(posicaoEmX, posicaoEmY, vidaInimigos));
@@ -227,27 +228,27 @@ public class Infinito extends JPanel implements ActionListener {
             // FIM METEORO E NAVES INIMIGAS
 
             // HITBOX
-            // graficos.setColor(Color.RED);
-            // Rectangle hitboxPersonagem = personagem.getBounds();
-            // graficos.drawRect(hitboxPersonagem.x, hitboxPersonagem.y,
-            // hitboxPersonagem.width, hitboxPersonagem.height);
-            // graficos.setColor(Color.BLUE);
+            graficos.setColor(Color.RED);
+            Rectangle hitboxPersonagem = personagem.getBounds();
+            graficos.drawRect(hitboxPersonagem.x, hitboxPersonagem.y,
+                    hitboxPersonagem.width, hitboxPersonagem.height);
+            graficos.setColor(Color.BLUE);
 
-            // for (Naves ini : NaveInimiga) {
-            // Rectangle hitboxInimigo = ini.getBounds();
-            // graficos.drawRect(hitboxInimigo.x, hitboxInimigo.y, hitboxInimigo.width,
-            // hitboxInimigo.height);
-            // }
-            // for (Meteorito mete : MeteoritoInimigo) {
-            // Rectangle hitboxInimigo = mete.getBounds();
-            // graficos.drawRect(hitboxInimigo.x, hitboxInimigo.y, hitboxInimigo.width,
-            // hitboxInimigo.height);
-            // }
-            // for (Tiro mete : tiros) {
-            // Rectangle hitboxInimigo = mete.getBounds();
-            // graficos.drawRect(hitboxInimigo.x, hitboxInimigo.y, hitboxInimigo.width,
-            // hitboxInimigo.height);
-            // }
+            for (Naves ini : NaveInimiga) {
+                Rectangle hitboxInimigo = ini.getBounds();
+                graficos.drawRect(hitboxInimigo.x, hitboxInimigo.y, hitboxInimigo.width,
+                        hitboxInimigo.height);
+            }
+            for (Meteorito mete : MeteoritoInimigo) {
+                Rectangle hitboxInimigo = mete.getBounds();
+                graficos.drawRect(hitboxInimigo.x, hitboxInimigo.y, hitboxInimigo.width,
+                        hitboxInimigo.height);
+            }
+            for (Tiro mete : tiros) {
+                Rectangle hitboxInimigo = mete.getBounds();
+                graficos.drawRect(hitboxInimigo.x, hitboxInimigo.y, hitboxInimigo.width,
+                        hitboxInimigo.height);
+            }
 
             // CARREGANDO OS COMPONENTES DA CLASSE PERSONAGEM(VIDA E PONTUAÇÃO)
             personagem.desenhaPontos(graficos);
@@ -325,10 +326,10 @@ public class Infinito extends JPanel implements ActionListener {
     public void gerenciaFase() {
         // ALTERA A VELOCIDADE DA NAVE INIMIGA COM BASE NOS PONTOS GANHOS DO PERSONAGEM
         int[] pontosPersonagem = { 300, 600, 900, 1000 };
-        int[] ajusteVelocidades = { 4, 5, 6, 7 };
+        double[] ajusteVelocidades = { 3.5, 4, 4.5, 5};
         for (int i = 0; i < pontosPersonagem.length; i++) {
             if (personagem.getPontos() > pontosPersonagem[i]) {
-                int aumentoVelocidade = ajusteVelocidades[i];
+                double aumentoVelocidade = ajusteVelocidades[i];
                 NaveInimiga.forEach(naveTemporaria -> naveTemporaria.setVelocidade(aumentoVelocidade));
                 if (i >= 1) {
                     MeteoritoInimigo.forEach(meteritoTemporario -> meteritoTemporario.setVelocidade(aumentoVelocidade));
@@ -353,7 +354,7 @@ public class Infinito extends JPanel implements ActionListener {
             }
         } else {
             TimerNaveInimiga.start();
-            if (personagem.getPontos() >= 0) {
+            if (personagem.getPontos() >= 300) {
                 TimerMeteorito.start();
             }
         }

@@ -34,7 +34,7 @@ public class Personagem extends EntidadeJogador {
     private static final int POSICAOINICIALX = 100;
     private final int POSICAOINICIALY = super.getTelaTamanho().ALTURA_TELA / 2;
     // CAMINHO PARA AS IMAGENS
-    private static final String NAVEIMG_JOGADOR = "recursos\\Sprites\\Personagem\\navePrincipal.png";
+    private static final String NAVEIMG_JOGADOR = "recursos\\Sprites\\Personagem\\NavePersonagem.png";
     private static final String VIDAIMG_JOGADOR = "recursos\\Sprites\\Personagem\\coracao.png";
 
     public Personagem() {
@@ -84,6 +84,10 @@ public class Personagem extends EntidadeJogador {
         }
         if (tecla == KeyEvent.VK_D || tecla == KeyEvent.VK_RIGHT) {
             deslocamentoEmX = velocidade;
+        }
+
+        if (tecla == KeyEvent.VK_SHIFT) {
+
         }
     }
 

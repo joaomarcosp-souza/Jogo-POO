@@ -6,7 +6,7 @@ import java.awt.Color;
 
 public class Naves extends EntidadeInimigos {
 
-    private static int VELOCIDADEINICIAL = 1;
+    private double VELOCIDADEINICIAL = 1;
 
     public Naves(int posicaoEmX, int posicaoEmY, int INIMIGOSVIDA) {
         this.posicaoEmX = posicaoEmX;

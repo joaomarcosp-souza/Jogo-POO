@@ -16,7 +16,7 @@ public abstract class EntidadeInimigos {
     protected int larguraImagemExplosao, alturaImagemExplosao;
     protected boolean visibilidade;
     // STATUS DOS INIMIGOS
-    protected int velocidade;
+    protected double velocidade;
     protected int inimigosvida;
 
     // CONSTRUTOR
@@ -83,11 +83,11 @@ public abstract class EntidadeInimigos {
         this.visibilidade = visibilidade;
     }
 
-    public int getVelocidade() {
+    public double getVelocidade() {
         return velocidade;
     }
 
-    public void setVelocidade(int velocidade) {
+    public void setVelocidade(double velocidade) {
         this.velocidade = velocidade;
     }
 

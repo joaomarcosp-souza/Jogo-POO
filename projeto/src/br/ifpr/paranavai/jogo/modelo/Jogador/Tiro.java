@@ -4,8 +4,8 @@ import javax.swing.ImageIcon;
 
 public class Tiro extends EntidadeJogador {
 
-    private static final int VELOCIDADE_TIRO = 4;
-    private static final String IMAGEM_TIRO = "recursos\\Sprites\\Tiros\\tiro.png";
+    private static final int VELOCIDADE_TIRO = 2;
+    private static final String IMAGEM_TIRO = "recursos\\Sprites\\Tiros\\tiroNormal.gif";
 
     public Tiro(int posicaoEmX, int posicaoEmY) {
         super.setPosicaoEmX(posicaoEmX);
