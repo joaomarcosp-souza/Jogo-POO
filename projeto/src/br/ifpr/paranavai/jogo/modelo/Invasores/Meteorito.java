@@ -22,7 +22,7 @@ public class Meteorito extends EntidadeInimigos {
     @Override
     public void atualizar() {
         this.posicaoEmY += velocidade;
-        if (this.posicaoEmY > 800) {
+        if (this.posicaoEmY > super.getTamanhoTela().ALTURA_TELA) {
             visibilidade = false;
         }
     }

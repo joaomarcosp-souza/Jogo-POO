@@ -3,6 +3,8 @@ package br.ifpr.paranavai.jogo.modelo.Invasores;
 import java.awt.Image;
 import java.awt.Rectangle;
 
+import br.ifpr.paranavai.principal.TamanhoTela;
+
 public abstract class EntidadeInimigos {
     // POSIÇÃO DOS INIMIGOS NA TELA
     protected int posicaoEmX;
@@ -18,10 +20,16 @@ public abstract class EntidadeInimigos {
     // STATUS DOS INIMIGOS
     protected double velocidade;
     protected int inimigosvida;
+    //INSTANCIA
+    private TamanhoTela tamanhoTela;
 
     // CONSTRUTOR
     public EntidadeInimigos() {
         this.visibilidade = true;
+
+        // INICIANDO
+        tamanhoTela = new TamanhoTela();
+        tamanhoTela.carregar();
     }
 
     // MÉTODOS ABSTRATO BASICO PARA 'CARREGAR' É 'ATUALIZAR'
@@ -98,5 +106,15 @@ public abstract class EntidadeInimigos {
     public void setInimigosvida(int inimigosvida) {
         this.inimigosvida = inimigosvida;
     }
+
+    public TamanhoTela getTamanhoTela() {
+        return tamanhoTela;
+    }
+
+    public void setTamanhoTela(TamanhoTela tamanhoTela) {
+        this.tamanhoTela = tamanhoTela;
+    }
+
+    
 
 }

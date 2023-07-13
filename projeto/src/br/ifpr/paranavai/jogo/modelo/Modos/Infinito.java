@@ -287,6 +287,7 @@ public class Infinito extends JPanel implements ActionListener {
             if (mete.isVisibilidade()) {
                 mete.atualizar();
             } else {
+                System.out.println("removeu");
                 iteratorMeteorito.remove();
             }
         } // FIM
