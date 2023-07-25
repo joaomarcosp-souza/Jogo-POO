@@ -7,20 +7,20 @@ import br.ifpr.paranavai.principal.TamanhoTela;
 
 public abstract class EntidadeInimigos {
     // POSIÇÃO DOS INIMIGOS NA TELA
-    protected int posicaoEmX;
-    protected int posicaoEmY;
+    private int posicaoEmX;
+    private int posicaoEmY;
     // INFORMAÇÕES DAS IMAGENS
     //
-    protected Image imagem;
-    protected int larguraImagem, alturaImagem;
+    private Image imagem;
+    private int larguraImagem, alturaImagem;
     // IMG EXPLOSAO
-    protected Image imagemExplosao;
-    protected int larguraImagemExplosao, alturaImagemExplosao;
-    protected boolean visibilidade;
+    private Image imagemExplosao;
+    private int larguraImagemExplosao, alturaImagemExplosao;
+    private boolean visibilidade;
     // STATUS DOS INIMIGOS
-    protected double velocidade;
-    protected int inimigosvida;
-    //INSTANCIA
+    private double velocidade;
+    private int inimigosvida;
+    // INSTANCIA
     private TamanhoTela tamanhoTela;
 
     // CONSTRUTOR
@@ -42,7 +42,6 @@ public abstract class EntidadeInimigos {
         return new Rectangle(posicaoEmX, posicaoEmY, larguraImagem, alturaImagem);
     }
 
-    // GETTERS E SETTERS DA ENTIDADE
     public int getPosicaoEmX() {
         return posicaoEmX;
     }
@@ -57,22 +56,6 @@ public abstract class EntidadeInimigos {
 
     public void setPosicaoEmY(int posicaoEmY) {
         this.posicaoEmY = posicaoEmY;
-    }
-
-    public int getLarguraImagem() {
-        return larguraImagem;
-    }
-
-    public void setLarguraImagem(int larguraImagem) {
-        this.larguraImagem = larguraImagem;
-    }
-
-    public int getAlturaImagem() {
-        return alturaImagem;
-    }
-
-    public void setAlturaImagem(int alturaImagem) {
-        this.alturaImagem = alturaImagem;
     }
 
     public Image getImagem() {
@@ -115,6 +98,44 @@ public abstract class EntidadeInimigos {
         this.tamanhoTela = tamanhoTela;
     }
 
-    
+    public int getLarguraImagem() {
+        return larguraImagem;
+    }
+
+    public void setLarguraImagem(int larguraImagem) {
+        this.larguraImagem = larguraImagem;
+    }
+
+    public int getAlturaImagem() {
+        return alturaImagem;
+    }
+
+    public void setAlturaImagem(int alturaImagem) {
+        this.alturaImagem = alturaImagem;
+    }
+
+    public Image getImagemExplosao() {
+        return imagemExplosao;
+    }
+
+    public void setImagemExplosao(Image imagemExplosao) {
+        this.imagemExplosao = imagemExplosao;
+    }
+
+    public int getLarguraImagemExplosao() {
+        return larguraImagemExplosao;
+    }
+
+    public void setLarguraImagemExplosao(int larguraImagemExplosao) {
+        this.larguraImagemExplosao = larguraImagemExplosao;
+    }
+
+    public int getAlturaImagemExplosao() {
+        return alturaImagemExplosao;
+    }
+
+    public void setAlturaImagemExplosao(int alturaImagemExplosao) {
+        this.alturaImagemExplosao = alturaImagemExplosao;
+    }
 
 }

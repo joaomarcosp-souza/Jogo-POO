@@ -28,21 +28,21 @@ public class Personagem extends EntidadeJogador {
     private final int ANGULO3 = 15;
     // VARIAVEIS INICIAIS QUE NÃO SERÃO ALTERADAS
     private Image IMAGEM_VIDA;
-    private final int VELOCIDADEINICIAL = 3;
+    private final int VELOCIDADEINICIAL = 4;
     private static final int VIDAINICIAL = 4;
     private static final int PONTOSINICIAIS = 0;
     private static final int POSICAOINICIALX = 100;
     private final int POSICAOINICIALY = super.getTelaTamanho().ALTURA_TELA / 2;
     // CAMINHO PARA AS IMAGENS
-    private static final String NAVEIMG_JOGADOR = "recursos\\Sprites\\Personagem\\NavePersonagem.png";
-    private static final String VIDAIMG_JOGADOR = "recursos\\Sprites\\Personagem\\coracao.png";
+    private static final String NAVEIMGJOGADOR = "recursos\\Sprites\\Personagem\\NavePersonagem.png";
+    private static final String VIDAIMGJOGADOR = "recursos\\Sprites\\Personagem\\coracao.png";
 
     public Personagem() {
         super.setPosicaoEmX(POSICAOINICIALX);
         super.setPosicaoEmY(POSICAOINICIALY);
         super.setVisibilidade(true);
 
-        this.delayTiro = 200;
+        this.delayTiro = 300;
         this.jogando = false;
         this.vida = VIDAINICIAL;
         this.pontos = PONTOSINICIAIS;
@@ -55,12 +55,12 @@ public class Personagem extends EntidadeJogador {
     @Override
     public void carregar() {
         // IMAGEM NAVE
-        ImageIcon carregando = new ImageIcon(NAVEIMG_JOGADOR);
+        ImageIcon carregando = new ImageIcon(NAVEIMGJOGADOR);
         super.setImagem(carregando.getImage());
         super.setLarguraImagem(super.getImagem().getWidth(null));
         super.setAlturaImagem(super.getImagem().getHeight(null));
         // IMAGEM VIDA
-        ImageIcon carregaVida = new ImageIcon(VIDAIMG_JOGADOR);
+        ImageIcon carregaVida = new ImageIcon(VIDAIMGJOGADOR);
         this.IMAGEM_VIDA = carregaVida.getImage();
         this.alturaImagemVida = this.IMAGEM_VIDA.getHeight(null);
     }

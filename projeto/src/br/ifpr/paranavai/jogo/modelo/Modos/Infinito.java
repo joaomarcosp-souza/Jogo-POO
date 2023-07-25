@@ -129,7 +129,6 @@ public class Infinito extends JPanel implements ActionListener {
                 int posicaoEmX = telaTamanho.getLARGURA_TELA(); // POSICÃO INICIAL DO PERSONAGEM
                 int posicaoEmY = (int) (Math.random() * ((telaTamanho.getALTURA_TELA()) - alturaInimigo));
                 if (posicaoEmY <= 0 || posicaoEmY > maximoEmY) {
-                    System.out.println("enttru");
                     posicaoEmY = (int) (Math.random() * ((telaTamanho.getALTURA_TELA()) - alturaInimigo));
                 }
                 // AUMENTA A VIDA DO INIMIGO
@@ -287,7 +286,6 @@ public class Infinito extends JPanel implements ActionListener {
             if (mete.isVisibilidade()) {
                 mete.atualizar();
             } else {
-                System.out.println("removeu");
                 iteratorMeteorito.remove();
             }
         } // FIM
@@ -326,15 +324,12 @@ public class Infinito extends JPanel implements ActionListener {
 
     public void gerenciaFase() {
         // ALTERA A VELOCIDADE DA NAVE INIMIGA COM BASE NOS PONTOS GANHOS DO PERSONAGEM
-        int[] pontosPersonagem = { 300, 600, 900, 1000 };
-        double[] ajusteVelocidades = { 3.5, 4, 4.5, 5};
+        int[] pontosPersonagem = { 100, 600, 900, 1000 };
+        double[] ajusteVelocidades = { 5, 5.5, 6.5, 7};
         for (int i = 0; i < pontosPersonagem.length; i++) {
             if (personagem.getPontos() > pontosPersonagem[i]) {
                 double aumentoVelocidade = ajusteVelocidades[i];
                 NaveInimiga.forEach(naveTemporaria -> naveTemporaria.setVelocidade(aumentoVelocidade));
-                if (i >= 1) {
-                    MeteoritoInimigo.forEach(meteritoTemporario -> meteritoTemporario.setVelocidade(aumentoVelocidade));
-                }
             }
         }
 

@@ -4,26 +4,29 @@ import javax.swing.ImageIcon;
 
 public class Meteorito extends EntidadeInimigos {
 
+    private double VELOCIDADEINICIAL = 4;
+    private static final String IMAGEMNAVE = "recursos\\Sprites\\Inimigos\\meteorito.png";
+
     public Meteorito(int posicaoEmX, int posicaoEmY) {
-        this.posicaoEmX = posicaoEmX;
-        this.posicaoEmY = posicaoEmY;
-        this.velocidade = 1;
-        this.visibilidade = true;
+        super.setPosicaoEmX(posicaoEmX);
+        super.setPosicaoEmY(posicaoEmY);
+        super.setVelocidade(VELOCIDADEINICIAL);
+        super.setVisibilidade(true);
     }
 
     @Override
     public void carregar() {
-        ImageIcon carregador = new ImageIcon("recursos\\Sprites\\Inimigos\\meteorito.png");
-        this.imagem = carregador.getImage();
-        this.larguraImagem = this.imagem.getWidth(null);
-        this.alturaImagem = this.imagem.getHeight(null);
+        ImageIcon carregador = new ImageIcon(IMAGEMNAVE);
+        super.setImagem(carregador.getImage());
+        super.setLarguraImagem(super.getImagem().getWidth(null));
+        super.setAlturaImagem(super.getImagem().getHeight(null));
     }
 
     @Override
     public void atualizar() {
-        this.posicaoEmY += velocidade;
-        if (this.posicaoEmY > super.getTamanhoTela().ALTURA_TELA) {
-            visibilidade = false;
+        super.setPosicaoEmY((int) (super.getPosicaoEmY() + VELOCIDADEINICIAL));
+        if (super.getPosicaoEmY() > super.getTamanhoTela().ALTURA_TELA) {
+            super.setVisibilidade(false);
         }
     }
 }

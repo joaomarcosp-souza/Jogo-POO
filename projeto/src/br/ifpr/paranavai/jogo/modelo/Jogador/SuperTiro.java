@@ -5,8 +5,8 @@ import javax.swing.ImageIcon;
 public class SuperTiro extends EntidadeJogador {
 
     private int angulo;
-    private static final int VELOCIDADETIRO = 4;
-    private static final String IMAGEM_TIROSUPER = "recursos\\Sprites\\Tiros\\superTiro.gif";
+    private static final int VELOCIDADETIRO = 8;
+    private static final String SUPERTIROIMG = "recursos\\Sprites\\Tiros\\superTiro.gif";
 
     public SuperTiro(int posicaoEmX, int posicaoEmY, int angulo) {
         super.setPosicaoEmX(posicaoEmX);
@@ -17,7 +17,7 @@ public class SuperTiro extends EntidadeJogador {
 
     @Override
     public void carregar() {
-        ImageIcon carregador = new ImageIcon(IMAGEM_TIROSUPER);
+        ImageIcon carregador = new ImageIcon(SUPERTIROIMG);
         super.setImagem(carregador.getImage());
         super.setLarguraImagem(super.getImagem().getWidth(null));
         super.setAlturaImagem(super.getImagem().getHeight(null));

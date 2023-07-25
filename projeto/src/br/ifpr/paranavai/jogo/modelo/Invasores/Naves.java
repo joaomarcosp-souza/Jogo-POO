@@ -6,29 +6,30 @@ import java.awt.Color;
 
 public class Naves extends EntidadeInimigos {
 
-    private double VELOCIDADEINICIAL = 1;
+    private double VELOCIDADEINICIAL = 3;
+    private static final String IMAGEMNAVE = "recursos\\Sprites\\Inimigos\\tfighter.png";
 
     public Naves(int posicaoEmX, int posicaoEmY, int INIMIGOSVIDA) {
-        this.posicaoEmX = posicaoEmX;
-        this.posicaoEmY = posicaoEmY;
-        this.inimigosvida = INIMIGOSVIDA;
-        this.velocidade = VELOCIDADEINICIAL;
-        this.visibilidade = true;
+        super.setPosicaoEmX(posicaoEmX);
+        super.setPosicaoEmY(posicaoEmY);
+        super.setInimigosvida(INIMIGOSVIDA);
+        super.setVelocidade(VELOCIDADEINICIAL);
+        super.setVisibilidade(true);
     }
 
     @Override
     public void carregar() {
-        ImageIcon carregador = new ImageIcon("recursos\\Sprites\\Inimigos\\tfighter.png");
-        this.imagem = carregador.getImage();
-        this.larguraImagem = this.imagem.getWidth(null);
-        this.alturaImagem = this.imagem.getHeight(null);
+        ImageIcon carregador = new ImageIcon(IMAGEMNAVE);
+        super.setImagem(carregador.getImage());
+        super.setLarguraImagem(super.getImagem().getWidth(null));
+        super.setAlturaImagem(super.getImagem().getHeight(null));
     }
 
     @Override
     public void atualizar() {
-        this.posicaoEmX -= velocidade;
-        if (this.posicaoEmX < -50) {
-            visibilidade = false;
+        super.setPosicaoEmX((int) (super.getPosicaoEmX() - super.getVelocidade()));
+        if (super.getPosicaoEmX() < -50) {
+            super.setVisibilidade(false);
         }
     }
 
@@ -36,17 +37,18 @@ public class Naves extends EntidadeInimigos {
     public void vidas(Graphics g) {
         int tamanhoCubo = 10; // TAMANHO DO CUBO
         int espacamentoCubo = 5; // ESPAÇAMENTO ENTRE OS CUBOS
+        int offsetRetangulo = 44;
         // CALCULANDO A POSIÇÃO DE CADA CUBO
-        int maximoVidas = inimigosvida;
-        int posicaoCuboX = posicaoEmX - ((tamanhoCubo + espacamentoCubo) * maximoVidas) / 2;
-        int posicaoCuboY = posicaoEmY + alturaImagem + 5;
+        int maximoVidas = super.getInimigosvida();
+        int posicaoCuboX = super.getPosicaoEmX() - ((tamanhoCubo + espacamentoCubo) * maximoVidas) / 2;
+        int posicaoCuboY = super.getPosicaoEmY() + super.getAlturaImagem() + 5;
         // UM CUBO PARA CADA VIDA
         for (int i = 0; i < maximoVidas; i++) {
             // CALCULA A POSIÇÃO DO CUBO ATUAL
             int cuboPosX = posicaoCuboX + (tamanhoCubo + espacamentoCubo) * i;
             // DESENHADO O CUBO
             g.setColor(Color.RED);
-            g.fillRect((cuboPosX + 44), posicaoCuboY, tamanhoCubo, tamanhoCubo);
+            g.fillRect((cuboPosX + offsetRetangulo), posicaoCuboY, tamanhoCubo, tamanhoCubo);
         }
     }
 }
