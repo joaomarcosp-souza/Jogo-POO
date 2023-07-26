@@ -138,8 +138,8 @@ public class Personagem extends EntidadeJogador {
         }
         ultimoTiro = tempoAtual;
         // VERIFICANDO SE A PONTUAÇÃO NÃO E MAIS VALIDA E REDEFININDO A VARIAVEL
-        if (this.getPontos() % 100 != 0) {
-            supertiroUsado = false;
+            if (this.getPontos() % 100 != 0) {
+                supertiroUsado = false;
         }
     }
 

@@ -5,7 +5,7 @@ import javax.swing.ImageIcon;
 public class Meteorito extends EntidadeInimigos {
 
     private double VELOCIDADEINICIAL = 4;
-    private static final String IMAGEMNAVE = "recursos\\Sprites\\Inimigos\\meteorito.png";
+    private static final String IMAGEMINIMIGO = "recursos\\Sprites\\Inimigos\\meteorito.png";
 
     public Meteorito(int posicaoEmX, int posicaoEmY) {
         super.setPosicaoEmX(posicaoEmX);
@@ -16,7 +16,7 @@ public class Meteorito extends EntidadeInimigos {
 
     @Override
     public void carregar() {
-        ImageIcon carregador = new ImageIcon(IMAGEMNAVE);
+        ImageIcon carregador = new ImageIcon(IMAGEMINIMIGO);
         super.setImagem(carregador.getImage());
         super.setLarguraImagem(super.getImagem().getWidth(null));
         super.setAlturaImagem(super.getImagem().getHeight(null));

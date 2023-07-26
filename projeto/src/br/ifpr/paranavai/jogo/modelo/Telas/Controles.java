@@ -12,6 +12,8 @@ public class Controles extends EntidadeTelas {
     private int offSetBotaoX = 3;
     private int offSetBotaoY = 5;
     private int offsetTituloX = 5;
+    private Image imageControle;
+
     // TEXTOS DA CLASSE
     private static final String TEXTO_BOTAO = "ESC";
     private static final String TITULO = "CONTROLE";
@@ -20,6 +22,7 @@ public class Controles extends EntidadeTelas {
     private Font FONTE_BOTAO = getPIXEL().deriveFont(Font.BOLD, super.getTamanhoFonteBotao());
     // CAMINHO IMAGEM DE FUNDO
     private static final String IMAGEM_FUNDO = "recursos\\Sprites\\Fundos\\FundoMenu.jpg";
+    private static final String IMGCONTROLES = "recursos\\Sprites\\Fundos\\FundoControle.png";
 
     public Controles() {
         super.setVisibilidade(false);
@@ -31,9 +34,16 @@ public class Controles extends EntidadeTelas {
         super.setImagem(carregando.getImage());
         super.setLarguraImagem(super.getImagem().getWidth(null));
         super.setAlturaImagem(super.getImagem().getHeight(null));
-        // REDIMENSIONA O TAMANHO DA IMAGEM PARA O TAMANHO DA TELA
         super.setImagem(super.getImagem().getScaledInstance(getTelaTamanho().LARGURA_TELA, getTelaTamanho().ALTURA_TELA,
                 Image.SCALE_FAST));
+
+        ImageIcon imgcontrole = new ImageIcon(IMGCONTROLES);
+        this.imageControle = imgcontrole.getImage();
+        this.imageControle = this.imageControle.getScaledInstance(getTelaTamanho().LARGURA_TELA,
+                getTelaTamanho().ALTURA_TELA,
+                Image.SCALE_FAST);
+
+        // REDIMENSIONA O TAMANHO DA IMAGEM PARA O TAMANHO DA TELA
     };
 
     @Override
@@ -62,4 +72,13 @@ public class Controles extends EntidadeTelas {
         g.setColor(Color.WHITE);
         g.drawString(TEXTO_BOTAO, posicaoBotaoX, posicaoBotaoY);
     }
+
+    public Image getImageControle() {
+        return imageControle;
+    }
+
+    public void setImageControle(Image imageControle) {
+        this.imageControle = imageControle;
+    }
+
 }

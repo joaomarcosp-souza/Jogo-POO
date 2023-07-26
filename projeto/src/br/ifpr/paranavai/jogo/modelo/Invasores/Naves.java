@@ -6,8 +6,8 @@ import java.awt.Color;
 
 public class Naves extends EntidadeInimigos {
 
-    private double VELOCIDADEINICIAL = 3;
-    private static final String IMAGEMNAVE = "recursos\\Sprites\\Inimigos\\tfighter.png";
+    private double VELOCIDADEINICIAL = 4;
+    private static final String IMAGEMINIMIGO = "recursos\\Sprites\\Inimigos\\tfighter.png";
 
     public Naves(int posicaoEmX, int posicaoEmY, int INIMIGOSVIDA) {
         super.setPosicaoEmX(posicaoEmX);
@@ -19,7 +19,7 @@ public class Naves extends EntidadeInimigos {
 
     @Override
     public void carregar() {
-        ImageIcon carregador = new ImageIcon(IMAGEMNAVE);
+        ImageIcon carregador = new ImageIcon(IMAGEMINIMIGO);
         super.setImagem(carregador.getImage());
         super.setLarguraImagem(super.getImagem().getWidth(null));
         super.setAlturaImagem(super.getImagem().getHeight(null));
