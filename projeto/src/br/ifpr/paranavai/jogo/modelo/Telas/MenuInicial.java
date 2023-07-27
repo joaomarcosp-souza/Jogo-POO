@@ -26,7 +26,7 @@ public class MenuInicial extends EntidadeTelas {
     private Font FONTE_TITULOS = getPIXEL().deriveFont(Font.BOLD, super.getTituloTamanho());
     private Font FONTE_MENU = getPIXEL().deriveFont(Font.BOLD, super.getMenuTamanho());
     // CAMINHO IMAGEM DE FUNDO
-    private static final String IMAGEM_FUNDO = "recursos\\Sprites\\Fundos\\FundoMenuInicial.gif";
+    private static final String IMAGEM_FUNDO = "recursos\\Sprites\\Fundos\\FundoMenu.gif";
 
     public MenuInicial() {
         setVisibilidade(true);
@@ -43,7 +43,6 @@ public class MenuInicial extends EntidadeTelas {
                 Image.SCALE_FAST));
     }
 
-    @Override
     public void titulo(Graphics g) {
         g.drawImage(getImagem(), 0, 0, null);
         g.setFont(FONTE_TITULOS);
@@ -63,7 +62,6 @@ public class MenuInicial extends EntidadeTelas {
                 (getPosicaoTituloY() + offSubTituloY));
     }
 
-    @Override
     public void menu(Graphics g) {
         g.setFont(FONTE_MENU);
         FontMetrics fm = g.getFontMetrics();

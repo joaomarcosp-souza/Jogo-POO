@@ -34,7 +34,7 @@ public class Personagem extends EntidadeJogador {
     private static final int POSICAOINICIALX = 100;
     private final int POSICAOINICIALY = super.getTelaTamanho().ALTURA_TELA / 2;
     // CAMINHO PARA AS IMAGENS
-    private static final String NAVEIMGJOGADOR = "recursos\\Sprites\\Personagem\\NavePersonagem.png";
+    private static final String NAVEIMGJOGADOR = "recursos\\Sprites\\Personagem\\Personagem.gif";
     private static final String VIDAIMGJOGADOR = "recursos\\Sprites\\Personagem\\coracao.png";
 
     public Personagem() {

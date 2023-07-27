@@ -43,7 +43,6 @@ public class FimDeJogo extends EntidadeTelas {
                 Image.SCALE_FAST));
     };
 
-    @Override
     public void titulo(Graphics g) {
         g.drawImage(super.getImagem(), 0, 0, null);
         g.setFont(FONTE_TITULOS);
@@ -62,7 +61,6 @@ public class FimDeJogo extends EntidadeTelas {
                 (super.getPosicaoTituloY() + offSubTituloY));
     }
 
-    @Override
     public void menu(Graphics g) {
         int OFFSETY = 150;
         // COMEÇO DA FRASE

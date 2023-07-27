@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.io.IOException;
 import java.awt.FontFormatException;
 import br.ifpr.paranavai.principal.TamanhoTela;
@@ -52,9 +51,6 @@ public abstract class EntidadeTelas {
     // MÉTODOS ABSTRATOS
     public abstract void carregar();
 
-    public abstract void titulo(Graphics g);
-
-    public abstract void menu(Graphics g);
 
     // GETTERS E SETTERS
     public Image getImagem() {

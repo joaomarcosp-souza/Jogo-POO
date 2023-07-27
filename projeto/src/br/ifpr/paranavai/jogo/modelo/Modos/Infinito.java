@@ -172,13 +172,9 @@ public class Infinito extends JPanel implements ActionListener {
             telaMenu.titulo(graficos);
             telaMenu.menu(graficos);
         } else if (telaControles.isVisibilidade() == true) {
-            graficos.drawImage(telaControles.getImagem(), 0, 0, null);
-            graficos.drawImage(telaControles.getImageControle(), 0, 0, null);
+            telaControles.conteudo(graficos);
         } else if (telaHistorico.isVisibilidade() == true) {
-            graficos.drawImage(telaHistorico.getImagem(), 0, 0, null);
-            // CARRREGANDO OS COMPONENTES DA CLASSE 'HISTORICO(EM IMPLEMENTAÇÃO)'
-            telaHistorico.titulo(graficos);
-            telaHistorico.menu(graficos);
+            telaHistorico.conteudo(graficos);
         }
         if (personagem.isJogando() == true) {
             // FUNDO DA FASE INFINITA(PRINCIPAL)
@@ -323,7 +319,7 @@ public class Infinito extends JPanel implements ActionListener {
     public void gerenciaFase() {
         // ALTERA A VELOCIDADE DA NAVE INIMIGA COM BASE NOS PONTOS GANHOS DO PERSONAGEM
         int[] pontosPersonagem = { 100, 600, 900, 1000 };
-        double[] ajusteVelocidades = { 5, 5.5, 6.5, 7};
+        double[] ajusteVelocidades = { 5, 5.5, 6.5, 7 };
         for (int i = 0; i < pontosPersonagem.length; i++) {
             if (personagem.getPontos() > pontosPersonagem[i]) {
                 double aumentoVelocidade = ajusteVelocidades[i];
