@@ -24,6 +24,7 @@ import br.ifpr.paranavai.jogo.modelo.Jogador.SuperTiro;
 import br.ifpr.paranavai.jogo.modelo.Telas.Controles;
 import br.ifpr.paranavai.jogo.modelo.Telas.Historico;
 import br.ifpr.paranavai.jogo.modelo.Telas.MenuInicial;
+import br.ifpr.paranavai.jogo.modelo.Telas.Pausar;
 import br.ifpr.paranavai.principal.TamanhoTela;
 import br.ifpr.paranavai.jogo.modelo.Telas.FimDeJogo;
 
@@ -42,6 +43,7 @@ public class Infinito extends JPanel implements ActionListener {
     private Controles telaControles;
     private FimDeJogo fimDeJogo;
     private TamanhoTela telaTamanho;
+    private Pausar telaPausar;
     // TIMERS INIMIGOS
     private Timer TimerNaveInimiga;
     private Timer TimerMeteorito;
@@ -86,6 +88,9 @@ public class Infinito extends JPanel implements ActionListener {
         // INICIA A CLASSE TAMANHO TELA;
         telaTamanho = new TamanhoTela();
         telaTamanho.carregar();
+        // INICIA A CLASSE TAMANHO TELA;
+        telaPausar = new Pausar();
+        telaPausar.carregar();
 
         // RESCALONAMENTO DAS IMAGENS DE FUNDO
         this.fundo = this.fundo.getScaledInstance(
@@ -176,6 +181,12 @@ public class Infinito extends JPanel implements ActionListener {
         } else if (telaHistorico.isVisibilidade() == true) {
             telaHistorico.conteudo(graficos);
         }
+
+        if (telaPausar.isPausado()) {
+            telaPausar.conteudo(graficos);
+            telaPausar.menu(graficos);
+        }
+
         if (personagem.isJogando() == true) {
             // FUNDO DA FASE INFINITA(PRINCIPAL)
             graficos.drawImage(this.fundo, 0, 0, null);
@@ -259,61 +270,68 @@ public class Infinito extends JPanel implements ActionListener {
     // MÉTODO PARA ATUALIZAÇÃO DAS IMAGENS
     @Override
     public void actionPerformed(ActionEvent e) {
-        // VEREFICA SE O INIMIGO ESTA VISIVEL E ATUALIZA A SUA POSICAÇÃO ATRAVES
-        // DO METODO 'ATUALIZAR', AO FICAR INVISIVEL O INIMIGO E EXCLUIDO
-        // A CLASSE ITERATOR E COMO UM PONTEIRO EM C QUE PERMITE INTERAJIR COM UM CERTO
-        // OBJETO(INIMIGO) DE UMA LISTA DE FORMA ESPECIFICA E EM SEQUENCIA
-        Iterator<Naves> iteratorNaves = NaveInimiga.iterator();
-        while (iteratorNaves.hasNext()) {
-            Naves ini = iteratorNaves.next();
-            if (ini.isVisibilidade()) {
-                ini.atualizar();
-            } else {
-                iteratorNaves.remove();
-            }
-        } // FIM NAVES
+        if (!telaPausar.isPausado()) {
+            // VEREFICA SE O INIMIGO ESTA VISIVEL E ATUALIZA A SUA POSICAÇÃO ATRAVES
+            // DO METODO 'ATUALIZAR', AO FICAR INVISIVEL O INIMIGO E EXCLUIDO
+            // A CLASSE ITERATOR E COMO UM PONTEIRO EM C QUE PERMITE INTERAJIR COM UM CERTO
+            // OBJETO(INIMIGO) DE UMA LISTA DE FORMA ESPECIFICA E EM SEQUENCIA
+            Iterator<Naves> iteratorNaves = NaveInimiga.iterator();
+            while (iteratorNaves.hasNext()) {
+                Naves ini = iteratorNaves.next();
+                if (ini.isVisibilidade()) {
+                    ini.atualizar();
+                } else {
+                    iteratorNaves.remove();
+                }
+            } // FIM NAVES
 
-        // ATUALIZA A POSIÇÃO DO METEORO
-        Iterator<Meteorito> iteratorMeteorito = MeteoritoInimigo.iterator();
-        while (iteratorMeteorito.hasNext()) {
-            Meteorito mete = iteratorMeteorito.next();
-            if (mete.isVisibilidade()) {
-                mete.atualizar();
-            } else {
-                iteratorMeteorito.remove();
-            }
-        } // FIM
+            // ATUALIZA A POSIÇÃO DO METEORO
+            Iterator<Meteorito> iteratorMeteorito = MeteoritoInimigo.iterator();
+            while (iteratorMeteorito.hasNext()) {
+                Meteorito mete = iteratorMeteorito.next();
+                if (mete.isVisibilidade()) {
+                    mete.atualizar();
+                } else {
+                    iteratorMeteorito.remove();
+                }
+            } // FIM
 
-        // ATUALIZA POSICAÇÃO DO TIRO
-        List<Tiro> tiros = personagem.getTiros();
-        Iterator<Tiro> iteratorTiro = tiros.iterator();
-        while (iteratorTiro.hasNext()) {
-            Tiro tiro = iteratorTiro.next();
-            if (tiro.isVisibilidade()) {
-                tiro.atualizar();
-            } else {
-                iteratorTiro.remove();
-            }
-        } // FIM
+            // ATUALIZA POSICAÇÃO DO TIRO
+            List<Tiro> tiros = personagem.getTiros();
+            Iterator<Tiro> iteratorTiro = tiros.iterator();
+            while (iteratorTiro.hasNext()) {
+                Tiro tiro = iteratorTiro.next();
+                if (tiro.isVisibilidade()) {
+                    tiro.atualizar();
+                } else {
+                    iteratorTiro.remove();
+                }
+            } // FIM
 
-        // ATUALIZA POSICAÇÃO DO TIRO ESPECIAL
-        List<SuperTiro> tirosEspecial = personagem.getSupertiro();
-        Iterator<SuperTiro> iteratorTiroEspecial = tirosEspecial.iterator();
-        while (iteratorTiroEspecial.hasNext()) {
-            SuperTiro tiroSuper = iteratorTiroEspecial.next();
-            if (tiroSuper.isVisibilidade()) {
-                tiroSuper.atualizar();
-            } else {
-                iteratorTiroEspecial.remove();
-            }
-        } // FIM
-
-        // INICIANDO MÉTODOS
-        gerenciaFase();
-        checarColisoes();
-        // REPINTANDO OS OBJETOS
+            // ATUALIZA POSICAÇÃO DO TIRO ESPECIAL
+            List<SuperTiro> tirosEspecial = personagem.getSupertiro();
+            Iterator<SuperTiro> iteratorTiroEspecial = tirosEspecial.iterator();
+            while (iteratorTiroEspecial.hasNext()) {
+                SuperTiro tiroSuper = iteratorTiroEspecial.next();
+                if (tiroSuper.isVisibilidade()) {
+                    tiroSuper.atualizar();
+                } else {
+                    iteratorTiroEspecial.remove();
+                }
+            } // FIM
+              // INICIANDO MÉTODOS
+            repaint();
+            gerenciaFase();
+            checarColisoes();
+            // REPINTANDO OS OBJETOS
+            personagem.atualizar();
+        }
+        // PARA O SPAWN DOS INIMIGOS PRA QUE ELES NÃO ACUMULEM EM UM SÓ POSIÇÃO
+        if (telaPausar.isPausado()) {
+            TimerNaveInimiga.stop();
+            TimerMeteorito.stop();
+        }
         repaint();
-        personagem.atualizar();
     }
 
     public void gerenciaFase() {
@@ -488,7 +506,7 @@ public class Infinito extends JPanel implements ActionListener {
         }
     }
 
-    public void MenuInicial(KeyEvent e) {
+    public void controleMenuInicial(KeyEvent e) {
         int tecla = e.getKeyCode();
         if (tecla == KeyEvent.VK_ENTER) {
             if (telaMenu.getCursor() == 0) { // TELA JOGO FASE - IMPLEMENTAR
@@ -506,7 +524,7 @@ public class Infinito extends JPanel implements ActionListener {
         }
     }
 
-    public void VisibilidadeTelas(KeyEvent e) {
+    public void controleTelas(KeyEvent e) {
         int tecla = e.getKeyCode();
 
         if (telaControles.isVisibilidade() == true) {
@@ -523,7 +541,18 @@ public class Infinito extends JPanel implements ActionListener {
         }
     }
 
-    public void fimDeJogoMENU(KeyEvent e) {
+    public void pausar(KeyEvent e) {
+        int tecla = e.getKeyCode();
+        if (tecla == KeyEvent.VK_ESCAPE) {
+            if (personagem.isJogando()) {
+                personagem.setJogando(false);
+                telaPausar.setPausado(true);
+                telaPausar.setVisibilidade(true);
+            }
+        }
+    }
+
+    public void controleFimDeJogo(KeyEvent e) {
         int tecla = e.getKeyCode();
         if (fimDeJogo.isVisibilidade() == true) {
             if (tecla == KeyEvent.VK_ENTER) {
@@ -548,18 +577,31 @@ public class Infinito extends JPanel implements ActionListener {
         @Override
         public void keyPressed(KeyEvent e) {
             if (telaMenu.isVisibilidade() == true) {
-                MenuInicial(e);
+                controleMenuInicial(e);
                 telaMenu.controleMenu(e);
             } else if (telaControles.isVisibilidade() == true) {
-                VisibilidadeTelas(e);
+                controleTelas(e);
             } else if (telaHistorico.isVisibilidade() == true) {
-                VisibilidadeTelas(e);
+                controleTelas(e);
             } else if (personagem.isJogando() == true) {
                 personagem.mover(e);
                 personagem.atirar(e);
+                pausar(e);
             } else if (fimDeJogo.isVisibilidade() == true) {
-                fimDeJogoMENU(e);
+                controleFimDeJogo(e);
                 fimDeJogo.controleMenu(e);
+            }
+
+            // DESPAUSA O JOGO
+            if (telaPausar.isPausado()) {
+                int tecla = e.getKeyCode();
+                telaPausar.menuPausado(e);
+                
+                if (tecla == KeyEvent.VK_ENTER) {
+                    telaPausar.setPausado(false);
+                    personagem.setJogando(true);
+                    telaPausar.setVisibilidade(false);
+                }
             }
         }
 

@@ -8,62 +8,43 @@ import java.awt.event.KeyEvent;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
-public class FimDeJogo extends EntidadeTelas {
+public class Pausar extends EntidadeTelas {
     // VARIAVEIS PARA CORRIGIR A POSIÇÃO DE ALGUNS ITENS
-    private static final int offsetTituloX = 5;
     private static final int offSetPosXsim = 10;
     private static final int offSetPosXnao = 30;
-    private static final int offSubTituloY = 80;
     private static final int espacamentoYsim = 40;
+    //
+    private boolean pausado;
     // OPÇÕES EM TEXTO
     private static final String OPC_SIM = "SIM";
     private static final String OPC_NAO = "NAO";
-    private static final String MENSAGEM = "JOGAR NOVAMENTE?";
-    // TITULO
-    private static final String TITULO_PRINCIPAL = "GAME";
-    private static final String SUBTITULO = "OVER";
+    private static final String MENSAGEM = "VOLTAR AO JOGO?";
     // FONTES
-    private Font FONTE_TITULOS = getPIXEL().deriveFont(Font.BOLD, super.getTituloTamanho());
     private Font FONTE_MENU = getPIXEL().deriveFont(Font.BOLD, super.getTamanhoFonteBotao());
-    // CAMINHO IMAGEM DE FUNDO
-    private static final String IMAGEM_FUNDO = "recursos\\Sprites\\Fundos\\TelaFimDeJogo.gif";
+    private static final String CAMINHOIMG = "recursos\\Sprites\\Fundos\\TelaPause.png";
 
-    public FimDeJogo() {
+    public Pausar() {
         super.setVisibilidade(false);
+        this.pausado = false;
     }
 
     @Override
     public void carregar() {
-        ImageIcon carregando = new ImageIcon(IMAGEM_FUNDO);
+        ImageIcon carregando = new ImageIcon(CAMINHOIMG);
         super.setImagem(carregando.getImage());
-        super.setLarguraImagem(super.getImagem().getWidth(null));
-        super.setAlturaImagem(super.getImagem().getHeight(null));
-        // REDIMENSIONA O TAMANHO DA IMAGEM PARA O TAMANHO DA TELA
+        // RESIMENSIONA A IMG
         super.setImagem(super.getImagem().getScaledInstance(getTelaTamanho().LARGURA_TELA, getTelaTamanho().ALTURA_TELA,
                 Image.SCALE_FAST));
-    };
+    }
 
-    public void titulo(Graphics g) {
+    public void conteudo(Graphics g) {
         g.drawImage(super.getImagem(), 0, 0, null);
-        g.setFont(FONTE_TITULOS);
-
-        FontMetrics fm = g.getFontMetrics();
-        int tituloPosX = (getTelaTamanho().LARGURA_TELA - fm.stringWidth(TITULO_PRINCIPAL)) / 2;
-        int subTituloLargura = (fm.stringWidth(SUBTITULO));
-        // EFEITO PARA O TITULO
-        g.setColor(Color.WHITE);
-        g.drawString(TITULO_PRINCIPAL, tituloPosX + offsetTituloX, super.getPosicaoTituloY());
-        g.setColor(super.getCorAmarela());
-        g.drawString(TITULO_PRINCIPAL, tituloPosX, (super.getPosicaoTituloY()));
-        // DESENHA O SUBTITULO
-        g.setColor(Color.WHITE);
-        g.drawString(SUBTITULO, tituloPosX + (fm.stringWidth(TITULO_PRINCIPAL) - subTituloLargura) / 2,
-                (super.getPosicaoTituloY() + offSubTituloY));
     }
 
     public void menu(Graphics g) {
         int OFFSETY = 150;
         // COMEÇO DA FRASE
+        g.setColor(Color.WHITE);
         g.setFont(FONTE_MENU);
         FontMetrics fm = g.getFontMetrics();
         int posicaoEmX = (getTelaTamanho().LARGURA_TELA - fm.stringWidth(MENSAGEM)) / 2;
@@ -101,7 +82,7 @@ public class FimDeJogo extends EntidadeTelas {
         g.drawString(OPC_NAO, posicaoXnao, posicaoYnao);
     }
 
-    public void controleMenu(KeyEvent teclado) {
+    public void menuPausado(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
 
         if (tecla == KeyEvent.VK_LEFT) {
@@ -116,5 +97,14 @@ public class FimDeJogo extends EntidadeTelas {
                 super.setCursor(0);
             }
         }
+    }
+
+    // GETTERS E SETTERS
+    public boolean isPausado() {
+        return pausado;
+    }
+
+    public void setPausado(boolean pausado) {
+        this.pausado = pausado;
     }
 }
