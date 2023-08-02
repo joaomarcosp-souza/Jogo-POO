@@ -127,22 +127,29 @@ public class Infinito extends JPanel implements ActionListener {
         TimerNaveInimiga = new Timer(delayInimigoNave, new ActionListener() {
             int alturaInimigo = 80;
             int maximoEmY = telaTamanho.getLARGURA_TELA() - alturaInimigo;
+            int vidaInimigos = 1;
+            boolean vidaAumentada = false;
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                int vidaInimigos = 1;
                 int posicaoEmX = telaTamanho.getLARGURA_TELA(); // POSICÃO INICIAL DO PERSONAGEM
                 int posicaoEmY = (int) (Math.random() * ((telaTamanho.getALTURA_TELA()) - alturaInimigo));
                 if (posicaoEmY <= 0 || posicaoEmY > maximoEmY) {
                     posicaoEmY = (int) (Math.random() * ((telaTamanho.getALTURA_TELA()) - alturaInimigo));
                 }
-                // AUMENTA A VIDA DO INIMIGO
-                if (personagem.getPontos() > 300) {
-                    vidaInimigos = 2;
+
+                // AUMENTA A VIDA DO INIMIGO COM BASE NOS PONTOS DO JOGADOR
+                if (personagem.isJogando() && personagem.getPontos() > 0 && personagem.getPontos() % 300 == 0
+                        && vidaInimigos < 4 && !vidaAumentada) {
+                    vidaInimigos += 1;
+                    vidaAumentada = true;
                 }
-                if (personagem.getPontos() > 900) {
-                    vidaInimigos = 3;
+                // VERIFICANDO SE A PONTUAÇÃO NÃO E MAIS VALIDA E REDEFININDO A VARIAVEL PARA
+                // FALSE
+                if (personagem.getPontos() % 300 != 0) {
+                    vidaAumentada = false;
                 }
+
                 NaveInimiga.add(new Naves(posicaoEmX, posicaoEmY, vidaInimigos));
             }
         });
@@ -173,18 +180,11 @@ public class Infinito extends JPanel implements ActionListener {
         super.paintComponent(g);
 
         if (telaMenu.isVisibilidade() == true) {
-            // CARRREGANDO OS COMPONENTES DA CLASSE 'MENU'
-            telaMenu.titulo(graficos);
-            telaMenu.menu(graficos);
+            telaMenu.conteudo(graficos);
         } else if (telaControles.isVisibilidade() == true) {
             telaControles.conteudo(graficos);
         } else if (telaHistorico.isVisibilidade() == true) {
             telaHistorico.conteudo(graficos);
-        }
-
-        if (telaPausar.isPausado()) {
-            telaPausar.conteudo(graficos);
-            telaPausar.menu(graficos);
         }
 
         if (personagem.isJogando() == true) {
@@ -209,13 +209,11 @@ public class Infinito extends JPanel implements ActionListener {
                 graficos.drawImage(tiroEspecial.getImagem(),
                         tiroEspecial.getPosicaoEmX(), tiroEspecial.getPosicaoEmY(), null);
             }
-
             // CARREGANDO A IMAGEM DO PERSONAGEM SOMENTE SE NÃO ESTIVER PISCANDO
             if (!piscando) {
                 graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(),
                         null);
             }
-
             // COMEÇO METEORO E NAVES INIMIGAS
             for (int i = 0; i < MeteoritoInimigo.size(); i++) {
                 Meteorito mete = MeteoritoInimigo.get(i);
@@ -228,10 +226,8 @@ public class Infinito extends JPanel implements ActionListener {
                 ini.carregar();
                 graficos.drawImage(ini.getImagem(), ini.getPosicaoEmX(), ini.getPosicaoEmY(), null);
                 ini.vidas(graficos);
-            }
-            // FIM METEORO E NAVES INIMIGAS
-
-            // HITBOX
+            } // FIM METEORO E NAVES INIMIGAS
+              // HITBOX
             graficos.setColor(Color.RED);
             Rectangle hitboxPersonagem = personagem.getBounds();
             graficos.drawRect(hitboxPersonagem.x, hitboxPersonagem.y,
@@ -253,16 +249,12 @@ public class Infinito extends JPanel implements ActionListener {
                 graficos.drawRect(hitboxInimigo.x, hitboxInimigo.y, hitboxInimigo.width,
                         hitboxInimigo.height);
             }
-
             // CARREGANDO OS COMPONENTES DA CLASSE PERSONAGEM(VIDA E PONTUAÇÃO)
             personagem.desenhaPontos(graficos);
             personagem.desenhaVida(graficos);
-        }
-        // CARREGANDO A TELA DE MORTE CASO O JOGADOR MORRA(OBVIO)
-        if (fimDeJogo.isVisibilidade() == true) {
+        } else if (fimDeJogo.isVisibilidade() == true) {
             fimDeJogo.titulo(graficos);
             fimDeJogo.menu(graficos);
-            personagem.desenhaPontos(graficos);
         }
         g.dispose();
     }
@@ -271,6 +263,7 @@ public class Infinito extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!telaPausar.isPausado()) {
+            repaint();
             // VEREFICA SE O INIMIGO ESTA VISIVEL E ATUALIZA A SUA POSICAÇÃO ATRAVES
             // DO METODO 'ATUALIZAR', AO FICAR INVISIVEL O INIMIGO E EXCLUIDO
             // A CLASSE ITERATOR E COMO UM PONTEIRO EM C QUE PERMITE INTERAJIR COM UM CERTO
@@ -284,8 +277,7 @@ public class Infinito extends JPanel implements ActionListener {
                     iteratorNaves.remove();
                 }
             } // FIM NAVES
-
-            // ATUALIZA A POSIÇÃO DO METEORO
+              // ATUALIZA A POSIÇÃO DO METEORO
             Iterator<Meteorito> iteratorMeteorito = MeteoritoInimigo.iterator();
             while (iteratorMeteorito.hasNext()) {
                 Meteorito mete = iteratorMeteorito.next();
@@ -295,8 +287,7 @@ public class Infinito extends JPanel implements ActionListener {
                     iteratorMeteorito.remove();
                 }
             } // FIM
-
-            // ATUALIZA POSICAÇÃO DO TIRO
+              // ATUALIZA POSICAÇÃO DO TIRO
             List<Tiro> tiros = personagem.getTiros();
             Iterator<Tiro> iteratorTiro = tiros.iterator();
             while (iteratorTiro.hasNext()) {
@@ -307,8 +298,7 @@ public class Infinito extends JPanel implements ActionListener {
                     iteratorTiro.remove();
                 }
             } // FIM
-
-            // ATUALIZA POSICAÇÃO DO TIRO ESPECIAL
+              // ATUALIZA POSICAÇÃO DO TIRO ESPECIAL
             List<SuperTiro> tirosEspecial = personagem.getSupertiro();
             Iterator<SuperTiro> iteratorTiroEspecial = tirosEspecial.iterator();
             while (iteratorTiroEspecial.hasNext()) {
@@ -319,19 +309,18 @@ public class Infinito extends JPanel implements ActionListener {
                     iteratorTiroEspecial.remove();
                 }
             } // FIM
-              // INICIANDO MÉTODOS
-            repaint();
             gerenciaFase();
             checarColisoes();
             // REPINTANDO OS OBJETOS
             personagem.atualizar();
         }
-        // PARA O SPAWN DOS INIMIGOS PRA QUE ELES NÃO ACUMULEM EM UM SÓ POSIÇÃO
+        // PARA O SPAWN DOS INIMIGOS PRA QUE ELES NÃO ACUMULEM EM UMA SÓ POSIÇÃO
+        // TAMBÉM CARREGA O MENU E A IMAGEM DA TELA PAUSE
         if (telaPausar.isPausado()) {
             TimerNaveInimiga.stop();
             TimerMeteorito.stop();
+            telaPausar.menu(getGraphics());
         }
-        repaint();
     }
 
     public void gerenciaFase() {
@@ -360,6 +349,9 @@ public class Infinito extends JPanel implements ActionListener {
                 personagem.setPosicaoEmX(personagem.getPOSICAOINICIALX());
                 personagem.setPosicaoEmY(personagem.getPOSICAOINICIALY());
             }
+            // RESETA OS PONTOS E SETA A VIDA INICIAL NOVAMENTE
+            personagem.setPontos(0);
+            personagem.setVida(personagem.getVIDAINICIAL());
         } else {
             TimerNaveInimiga.start();
             if (personagem.getPontos() >= 300) {
@@ -382,8 +374,8 @@ public class Infinito extends JPanel implements ActionListener {
 
     public void checarColisoes() {
         // VALORES PARA CADA INIMIGO DESTRUIDO
-        int VALORNAVES = 10;
-        int VALORMETEORITO = 20;
+        int VALORNAVES = 5;
+        int VALORMETEORITO = 10;
         // FORMAS
         Rectangle personagemForma = personagem.getBounds();
         Rectangle naveInimigaForma;
@@ -426,7 +418,6 @@ public class Infinito extends JPanel implements ActionListener {
                     // VERIFICA A VIDA DA NAVE INIMIGA
                     if (naveTemporaria.getInimigosvida() == 1) {
                         naveTemporaria.setVisibilidade(false);
-                        personagem.setPontos(personagem.getPontos() + VALORNAVES);
                     } else {
                         naveTemporaria.setInimigosvida(naveTemporaria.getInimigosvida() - 1);
                     }
@@ -547,7 +538,6 @@ public class Infinito extends JPanel implements ActionListener {
             if (personagem.isJogando()) {
                 personagem.setJogando(false);
                 telaPausar.setPausado(true);
-                telaPausar.setVisibilidade(true);
             }
         }
     }
@@ -558,13 +548,9 @@ public class Infinito extends JPanel implements ActionListener {
             if (tecla == KeyEvent.VK_ENTER) {
                 if (fimDeJogo.getCursor() == 0) {
                     personagem.setJogando(true);
-                    personagem.setPontos(0);
-                    personagem.setVida(personagem.getVIDAINICIAL());
                     fimDeJogo.setVisibilidade(false);
                 }
                 if (fimDeJogo.getCursor() == 1) {
-                    personagem.setPontos(0);
-                    personagem.setVida(personagem.getVIDAINICIAL());
                     fimDeJogo.setVisibilidade(false);
                     telaMenu.setVisibilidade(true);
                 }
@@ -592,15 +578,21 @@ public class Infinito extends JPanel implements ActionListener {
                 fimDeJogo.controleMenu(e);
             }
 
-            // DESPAUSA O JOGO
             if (telaPausar.isPausado()) {
                 int tecla = e.getKeyCode();
                 telaPausar.menuPausado(e);
-                
                 if (tecla == KeyEvent.VK_ENTER) {
-                    telaPausar.setPausado(false);
-                    personagem.setJogando(true);
-                    telaPausar.setVisibilidade(false);
+                    if (telaPausar.getCursor() == 0) {
+                        telaPausar.setPausado(false);
+                        personagem.setJogando(true);
+                        telaPausar.setVisibilidade(false);
+                    }
+                    if (telaPausar.getCursor() == 1) {
+                        telaPausar.setPausado(false);
+                        personagem.setJogando(false);
+                        telaPausar.setVisibilidade(false);
+                        telaMenu.setVisibilidade(true);
+                    }
                 }
             }
         }

@@ -10,23 +10,19 @@ import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 
 public class MenuInicial extends EntidadeTelas {
-    // OPÇÕES DO MENU
-    private static final int offSetPosX = 5;
-    private static final int offSubTituloY = 80;
+    private Image imagemTitulo;
+    // VARIAVEIS DE AJUSTE
     private static final int espacamentoTituloY = 50;
-    // TEXTOS DA CLASSE
+    // OPCS DO MENU
     private static final String MODOFASES = "MODO FASES";
     private static final String MODOINFINITO = "MODO INFINITO";
     private static final String CONTROLETELA = "CONTROLES";
     private static final String HISTORICOTELA = "HISTORICO";
-    // TITULO MENU
-    private static final String TITULO = "STAR WARS";
-    private static final String SUBTITULO = "INVADERS";
     // FONTES
-    private Font FONTE_TITULOS = getPIXEL().deriveFont(Font.BOLD, super.getTituloTamanho());
     private Font FONTE_MENU = getPIXEL().deriveFont(Font.BOLD, super.getMenuTamanho());
     // CAMINHO IMAGEM DE FUNDO
-    private static final String IMAGEM_FUNDO = "recursos\\Sprites\\Fundos\\FundoMenu.gif";
+    private static final String FUNDOANIMADO = "recursos\\Sprites\\Fundos\\FundoMenu.gif";
+    private static final String IMAGEMTITULO = "recursos\\Sprites\\Fundos\\MenuPrincipal.png";
 
     public MenuInicial() {
         setVisibilidade(true);
@@ -34,35 +30,27 @@ public class MenuInicial extends EntidadeTelas {
 
     @Override
     public void carregar() {
-        ImageIcon carregando = new ImageIcon(IMAGEM_FUNDO);
+        ImageIcon carregando = new ImageIcon(FUNDOANIMADO);
         setImagem(carregando.getImage());
         setLarguraImagem(getImagem().getWidth(null));
         setAlturaImagem(getImagem().getHeight(null));
         // REDIMENSIONA O TAMANHO DA IMAGEM PARA O TAMANHO DA TELA
         setImagem(getImagem().getScaledInstance(getTelaTamanho().LARGURA_TELA, getTelaTamanho().ALTURA_TELA,
                 Image.SCALE_FAST));
+
+        // IMAGEM DO TITULO
+        ImageIcon carregandoTitulo = new ImageIcon(IMAGEMTITULO);
+        this.imagemTitulo = carregandoTitulo.getImage();
+        // REDIMENSIONA O TAMANHO DA IMAGEM PARA O TAMANHO DA TELA
+        this.imagemTitulo = this.imagemTitulo.getScaledInstance(getTelaTamanho().LARGURA_TELA,
+                getTelaTamanho().ALTURA_TELA,
+                Image.SCALE_FAST);
     }
 
-    public void titulo(Graphics g) {
-        g.drawImage(getImagem(), 0, 0, null);
-        g.setFont(FONTE_TITULOS);
-        // CENTRALIZA VERTICALMENTE
-        FontMetrics fm = g.getFontMetrics();
-        int posicaoTituloX = (getTelaTamanho().LARGURA_TELA - fm.stringWidth(TITULO)) / 2;
-        int subTituloLargura = fm.stringWidth(SUBTITULO);
-        // COR DO TITULO 'STAR WARS - BRANCO'
-        g.setColor(Color.WHITE);
-        g.drawString(TITULO, (posicaoTituloX + offSetPosX), getPosicaoTituloY());
-        // COR DO TITULO 'STAR WARS - AMARELO'
-        g.setColor(getCorAmarela());
-        g.drawString(TITULO, posicaoTituloX, getPosicaoTituloY());
-        // TITULO 'INVADERS'
-        g.setColor(Color.WHITE);
-        g.drawString(SUBTITULO, posicaoTituloX + (fm.stringWidth(TITULO) - subTituloLargura) / 2,
-                (getPosicaoTituloY() + offSubTituloY));
-    }
+    public void conteudo(Graphics g) {
+        g.drawImage(super.getImagem(), 0, 0, null);
+        g.drawImage(this.imagemTitulo, 0, 0, null);
 
-    public void menu(Graphics g) {
         g.setFont(FONTE_MENU);
         FontMetrics fm = g.getFontMetrics();
         // OPÇÃO PARA A TELA 'MODO FASES'

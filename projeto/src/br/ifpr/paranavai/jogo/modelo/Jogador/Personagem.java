@@ -73,21 +73,21 @@ public class Personagem extends EntidadeJogador {
 
     public void mover(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
-        if (tecla == KeyEvent.VK_W || tecla == KeyEvent.VK_UP) {
+        if (tecla == KeyEvent.VK_UP) {
             deslocamentoEmY = -velocidade;
         }
-        if (tecla == KeyEvent.VK_S || tecla == KeyEvent.VK_DOWN) {
+        if (tecla == KeyEvent.VK_DOWN) {
             deslocamentoEmY = velocidade;
         }
-        if (tecla == KeyEvent.VK_A || tecla == KeyEvent.VK_LEFT) {
+        if (tecla == KeyEvent.VK_LEFT) {
             deslocamentoEmX = -velocidade;
         }
-        if (tecla == KeyEvent.VK_D || tecla == KeyEvent.VK_RIGHT) {
+        if (tecla == KeyEvent.VK_RIGHT) {
             deslocamentoEmX = velocidade;
         }
 
         if (tecla == KeyEvent.VK_SHIFT) {
-
+            super.setPosicaoEmX(super.getPosicaoEmX() + 200);
         }
     }
 
@@ -124,7 +124,7 @@ public class Personagem extends EntidadeJogador {
                 this.tiros.add(tiro);
             }
             // SUPER TIRO
-            if (tecla == KeyEvent.VK_R && this.getPontos() % 100 == 0 && !supertiroUsado) {
+            if (tecla == KeyEvent.VK_R && this.getPontos() % 100 == 0 && this.getPontos() > 0 && !supertiroUsado) {
                 SuperTiro superTiro1 = new SuperTiro(centroPersonagemX, centroPersonagemY, this.ANGULO1);
                 SuperTiro superTiro2 = new SuperTiro(centroPersonagemX, centroPersonagemY, this.ANGULO2);
                 SuperTiro superTiro3 = new SuperTiro(centroPersonagemX, centroPersonagemY, this.ANGULO3);
@@ -138,8 +138,8 @@ public class Personagem extends EntidadeJogador {
         }
         ultimoTiro = tempoAtual;
         // VERIFICANDO SE A PONTUAÇÃO NÃO E MAIS VALIDA E REDEFININDO A VARIAVEL
-            if (this.getPontos() % 100 != 0) {
-                supertiroUsado = false;
+        if (this.getPontos() % 100 != 0) {
+            supertiroUsado = false;
         }
     }
 
@@ -147,7 +147,7 @@ public class Personagem extends EntidadeJogador {
     public void desenhaPontos(Graphics g) {
         String pontosSTR = "PONTOS: " + pontos;
         g.setFont(super.getPixel().deriveFont(Font.PLAIN, 22));
-        g.setColor(new Color(255, 209, 70));
+        g.setColor(new Color(255, 209, 0));
         g.drawString(pontosSTR, 20, 25);
     }
 

@@ -36,13 +36,10 @@ public class Pausar extends EntidadeTelas {
         super.setImagem(super.getImagem().getScaledInstance(getTelaTamanho().LARGURA_TELA, getTelaTamanho().ALTURA_TELA,
                 Image.SCALE_FAST));
     }
-
-    public void conteudo(Graphics g) {
-        g.drawImage(super.getImagem(), 0, 0, null);
-    }
-
+    
     public void menu(Graphics g) {
         int OFFSETY = 150;
+        g.drawImage(super.getImagem(), 0, 0, null);
         // COMEÇO DA FRASE
         g.setColor(Color.WHITE);
         g.setFont(FONTE_MENU);
@@ -62,8 +59,8 @@ public class Pausar extends EntidadeTelas {
         int posicaoYsim = posicaoEmY + espacamentoYsim;
         if (super.getCursor() == 0) {
             g.setColor(getCorAmarela());
-            int cursorWidth = fm.stringWidth(">");
-            g.drawString(">", posicaoXsim - cursorWidth, posicaoYsim);
+            int cursorWidth = fm.stringWidth(" ");
+            g.drawString(" ", posicaoXsim - cursorWidth, posicaoYsim);
         } else {
             g.setColor(Color.WHITE);
         }
@@ -74,8 +71,8 @@ public class Pausar extends EntidadeTelas {
         int posicaoYnao = posicaoYsim;
         if (super.getCursor() == 1) {
             g.setColor(getCorAmarela());
-            int cursorWidth = fm.stringWidth(">");
-            g.drawString(">", posicaoXnao - cursorWidth, posicaoYnao);
+            int cursorWidth = fm.stringWidth(" ");
+            g.drawString(" ", posicaoXnao - cursorWidth, posicaoYnao);
         } else {
             g.setColor(Color.WHITE);
         }

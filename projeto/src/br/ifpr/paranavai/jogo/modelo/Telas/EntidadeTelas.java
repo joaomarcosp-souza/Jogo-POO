@@ -21,7 +21,7 @@ public abstract class EntidadeTelas {
     private int cursor = 0;
     private static final int MENU_TAMANHO = 50;
     private static final int TITULO_TAMANHO = 85;
-    private static final Color COR_AMARELA = new Color(255, 209, 70); // COR
+    private static final Color COR_AMARELA = new Color(255, 209, 0); // COR
     // DIMENSÕES DO BOTÃO
     private Rectangle botao;
     private static final int TAMANHO_FONTE_BOTAO = 30;
