@@ -52,7 +52,7 @@ public class Infinito extends JPanel implements ActionListener {
     private Timer timerGlobal;
     // 'TIMER' PARA A COLISAO
     private long ultimaColisao;
-    private int delayColisao;
+    private int delayColisao = 1000;
     // ATRIBUTOS PARA O EFEITO 'PISCANDO'
     private boolean piscando;
     private Timer timerPiscar;
@@ -107,11 +107,10 @@ public class Infinito extends JPanel implements ActionListener {
                 piscando = !piscando; // ALTERNA A VISIBILIDADE DO PERSONAGEM
             }
         });
+
         // TIMER PARA O EFEITO DE PISCANDO
-        piscando = false;
         timerPiscar.setRepeats(true);
-        // TIMER
-        this.delayColisao = 1500;
+        piscando = false;
         // ATUALIZA A CLASSE E REDENSENHA A TELA EM INTERVALOS REGULARES.
         timerGlobal = new Timer(1, this);
         timerGlobal.start(); // START
@@ -256,6 +255,7 @@ public class Infinito extends JPanel implements ActionListener {
             fimDeJogo.titulo(graficos);
             fimDeJogo.menu(graficos);
         }
+
         g.dispose();
     }
 
@@ -358,6 +358,8 @@ public class Infinito extends JPanel implements ActionListener {
                 TimerMeteorito.start();
             }
         }
+        // INICIA MÉTODO
+        personagem.restauraVida();
 
         // FUNÇÃO PARA FAZER O PERSONAGEM 'PISCAR' CASO COLIDA
         contadorPiscar++; // CONTADOR

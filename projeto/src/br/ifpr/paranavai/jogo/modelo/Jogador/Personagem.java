@@ -22,6 +22,7 @@ public class Personagem extends EntidadeJogador {
     private boolean supertiroUsado = false;
     private boolean jogando;
     private List<SuperTiro> supertiro;
+    private boolean vidaGanha = false;
     // POSIÇÃO DOS SUPER TIROS
     private final int ANGULO1 = -15;
     private final int ANGULO2 = 0;
@@ -94,16 +95,16 @@ public class Personagem extends EntidadeJogador {
     public void parar(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
 
-        if (tecla == KeyEvent.VK_W || tecla == KeyEvent.VK_UP) {
+        if (tecla == KeyEvent.VK_UP) {
             deslocamentoEmY = 0;
         }
-        if (tecla == KeyEvent.VK_S || tecla == KeyEvent.VK_DOWN) {
+        if (tecla == KeyEvent.VK_DOWN) {
             deslocamentoEmY = 0;
         }
-        if (tecla == KeyEvent.VK_A || tecla == KeyEvent.VK_LEFT) {
+        if (tecla == KeyEvent.VK_LEFT) {
             deslocamentoEmX = 0;
         }
-        if (tecla == KeyEvent.VK_D || tecla == KeyEvent.VK_RIGHT) {
+        if (tecla == KeyEvent.VK_RIGHT) {
             deslocamentoEmX = 0;
         }
     }
@@ -149,6 +150,20 @@ public class Personagem extends EntidadeJogador {
         g.setFont(super.getPixel().deriveFont(Font.PLAIN, 22));
         g.setColor(new Color(255, 209, 0));
         g.drawString(pontosSTR, 20, 25);
+    }
+
+    public void restauraVida() {
+        int restoVida = 800;
+        int MaximoVida = 4;
+        // RESTAURA A VIDA (A IMPLEMENTAR)
+        if (this.getPontos() % restoVida == 0 && this.getVida() < MaximoVida && !vidaGanha && this.getPontos() > 0) {
+            this.setVida(this.getVida() + 1);
+            vidaGanha = true;
+        }
+
+        if (this.getPontos() % restoVida != 0) {
+            vidaGanha = false;
+        }
     }
 
     // MÉTODO PARA DESENHAR A VIDA DO JOGADOR

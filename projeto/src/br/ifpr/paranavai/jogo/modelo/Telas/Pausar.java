@@ -36,7 +36,7 @@ public class Pausar extends EntidadeTelas {
         super.setImagem(super.getImagem().getScaledInstance(getTelaTamanho().LARGURA_TELA, getTelaTamanho().ALTURA_TELA,
                 Image.SCALE_FAST));
     }
-    
+
     public void menu(Graphics g) {
         int OFFSETY = 150;
         g.drawImage(super.getImagem(), 0, 0, null);

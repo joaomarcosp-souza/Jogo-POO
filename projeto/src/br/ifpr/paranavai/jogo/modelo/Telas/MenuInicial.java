@@ -14,7 +14,7 @@ public class MenuInicial extends EntidadeTelas {
     // VARIAVEIS DE AJUSTE
     private static final int espacamentoTituloY = 50;
     // OPCS DO MENU
-    private static final String MODOFASES = "MODO FASES";
+    private static final String MODOFASES = "MODO ONDAS";
     private static final String MODOINFINITO = "MODO INFINITO";
     private static final String CONTROLETELA = "CONTROLES";
     private static final String HISTORICOTELA = "HISTORICO";
