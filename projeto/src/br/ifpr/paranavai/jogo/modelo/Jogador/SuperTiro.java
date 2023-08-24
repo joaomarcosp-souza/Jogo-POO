@@ -5,7 +5,6 @@ import javax.swing.ImageIcon;
 import br.ifpr.paranavai.jogo.modelo.Base;
 
 public class SuperTiro extends Base {
-
     private int angulo;
     private static final int VELOCIDADETIRO = 8;
     private static final String SUPERTIROIMG = "recursos\\Sprites\\Tiros\\superTiro.gif";

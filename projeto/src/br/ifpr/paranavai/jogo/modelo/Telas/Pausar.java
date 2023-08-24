@@ -13,14 +13,13 @@ public class Pausar extends TelasBase {
     private static final int offSetPosXsim = 10;
     private static final int offSetPosXnao = 30;
     private static final int espacamentoYsim = 40;
-    //
     private boolean pausado;
     // OPÇÕES MENU
     private static final String OPC_SIM = "SIM";
     private static final String OPC_NAO = "NAO";
     private static final String MENSAGEM = "VOLTAR AO JOGO?";
     // FONTES
-    private Font FONTE_MENU = getPIXEL().deriveFont(Font.BOLD, super.getTamanhoFonteBotao());
+    private Font FONTE_MENU = super.getPixel().deriveFont(Font.BOLD, super.getTamanhoFonteBotao());
     private static final String CAMINHOIMG = "recursos\\Sprites\\Fundos\\TelaPause.png";
 
     public Pausar() {

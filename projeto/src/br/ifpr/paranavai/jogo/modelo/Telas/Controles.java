@@ -7,12 +7,10 @@ import javax.swing.ImageIcon;
 public class Controles extends TelasBase {
     // VARIAVEL PARA CORRIGIR A POSIÇÃO DE ALGUNS ITENS
     private Image imagemControle;
-    
     // CAMINHO IMAGEM DE FUNDO
     private static final String IMAGEMFUNDO = "recursos\\Sprites\\Fundos\\FundoTelas.jpg";
     private static final String IMGCONTROLES = "recursos\\Sprites\\Fundos\\TelaControle.png";
     
-
     public Controles() {
         super.setVisibilidade(false);
     }

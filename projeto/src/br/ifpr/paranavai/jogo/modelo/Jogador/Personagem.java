@@ -8,19 +8,16 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import br.ifpr.paranavai.jogo.modelo.Base;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.IOException;
-import java.awt.FontFormatException;
 import java.awt.Image;
 
 public class Personagem extends Base {
     private int pontos;
+    private int inimigosMortos;
     private int qtdeSuper;
     private long delayTiro;
     private long ultimoTiro;
     private boolean jogando;
     private List<Tiro> tiros;
-    private Font pixel = null;
     private int alturaImagemVida;
     private boolean vidaGanha = false;
     private List<SuperTiro> supertiro;
@@ -36,29 +33,19 @@ public class Personagem extends Base {
     private static final String VIDAIMGJOGADOR = "recursos\\Sprites\\Personagem\\coracao.png";
 
     public Personagem() {
+        super.setVida(VIDA_INICIAL);
         super.setPosicaoEmX(POSICAO_INICIALX);
         super.setPosicaoEmY(POSICAO_INICIALY);
-        super.setVisibilidade(true);
         super.setVelocidadeInicial(4);
+        super.setVelocidade(super.getVelocidadeInicial());
+        super.setVisibilidade(true);
 
         this.delayTiro = 300;
         this.jogando = false;
-        super.setVida(VIDA_INICIAL);
         this.pontos = PONTOS_INICIAIS;
-        super.setVelocidade(super.getVelocidadeInicial());
 
         tiros = new ArrayList<Tiro>();
         supertiro = new ArrayList<SuperTiro>();
-
-        // CARREGANDO UMA NOVA FONTE
-        try {
-            // CARREGA A FONTE A PARTIR DO ARQUIVO
-            pixel = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\pixel_fonte.ttf"));
-        } catch (IOException | FontFormatException e) {
-            e.printStackTrace();
-        }
-        // VISIBILIDADE DA TELA
-        super.setVisibilidade(true);
     }
 
     @Override
@@ -149,11 +136,18 @@ public class Personagem extends Base {
     }
 
     // MÉTODO PARA DESENHAR A PONTUAÇÃO DO JOGADOR
-    public void desenhaPontos(Graphics g) {
+    public void pontuacao(Graphics g) {
         String pontosSTR = "PONTOS: " + pontos;
-        g.setFont(this.pixel.deriveFont(Font.PLAIN, 22));
+        g.setFont(super.getPixel().deriveFont(Font.PLAIN, 22));
         g.setColor(new Color(255, 209, 0));
         g.drawString(pontosSTR, 20, 25);
+    }
+
+    public void desenhaEliminacoes(Graphics g) {
+        String qtdeMorte = "INIMIGOS MORTOS: " + inimigosMortos;
+        g.setFont(super.getPixel().deriveFont(Font.PLAIN, 17));
+        g.setColor(new Color(255, 209, 0));
+        g.drawString(qtdeMorte, 20, 70);
     }
 
     public void restauraVida() {
@@ -164,7 +158,6 @@ public class Personagem extends Base {
             this.setVida(this.getVida() + 1);
             vidaGanha = true;
         }
-
         if (this.getPontos() % restoVida != 0) {
             vidaGanha = false;
         }
@@ -188,6 +181,14 @@ public class Personagem extends Base {
 
     public void setPontos(int pontos) {
         this.pontos = pontos;
+    }
+
+    public int getInimigosMortos() {
+        return inimigosMortos;
+    }
+
+    public void setInimigosMortos(int inimigosMortos) {
+        this.inimigosMortos = inimigosMortos;
     }
 
     public int getQtdeSuper() {

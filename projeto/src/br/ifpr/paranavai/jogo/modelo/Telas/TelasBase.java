@@ -1,11 +1,7 @@
 package br.ifpr.paranavai.jogo.modelo.Telas;
 
-import java.io.File;
-import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.Color;
-import java.io.IOException;
-import java.awt.FontFormatException;
 
 import br.ifpr.paranavai.jogo.modelo.Base;
 import br.ifpr.paranavai.principal.TamanhoTela;
@@ -24,18 +20,10 @@ public abstract class TelasBase extends Base{
     private static final int BOTAO_ALTURA = 40;
     private static final int BOTAO_X = 5;
     private static final int BOTAO_Y = 5;
-    private static Font PIXEL = null;
     // INSTANCIA
     private TamanhoTela telaTamanho;
 
     public TelasBase() {
-        try {
-            // CARREGA UMA NOVA FONTE A PARTIR DO ARQUIVO
-            PIXEL = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\Fontes\\pixel_fonte.ttf"));
-        } catch (IOException | FontFormatException e) {
-            e.printStackTrace();
-        }
-
         telaTamanho = new TamanhoTela();
         telaTamanho.carregar();
         super.setVisibilidade(true);
@@ -111,15 +99,4 @@ public abstract class TelasBase extends Base{
     public static int getTituloTamanho() {
         return TITULO_TAMANHO;
     }
-
-    public static Font getPIXEL() {
-        return PIXEL;
-    }
-
-    public static void setPIXEL(Font pIXEL) {
-        PIXEL = pIXEL;
-    }
-
-    
-    
 }

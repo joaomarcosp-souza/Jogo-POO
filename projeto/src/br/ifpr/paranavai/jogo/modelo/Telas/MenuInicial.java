@@ -19,7 +19,7 @@ public class MenuInicial extends TelasBase {
     private static final String CONTROLETELA = "CONTROLES";
     private static final String HISTORICOTELA = "HISTORICO";
     // FONTES
-    private Font FONTE_MENU = getPIXEL().deriveFont(Font.BOLD, super.getMenuTamanho());
+    private Font FONTE_MENU = super.getPixel().deriveFont(Font.BOLD, super.getMenuTamanho());
     // CAMINHO IMAGEM DE FUNDO
     private static final String FUNDOANIMADO = "recursos\\Sprites\\Fundos\\FundoMenu.gif";
     private static final String IMAGEMTITULO = "recursos\\Sprites\\Fundos\\MenuPrincipal.png";

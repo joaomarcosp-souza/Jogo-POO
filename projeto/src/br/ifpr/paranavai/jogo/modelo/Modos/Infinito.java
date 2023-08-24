@@ -208,11 +208,7 @@ public class Infinito extends JPanel implements ActionListener {
                 graficos.drawImage(tiroEspecial.getImagem(),
                         tiroEspecial.getPosicaoEmX(), tiroEspecial.getPosicaoEmY(), null);
             }
-            // CARREGANDO A IMAGEM DO PERSONAGEM SOMENTE SE NÃO ESTIVER PISCANDO
-            if (!piscando) {
-                graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(),
-                        null);
-            }
+
             // COMEÇO METEORO E NAVES INIMIGAS
             for (int i = 0; i < MeteoritoInimigo.size(); i++) {
                 Meteorito mete = MeteoritoInimigo.get(i);
@@ -220,14 +216,25 @@ public class Infinito extends JPanel implements ActionListener {
                 graficos.drawImage(mete.getImagem(), mete.getPosicaoEmX(), mete.getPosicaoEmY(),
                         null);
             }
+
             for (int i = 0; i < NaveInimiga.size(); i++) {
                 Naves ini = NaveInimiga.get(i);
                 ini.carregar();
                 graficos.drawImage(ini.getImagem(), ini.getPosicaoEmX(), ini.getPosicaoEmY(), null);
                 ini.vidas(graficos);
+                ini.inimigoDados(graficos);
             } // FIM METEORO E NAVES INIMIGAS
 
-              // HITBOX
+            // CARREGANDO OS COMPONENTES DA CLASSE PERSONAGEM(VIDA E PONTUAÇÃO)
+            personagem.pontuacao(graficos);
+            personagem.desenhaVida(graficos);
+            personagem.desenhaEliminacoes(graficos);
+            // CARREGANDO A IMAGEM DO PERSONAGEM SOMENTE SE NÃO ESTIVER PISCANDO
+            if (!piscando) {
+                graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(),
+                        null);
+            }
+            // HITBOX
             graficos.setColor(Color.RED);
             Rectangle hitboxPersonagem = personagem.getBounds();
             graficos.drawRect(hitboxPersonagem.x, hitboxPersonagem.y,
@@ -248,9 +255,7 @@ public class Infinito extends JPanel implements ActionListener {
                 graficos.drawRect(hitboxInimigo.x, hitboxInimigo.y, hitboxInimigo.width,
                         hitboxInimigo.height);
             }
-            // CARREGANDO OS COMPONENTES DA CLASSE PERSONAGEM(VIDA E PONTUAÇÃO)
-            personagem.desenhaPontos(graficos);
-            personagem.desenhaVida(graficos);
+
         } else if (fimDeJogo.isVisibilidade() == true) {
             fimDeJogo.titulo(graficos);
             fimDeJogo.menu(graficos);
@@ -325,7 +330,7 @@ public class Infinito extends JPanel implements ActionListener {
 
     public void gerenciaFase() {
         // ALTERA A VELOCIDADE DA NAVE INIMIGA COM BASE NOS PONTOS GANHOS DO PERSONAGEM
-        int[] pontosPersonagem = { 100, 600, 900, 1000 };
+        int[] pontosPersonagem = { 200, 600, 800, 1000 };
         double[] ajusteVelocidades = { 5, 5.5, 6.5, 7 };
         for (int i = 0; i < pontosPersonagem.length; i++) {
             if (personagem.getPontos() > pontosPersonagem[i]) {
@@ -437,11 +442,12 @@ public class Infinito extends JPanel implements ActionListener {
                 if (formaTiro.intersects(formaInimigoNave)) {
                     if (inimigoNave.getVida() == 1) {
                         int pontuacaoAtual = personagem.getPontos() + VALORNAVES;
-                        if (pontuacaoAtual % 50 == 0) {
+                        if (pontuacaoAtual % 100 == 0) {
                             personagem.setQtdeSuper(2);
                         }
                         inimigoNave.setVisibilidade(false);
                         personagem.setPontos(pontuacaoAtual);
+                        personagem.setInimigosMortos(personagem.getInimigosMortos() + 1);
                     } else {
                         inimigoNave.setVida(inimigoNave.getVida() - 1);
                     }

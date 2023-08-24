@@ -2,7 +2,10 @@ package br.ifpr.paranavai.jogo.modelo;
 
 import java.awt.Image;
 import java.awt.Rectangle;
-
+import java.io.File;
+import java.awt.Font;
+import java.io.IOException;
+import java.awt.FontFormatException;
 import br.ifpr.paranavai.principal.TamanhoTela;
 
 public abstract class Base {
@@ -15,12 +18,20 @@ public abstract class Base {
     private TamanhoTela telaTamanho;
     private double velocidade;
     private double velocidadeInicial;
+    private Font pixel = null;
 
     public Base() {
         this.visibilidade = true;
-        // INICIANDO
+        //PUXANDO INFORMAÇÕES DA TELA 
         telaTamanho = new TamanhoTela();
         telaTamanho.carregar();
+        // CARREGANDO UMA NOVA FONTE
+        try {
+            // CARREGA A FONTE A PARTIR DO ARQUIVO
+            pixel = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\pixel_fonte.ttf"));
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+        }
     }
 
     // MÉTODOS ABSTRATO BASICO PARA 'CARREGAR' É 'ATUALIZAR'
@@ -136,6 +147,12 @@ public abstract class Base {
         this.velocidade = velocidade;
     }
 
-    
+    public Font getPixel() {
+        return pixel;
+    }
+
+    public void setPixel(Font pixel) {
+        this.pixel = pixel;
+    }
 
 }

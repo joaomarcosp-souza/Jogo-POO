@@ -5,7 +5,6 @@ import javax.swing.ImageIcon;
 import br.ifpr.paranavai.jogo.modelo.Base;
 
 public class Tiro extends Base {
-
     private static final int VELOCIDADETIRO = 8;
     private static final String IMAGEMTIRO = "recursos\\Sprites\\Tiros\\tiroNormal.gif";
 
