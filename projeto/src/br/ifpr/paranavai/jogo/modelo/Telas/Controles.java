@@ -4,9 +4,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
-public class Controles extends EntidadeTelas {
+public class Controles extends TelasBase {
     // VARIAVEL PARA CORRIGIR A POSIÇÃO DE ALGUNS ITENS
-    private Image imageControle;
+    private Image imagemControle;
     
     // CAMINHO IMAGEM DE FUNDO
     private static final String IMAGEMFUNDO = "recursos\\Sprites\\Fundos\\FundoTelas.jpg";
@@ -26,9 +26,9 @@ public class Controles extends EntidadeTelas {
 
         // IMAGEM SOBREPOSIÇÃO
         ImageIcon imgcontrole = new ImageIcon(IMGCONTROLES);
-        this.imageControle = imgcontrole.getImage();
+        this.imagemControle = imgcontrole.getImage();
         // REDIMENSIONA O TAMANHO DA IMAGEM PARA O TAMANHO DA TELA
-        this.imageControle = this.imageControle.getScaledInstance(getTelaTamanho().LARGURA_TELA,
+        this.imagemControle = this.imagemControle.getScaledInstance(getTelaTamanho().LARGURA_TELA,
                 getTelaTamanho().ALTURA_TELA,
                 Image.SCALE_FAST);
     };
@@ -36,7 +36,6 @@ public class Controles extends EntidadeTelas {
     // CARREGANDO A IMAGEM DE FUNDO E A IMAGEM COM OS COMANDOS
     public void conteudo(Graphics g) {
         g.drawImage(super.getImagem(), 0, 0, null);
-        g.drawImage(imageControle, 0, 0, null);
+        g.drawImage(imagemControle, 0, 0, null);
     }
-
 }

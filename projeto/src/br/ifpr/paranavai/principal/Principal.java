@@ -3,9 +3,6 @@ package br.ifpr.paranavai.principal;
 import javax.swing.JFrame;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-//import java.awt.GraphicsDevice;
-//import java.awt.GraphicsEnvironment;
-
 import br.ifpr.paranavai.jogo.modelo.Modos.Infinito;
 
 public class Principal extends JFrame {
@@ -24,9 +21,6 @@ public class Principal extends JFrame {
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setLocationRelativeTo(null);
         super.setResizable(false);
-        // TELA CHEIA TESTE
-        // GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        // device.setFullScreenWindow(this);
     }
 
     public static void main(String[] args) {

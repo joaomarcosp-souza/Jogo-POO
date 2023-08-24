@@ -2,15 +2,17 @@ package br.ifpr.paranavai.jogo.modelo.Invasores;
 
 import javax.swing.ImageIcon;
 
-public class Chefao extends EntidadeInimigos {
+import br.ifpr.paranavai.jogo.modelo.Base;
 
-    private double VELOCIDADEINICIAL = 3;
+public class Chefao extends Base {
+
     private static final String IMAGEMCHEF = "recursos\\Sprites\\Inimigos\\chefao.png";
 
     public Chefao(int posicaoEmX, int posicaoEmY) {
         super.setPosicaoEmX(posicaoEmX);
         super.setPosicaoEmY(posicaoEmY);
-        super.setVelocidade(VELOCIDADEINICIAL);
+        super.setVelocidadeInicial(3);
+        super.setVelocidade(super.getVelocidadeInicial());
         super.setVisibilidade(true);
     }
 
@@ -24,6 +26,6 @@ public class Chefao extends EntidadeInimigos {
 
     @Override
     public void atualizar() {
-        super.setPosicaoEmX((int) (super.getPosicaoEmX() - VELOCIDADEINICIAL));
+        super.setPosicaoEmX((int) (super.getPosicaoEmX() - super.getVelocidadeInicial()));
     }
 }

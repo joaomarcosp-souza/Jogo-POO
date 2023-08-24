@@ -2,15 +2,16 @@ package br.ifpr.paranavai.jogo.modelo.Invasores;
 
 import javax.swing.ImageIcon;
 
-public class Meteorito extends EntidadeInimigos {
+import br.ifpr.paranavai.jogo.modelo.Base;
 
-    private double VELOCIDADEINICIAL = 4;
+public class Meteorito extends Base {
     private static final String IMAGEMINIMIGO = "recursos\\Sprites\\Inimigos\\meteorito.png";
 
     public Meteorito(int posicaoEmX, int posicaoEmY) {
         super.setPosicaoEmX(posicaoEmX);
         super.setPosicaoEmY(posicaoEmY);
-        super.setVelocidade(VELOCIDADEINICIAL);
+        super.setVelocidadeInicial(4);
+        super.setVelocidade(super.getVelocidadeInicial());
         super.setVisibilidade(true);
     }
 
@@ -24,8 +25,8 @@ public class Meteorito extends EntidadeInimigos {
 
     @Override
     public void atualizar() {
-        super.setPosicaoEmY((int) (super.getPosicaoEmY() + VELOCIDADEINICIAL));
-        if (super.getPosicaoEmY() > super.getTamanhoTela().ALTURA_TELA) {
+        super.setPosicaoEmY((int) (super.getPosicaoEmY() + super.getVelocidadeInicial()));
+        if (super.getPosicaoEmY() > super.getTelaTamanho().ALTURA_TELA) {
             super.setVisibilidade(false);
         }
     }

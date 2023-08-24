@@ -344,14 +344,14 @@ public class Infinito extends JPanel implements ActionListener {
             NaveInimiga.clear();
             MeteoritoInimigo.clear();
             // RESETA A POSIÇÃO DO JOGADOR
-            if (personagem.getPosicaoEmX() != personagem.getPOSICAOINICIALX()
-                    || personagem.getPosicaoEmY() != personagem.getPOSICAOINICIALY()) {
-                personagem.setPosicaoEmX(personagem.getPOSICAOINICIALX());
-                personagem.setPosicaoEmY(personagem.getPOSICAOINICIALY());
+            if (personagem.getPosicaoEmX() != personagem.getPosicaoEmX()
+                    || personagem.getPosicaoEmY() != personagem.getPOSICAO_INICIALY()) {
+                personagem.setPosicaoEmX(personagem.getPosicaoEmX());
+                personagem.setPosicaoEmY(personagem.getPOSICAO_INICIALY());
             }
             // RESETA OS PONTOS E SETA A VIDA INICIAL NOVAMENTE
             personagem.setPontos(0);
-            personagem.setVida(personagem.getVIDAINICIAL());
+            personagem.setVida(personagem.getVidaInicial());
         } else {
             TimerNaveInimiga.start();
             if (personagem.getPontos() >= 300) {
@@ -418,10 +418,10 @@ public class Infinito extends JPanel implements ActionListener {
                         personagem.setVida(personagem.getVida() - 1);
                     }
                     // VERIFICA A VIDA DA NAVE INIMIGA
-                    if (naveTemporaria.getInimigosvida() == 1) {
+                    if (naveTemporaria.getVida() == 1) {
                         naveTemporaria.setVisibilidade(false);
                     } else {
-                        naveTemporaria.setInimigosvida(naveTemporaria.getInimigosvida() - 1);
+                        naveTemporaria.setVida(naveTemporaria.getVida() - 1);
                     }
                     ultimaColisao = tempoAtual;
                 }
@@ -435,7 +435,7 @@ public class Infinito extends JPanel implements ActionListener {
             for (Tiro tiro : personagem.getTiros()) {
                 Rectangle formaTiro = tiro.getBounds();
                 if (formaTiro.intersects(formaInimigoNave)) {
-                    if (inimigoNave.getInimigosvida() == 1) {
+                    if (inimigoNave.getVida() == 1) {
                         int pontuacaoAtual = personagem.getPontos() + VALORNAVES;
                         if (pontuacaoAtual % 50 == 0) {
                             personagem.setQtdeSuper(2);
@@ -443,7 +443,7 @@ public class Infinito extends JPanel implements ActionListener {
                         inimigoNave.setVisibilidade(false);
                         personagem.setPontos(pontuacaoAtual);
                     } else {
-                        inimigoNave.setInimigosvida(inimigoNave.getInimigosvida() - 1);
+                        inimigoNave.setVida(inimigoNave.getVida() - 1);
                     }
                     tiro.setVisibilidade(false);
                 }
@@ -452,11 +452,11 @@ public class Infinito extends JPanel implements ActionListener {
             for (SuperTiro superTiro : personagem.getSupertiro()) {
                 Rectangle formaSuper = superTiro.getBounds();
                 if (formaSuper.intersects(formaInimigoNave)) {
-                    if (inimigoNave.getInimigosvida() == 1) {
+                    if (inimigoNave.getVida() == 1) {
                         inimigoNave.setVisibilidade(false);
                         personagem.setPontos(personagem.getPontos() + VALORNAVES);
                     } else {
-                        inimigoNave.setInimigosvida(inimigoNave.getInimigosvida() - 1);
+                        inimigoNave.setVida(inimigoNave.getVida() - 1);
                     }
                     superTiro.setVisibilidade(false);
                 }

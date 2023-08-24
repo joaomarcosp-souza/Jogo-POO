@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
-public class FimDeJogo extends EntidadeTelas {
+public class FimDeJogo extends TelasBase {
     // VARIAVEIS PARA CORRIGIR A POSIÇÃO DE ALGUNS ITENS
     private static final int offsetTituloX = 5;
     private static final int offSetPosXsim = 10;

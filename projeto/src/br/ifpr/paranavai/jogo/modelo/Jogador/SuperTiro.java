@@ -2,7 +2,9 @@ package br.ifpr.paranavai.jogo.modelo.Jogador;
 
 import javax.swing.ImageIcon;
 
-public class SuperTiro extends EntidadeJogador {
+import br.ifpr.paranavai.jogo.modelo.Base;
+
+public class SuperTiro extends Base {
 
     private int angulo;
     private static final int VELOCIDADETIRO = 8;

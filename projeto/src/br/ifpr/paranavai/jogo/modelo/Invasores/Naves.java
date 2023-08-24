@@ -1,19 +1,19 @@
 package br.ifpr.paranavai.jogo.modelo.Invasores;
 
-import javax.swing.ImageIcon;
-import java.awt.Graphics;
+import br.ifpr.paranavai.jogo.modelo.Base;
 import java.awt.Color;
+import java.awt.Graphics;
+import javax.swing.ImageIcon;
 
-public class Naves extends EntidadeInimigos {
-
-    private double VELOCIDADEINICIAL = 2;
+public class Naves extends Base {
     private static final String IMAGEMINIMIGO = "recursos\\Sprites\\Inimigos\\tfighter.png";
 
     public Naves(int posicaoEmX, int posicaoEmY, int INIMIGOSVIDA) {
         super.setPosicaoEmX(posicaoEmX);
         super.setPosicaoEmY(posicaoEmY);
-        super.setInimigosvida(INIMIGOSVIDA);
-        super.setVelocidade(VELOCIDADEINICIAL);
+        super.setVida(INIMIGOSVIDA);
+        super.setVelocidadeInicial(4);
+        super.setVelocidade(super.getVelocidadeInicial());
         super.setVisibilidade(true);
     }
 
@@ -39,7 +39,7 @@ public class Naves extends EntidadeInimigos {
         int espacamentoCubo = 5; // ESPAÇAMENTO ENTRE OS CUBOS
         int offsetRetangulo = 44;
         // CALCULANDO A POSIÇÃO DE CADA CUBO
-        int maximoVidas = super.getInimigosvida();
+        int maximoVidas = super.getVida();
         int posicaoCuboX = super.getPosicaoEmX() - ((tamanhoCubo + espacamentoCubo) * maximoVidas) / 2;
         int posicaoCuboY = super.getPosicaoEmY() + super.getAlturaImagem() + 5;
         // UM CUBO PARA CADA VIDA

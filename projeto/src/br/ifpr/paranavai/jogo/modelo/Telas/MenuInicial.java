@@ -9,7 +9,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 
-public class MenuInicial extends EntidadeTelas {
+public class MenuInicial extends TelasBase {
     private Image imagemTitulo;
     // VARIAVEIS DE AJUSTE
     private static final int espacamentoTituloY = 50;

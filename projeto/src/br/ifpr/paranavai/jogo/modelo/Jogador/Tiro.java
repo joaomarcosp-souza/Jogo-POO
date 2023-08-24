@@ -2,7 +2,9 @@ package br.ifpr.paranavai.jogo.modelo.Jogador;
 
 import javax.swing.ImageIcon;
 
-public class Tiro extends EntidadeJogador {
+import br.ifpr.paranavai.jogo.modelo.Base;
+
+public class Tiro extends Base {
 
     private static final int VELOCIDADETIRO = 8;
     private static final String IMAGEMTIRO = "recursos\\Sprites\\Tiros\\tiroNormal.gif";

@@ -4,7 +4,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import java.awt.Graphics;
 
-public class Historico extends EntidadeTelas {
+public class Historico extends TelasBase {
     private Image imagemHistorico;
     // CAMINHO IMAGEM DE FUNDO
     private static final String IMAGEM_FUNDO = "recursos\\Sprites\\Fundos\\FundoTelas.jpg";

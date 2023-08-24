@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
-public class Pausar extends EntidadeTelas {
+public class Pausar extends TelasBase {
     // VARIAVEIS PARA CORRIGIR A POSIÇÃO DE ALGUNS ITENS
     private static final int offSetPosXsim = 10;
     private static final int offSetPosXnao = 30;
