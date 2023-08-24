@@ -19,17 +19,15 @@ public class Personagem extends EntidadeJogador {
     private int deslocamentoEmX;
     private int deslocamentoEmY;
     private int alturaImagemVida;
-    private boolean supertiroUsado = false;
     private boolean jogando;
+    private int qtdeSuper;
     private List<SuperTiro> supertiro;
     private boolean vidaGanha = false;
     // POSIÇÃO DOS SUPER TIROS
-    private final int ANGULO1 = -15;
-    private final int ANGULO2 = 0;
-    private final int ANGULO3 = 15;
+    private final int ANGULO = 15;
     // VARIAVEIS INICIAIS QUE NÃO SERÃO ALTERADAS
     private Image IMAGEM_VIDA;
-    private final int VELOCIDADEINICIAL = 4;
+    private final int VELOCIDADEINICIAL = 2;
     private static final int VIDAINICIAL = 4;
     private static final int PONTOSINICIAIS = 0;
     private static final int POSICAOINICIALX = 100;
@@ -125,23 +123,19 @@ public class Personagem extends EntidadeJogador {
                 this.tiros.add(tiro);
             }
             // SUPER TIRO
-            if (tecla == KeyEvent.VK_R && this.getPontos() % 100 == 0 && this.getPontos() > 0 && !supertiroUsado) {
-                SuperTiro superTiro1 = new SuperTiro(centroPersonagemX, centroPersonagemY, this.ANGULO1);
-                SuperTiro superTiro2 = new SuperTiro(centroPersonagemX, centroPersonagemY, this.ANGULO2);
-                SuperTiro superTiro3 = new SuperTiro(centroPersonagemX, centroPersonagemY, this.ANGULO3);
+            if (tecla == KeyEvent.VK_R && this.getQtdeSuper() > 0) {
+                SuperTiro superTiro1 = new SuperTiro(centroPersonagemX, centroPersonagemY, this.ANGULO);
+                SuperTiro superTiro2 = new SuperTiro(centroPersonagemX, centroPersonagemY, this.ANGULO - this.ANGULO);
+                SuperTiro superTiro3 = new SuperTiro(centroPersonagemX, centroPersonagemY, -this.ANGULO);
                 // ADCIONA OS TIROS
                 this.supertiro.add(superTiro1);
                 this.supertiro.add(superTiro2);
                 this.supertiro.add(superTiro3);
-                // DEFINE O SUPERTIRO COMO USADO
-                supertiroUsado = true;
+                this.qtdeSuper--;
             }
         }
         ultimoTiro = tempoAtual;
-        // VERIFICANDO SE A PONTUAÇÃO NÃO E MAIS VALIDA E REDEFININDO A VARIAVEL
-        if (this.getPontos() % 100 != 0) {
-            supertiroUsado = false;
-        }
+
     }
 
     // MÉTODO PARA DESENHAR A PONTUAÇÃO DO JOGADOR
@@ -234,4 +228,11 @@ public class Personagem extends EntidadeJogador {
         this.jogando = jogando;
     }
 
+    public int getQtdeSuper() {
+        return qtdeSuper;
+    }
+
+    public void setQtdeSuper(int qtdeSuper) {
+        this.qtdeSuper = qtdeSuper;
+    }
 }

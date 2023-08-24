@@ -15,7 +15,7 @@ public class Pausar extends EntidadeTelas {
     private static final int espacamentoYsim = 40;
     //
     private boolean pausado;
-    // OPÇÕES EM TEXTO
+    // OPÇÕES MENU
     private static final String OPC_SIM = "SIM";
     private static final String OPC_NAO = "NAO";
     private static final String MENSAGEM = "VOLTAR AO JOGO?";

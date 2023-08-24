@@ -226,13 +226,13 @@ public class Infinito extends JPanel implements ActionListener {
                 graficos.drawImage(ini.getImagem(), ini.getPosicaoEmX(), ini.getPosicaoEmY(), null);
                 ini.vidas(graficos);
             } // FIM METEORO E NAVES INIMIGAS
+
               // HITBOX
             graficos.setColor(Color.RED);
             Rectangle hitboxPersonagem = personagem.getBounds();
             graficos.drawRect(hitboxPersonagem.x, hitboxPersonagem.y,
                     hitboxPersonagem.width, hitboxPersonagem.height);
             graficos.setColor(Color.BLUE);
-
             for (Naves ini : NaveInimiga) {
                 Rectangle hitboxInimigo = ini.getBounds();
                 graficos.drawRect(hitboxInimigo.x, hitboxInimigo.y, hitboxInimigo.width,
@@ -429,7 +429,6 @@ public class Infinito extends JPanel implements ActionListener {
             timerPiscar.stop();
             piscando = false;
         }
-        // VEREFICA COLISÃO DO TIRO NORMAL E SUPER COM A NAVE INIMIGA
         for (Naves inimigoNave : NaveInimiga) {
             Rectangle formaInimigoNave = inimigoNave.getBounds();
             // TIRO NORMAL
@@ -437,8 +436,12 @@ public class Infinito extends JPanel implements ActionListener {
                 Rectangle formaTiro = tiro.getBounds();
                 if (formaTiro.intersects(formaInimigoNave)) {
                     if (inimigoNave.getInimigosvida() == 1) {
+                        int pontuacaoAtual = personagem.getPontos() + VALORNAVES;
+                        if (pontuacaoAtual % 50 == 0) {
+                            personagem.setQtdeSuper(2);
+                        }
                         inimigoNave.setVisibilidade(false);
-                        personagem.setPontos(personagem.getPontos() + VALORNAVES);
+                        personagem.setPontos(pontuacaoAtual);
                     } else {
                         inimigoNave.setInimigosvida(inimigoNave.getInimigosvida() - 1);
                     }

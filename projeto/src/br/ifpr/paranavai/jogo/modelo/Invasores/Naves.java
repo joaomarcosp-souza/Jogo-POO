@@ -6,7 +6,7 @@ import java.awt.Color;
 
 public class Naves extends EntidadeInimigos {
 
-    private double VELOCIDADEINICIAL = 4;
+    private double VELOCIDADEINICIAL = 2;
     private static final String IMAGEMINIMIGO = "recursos\\Sprites\\Inimigos\\tfighter.png";
 
     public Naves(int posicaoEmX, int posicaoEmY, int INIMIGOSVIDA) {
