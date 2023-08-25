@@ -14,7 +14,6 @@ public abstract class Base {
     private boolean visibilidade;
     private int posicaoEmX, posicaoEmY;
     private int larguraImagem, alturaImagem;
-    private int deslocamentoEmX, deslocamentoEmY;
     private TamanhoTela telaTamanho;
     private double velocidade;
     private double velocidadeInicial;
@@ -108,27 +107,6 @@ public abstract class Base {
 
     public void setVida(int vida) {
         this.vida = vida;
-    }
-
-    public int getDeslocamentoEmY() {
-        return deslocamentoEmY;
-    }
-
-    public void setDeslocamentoEmY(int deslocamentoEmY) {
-        this.deslocamentoEmY = deslocamentoEmY;
-    }
-
-
-    public void setVelocidade(int velocidade) {
-        this.velocidade = velocidade;
-    }
-
-    public int getDeslocamentoEmX() {
-        return deslocamentoEmX;
-    }
-
-    public void setDeslocamentoEmX(int deslocamentoEmX) {
-        this.deslocamentoEmX = deslocamentoEmX;
     }
 
     public double getVelocidadeInicial() {

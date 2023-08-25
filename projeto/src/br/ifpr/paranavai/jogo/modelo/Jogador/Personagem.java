@@ -17,6 +17,7 @@ public class Personagem extends Base {
     private long delayTiro;
     private long ultimoTiro;
     private boolean jogando;
+    private int deslocamentoEmX, deslocamentoEmY;
     private List<Tiro> tiros;
     private int alturaImagemVida;
     private boolean vidaGanha = false;
@@ -26,7 +27,7 @@ public class Personagem extends Base {
     private final int ANGULO = 15;
     private final int VIDA_INICIAL = 4;
     private static final int PONTOS_INICIAIS = 0;
-    private static final int POSICAO_INICIALX = 100;
+    private final int POSICAO_INICIALX = 100;
     private final int POSICAO_INICIALY = super.getTelaTamanho().ALTURA_TELA / 2;
     // CAMINHO PARA AS IMAGENS
     private static final String NAVEIMGJOGADOR = "recursos\\Sprites\\Personagem\\Personagem.gif";
@@ -63,23 +64,23 @@ public class Personagem extends Base {
 
     @Override
     public void atualizar() {
-        super.setPosicaoEmX(super.getPosicaoEmX() + super.getDeslocamentoEmX());
-        super.setPosicaoEmY(super.getPosicaoEmY() + super.getDeslocamentoEmY());
+        super.setPosicaoEmX(super.getPosicaoEmX() + deslocamentoEmX);
+        super.setPosicaoEmY(super.getPosicaoEmY() + deslocamentoEmY);
     }
 
     public void mover(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
         if (tecla == KeyEvent.VK_UP) {
-            super.setDeslocamentoEmY((int) (super.getDeslocamentoEmY() - super.getVelocidade()));
+            this.deslocamentoEmY = -((int) super.getVelocidade());
         }
         if (tecla == KeyEvent.VK_DOWN) {
-            super.setDeslocamentoEmY((int) (super.getVelocidade()));
+            this.deslocamentoEmY = ((int) super.getVelocidade());
         }
         if (tecla == KeyEvent.VK_LEFT) {
-            super.setDeslocamentoEmX((int) (super.getDeslocamentoEmX() - super.getVelocidade()));
+            this.deslocamentoEmX = -((int) super.getVelocidade());
         }
         if (tecla == KeyEvent.VK_RIGHT) {
-            super.setDeslocamentoEmX((int) (super.getVelocidade()));
+            this.deslocamentoEmX = ((int) super.getVelocidade());
         }
 
         if (tecla == KeyEvent.VK_SHIFT) {
@@ -91,16 +92,16 @@ public class Personagem extends Base {
         int tecla = teclado.getKeyCode();
 
         if (tecla == KeyEvent.VK_UP) {
-            super.setDeslocamentoEmY(0);
+            this.deslocamentoEmY = 0;
         }
         if (tecla == KeyEvent.VK_DOWN) {
-            super.setDeslocamentoEmY(0);
+            this.deslocamentoEmY = 0;
         }
         if (tecla == KeyEvent.VK_LEFT) {
-            super.setDeslocamentoEmX(0);
+            this.deslocamentoEmX = 0;
         }
         if (tecla == KeyEvent.VK_RIGHT) {
-            super.setDeslocamentoEmX(0);
+            this.deslocamentoEmX = 0;
         }
     }
 
@@ -215,14 +216,6 @@ public class Personagem extends Base {
         return PONTOS_INICIAIS;
     }
 
-    public static int getPosicaoInicialx() {
-        return POSICAO_INICIALX;
-    }
-
-    public int getPOSICAO_INICIALY() {
-        return POSICAO_INICIALY;
-    }
-
     public List<Tiro> getTiros() {
         return tiros;
     }
@@ -237,6 +230,14 @@ public class Personagem extends Base {
 
     public void setSupertiro(List<SuperTiro> supertiro) {
         this.supertiro = supertiro;
+    }
+
+    public int getPOSICAO_INICIALX() {
+        return POSICAO_INICIALX;
+    }
+
+    public int getPOSICAO_INICIALY() {
+        return POSICAO_INICIALY;
     }
 
 }

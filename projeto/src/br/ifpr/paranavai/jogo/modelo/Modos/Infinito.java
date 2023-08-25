@@ -138,17 +138,15 @@ public class Infinito extends JPanel implements ActionListener {
                 }
 
                 // AUMENTA A VIDA DO INIMIGO COM BASE NOS PONTOS DO JOGADOR
-                if (personagem.isJogando() && personagem.getPontos() > 0 && personagem.getPontos() % 300 == 0
+                if (personagem.isJogando() == true && personagem.getPontos() != 0 && personagem.getPontos() % 10 == 0
                         && vidaInimigos < 4 && !vidaAumentada) {
                     vidaInimigos += 1;
                     vidaAumentada = true;
                 }
                 // VERIFICANDO SE A PONTUAÇÃO NÃO E MAIS VALIDA E REDEFININDO A VARIAVEL PARA
-                // FALSE
-                if (personagem.getPontos() % 300 != 0) {
+                if (personagem.getPontos() % 10 != 0) {
                     vidaAumentada = false;
                 }
-
                 NaveInimiga.add(new Naves(posicaoEmX, posicaoEmY, vidaInimigos));
             }
         });
@@ -349,13 +347,14 @@ public class Infinito extends JPanel implements ActionListener {
             NaveInimiga.clear();
             MeteoritoInimigo.clear();
             // RESETA A POSIÇÃO DO JOGADOR
-            if (personagem.getPosicaoEmX() != personagem.getPosicaoEmX()
+            if (personagem.getPosicaoEmX() != personagem.getPOSICAO_INICIALX()
                     || personagem.getPosicaoEmY() != personagem.getPOSICAO_INICIALY()) {
-                personagem.setPosicaoEmX(personagem.getPosicaoEmX());
+                personagem.setPosicaoEmX(personagem.getPOSICAO_INICIALX());
                 personagem.setPosicaoEmY(personagem.getPOSICAO_INICIALY());
             }
             // RESETA OS PONTOS E SETA A VIDA INICIAL NOVAMENTE
             personagem.setPontos(0);
+            personagem.setInimigosMortos(0);
             personagem.setVida(personagem.getVidaInicial());
         } else {
             TimerNaveInimiga.start();
@@ -391,7 +390,7 @@ public class Infinito extends JPanel implements ActionListener {
         // VERIFICA COLISÃO COM A BORDA EM 'X'
         if (personagem.getPosicaoEmX() < 0) {
             personagem.setPosicaoEmX(0); // POSIÇÃO MÍNIMA X
-        } else if (personagem.getPosicaoEmX() + personagem.getAlturaImagem() > telaTamanho.getLARGURA_TELA()) {
+        } else if (personagem.getPosicaoEmX() + personagem.getLarguraImagem() > telaTamanho.getLARGURA_TELA()) {
             int maximoEmX = telaTamanho.getLARGURA_TELA() - personagem.getAlturaImagem(); // CALCULA A POSIÇÃO MÁXIMA
             personagem.setPosicaoEmX(maximoEmX);
         }
