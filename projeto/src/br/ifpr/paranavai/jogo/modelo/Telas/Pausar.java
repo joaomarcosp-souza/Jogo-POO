@@ -19,7 +19,7 @@ public class Pausar extends TelasBase {
     private static final String OPC_NAO = "NAO";
     private static final String MENSAGEM = "VOLTAR AO JOGO?";
     // FONTES
-    private Font FONTE_MENU = super.getPixel().deriveFont(Font.BOLD, super.getTamanhoFonteBotao());
+    private Font FONTE_MENU = super.getPixel().deriveFont(Font.BOLD, super.getTamanhoFonte());
     private static final String CAMINHOIMG = "recursos\\Sprites\\Fundos\\TelaPause.png";
 
     public Pausar() {

@@ -107,7 +107,6 @@ public class Infinito extends JPanel implements ActionListener {
                 piscando = !piscando; // ALTERNA A VISIBILIDADE DO PERSONAGEM
             }
         });
-
         // TIMER PARA O EFEITO DE PISCANDO
         timerPiscar.setRepeats(true);
         piscando = false;
@@ -138,13 +137,13 @@ public class Infinito extends JPanel implements ActionListener {
                 }
 
                 // AUMENTA A VIDA DO INIMIGO COM BASE NOS PONTOS DO JOGADOR
-                if (personagem.isJogando() == true && personagem.getPontos() != 0 && personagem.getPontos() % 10 == 0
+                if (personagem.isJogando() == true && personagem.getPontos() != 0 && personagem.getPontos() % 500 == 0
                         && vidaInimigos < 4 && !vidaAumentada) {
                     vidaInimigos += 1;
                     vidaAumentada = true;
                 }
                 // VERIFICANDO SE A PONTUAÇÃO NÃO E MAIS VALIDA E REDEFININDO A VARIAVEL PARA
-                if (personagem.getPontos() % 10 != 0) {
+                if (personagem.getPontos() % 500 != 0) {
                     vidaAumentada = false;
                 }
                 NaveInimiga.add(new Naves(posicaoEmX, posicaoEmY, vidaInimigos));
@@ -232,6 +231,7 @@ public class Infinito extends JPanel implements ActionListener {
                 graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(),
                         null);
             }
+            personagem.restauraVida(graficos);
             // HITBOX
             graficos.setColor(Color.RED);
             Rectangle hitboxPersonagem = personagem.getBounds();
@@ -362,9 +362,6 @@ public class Infinito extends JPanel implements ActionListener {
                 TimerMeteorito.start();
             }
         }
-        // INICIA MÉTODO
-        personagem.restauraVida();
-
         // FUNÇÃO PARA FAZER O PERSONAGEM 'PISCAR' CASO COLIDA
         contadorPiscar++; // CONTADOR
         if (contadorPiscar % 2 == 1) {
@@ -413,7 +410,7 @@ public class Infinito extends JPanel implements ActionListener {
                 contadorPiscar = 0; // REINICIA O CONTADOR
                 timerPiscar.start(); // INICIA O TIMER
                 if (personagemForma.getBounds().intersects(naveInimigaForma.getBounds())) {
-                    // VERIFICA A VIDA DO PERSONAGEM
+                    // VERIFICA SE A VIDA DO PERSONAGME PODE SER RESTAURADA
                     if (personagem.getVida() == 1) {
                         personagem.setJogando(false);
                         fimDeJogo.setVisibilidade(true);
@@ -444,6 +441,10 @@ public class Infinito extends JPanel implements ActionListener {
                         if (pontuacaoAtual % 100 == 0) {
                             personagem.setQtdeSuper(2);
                         }
+                        
+                        if (pontuacaoAtual % 10 == 0) {
+                            personagem.setQtdeVidaRestaura(1);
+                        }
                         inimigoNave.setVisibilidade(false);
                         personagem.setPontos(pontuacaoAtual);
                         personagem.setInimigosMortos(personagem.getInimigosMortos() + 1);
@@ -473,6 +474,7 @@ public class Infinito extends JPanel implements ActionListener {
             Meteorito meteritoTemporario = MeteoritoInimigo.get(k);
             meteoritoForma = meteritoTemporario.getBounds();
             if (personagemForma.getBounds().intersects(meteoritoForma.getBounds())) {
+                // VERIFICA SE O PERSONAGEM ESTA PERTO DE MORRER
                 if (personagem.getVida() == 1) {
                     personagem.setJogando(false);
                     fimDeJogo.setVisibilidade(true);

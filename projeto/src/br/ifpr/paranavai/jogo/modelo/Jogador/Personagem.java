@@ -9,20 +9,29 @@ import javax.swing.ImageIcon;
 import br.ifpr.paranavai.jogo.modelo.Base;
 import java.awt.event.KeyEvent;
 import java.awt.Image;
+import java.awt.Rectangle;
 
-public class Personagem extends Base {
+public class Personagem extends Base{
+
     private int pontos;
     private int inimigosMortos;
-    private int qtdeSuper;
-    private long delayTiro;
-    private long ultimoTiro;
-    private boolean jogando;
-    private int deslocamentoEmX, deslocamentoEmY;
-    private List<Tiro> tiros;
+    // VARIAVEIS RESPAWN DA VIDA
+    private int vidaMaxima = 4;
+    private Rectangle vidaHitBox;
     private int alturaImagemVida;
-    private boolean vidaGanha = false;
+    private int qtdeVidaRestaura;
+    private int posicaoVidaX = (int) (Math.random() * super.getTelaTamanho().LARGURA_TELA);
+    private int posicaoVidaY = (int) (Math.random() * super.getTelaTamanho().ALTURA_TELA);
+    // TIRO
+    private long ultimoTiro;
+    private int qtdeSuper;
+    private boolean jogando;
+    private List<Tiro> tiros;
+    // MOVITEMENTAÇÃO
     private List<SuperTiro> supertiro;
-    // VARIAVEIS CONSTANTES
+    private int deslocamentoEmX, deslocamentoEmY;
+    // VARIAVEIS FINAIS
+    private final long delayTiro;
     private Image IMAGEM_VIDA;
     private final int ANGULO = 15;
     private final int VIDA_INICIAL = 4;
@@ -47,6 +56,8 @@ public class Personagem extends Base {
 
         tiros = new ArrayList<Tiro>();
         supertiro = new ArrayList<SuperTiro>();
+
+        this.vidaHitBox = new Rectangle(this.getPosicaoVidaX(), this.getPosicaoVidaY(), 50, 50);
     }
 
     @Override
@@ -60,6 +71,7 @@ public class Personagem extends Base {
         ImageIcon carregaVida = new ImageIcon(VIDAIMGJOGADOR);
         this.IMAGEM_VIDA = carregaVida.getImage();
         this.alturaImagemVida = this.IMAGEM_VIDA.getHeight(null);
+
     }
 
     @Override
@@ -70,19 +82,20 @@ public class Personagem extends Base {
 
     public void mover(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
-        if (tecla == KeyEvent.VK_UP) {
+        if (tecla == KeyEvent.VK_UP || tecla == KeyEvent.VK_W) {
             this.deslocamentoEmY = -((int) super.getVelocidade());
         }
-        if (tecla == KeyEvent.VK_DOWN) {
+        if (tecla == KeyEvent.VK_DOWN || tecla == KeyEvent.VK_S) {
             this.deslocamentoEmY = ((int) super.getVelocidade());
         }
-        if (tecla == KeyEvent.VK_LEFT) {
+        if (tecla == KeyEvent.VK_LEFT || tecla == KeyEvent.VK_A) {
             this.deslocamentoEmX = -((int) super.getVelocidade());
         }
-        if (tecla == KeyEvent.VK_RIGHT) {
+        if (tecla == KeyEvent.VK_RIGHT || tecla == KeyEvent.VK_D) {
             this.deslocamentoEmX = ((int) super.getVelocidade());
         }
 
+        // TESTE
         if (tecla == KeyEvent.VK_SHIFT) {
             super.setPosicaoEmX(super.getPosicaoEmX() + 200);
         }
@@ -91,16 +104,16 @@ public class Personagem extends Base {
     public void parar(KeyEvent teclado) {
         int tecla = teclado.getKeyCode();
 
-        if (tecla == KeyEvent.VK_UP) {
+        if (tecla == KeyEvent.VK_UP || tecla == KeyEvent.VK_W) {
             this.deslocamentoEmY = 0;
         }
-        if (tecla == KeyEvent.VK_DOWN) {
+        if (tecla == KeyEvent.VK_DOWN || tecla == KeyEvent.VK_S) {
             this.deslocamentoEmY = 0;
         }
-        if (tecla == KeyEvent.VK_LEFT) {
+        if (tecla == KeyEvent.VK_LEFT || tecla == KeyEvent.VK_A) {
             this.deslocamentoEmX = 0;
         }
-        if (tecla == KeyEvent.VK_RIGHT) {
+        if (tecla == KeyEvent.VK_RIGHT || tecla == KeyEvent.VK_D) {
             this.deslocamentoEmX = 0;
         }
     }
@@ -133,7 +146,27 @@ public class Personagem extends Base {
             }
         }
         ultimoTiro = tempoAtual;
+    }
 
+    public void restauraVida(Graphics g) {        
+        if (this.getVida() < this.getVidaMaxima() && this.getQtdeVidaRestaura() > 0) {
+            g.drawImage(IMAGEM_VIDA, this.posicaoVidaX, this.posicaoVidaY, null);
+            if (this.getBounds().intersects(vidaHitBox.getBounds())) {
+                this.setVida(this.getVida() + 1);
+                this.qtdeVidaRestaura--;
+            }
+        }
+    }
+
+    // MÉTODO PARA DESENHAR A VIDA DO JOGADOR
+    public void desenhaVida(Graphics g) {
+        int diferenca = 70;
+        // PARA CADA VIDA DO JOGADOR, DESENHA UMA IMAGEM DA VIDA,
+        // ALTERANDO A POSIÇÃO COM BASE NOS CALCULOS PARA DEFINIR
+        for (int i = 0; i < super.getVida(); i++) {
+            g.drawImage(IMAGEM_VIDA, super.getTelaTamanho().LARGURA_TELA - diferenca, 10, null);
+            diferenca += alturaImagemVida + 5;
+        }
     }
 
     // MÉTODO PARA DESENHAR A PONTUAÇÃO DO JOGADOR
@@ -149,30 +182,6 @@ public class Personagem extends Base {
         g.setFont(super.getPixel().deriveFont(Font.PLAIN, 17));
         g.setColor(new Color(255, 209, 0));
         g.drawString(qtdeMorte, 20, 70);
-    }
-
-    public void restauraVida() {
-        int restoVida = 800;
-        int MaximoVida = 4;
-        // RESTAURA A VIDA (A IMPLEMENTAR)
-        if (this.getPontos() % restoVida == 0 && this.getVida() < MaximoVida && !vidaGanha && this.getPontos() > 0) {
-            this.setVida(this.getVida() + 1);
-            vidaGanha = true;
-        }
-        if (this.getPontos() % restoVida != 0) {
-            vidaGanha = false;
-        }
-    }
-
-    // MÉTODO PARA DESENHAR A VIDA DO JOGADOR
-    public void desenhaVida(Graphics g) {
-        int diferenca = 70;
-        // PARA CADA VIDA DO JOGADOR, DESENHA UMA IMAGEM DA VIDA,
-        // ALTERANDO A POSIÇÃO COM BASE NOS CALCULOS PARA DEFINIR
-        for (int i = 0; i < super.getVida(); i++) {
-            g.drawImage(IMAGEM_VIDA, getTelaTamanho().LARGURA_TELA - diferenca, 10, null);
-            diferenca += alturaImagemVida + 5;
-        }
     }
 
     // MÉTODOS GETTERS E SETTERS
@@ -240,4 +249,45 @@ public class Personagem extends Base {
         return POSICAO_INICIALY;
     }
 
+    public Rectangle getVidaHitBox() {
+        return vidaHitBox;
+    }
+
+    public void setVidaHitBox(Rectangle vidaHitBox) {
+        this.vidaHitBox = vidaHitBox;
+    }
+
+    public int getQtdeVidaRestaura() {
+        return qtdeVidaRestaura;
+    }
+
+    public void setQtdeVidaRestaura(int qtdeVidaRestaura) {
+        this.qtdeVidaRestaura = qtdeVidaRestaura;
+    }
+
+    public int getVidaMaxima() {
+        return vidaMaxima;
+    }
+
+    public void setVidaMaxima(int vidaMaxima) {
+        this.vidaMaxima = vidaMaxima;
+    }
+
+    public int getPosicaoVidaX() {
+        return posicaoVidaX;
+    }
+
+    public void setPosicaoVidaX(int posicaoVidaX) {
+        this.posicaoVidaX = posicaoVidaX;
+    }
+
+    public int getPosicaoVidaY() {
+        return posicaoVidaY;
+    }
+
+    public void setPosicaoVidaY(int posicaoVidaY) {
+        this.posicaoVidaY = posicaoVidaY;
+    }
+
+    
 }

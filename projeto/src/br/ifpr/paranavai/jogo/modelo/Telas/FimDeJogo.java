@@ -24,7 +24,7 @@ public class FimDeJogo extends TelasBase {
     private static final String SUBTITULO = "OVER";
     // FONTES
     private Font FONTE_TITULOS = super.getPixel().deriveFont(Font.BOLD, super.getTituloTamanho());
-    private Font FONTE_MENU = super.getPixel().deriveFont(Font.BOLD, super.getTamanhoFonteBotao());
+    private Font FONTE_MENU = super.getPixel().deriveFont(Font.BOLD, super.getTamanhoFonte());
     // CAMINHO IMAGEM DE FUNDO
     private static final String IMAGEM_FUNDO = "recursos\\Sprites\\Fundos\\TelaFimDeJogo.gif";
 

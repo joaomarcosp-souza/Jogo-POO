@@ -14,10 +14,10 @@ public abstract class Base {
     private boolean visibilidade;
     private int posicaoEmX, posicaoEmY;
     private int larguraImagem, alturaImagem;
-    private TamanhoTela telaTamanho;
     private double velocidade;
     private double velocidadeInicial;
     private Font pixel = null;
+    private TamanhoTela telaTamanho;
 
     public Base() {
         this.visibilidade = true;
@@ -92,14 +92,7 @@ public abstract class Base {
     public void setAlturaImagem(int alturaImagem) {
         this.alturaImagem = alturaImagem;
     }
-
-    public TamanhoTela getTelaTamanho() {
-        return telaTamanho;
-    }
-
-    public void setTelaTamanho(TamanhoTela telaTamanho) {
-        this.telaTamanho = telaTamanho;
-    }
+    
 
     public int getVida() {
         return vida;
@@ -133,4 +126,11 @@ public abstract class Base {
         this.pixel = pixel;
     }
 
+    public TamanhoTela getTelaTamanho() {
+        return telaTamanho;
+    }
+
+    public void setTelaTamanho(TamanhoTela telaTamanho) {
+        this.telaTamanho = telaTamanho;
+    }
 }
