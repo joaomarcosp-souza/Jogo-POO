@@ -12,7 +12,6 @@ import java.awt.Image;
 import java.awt.Rectangle;
 
 public class Personagem extends Base {
-
     private int pontos;
     private int inimigosMortos;
     // VARIAVEIS RESPAWN DA VIDA

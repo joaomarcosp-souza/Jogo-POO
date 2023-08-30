@@ -5,7 +5,7 @@ import javax.swing.ImageIcon;
 import br.ifpr.paranavai.jogo.modelo.Base;
 
 public class Chefao extends Base {
-
+    private boolean chefaoVivo;
     private static final String IMAGEMCHEF = "recursos\\Sprites\\Inimigos\\chefao.png";
 
     public Chefao(int posicaoEmX, int posicaoEmY) {
@@ -14,6 +14,8 @@ public class Chefao extends Base {
         super.setVelocidadeInicial(3);
         super.setVelocidade(super.getVelocidadeInicial());
         super.setVisibilidade(true);
+
+        this.chefaoVivo = false;
     }
 
     @Override
@@ -28,4 +30,14 @@ public class Chefao extends Base {
     public void atualizar() {
         super.setPosicaoEmX((int) (super.getPosicaoEmX() - super.getVelocidadeInicial()));
     }
+
+    // GETTERS E SETTERS
+    public boolean isChefaoVivo() {
+        return chefaoVivo;
+    }
+
+    public void setChefaoVivo(boolean chefaoVivo) {
+        this.chefaoVivo = chefaoVivo;
+    }
+
 }
