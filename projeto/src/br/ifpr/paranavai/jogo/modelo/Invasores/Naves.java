@@ -32,6 +32,13 @@ public class Naves extends Base {
         if (super.getPosicaoEmX() < -50) {
             super.setVisibilidade(false);
         }
+
+        // VERIFICANDO SE A NAVE INIMIGA ESTA NASCENDO DENTRO DOS LIMETES DA TELA
+        if (super.getPosicaoEmY() < 0) {
+            super.setPosicaoEmY(0);
+        } else if (super.getPosicaoEmY() > super.getTelaTamanho().ALTURA_TELA - super.getAlturaImagem()) {
+            super.setPosicaoEmY(super.getTelaTamanho().ALTURA_TELA - super.getAlturaImagem());
+        }
     }
 
     // MÉTODO DE VIDA NAVES

@@ -29,5 +29,12 @@ public class Meteorito extends Base {
         if (super.getPosicaoEmY() > super.getTelaTamanho().ALTURA_TELA) {
             super.setVisibilidade(false);
         }
+
+        // VERIFICANDO SE O METEORITO INIMIGO ESTA NASCENDO DENTRO DOS LIMETES DA TELA
+        if (super.getPosicaoEmX() < 0) {
+            super.setPosicaoEmX(0);
+        } else if (super.getPosicaoEmX() > super.getTelaTamanho().LARGURA_TELA - super.getLarguraImagem()) {
+            super.setPosicaoEmX(super.getTelaTamanho().LARGURA_TELA - super.getLarguraImagem());
+        }
     }
 }

@@ -11,7 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.Image;
 import java.awt.Rectangle;
 
-public class Personagem extends Base{
+public class Personagem extends Base {
 
     private int pontos;
     private int inimigosMortos;
@@ -19,9 +19,10 @@ public class Personagem extends Base{
     private int vidaMaxima = 4;
     private Rectangle vidaHitBox;
     private int alturaImagemVida;
-    private int qtdeVidaRestaura;
-    private int posicaoVidaX = (int) (Math.random() * super.getTelaTamanho().LARGURA_TELA);
-    private int posicaoVidaY = (int) (Math.random() * super.getTelaTamanho().ALTURA_TELA);
+    private int qtdeRestauraVida;
+    private boolean vidaRestaurada;
+    private int posicaoVidaX;
+    private int posicaoVidaY;
     // TIRO
     private long ultimoTiro;
     private int qtdeSuper;
@@ -53,11 +54,12 @@ public class Personagem extends Base{
         this.delayTiro = 300;
         this.jogando = false;
         this.pontos = PONTOS_INICIAIS;
+        this.vidaRestaurada = false;
+        this.posicaoVidaX = (int) (Math.random() * 200);
+        this.posicaoVidaY = (int) (Math.random() * 150);
 
         tiros = new ArrayList<Tiro>();
         supertiro = new ArrayList<SuperTiro>();
-
-        this.vidaHitBox = new Rectangle(this.getPosicaoVidaX(), this.getPosicaoVidaY(), 50, 50);
     }
 
     @Override
@@ -93,11 +95,6 @@ public class Personagem extends Base{
         }
         if (tecla == KeyEvent.VK_RIGHT || tecla == KeyEvent.VK_D) {
             this.deslocamentoEmX = ((int) super.getVelocidade());
-        }
-
-        // TESTE
-        if (tecla == KeyEvent.VK_SHIFT) {
-            super.setPosicaoEmX(super.getPosicaoEmX() + 200);
         }
     }
 
@@ -148,12 +145,16 @@ public class Personagem extends Base{
         ultimoTiro = tempoAtual;
     }
 
-    public void restauraVida(Graphics g) {        
-        if (this.getVida() < this.getVidaMaxima() && this.getQtdeVidaRestaura() > 0) {
+    public void restauraVida(Graphics g) {
+        if (this.getQtdeRestauraVida() > 0 && this.vidaRestaurada == true && this.getVida() < vidaMaxima) {
             g.drawImage(IMAGEM_VIDA, this.posicaoVidaX, this.posicaoVidaY, null);
-            if (this.getBounds().intersects(vidaHitBox.getBounds())) {
+            if (this.getBounds().intersects((new Rectangle(posicaoVidaX, posicaoVidaY, 50, 50)))) {
                 this.setVida(this.getVida() + 1);
-                this.qtdeVidaRestaura--;
+                this.qtdeRestauraVida--;
+                this.vidaRestaurada = false;
+                // GERANDO NOVAS POSIÇÕES PRO RETANGULO E IMAGEM
+                this.posicaoVidaX = ((int) (Math.random() * super.getTelaTamanho().LARGURA_TELA));
+                this.posicaoVidaY = ((int) (Math.random() * super.getTelaTamanho().ALTURA_TELA));
             }
         }
     }
@@ -257,14 +258,6 @@ public class Personagem extends Base{
         this.vidaHitBox = vidaHitBox;
     }
 
-    public int getQtdeVidaRestaura() {
-        return qtdeVidaRestaura;
-    }
-
-    public void setQtdeVidaRestaura(int qtdeVidaRestaura) {
-        this.qtdeVidaRestaura = qtdeVidaRestaura;
-    }
-
     public int getVidaMaxima() {
         return vidaMaxima;
     }
@@ -289,5 +282,20 @@ public class Personagem extends Base{
         this.posicaoVidaY = posicaoVidaY;
     }
 
-    
+    public int getQtdeRestauraVida() {
+        return qtdeRestauraVida;
+    }
+
+    public void setQtdeRestauraVida(int qtdeRestauraVida) {
+        this.qtdeRestauraVida = qtdeRestauraVida;
+    }
+
+    public boolean isVidaRestaurada() {
+        return vidaRestaurada;
+    }
+
+    public void setVidaRestaurada(boolean vidaRestaurada) {
+        this.vidaRestaurada = vidaRestaurada;
+    }
+
 }

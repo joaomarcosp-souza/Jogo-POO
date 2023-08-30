@@ -124,7 +124,6 @@ public class Infinito extends JPanel implements ActionListener {
         // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
         TimerNaveInimiga = new Timer(delayInimigoNave, new ActionListener() {
             int alturaInimigo = 80;
-            int maximoEmY = telaTamanho.getLARGURA_TELA() - alturaInimigo;
             int vidaInimigos = 1;
             boolean vidaAumentada = false;
 
@@ -132,10 +131,6 @@ public class Infinito extends JPanel implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 int posicaoEmX = telaTamanho.getLARGURA_TELA(); // POSICÃO INICIAL DO PERSONAGEM
                 int posicaoEmY = (int) (Math.random() * ((telaTamanho.getALTURA_TELA()) - alturaInimigo));
-                if (posicaoEmY <= 0 || posicaoEmY > maximoEmY) {
-                    posicaoEmY = (int) (Math.random() * ((telaTamanho.getALTURA_TELA()) - alturaInimigo));
-                }
-
                 // AUMENTA A VIDA DO INIMIGO COM BASE NOS PONTOS DO JOGADOR
                 if (personagem.isJogando() == true && personagem.getPontos() != 0 && personagem.getPontos() % 500 == 0
                         && vidaInimigos < 4 && !vidaAumentada) {
@@ -162,9 +157,6 @@ public class Infinito extends JPanel implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 int posicaoEmY = -alturaInimigo;
                 int posicaoEmX = (int) (Math.random() * (telaTamanho.getLARGURA_TELA() - alturaInimigo));
-                if (posicaoEmX < 0 || posicaoEmX > telaTamanho.getLARGURA_TELA()) {
-                    posicaoEmX = (int) (Math.random() * (telaTamanho.getLARGURA_TELA() - alturaInimigo));
-                }
                 MeteoritoInimigo.add(new Meteorito(posicaoEmX, posicaoEmY));
             }
         });
@@ -226,12 +218,12 @@ public class Infinito extends JPanel implements ActionListener {
             personagem.pontuacao(graficos);
             personagem.desenhaVida(graficos);
             personagem.desenhaEliminacoes(graficos);
+            personagem.restauraVida(graficos);
             // CARREGANDO A IMAGEM DO PERSONAGEM SOMENTE SE NÃO ESTIVER PISCANDO
             if (!piscando) {
                 graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(),
                         null);
             }
-            personagem.restauraVida(graficos);
             // HITBOX
             graficos.setColor(Color.RED);
             Rectangle hitboxPersonagem = personagem.getBounds();
@@ -314,7 +306,6 @@ public class Infinito extends JPanel implements ActionListener {
             } // FIM
             gerenciaFase();
             checarColisoes();
-            // REPINTANDO OS OBJETOS
             personagem.atualizar();
         }
         // PARA O SPAWN DOS INIMIGOS PRA QUE ELES NÃO ACUMULEM EM UMA SÓ POSIÇÃO
@@ -373,6 +364,12 @@ public class Infinito extends JPanel implements ActionListener {
             timerPiscar.stop();
             piscando = false;
         }
+
+        if (personagem.getPontos() > 0 && personagem.getPontos() % 10 == 0 && personagem.isVidaRestaurada() == false) {
+            personagem.setQtdeRestauraVida(1);
+            personagem.setVidaRestaurada(true);
+        }
+
     }
 
     public void checarColisoes() {
@@ -388,7 +385,7 @@ public class Infinito extends JPanel implements ActionListener {
         if (personagem.getPosicaoEmX() < 0) {
             personagem.setPosicaoEmX(0); // POSIÇÃO MÍNIMA X
         } else if (personagem.getPosicaoEmX() + personagem.getLarguraImagem() > telaTamanho.getLARGURA_TELA()) {
-            int maximoEmX = telaTamanho.getLARGURA_TELA() - personagem.getAlturaImagem(); // CALCULA A POSIÇÃO MÁXIMA
+            int maximoEmX = telaTamanho.getLARGURA_TELA() - personagem.getLarguraImagem(); // CALCULA A POSIÇÃO MÁXIMA
             personagem.setPosicaoEmX(maximoEmX);
         }
         // VERIFICA COLISÃO COM A BORDA EM 'Y'
@@ -440,10 +437,6 @@ public class Infinito extends JPanel implements ActionListener {
                         int pontuacaoAtual = personagem.getPontos() + VALORNAVES;
                         if (pontuacaoAtual % 100 == 0) {
                             personagem.setQtdeSuper(2);
-                        }
-                        
-                        if (pontuacaoAtual % 10 == 0) {
-                            personagem.setQtdeVidaRestaura(1);
                         }
                         inimigoNave.setVisibilidade(false);
                         personagem.setPontos(pontuacaoAtual);
