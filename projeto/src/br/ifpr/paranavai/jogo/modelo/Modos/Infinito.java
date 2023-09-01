@@ -17,6 +17,7 @@ import javax.swing.Timer;
 
 import br.ifpr.paranavai.jogo.modelo.Invasores.Meteorito;
 import br.ifpr.paranavai.jogo.modelo.Invasores.Naves;
+import br.ifpr.paranavai.jogo.modelo.Invasores.Asteroide;
 import br.ifpr.paranavai.jogo.modelo.Invasores.DeathStar;
 import br.ifpr.paranavai.jogo.modelo.Jogador.Personagem;
 import br.ifpr.paranavai.jogo.modelo.Jogador.Tiro;
@@ -32,11 +33,12 @@ public class Infinito extends JPanel implements ActionListener {
     // ATRIBUTOS DA CLASSE
     private Image fundo;
     private Image segundoFundo;
-
     // LISTA PARA INIMIGOS
     private List<Naves> naveInimiga;
     private List<Meteorito> meteoritoInimigo;
     private List<DeathStar> deathstar;
+    private List<Asteroide> asteroides;
+
     // INSTANCIAS
     private MenuInicial telaMenu;
     private Personagem personagem;
@@ -46,15 +48,20 @@ public class Infinito extends JPanel implements ActionListener {
     private TamanhoTela telaTamanho;
     private Pausar telaPausar;
     // TIMERS INIMIGOS
-    private Timer TimerNaveInimiga;
-    private Timer TimerMeteorito;
+    private Timer timerNaveInimiga;
+    private Timer timerMeteorito;
+    private Timer timerDeathStar;
+    private Timer timerAsteroides;
+    // DELAYS INIMIHOS
     private int delayInimigoNave = 1000;
     private int delayInimigoMeteorito = 3000;
+    private int delayDeathStar = 20000;
+
     private Timer timerGlobal;
     // 'TIMER' PARA A COLISAO
     private long ultimaColisao;
     private int delayColisao = 1000;
-    // ATRIBUTOS PARA O EFEITO 'PISCANDO'
+    // VARIAVEIS DO O EFEITO 'PISCANDO' PARA O PERSONAGEM
     private boolean piscando;
     private Timer timerPiscar;
     private int delayPiscando = 1000;
@@ -118,13 +125,14 @@ public class Infinito extends JPanel implements ActionListener {
         InicializaNaveInimiga(); // NAVES
         InicializaMeteorito(); // METEORITOS
         InicializaNuvens();// NUVEMS
+        InicializaAsteroides();
     }
 
     // INICIANDO POSIÇÃO DAS NAVES INIMIGAS ALEATORIAMENTE
     public void InicializaNaveInimiga() {
         naveInimiga = new ArrayList<Naves>();
         // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
-        TimerNaveInimiga = new Timer(delayInimigoNave, new ActionListener() {
+        timerNaveInimiga = new Timer(delayInimigoNave, new ActionListener() {
             int alturaInimigo = 80;
             int vidaInimigos = 1;
             int multiploNave = 400;
@@ -138,17 +146,18 @@ public class Infinito extends JPanel implements ActionListener {
                 if (personagem.isJogando() == true && personagem.getPontos() != 0
                         && personagem.getPontos() % multiploNave == 0
                         && vidaInimigos < 4 && !vidaAumentada) {
-                    vidaInimigos++;
                     vidaAumentada = true;
+                    vidaInimigos++;
                 }
                 // VERIFICANDO SE A PONTUAÇÃO NÃO E MAIS VALIDA E REDEFININDO A VARIAVEL PARA
+                // FALSE
                 if (personagem.getPontos() % multiploNave != 0) {
                     vidaAumentada = false;
                 }
                 naveInimiga.add(new Naves(posicaoEmX, posicaoEmY, vidaInimigos));
             }
         });
-        TimerNaveInimiga.setRepeats(true);
+        timerNaveInimiga.setRepeats(true);
     }
 
     // INICIANDO POSIÇÃO DO METEORITO ALEATORIAMENTE
@@ -156,7 +165,7 @@ public class Infinito extends JPanel implements ActionListener {
         meteoritoInimigo = new ArrayList<Meteorito>();
         int alturaInimigo = 100;
         // TIMER PARA SPAWNAR O METEORITO
-        TimerMeteorito = new Timer(delayInimigoMeteorito, new ActionListener() {
+        timerMeteorito = new Timer(delayInimigoMeteorito, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int posicaoEmY = -alturaInimigo;
@@ -164,15 +173,14 @@ public class Infinito extends JPanel implements ActionListener {
                 meteoritoInimigo.add(new Meteorito(posicaoEmX, posicaoEmY));
             }
         });
-        TimerMeteorito.setRepeats(true);
+        timerMeteorito.setRepeats(true);
     }// FIM MÉTODO METEORITO
-
 
     // INICIALIZA NUVEM SEM COLISÃO(TEMPORARIO)
     public void InicializaNuvens() {
         deathstar = new ArrayList<DeathStar>();
         // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
-        Timer timerDeathStar = new Timer(10000, new ActionListener() {
+        timerDeathStar = new Timer(delayDeathStar, new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -182,7 +190,21 @@ public class Infinito extends JPanel implements ActionListener {
             }
         });
         timerDeathStar.setRepeats(true);
-        timerDeathStar.start();
+    }
+
+    public void InicializaAsteroides() {
+        asteroides = new ArrayList<Asteroide>();
+        // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
+        timerAsteroides = new Timer(500, new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int posicaoEmX = telaTamanho.getLARGURA_TELA();
+                int posicaoEmY = (int) (Math.random() * (telaTamanho.getALTURA_TELA()));
+                asteroides.add(new Asteroide(posicaoEmX, posicaoEmY));
+            }
+        });
+        timerAsteroides.setRepeats(true);
     }
 
     public void paintComponent(Graphics g) {
@@ -219,6 +241,22 @@ public class Infinito extends JPanel implements ActionListener {
                         tiroEspecial.getPosicaoEmX(), tiroEspecial.getPosicaoEmY(), null);
             }
 
+            // CARREGA DEATH STAR
+            for (int i = 0; i < asteroides.size(); i++) {
+                Asteroide asteroideTemporario = asteroides.get(i);
+                asteroideTemporario.carregar();
+                graficos.drawImage(asteroideTemporario.getImagem(),
+                        asteroideTemporario.getPosicaoEmX(), asteroideTemporario.getPosicaoEmY(), null);
+            }
+
+            // CARREGA DEATH STAR
+            for (int i = 0; i < deathstar.size(); i++) {
+                DeathStar nuvemTemporaria = deathstar.get(i);
+                nuvemTemporaria.carregar();
+                graficos.drawImage(nuvemTemporaria.getImagem(),
+                        nuvemTemporaria.getPosicaoEmX(), nuvemTemporaria.getPosicaoEmY(), null);
+            }
+
             // COMEÇO METEORO E NAVES INIMIGAS
             for (int i = 0; i < meteoritoInimigo.size(); i++) {
                 Meteorito mete = meteoritoInimigo.get(i);
@@ -234,14 +272,6 @@ public class Infinito extends JPanel implements ActionListener {
                 ini.vidas(graficos);
                 ini.inimigoDados(graficos);
             } // FIM METEORO E NAVES INIMIGAS
-
-            // CARREGA NUVEM
-            for (int i = 0; i < deathstar.size(); i++) {
-                DeathStar nuvemTemporaria = deathstar.get(i);
-                nuvemTemporaria.carregar();
-                graficos.drawImage(nuvemTemporaria.getImagem(),
-                        nuvemTemporaria.getPosicaoEmX(), nuvemTemporaria.getPosicaoEmY(), null);
-            }
 
             // CARREGANDO OS COMPONENTES DA CLASSE PERSONAGEM(VIDA E PONTUAÇÃO)
             personagem.pontuacao(graficos);
@@ -280,7 +310,8 @@ public class Infinito extends JPanel implements ActionListener {
                     iteratorNaves.remove();
                 }
             } // FIM NAVES
-              // ATUALIZA A POSIÇÃO DO METEORO
+
+            // ATUALIZA A POSIÇÃO DO METEORO
             Iterator<Meteorito> iteratorMeteorito = meteoritoInimigo.iterator();
             while (iteratorMeteorito.hasNext()) {
                 Meteorito mete = iteratorMeteorito.next();
@@ -291,6 +322,7 @@ public class Infinito extends JPanel implements ActionListener {
                 }
             } // FIM
 
+            // DEATHSTAR ATUALIZA
             Iterator<DeathStar> iteratorNuvem = deathstar.iterator();
             while (iteratorNuvem.hasNext()) {
                 DeathStar nuv = iteratorNuvem.next();
@@ -298,6 +330,17 @@ public class Infinito extends JPanel implements ActionListener {
                     nuv.atualizar();
                 } else {
                     iteratorNuvem.remove();
+                }
+            }
+
+            // ASTEROIDES ATUALIZA
+            Iterator<Asteroide> iteratorAsteroide = asteroides.iterator();
+            while (iteratorAsteroide.hasNext()) {
+                Asteroide aste = iteratorAsteroide.next();
+                if (aste.isVisibilidade()) {
+                    aste.atualizar();
+                } else {
+                    iteratorAsteroide.remove();
                 }
             }
 
@@ -312,7 +355,8 @@ public class Infinito extends JPanel implements ActionListener {
                     iteratorTiro.remove();
                 }
             } // FIM
-              // ATUALIZA POSICAÇÃO DO TIRO ESPECIAL
+
+            // ATUALIZA POSICAÇÃO DO TIRO ESPECIAL
             List<SuperTiro> tirosEspecial = personagem.getSupertiro();
             Iterator<SuperTiro> iteratorTiroEspecial = tirosEspecial.iterator();
             while (iteratorTiroEspecial.hasNext()) {
@@ -322,7 +366,8 @@ public class Infinito extends JPanel implements ActionListener {
                 } else {
                     iteratorTiroEspecial.remove();
                 }
-            } // FIM
+            }
+            // FIM
             gerenciaFase();
             checarColisoes();
             personagem.atualizar();
@@ -330,8 +375,9 @@ public class Infinito extends JPanel implements ActionListener {
         // PARA O SPAWN DOS INIMIGOS PRA QUE ELES NÃO ACUMULEM EM UMA SÓ POSIÇÃO
         // TAMBÉM CARREGA O MENU E A IMAGEM DA TELA PAUSE
         if (telaPausar.isPausado()) {
-            TimerNaveInimiga.stop();
-            TimerMeteorito.stop();
+            timerNaveInimiga.stop();
+            timerMeteorito.stop();
+            timerDeathStar.stop();
             telaPausar.menu(getGraphics());
         }
     }
@@ -349,27 +395,35 @@ public class Infinito extends JPanel implements ActionListener {
 
         // CONTROLE DA FASE
         if (personagem.isJogando() == false) {
+            // PERSONAGEM
             timerPiscar.stop();
+            personagem.getTiros().clear();
             // PARA O SPAWN DE INIMIGOS
-            TimerNaveInimiga.stop();
-            TimerMeteorito.stop();
+            timerNaveInimiga.stop();
+            timerMeteorito.stop();
+            timerDeathStar.stop();
+            timerAsteroides.stop();
             // LIMPA A LISTA DE INMIGOS
             naveInimiga.clear();
             meteoritoInimigo.clear();
+            deathstar.clear();
             // RESETA A POSIÇÃO DO JOGADOR
             if (personagem.getPosicaoEmX() != personagem.getPOSICAO_INICIALX()
                     || personagem.getPosicaoEmY() != personagem.getPOSICAO_INICIALY()) {
                 personagem.setPosicaoEmX(personagem.getPOSICAO_INICIALX());
                 personagem.setPosicaoEmY(personagem.getPOSICAO_INICIALY());
             }
-            // RESETA OS PONTOS E SETA A VIDA INICIAL NOVAMENTE
+            // RESETA A HUD
             personagem.setPontos(0);
             personagem.setInimigosMortos(0);
             personagem.setVida(personagem.getVidaInicial());
         } else {
-            TimerNaveInimiga.start();
+            timerNaveInimiga.start();
+            timerDeathStar.start();
+            timerAsteroides.start();
+
             if (personagem.getPontos() >= 300) {
-                TimerMeteorito.start();
+                timerMeteorito.start();
             }
         }
 
@@ -385,6 +439,7 @@ public class Infinito extends JPanel implements ActionListener {
             piscando = false;
         }
 
+        // FUNÇÃO PARA VERIFICAR A VIDA DO PERSONAGEM E ATIVAR O SPAWN DE VIDA
         if (personagem.getPontos() > 0 && personagem.getPontos() % 300 == 0 && personagem.isVidaRestaurada() == false) {
             personagem.setQtdeRestauraVida(1);
             personagem.setVidaRestaurada(true);

@@ -6,15 +6,14 @@ import br.ifpr.paranavai.jogo.modelo.Base;
 
 public class DeathStar extends Base {
 
-    private static final String IMAGEM_NUVEM = "recursos\\Sprites\\Inimigos\\deathstar.png";
+    private static final String IMAGEM_NUVEM = "recursos\\Sprites\\Inimigos\\chefao.png";
 
     public DeathStar(int posicaoEmX, int posicaoEmY) {
-        super.setVelocidadeInicial(4);
+        super.setVelocidadeInicial(2);
         super.setVelocidade(super.getVelocidadeInicial());
         super.setPosicaoEmX(posicaoEmX);
         super.setPosicaoEmY(posicaoEmY);
         super.setVisibilidade(true);
-
     }
 
     @Override
