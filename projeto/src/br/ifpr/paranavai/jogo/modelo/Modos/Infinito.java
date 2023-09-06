@@ -14,6 +14,7 @@ import java.util.Iterator;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import java.awt.Color;
 
 import br.ifpr.paranavai.jogo.modelo.Invasores.Meteorito;
 import br.ifpr.paranavai.jogo.modelo.Invasores.Naves;
@@ -30,6 +31,10 @@ import br.ifpr.paranavai.principal.TamanhoTela;
 import br.ifpr.paranavai.jogo.modelo.Telas.FimDeJogo;
 
 public class Infinito extends JPanel implements ActionListener {
+
+    private boolean inimigoMorto = false;
+    private boolean inimigoPerdeVida = false;
+    private int posicaoPontuacaoX, posicaoPontuacaoY;
     // ATRIBUTOS DA CLASSE
     private Image fundo;
     private Image segundoFundo;
@@ -129,7 +134,7 @@ public class Infinito extends JPanel implements ActionListener {
         timerNaveInimiga = new Timer(DELAY_GERAL, new ActionListener() {
             int alturaInimigo = 80;
             int vidaInimigos = 1;
-            int multiploNave = 400;
+            int multiploNave = 10;
             boolean vidaAumentada = false;
 
             @Override
@@ -137,7 +142,7 @@ public class Infinito extends JPanel implements ActionListener {
                 int posicaoEmX = telaTamanho.getLARGURA_TELA(); // POSICÃO INICIAL DO PERSONAGEM
                 int posicaoEmY = (int) (Math.random() * ((telaTamanho.getALTURA_TELA()) - alturaInimigo));
                 // AUMENTA A VIDA DO INIMIGO COM BASE NOS PONTOS DO JOGADOR
-                if (personagem.isJogando() == true && personagem.getPontos() != 0
+                if (personagem.isJogando() == true && personagem.getPontos() > 0
                         && personagem.getPontos() % multiploNave == 0
                         && vidaInimigos < 4 && !vidaAumentada) {
                     vidaAumentada = true;
@@ -248,6 +253,17 @@ public class Infinito extends JPanel implements ActionListener {
                         nuvemTemporaria.getPosicaoEmX(), nuvemTemporaria.getPosicaoEmY(), null);
             }
 
+            // DESENHA A PONTUAÇÃO ACIMA DO INIMIGO MORTO
+            if (inimigoMorto && !inimigoPerdeVida) {
+                graficos.setColor(Color.WHITE);
+                graficos.drawString("+ 10", posicaoPontuacaoX + 5, posicaoPontuacaoY -= 1);
+            }
+
+            if (inimigoPerdeVida) {
+                graficos.setColor(Color.WHITE);
+                g.drawString("- 1", posicaoPontuacaoX + 75, posicaoPontuacaoY += 1);
+            }
+
             // COMEÇO METEORO E NAVES INIMIGAS
             for (int i = 0; i < meteoritoInimigo.size(); i++) {
                 Meteorito mete = meteoritoInimigo.get(i);
@@ -255,6 +271,7 @@ public class Infinito extends JPanel implements ActionListener {
                 graficos.drawImage(mete.getImagem(), mete.getPosicaoEmX(), mete.getPosicaoEmY(),
                         null);
             }
+
             for (int i = 0; i < naveInimiga.size(); i++) {
                 Naves ini = naveInimiga.get(i);
                 ini.carregar();
@@ -439,8 +456,7 @@ public class Infinito extends JPanel implements ActionListener {
 
     public void checarColisoes() {
         // VALORES PARA CADA INIMIGO DESTRUIDO
-        int VALORNAVES = 5;
-        int VALORMETEORITO = 10;
+        int VALOR_INIMIGOS = 10;
         // FORMAS
         Rectangle personagemForma = personagem.getBounds();
         Rectangle naveInimigaForma;
@@ -499,17 +515,21 @@ public class Infinito extends JPanel implements ActionListener {
                 Rectangle formaTiro = tiro.getBounds();
                 if (formaTiro.intersects(formaInimigoNave)) {
                     if (inimigoNave.getVida() == 1) {
-                        int pontuacaoAtual = personagem.getPontos() + VALORNAVES;
+                        int pontuacaoAtual = personagem.getPontos() + VALOR_INIMIGOS;
                         if (pontuacaoAtual % 50 == 0) {
                             personagem.setQtdeSuper(2);
                         }
                         inimigoNave.setVisibilidade(false);
                         personagem.setPontos(pontuacaoAtual);
                         personagem.setInimigosMortos(personagem.getInimigosMortos() + 1);
+                        inimigoMorto = true;
                     } else {
                         inimigoNave.setVida(inimigoNave.getVida() - 1);
+                        inimigoPerdeVida = true;
                     }
                     tiro.setVisibilidade(false);
+                    posicaoPontuacaoX = inimigoNave.getPosicaoEmX();
+                    posicaoPontuacaoY = inimigoNave.getPosicaoEmY();
                 }
             }
             // SUPER TIRO
@@ -518,11 +538,15 @@ public class Infinito extends JPanel implements ActionListener {
                 if (formaSuper.intersects(formaInimigoNave)) {
                     if (inimigoNave.getVida() == 1) {
                         inimigoNave.setVisibilidade(false);
-                        personagem.setPontos(personagem.getPontos() + VALORNAVES);
+                        personagem.setPontos(personagem.getPontos() + VALOR_INIMIGOS);
+                        inimigoMorto = true;
                     } else {
                         inimigoNave.setVida(inimigoNave.getVida() - 1);
+                        inimigoPerdeVida = true;
                     }
                     superTiro.setVisibilidade(false);
+                    posicaoPontuacaoX = inimigoNave.getPosicaoEmX();
+                    posicaoPontuacaoY = inimigoNave.getPosicaoEmY();
                 }
             }
         }
@@ -536,6 +560,7 @@ public class Infinito extends JPanel implements ActionListener {
                 if (personagem.getVida() == 1) {
                     personagem.setJogando(false);
                     fimDeJogo.setVisibilidade(true);
+
                 } else {
                     personagem.setVida(personagem.getVida() - 1);
                 }
@@ -552,7 +577,10 @@ public class Infinito extends JPanel implements ActionListener {
                 if (formaTiro.intersects(formaInimigoMeteorito)) {
                     inimigoMeteorito.setVisibilidade(false);
                     tiro.setVisibilidade(false);
-                    personagem.setPontos(personagem.getPontos() + VALORMETEORITO);
+                    personagem.setPontos(personagem.getPontos() + VALOR_INIMIGOS);
+                    inimigoMorto = true;
+                    posicaoPontuacaoX = inimigoMeteorito.getPosicaoEmX();
+                    posicaoPontuacaoY = inimigoMeteorito.getPosicaoEmY();
                 }
             }
             // SUPER TIRO
@@ -561,7 +589,10 @@ public class Infinito extends JPanel implements ActionListener {
                 if (formaSuper.intersects(formaInimigoMeteorito)) {
                     inimigoMeteorito.setVisibilidade(false);
                     superTiro.setVisibilidade(false);
-                    personagem.setPontos(personagem.getPontos() + VALORMETEORITO);
+                    personagem.setPontos(personagem.getPontos() + VALOR_INIMIGOS);
+                    inimigoMorto = true;
+                    posicaoPontuacaoX = inimigoMeteorito.getPosicaoEmX();
+                    posicaoPontuacaoY = inimigoMeteorito.getPosicaoEmY();
                 }
             }
         }
