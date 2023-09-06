@@ -6,19 +6,18 @@ import java.util.List;
 import java.util.Random;
 import java.awt.Image;
 import javax.swing.ImageIcon;
-
 import br.ifpr.paranavai.jogo.modelo.Base;
 
 public class Asteroide extends Base {
 
-    private final String CAMINHO_IMGS = "recursos\\Sprites\\Inimigos\\asteroides";
+    private Image selecionaImagem;
     private List<String> listaImagens = new ArrayList<>();
-    private Image imagemSelecionada;
+    private final String CAMINHO_PASTA = "recursos\\Sprites\\Inimigos\\asteroides";
 
     public Asteroide(int posicaoEmX, int posicaoEmY) {
         super.setPosicaoEmX(posicaoEmX);
         super.setPosicaoEmY(posicaoEmY);
-        super.setVelocidadeInicial(4);
+        super.setVelocidadeInicial(2);
         super.setVelocidade(super.getVelocidadeInicial());
         super.setVisibilidade(true);
         carregarImagensAleatorias();
@@ -26,29 +25,32 @@ public class Asteroide extends Base {
 
     private void carregarImagensAleatorias() {
         try {
-            File diretorio = new File(CAMINHO_IMGS);
+            File diretorio = new File(CAMINHO_PASTA);
             File[] arquivos = diretorio.listFiles();
 
             if (arquivos != null) {
                 for (File arquivo : arquivos) {
+                    // SE AS DUAS CONDIÇÕES FOREM VERDADEIRAS
                     if (arquivo.isFile() && arquivo.getName().toLowerCase().endsWith(".png")) {
+                        // ENTÃO JUNTA OS DOIS CAMINHOS EM UM CAMINHO ABSOLUTO
                         listaImagens.add(arquivo.getAbsolutePath());
                     }
                 }
             }
 
             if (listaImagens.isEmpty()) {
-                System.out.println("Nenhuma imagem");
+                System.out.println("Nenhuma imagem Carregada");
                 return;
             }
 
+            // GERA UM VALOR ALEATORIO PRA PEGAR UMA IMAGEM DIFERENTE
             Random random = new Random();
-            int indiceAleatorio = random.nextInt(listaImagens.size());
-            String caminhoImagemSelecionada = listaImagens.get(indiceAleatorio);
+            int valorAleatorio = random.nextInt(listaImagens.size());
+            String caminhoImagemSelecionada = listaImagens.get(valorAleatorio);
 
             // CARREGA A IMG SELECIONADA
             ImageIcon carregador = new ImageIcon(caminhoImagemSelecionada);
-            imagemSelecionada = carregador.getImage();
+            selecionaImagem = carregador.getImage();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,9 +59,9 @@ public class Asteroide extends Base {
 
     @Override
     public void carregar() {
-        super.setImagem(imagemSelecionada);
-        super.setLarguraImagem(imagemSelecionada.getWidth(null));
-        super.setAlturaImagem(imagemSelecionada.getHeight(null));
+        super.setImagem(selecionaImagem);
+        super.setLarguraImagem(selecionaImagem.getWidth(null));
+        super.setAlturaImagem(selecionaImagem.getHeight(null));
     }
 
     @Override

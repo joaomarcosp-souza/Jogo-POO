@@ -5,10 +5,11 @@ import javax.swing.ImageIcon;
 import java.awt.Graphics;
 
 public class Historico extends TelasBase {
+    
     private Image imagemHistorico;
     // CAMINHO IMAGEM DE FUNDO
     private static final String IMAGEM_FUNDO = "recursos\\Sprites\\Fundos\\FundoTelas.jpg";
-    private static final String IMAGEMHISTORICO = "recursos\\Sprites\\Fundos\\TelaHistorico.png";
+    private static final String IMAGEM_TITULO = "recursos\\Sprites\\Fundos\\TelaHistorico.png";
 
     public Historico() {
         super.setVisibilidade(false);
@@ -25,7 +26,7 @@ public class Historico extends TelasBase {
                 Image.SCALE_FAST));
 
         // IMAGEM
-        ImageIcon imgcontrole = new ImageIcon(IMAGEMHISTORICO);
+        ImageIcon imgcontrole = new ImageIcon(IMAGEM_TITULO);
         this.imagemHistorico = imgcontrole.getImage();
         // REDIMENSIONA O TAMANHO DA IMAGEM PARA O TAMANHO DA TELA
         this.imagemHistorico = this.imagemHistorico.getScaledInstance(getTelaTamanho().LARGURA_TELA,

@@ -1,11 +1,11 @@
 package br.ifpr.paranavai.jogo.modelo.Invasores;
 
 import javax.swing.ImageIcon;
-
 import br.ifpr.paranavai.jogo.modelo.Base;
 
 public class Meteorito extends Base {
-    private static final String IMAGEMINIMIGO = "recursos\\Sprites\\Inimigos\\meteorito.png";
+
+    private static final String METEORITO_IMAGEM = "recursos\\Sprites\\Inimigos\\meteorito.png";
 
     public Meteorito(int posicaoEmX, int posicaoEmY) {
         super.setPosicaoEmX(posicaoEmX);
@@ -17,7 +17,7 @@ public class Meteorito extends Base {
 
     @Override
     public void carregar() {
-        ImageIcon carregador = new ImageIcon(IMAGEMINIMIGO);
+        ImageIcon carregador = new ImageIcon(METEORITO_IMAGEM);
         super.setImagem(carregador.getImage());
         super.setLarguraImagem(super.getImagem().getWidth(null));
         super.setAlturaImagem(super.getImagem().getHeight(null));

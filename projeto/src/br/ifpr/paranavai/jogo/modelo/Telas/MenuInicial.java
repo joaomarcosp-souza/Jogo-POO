@@ -10,19 +10,20 @@ import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 
 public class MenuInicial extends TelasBase {
+    
     private Image imagemTitulo;
     // VARIAVEIS DE AJUSTE
-    private static final int espacamentoTituloY = 50;
-    // OPCS DO MENU
-    private static final String MODOFASES = "MODO ONDAS";
-    private static final String MODOINFINITO = "MODO INFINITO";
-    private static final String CONTROLETELA = "CONTROLES";
-    private static final String HISTORICOTELA = "HISTORICO";
-    // FONTES
-    private Font FONTE_MENU = super.getPixel().deriveFont(Font.BOLD, super.getMenuTamanho());
+    private static final int ESPACAMENTO_OPCOES_Y = 50;
+    // OPCÕES DO MENU
+    private static final String MODO_ONDAS = "MODO ONDAS";
+    private static final String TELA_CONTROLES = "CONTROLES";
+    private static final String TELA_HISTORICO = "HISTORICO";
+    private static final String MODO_INFINITO = "MODO INFINITO";
     // CAMINHO IMAGEM DE FUNDO
-    private static final String FUNDOANIMADO = "recursos\\Sprites\\Fundos\\FundoMenu.gif";
-    private static final String IMAGEMTITULO = "recursos\\Sprites\\Fundos\\MenuPrincipal.png";
+    private static final String FUNDO_GIF = "recursos\\Sprites\\Fundos\\FundoMenu.gif";
+    private static final String TITULO_IMAGEM = "recursos\\Sprites\\Fundos\\MenuPrincipal.png";
+    // FONTES
+    private final Font FONTE_MENU = super.getPixel().deriveFont(Font.BOLD, super.getMenuTamanho());
 
     public MenuInicial() {
         setVisibilidade(true);
@@ -30,7 +31,7 @@ public class MenuInicial extends TelasBase {
 
     @Override
     public void carregar() {
-        ImageIcon carregando = new ImageIcon(FUNDOANIMADO);
+        ImageIcon carregando = new ImageIcon(FUNDO_GIF);
         setImagem(carregando.getImage());
         setLarguraImagem(getImagem().getWidth(null));
         setAlturaImagem(getImagem().getHeight(null));
@@ -39,7 +40,7 @@ public class MenuInicial extends TelasBase {
                 Image.SCALE_FAST));
 
         // IMAGEM DO TITULO
-        ImageIcon carregandoTitulo = new ImageIcon(IMAGEMTITULO);
+        ImageIcon carregandoTitulo = new ImageIcon(TITULO_IMAGEM);
         this.imagemTitulo = carregandoTitulo.getImage();
         // REDIMENSIONA O TAMANHO DA IMAGEM PARA O TAMANHO DA TELA
         this.imagemTitulo = this.imagemTitulo.getScaledInstance(getTelaTamanho().LARGURA_TELA,
@@ -54,56 +55,56 @@ public class MenuInicial extends TelasBase {
         g.setFont(FONTE_MENU);
         FontMetrics fm = g.getFontMetrics();
         // OPÇÃO PARA A TELA 'MODO FASES'
-        int posicaoX = (getTelaTamanho().LARGURA_TELA - fm.stringWidth(MODOFASES)) / 2;
+        int posicaoX = (getTelaTamanho().LARGURA_TELA - fm.stringWidth(MODO_ONDAS)) / 2;
         int posicaoY = getTelaTamanho().ALTURA_TELA - 200;
         if (super.getCursor() == 0) {
             g.setColor(getCorAmarela());
         } else {
             g.setColor(Color.WHITE);
         }
-        g.drawString(MODOFASES, posicaoX, posicaoY);
+        g.drawString(MODO_ONDAS, posicaoX, posicaoY);
         if (super.getCursor() == 0) {
             int cursorWidth = fm.stringWidth(">");
             g.drawString(">", posicaoX - cursorWidth, posicaoY);
         } // FIM MODO FASE
 
         // OPÇÃO PARA A TELA 'MODO INFINITO'
-        int infinitoPosX = (getTelaTamanho().LARGURA_TELA - fm.stringWidth(MODOINFINITO)) / 2;
-        int infinitoPosY = posicaoY + espacamentoTituloY;
+        int infinitoPosX = (getTelaTamanho().LARGURA_TELA - fm.stringWidth(MODO_INFINITO)) / 2;
+        int infinitoPosY = posicaoY + ESPACAMENTO_OPCOES_Y;
         if (super.getCursor() == 1) {
             g.setColor(getCorAmarela());
         } else {
             g.setColor(Color.WHITE);
         }
-        g.drawString(MODOINFINITO, infinitoPosX, infinitoPosY);
+        g.drawString(MODO_INFINITO, infinitoPosX, infinitoPosY);
         if (super.getCursor() == 1) {
             int cursorWidth = fm.stringWidth(">");
             g.drawString(">", infinitoPosX - cursorWidth, infinitoPosY);
         }
 
         // OPÇÃO PARA A TELA 'CONTROLES'
-        int controlePosX = (getTelaTamanho().LARGURA_TELA - fm.stringWidth(CONTROLETELA)) / 2;
-        int controlePosY = infinitoPosY + espacamentoTituloY;
+        int controlePosX = (getTelaTamanho().LARGURA_TELA - fm.stringWidth(TELA_CONTROLES)) / 2;
+        int controlePosY = infinitoPosY + ESPACAMENTO_OPCOES_Y;
         if (super.getCursor() == 2) {
             g.setColor(getCorAmarela());
         } else {
             g.setColor(Color.WHITE);
         }
-        g.drawString(CONTROLETELA, controlePosX, controlePosY);
+        g.drawString(TELA_CONTROLES, controlePosX, controlePosY);
         if (super.getCursor() == 2) {
             int cursorWidth = fm.stringWidth(">");
             g.drawString(">", controlePosX - cursorWidth, controlePosY);
         }
 
         // OPÇÃO PARA A TELA 'HISTORICO'
-        int historicoPosX = (getTelaTamanho().LARGURA_TELA - fm.stringWidth(HISTORICOTELA)) / 2;
-        int historicoPosY = controlePosY + espacamentoTituloY;
+        int historicoPosX = (getTelaTamanho().LARGURA_TELA - fm.stringWidth(TELA_HISTORICO)) / 2;
+        int historicoPosY = controlePosY + ESPACAMENTO_OPCOES_Y;
         if (super.getCursor() == 3) {
             g.setColor(getCorAmarela());
         } else {
             g.setColor(Color.WHITE);
         }
-        g.drawString(HISTORICOTELA, historicoPosX, historicoPosY);
+        g.drawString(TELA_HISTORICO, historicoPosX, historicoPosY);
         if (super.getCursor() == 3) {
             int cursorWidth = fm.stringWidth(">");
             g.drawString(">", historicoPosX - cursorWidth, historicoPosY);

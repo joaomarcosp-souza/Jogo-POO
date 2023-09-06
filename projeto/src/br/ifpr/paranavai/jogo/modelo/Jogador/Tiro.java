@@ -1,12 +1,12 @@
 package br.ifpr.paranavai.jogo.modelo.Jogador;
 
 import javax.swing.ImageIcon;
-
 import br.ifpr.paranavai.jogo.modelo.Base;
 
 public class Tiro extends Base {
-    private static final int VELOCIDADETIRO = 8;
-    private static final String IMAGEMTIRO = "recursos\\Sprites\\Tiros\\tiroNormal.gif";
+
+    private static final int VELOCIDADE_TIRO = 8;
+    private static final String IMAGEM_TIRO = "recursos\\Sprites\\Tiros\\tiroNormal.gif";
 
     public Tiro(int posicaoEmX, int posicaoEmY) {
         super.setPosicaoEmX(posicaoEmX);
@@ -16,7 +16,7 @@ public class Tiro extends Base {
 
     @Override
     public void carregar() {
-        ImageIcon carregador = new ImageIcon(IMAGEMTIRO);
+        ImageIcon carregador = new ImageIcon(IMAGEM_TIRO);
         super.setImagem(carregador.getImage());
         super.setLarguraImagem(super.getImagem().getWidth(null));
         super.setAlturaImagem(super.getImagem().getHeight(null));
@@ -24,7 +24,7 @@ public class Tiro extends Base {
 
     @Override
     public void atualizar() {
-        super.setPosicaoEmX(super.getPosicaoEmX() + VELOCIDADETIRO);
+        super.setPosicaoEmX(super.getPosicaoEmX() + VELOCIDADE_TIRO);
         if (super.getPosicaoEmX() > getTelaTamanho().LARGURA_TELA) {
             super.setVisibilidade(false);
         }

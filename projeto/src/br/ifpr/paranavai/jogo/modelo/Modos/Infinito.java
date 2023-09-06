@@ -18,7 +18,7 @@ import javax.swing.Timer;
 import br.ifpr.paranavai.jogo.modelo.Invasores.Meteorito;
 import br.ifpr.paranavai.jogo.modelo.Invasores.Naves;
 import br.ifpr.paranavai.jogo.modelo.Invasores.Asteroide;
-import br.ifpr.paranavai.jogo.modelo.Invasores.DeathStar;
+import br.ifpr.paranavai.jogo.modelo.Invasores.StarDestroyer;
 import br.ifpr.paranavai.jogo.modelo.Jogador.Personagem;
 import br.ifpr.paranavai.jogo.modelo.Jogador.Tiro;
 import br.ifpr.paranavai.jogo.modelo.Jogador.SuperTiro;
@@ -35,45 +35,39 @@ public class Infinito extends JPanel implements ActionListener {
     private Image segundoFundo;
     // LISTA PARA INIMIGOS
     private List<Naves> naveInimiga;
-    private List<Meteorito> meteoritoInimigo;
-    private List<DeathStar> deathstar;
     private List<Asteroide> asteroides;
-
+    private List<StarDestroyer> deathstar;
+    private List<Meteorito> meteoritoInimigo;
     // INSTANCIAS
+    private Pausar telaPausar;
+    private FimDeJogo fimDeJogo;
     private MenuInicial telaMenu;
     private Personagem personagem;
     private Historico telaHistorico;
     private Controles telaControles;
-    private FimDeJogo fimDeJogo;
     private TamanhoTela telaTamanho;
-    private Pausar telaPausar;
-    // TIMERS INIMIGOS
-    private Timer timerNaveInimiga;
+    // TIMERS
     private Timer timerMeteorito;
     private Timer timerDeathStar;
     private Timer timerAsteroides;
+    private Timer timerNaveInimiga;
+    private final Timer timerGlobal;
     // DELAYS INIMIHOS
-    private int delayInimigoNave = 1000;
-    private int delayInimigoMeteorito = 3000;
-    private int delayDeathStar = 20000;
-
-    private Timer timerGlobal;
+    private final static int DELAY_GERAL = 1000;
     // 'TIMER' PARA A COLISAO
     private long ultimaColisao;
-    private int delayColisao = 1000;
-    // VARIAVEIS DO O EFEITO 'PISCANDO' PARA O PERSONAGEM
+    // VARIAVEIS DO EFEITO 'PISCANDO' PARA O PERSONAGEM
     private boolean piscando;
     private Timer timerPiscar;
-    private int delayPiscando = 1000;
     private int contadorPiscar = 0;
 
     public Infinito() {
         setFocusable(true);
         setDoubleBuffered(true);
+
         // IMAGEM DE FUNDO
         ImageIcon carregando = new ImageIcon("recursos\\Sprites\\Fundos\\FundoFase.jpg");
         this.fundo = carregando.getImage();
-
         // IMAGEM SEGUNDO FUNDO
         ImageIcon carregandoDois = new ImageIcon("recursos\\Sprites\\Fundos\\FundoFase2.jpg");
         this.segundoFundo = carregandoDois.getImage();
@@ -109,7 +103,7 @@ public class Infinito extends JPanel implements ActionListener {
 
         // INICIALIZANDO CLASSE DE LEITURA DO TECLADO
         addKeyListener(new TecladoAdapter());
-        timerPiscar = new Timer(delayPiscando, new ActionListener() {
+        timerPiscar = new Timer(DELAY_GERAL, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 piscando = !piscando; // ALTERNA A VISIBILIDADE DO PERSONAGEM
@@ -119,20 +113,20 @@ public class Infinito extends JPanel implements ActionListener {
         timerPiscar.setRepeats(true);
         piscando = false;
         // ATUALIZA A CLASSE E REDENSENHA A TELA EM INTERVALOS REGULARES.
-        timerGlobal = new Timer(1, this);
+        timerGlobal = new Timer(5, this);
         timerGlobal.start(); // START
         // INICIALIZANDO MÉTODOS INIMIGOS
-        InicializaNaveInimiga(); // NAVES
-        InicializaMeteorito(); // METEORITOS
-        InicializaNuvens();// NUVEMS
-        InicializaAsteroides();
+        inicializaNaveInimiga(); // NAVES
+        inicializaMeteorito(); // METEORITOS
+        inicializaDeathStar();// NUVEMS
+        inicializaAsteroides();
     }
 
     // INICIANDO POSIÇÃO DAS NAVES INIMIGAS ALEATORIAMENTE
-    public void InicializaNaveInimiga() {
+    public void inicializaNaveInimiga() {
         naveInimiga = new ArrayList<Naves>();
         // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
-        timerNaveInimiga = new Timer(delayInimigoNave, new ActionListener() {
+        timerNaveInimiga = new Timer(DELAY_GERAL, new ActionListener() {
             int alturaInimigo = 80;
             int vidaInimigos = 1;
             int multiploNave = 400;
@@ -161,11 +155,11 @@ public class Infinito extends JPanel implements ActionListener {
     }
 
     // INICIANDO POSIÇÃO DO METEORITO ALEATORIAMENTE
-    public void InicializaMeteorito() {
+    public void inicializaMeteorito() {
         meteoritoInimigo = new ArrayList<Meteorito>();
         int alturaInimigo = 100;
         // TIMER PARA SPAWNAR O METEORITO
-        timerMeteorito = new Timer(delayInimigoMeteorito, new ActionListener() {
+        timerMeteorito = new Timer(DELAY_GERAL * 3, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int posicaoEmY = -alturaInimigo;
@@ -177,22 +171,22 @@ public class Infinito extends JPanel implements ActionListener {
     }// FIM MÉTODO METEORITO
 
     // INICIALIZA NUVEM SEM COLISÃO(TEMPORARIO)
-    public void InicializaNuvens() {
-        deathstar = new ArrayList<DeathStar>();
+    public void inicializaDeathStar() {
+        deathstar = new ArrayList<StarDestroyer>();
         // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
-        timerDeathStar = new Timer(delayDeathStar, new ActionListener() {
+        timerDeathStar = new Timer(DELAY_GERAL * 19, new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 int posicaoEmX = telaTamanho.getLARGURA_TELA();
                 int posicaoEmY = (int) (Math.random() * (telaTamanho.getALTURA_TELA() - 100));
-                deathstar.add(new DeathStar(posicaoEmX, posicaoEmY));
+                deathstar.add(new StarDestroyer(posicaoEmX, posicaoEmY));
             }
         });
         timerDeathStar.setRepeats(true);
     }
 
-    public void InicializaAsteroides() {
+    public void inicializaAsteroides() {
         asteroides = new ArrayList<Asteroide>();
         // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
         timerAsteroides = new Timer(500, new ActionListener() {
@@ -224,7 +218,6 @@ public class Infinito extends JPanel implements ActionListener {
             if (personagem.getPontos() >= 200) {
                 graficos.drawImage(this.segundoFundo, 0, 0, null);
             }
-
             // CARREGANDO TIRO
             List<Tiro> tiros = personagem.getTiros();
             for (int i = 0; i < tiros.size(); i++) {
@@ -240,7 +233,6 @@ public class Infinito extends JPanel implements ActionListener {
                 graficos.drawImage(tiroEspecial.getImagem(),
                         tiroEspecial.getPosicaoEmX(), tiroEspecial.getPosicaoEmY(), null);
             }
-
             // CARREGA DEATH STAR
             for (int i = 0; i < asteroides.size(); i++) {
                 Asteroide asteroideTemporario = asteroides.get(i);
@@ -248,10 +240,9 @@ public class Infinito extends JPanel implements ActionListener {
                 graficos.drawImage(asteroideTemporario.getImagem(),
                         asteroideTemporario.getPosicaoEmX(), asteroideTemporario.getPosicaoEmY(), null);
             }
-
             // CARREGA DEATH STAR
             for (int i = 0; i < deathstar.size(); i++) {
-                DeathStar nuvemTemporaria = deathstar.get(i);
+                StarDestroyer nuvemTemporaria = deathstar.get(i);
                 nuvemTemporaria.carregar();
                 graficos.drawImage(nuvemTemporaria.getImagem(),
                         nuvemTemporaria.getPosicaoEmX(), nuvemTemporaria.getPosicaoEmY(), null);
@@ -264,7 +255,6 @@ public class Infinito extends JPanel implements ActionListener {
                 graficos.drawImage(mete.getImagem(), mete.getPosicaoEmX(), mete.getPosicaoEmY(),
                         null);
             }
-
             for (int i = 0; i < naveInimiga.size(); i++) {
                 Naves ini = naveInimiga.get(i);
                 ini.carregar();
@@ -283,7 +273,6 @@ public class Infinito extends JPanel implements ActionListener {
                 graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(),
                         null);
             }
-
         } else if (fimDeJogo.isVisibilidade() == true) {
             fimDeJogo.titulo(graficos);
             fimDeJogo.menu(graficos);
@@ -323,9 +312,9 @@ public class Infinito extends JPanel implements ActionListener {
             } // FIM
 
             // DEATHSTAR ATUALIZA
-            Iterator<DeathStar> iteratorNuvem = deathstar.iterator();
+            Iterator<StarDestroyer> iteratorNuvem = deathstar.iterator();
             while (iteratorNuvem.hasNext()) {
-                DeathStar nuv = iteratorNuvem.next();
+                StarDestroyer nuv = iteratorNuvem.next();
                 if (nuv.isVisibilidade()) {
                     nuv.atualizar();
                 } else {
@@ -377,6 +366,7 @@ public class Infinito extends JPanel implements ActionListener {
         if (telaPausar.isPausado()) {
             timerNaveInimiga.stop();
             timerMeteorito.stop();
+            timerAsteroides.stop();
             timerDeathStar.stop();
             telaPausar.menu(getGraphics());
         }
@@ -408,10 +398,10 @@ public class Infinito extends JPanel implements ActionListener {
             meteoritoInimigo.clear();
             deathstar.clear();
             // RESETA A POSIÇÃO DO JOGADOR
-            if (personagem.getPosicaoEmX() != personagem.getPOSICAO_INICIALX()
-                    || personagem.getPosicaoEmY() != personagem.getPOSICAO_INICIALY()) {
-                personagem.setPosicaoEmX(personagem.getPOSICAO_INICIALX());
-                personagem.setPosicaoEmY(personagem.getPOSICAO_INICIALY());
+            if (personagem.getPosicaoEmX() != personagem.getPOSICAO_INICIAL_X()
+                    || personagem.getPosicaoEmY() != personagem.getPOSICAO_INICIAL_Y()) {
+                personagem.setPosicaoEmX(personagem.getPOSICAO_INICIAL_X());
+                personagem.setPosicaoEmY(personagem.getPOSICAO_INICIAL_Y());
             }
             // RESETA A HUD
             personagem.setPontos(0);
@@ -476,7 +466,7 @@ public class Infinito extends JPanel implements ActionListener {
             Naves naveTemporaria = naveInimiga.get(i);
             naveInimigaForma = naveTemporaria.getBounds();
             long tempoAtual = System.currentTimeMillis();
-            if (tempoAtual - ultimaColisao < delayColisao) {
+            if (tempoAtual - ultimaColisao < DELAY_GERAL) {
                 return;
             } else {
                 contadorPiscar = 0; // REINICIA O CONTADOR

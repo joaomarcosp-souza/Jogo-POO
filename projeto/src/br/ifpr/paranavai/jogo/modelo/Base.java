@@ -11,13 +11,13 @@ import br.ifpr.paranavai.principal.TamanhoTela;
 public abstract class Base {
     private int vida;
     private Image imagem;
+    private double velocidade;
+    private Font pixel = null;
     private boolean visibilidade;
+    private TamanhoTela telaTamanho;
+    private double velocidadeInicial;
     private int posicaoEmX, posicaoEmY;
     private int larguraImagem, alturaImagem;
-    private double velocidade;
-    private double velocidadeInicial;
-    private Font pixel = null;
-    private TamanhoTela telaTamanho;
 
     public Base() {
         this.visibilidade = true;

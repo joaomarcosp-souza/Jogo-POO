@@ -9,22 +9,16 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class FimDeJogo extends TelasBase {
-    // VARIAVEIS PARA CORRIGIR A POSIÇÃO DE ALGUNS ITENS
-    private static final int offsetTituloX = 5;
-    private static final int offSetPosXsim = 10;
-    private static final int offSetPosXnao = 30;
-    private static final int offSubTituloY = 80;
-    private static final int espacamentoYsim = 40;
-    // OPÇÕES EM TEXTO
-    private static final String OPC_SIM = "SIM";
-    private static final String OPC_NAO = "NAO";
+    // OPÇÕES MENU
+    private static final String OPCAO_SIM = "SIM";
+    private static final String OPCAO_NAO = "NAO";
     private static final String MENSAGEM = "JOGAR NOVAMENTE?";
     // TITULO
-    private static final String TITULO_PRINCIPAL = "GAME";
     private static final String SUBTITULO = "OVER";
+    private static final String TITULO_PRINCIPAL = "GAME";
     // FONTES
-    private Font FONTE_TITULOS = super.getPixel().deriveFont(Font.BOLD, super.getTituloTamanho());
-    private Font FONTE_MENU = super.getPixel().deriveFont(Font.BOLD, super.getTamanhoFonte());
+    private final Font FONTE_MENU = super.getPixel().deriveFont(Font.BOLD, super.getTamanhoFonte());
+    private final Font FONTE_TITULOS = super.getPixel().deriveFont(Font.BOLD, super.getTituloTamanho());
     // CAMINHO IMAGEM DE FUNDO
     private static final String IMAGEM_FUNDO = "recursos\\Sprites\\Fundos\\TelaFimDeJogo.gif";
 
@@ -52,13 +46,13 @@ public class FimDeJogo extends TelasBase {
         int subTituloLargura = (fm.stringWidth(SUBTITULO));
         // EFEITO PARA O TITULO
         g.setColor(Color.WHITE);
-        g.drawString(TITULO_PRINCIPAL, tituloPosX + offsetTituloX, super.getPosicaoTituloY());
+        g.drawString(TITULO_PRINCIPAL, tituloPosX + 5, super.getPOSICAO_TITULO_Y());
         g.setColor(super.getCorAmarela());
-        g.drawString(TITULO_PRINCIPAL, tituloPosX, (super.getPosicaoTituloY()));
+        g.drawString(TITULO_PRINCIPAL, tituloPosX, (super.getPOSICAO_TITULO_Y()));
         // DESENHA O SUBTITULO
         g.setColor(Color.WHITE);
         g.drawString(SUBTITULO, tituloPosX + (fm.stringWidth(TITULO_PRINCIPAL) - subTituloLargura) / 2,
-                (super.getPosicaoTituloY() + offSubTituloY));
+                (super.getPOSICAO_TITULO_Y() + 80));
     }
 
     public void menu(Graphics g) {
@@ -72,13 +66,13 @@ public class FimDeJogo extends TelasBase {
         int mensagemPosX = posicaoEmX + fm.stringWidth(MENSAGEM) / 2;
 
         // CENTRALIZA AS OPCÇÕES
-        int simLargura = fm.stringWidth(OPC_SIM);
-        int naoLargura = fm.stringWidth(OPC_NAO);
+        int simLargura = fm.stringWidth(OPCAO_SIM);
+        int naoLargura = fm.stringWidth(OPCAO_NAO);
         int larguraTotal = simLargura + naoLargura;
 
         // 'SIM'
-        int posicaoXsim = (mensagemPosX - larguraTotal / 2) - offSetPosXsim;
-        int posicaoYsim = posicaoEmY + espacamentoYsim;
+        int posicaoXsim = (mensagemPosX - larguraTotal / 2) - 10;
+        int posicaoYsim = posicaoEmY + 40;
         if (super.getCursor() == 0) {
             g.setColor(getCorAmarela());
             int cursorWidth = fm.stringWidth(">");
@@ -86,10 +80,10 @@ public class FimDeJogo extends TelasBase {
         } else {
             g.setColor(Color.WHITE);
         }
-        g.drawString(OPC_SIM, posicaoXsim, posicaoYsim);
+        g.drawString(OPCAO_SIM, posicaoXsim, posicaoYsim);
 
         // 'NÃO'
-        int posicaoXnao = (posicaoXsim + simLargura) + offSetPosXnao;
+        int posicaoXnao = (posicaoXsim + simLargura) + 30;
         int posicaoYnao = posicaoYsim;
         if (super.getCursor() == 1) {
             g.setColor(getCorAmarela());
@@ -98,7 +92,7 @@ public class FimDeJogo extends TelasBase {
         } else {
             g.setColor(Color.WHITE);
         }
-        g.drawString(OPC_NAO, posicaoXnao, posicaoYnao);
+        g.drawString(OPCAO_NAO, posicaoXnao, posicaoYnao);
     }
 
     public void controleMenu(KeyEvent teclado) {

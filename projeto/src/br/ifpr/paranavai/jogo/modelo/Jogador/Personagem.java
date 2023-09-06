@@ -15,42 +15,43 @@ public class Personagem extends Base {
     private int pontos;
     private int inimigosMortos;
     // VARIAVEIS RESPAWN DA VIDA
-    private int vidaMaxima = 4;
+    private int posicaoVidaY;
+    private int posicaoVidaX;
     private Rectangle vidaHitBox;
     private int alturaImagemVida;
     private int qtdeRestauraVida;
     private boolean vidaRestaurada;
-    private int posicaoVidaX;
-    private int posicaoVidaY;
-    // TIRO
-    private long ultimoTiro;
+    // TIROS
     private int qtdeSuper;
+    private long ultimoTiro;
     private boolean jogando;
+    // LISTA
     private List<Tiro> tiros;
-    // MOVITEMENTAÇÃO
     private List<SuperTiro> supertiro;
+    // MOVITEMENTAÇÃO
     private int deslocamentoEmX, deslocamentoEmY;
-    // VARIAVEIS FINAIS
-    private final long delayTiro;
+    // VARIAVEIS CONSTANTES
     private Image IMAGEM_VIDA;
+    private final long DELAY_TIRO;
     private final int ANGULO = 15;
-    private final int VIDA_INICIAL = 4;
+    private final int VIDA_MAXIMA = 4;
+    private static final int VIDA_INICIAL = 4;
+    private final int POSICAO_INICIAL_X = 100;
     private static final int PONTOS_INICIAIS = 0;
-    private final int POSICAO_INICIALX = 100;
-    private final int POSICAO_INICIALY = super.getTelaTamanho().ALTURA_TELA / 2;
+    private final int POSICAO_INICIAL_Y = super.getTelaTamanho().ALTURA_TELA / 2;
     // CAMINHO PARA AS IMAGENS
-    private static final String NAVEIMGJOGADOR = "recursos\\Sprites\\Personagem\\Personagem.gif";
-    private static final String VIDAIMGJOGADOR = "recursos\\Sprites\\Personagem\\coracao.png";
+    private static final String IMAGEM_JOGADOR = "recursos\\Sprites\\Personagem\\Personagem.gif";
+    private static final String IMAGEM_JOGADOR_VIDA = "recursos\\Sprites\\Personagem\\coracao.png";
 
     public Personagem() {
         super.setVida(VIDA_INICIAL);
-        super.setPosicaoEmX(POSICAO_INICIALX);
-        super.setPosicaoEmY(POSICAO_INICIALY);
+        super.setPosicaoEmX(POSICAO_INICIAL_X);
+        super.setPosicaoEmY(POSICAO_INICIAL_Y);
         super.setVelocidadeInicial(4);
         super.setVelocidade(super.getVelocidadeInicial());
         super.setVisibilidade(true);
 
-        this.delayTiro = 300;
+        this.DELAY_TIRO = 300;
         this.jogando = false;
         this.pontos = PONTOS_INICIAIS;
         this.vidaRestaurada = false;
@@ -64,12 +65,12 @@ public class Personagem extends Base {
     @Override
     public void carregar() {
         // IMAGEM NAVE
-        ImageIcon carregando = new ImageIcon(NAVEIMGJOGADOR);
+        ImageIcon carregando = new ImageIcon(IMAGEM_JOGADOR);
         super.setImagem(carregando.getImage());
         super.setLarguraImagem(super.getImagem().getWidth(null));
         super.setAlturaImagem(super.getImagem().getHeight(null));
         // IMAGEM VIDA
-        ImageIcon carregaVida = new ImageIcon(VIDAIMGJOGADOR);
+        ImageIcon carregaVida = new ImageIcon(IMAGEM_JOGADOR_VIDA);
         this.IMAGEM_VIDA = carregaVida.getImage();
         this.alturaImagemVida = this.IMAGEM_VIDA.getHeight(null);
 
@@ -122,7 +123,7 @@ public class Personagem extends Base {
         int centroPersonagemX = super.getPosicaoEmX() + super.getLarguraImagem() / 2;
         int centroPersonagemY = super.getPosicaoEmY() + super.getAlturaImagem() / 2;
 
-        if (tempoAtual - ultimoTiro < delayTiro) {
+        if (tempoAtual - ultimoTiro < DELAY_TIRO) {
             return;
         } else {
             if (tecla == KeyEvent.VK_SPACE) {
@@ -145,7 +146,7 @@ public class Personagem extends Base {
     }
 
     public void restauraVida(Graphics g) {
-        if (this.getQtdeRestauraVida() > 0 && this.vidaRestaurada == true && this.getVida() < vidaMaxima) {
+        if (this.getQtdeRestauraVida() > 0 && this.vidaRestaurada == true && this.getVida() < VIDA_MAXIMA) {
             g.drawImage(IMAGEM_VIDA, this.posicaoVidaX, this.posicaoVidaY, null);
             if (this.getBounds().intersects((new Rectangle(posicaoVidaX, posicaoVidaY, 50, 50)))) {
                 this.setVida(this.getVida() + 1);
@@ -241,12 +242,12 @@ public class Personagem extends Base {
         this.supertiro = supertiro;
     }
 
-    public int getPOSICAO_INICIALX() {
-        return POSICAO_INICIALX;
+    public int getPOSICAO_INICIAL_X() {
+        return POSICAO_INICIAL_X;
     }
 
-    public int getPOSICAO_INICIALY() {
-        return POSICAO_INICIALY;
+    public int getPOSICAO_INICIAL_Y() {
+        return POSICAO_INICIAL_Y;
     }
 
     public Rectangle getVidaHitBox() {
@@ -255,14 +256,6 @@ public class Personagem extends Base {
 
     public void setVidaHitBox(Rectangle vidaHitBox) {
         this.vidaHitBox = vidaHitBox;
-    }
-
-    public int getVidaMaxima() {
-        return vidaMaxima;
-    }
-
-    public void setVidaMaxima(int vidaMaxima) {
-        this.vidaMaxima = vidaMaxima;
     }
 
     public int getPosicaoVidaX() {

@@ -4,7 +4,8 @@ import java.awt.Color;
 import br.ifpr.paranavai.jogo.modelo.Base;
 
 public abstract class TelasBase extends Base{
-    private int posicaoTituloY = 100; // POSIÇÃO DOS TITULOS EM 'Y'
+    
+    private final int POSICAO_TITULO_Y = 100; // POSIÇÃO DOS TITULOS EM 'Y'
     // MENU
     private int cursor = 0;
     private static final int MENU_TAMANHO = 50;
@@ -24,12 +25,8 @@ public abstract class TelasBase extends Base{
         return COR_AMARELA;
     }
 
-    public int getPosicaoTituloY() {
-        return posicaoTituloY;
-    }
-
-    public void setPosicaoTituloY(int posicaoTituloY) {
-        this.posicaoTituloY = posicaoTituloY;
+    public int getPOSICAO_TITULO_Y() {
+        return POSICAO_TITULO_Y;
     }
 
     public int getCursor() {

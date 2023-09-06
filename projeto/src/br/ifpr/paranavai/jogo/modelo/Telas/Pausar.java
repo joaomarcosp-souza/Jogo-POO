@@ -9,18 +9,15 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class Pausar extends TelasBase {
-    // VARIAVEIS PARA CORRIGIR A POSIÇÃO DE ALGUNS ITENS
-    private static final int offSetPosXsim = 10;
-    private static final int offSetPosXnao = 30;
-    private static final int espacamentoYsim = 40;
+    
     private boolean pausado;
     // OPÇÕES MENU
-    private static final String OPC_SIM = "SIM";
-    private static final String OPC_NAO = "NAO";
-    private static final String MENSAGEM = "VOLTAR AO JOGO?";
+    private static final String OPCAO_SIM = "SIM";
+    private static final String OPCAO_NAO = "NAO";
+    private static final String MENSAGEM_MENU = "VOLTAR AO JOGO?";
     // FONTES
+    private static final String CAMINHO_IMAGEM = "recursos\\Sprites\\Fundos\\TelaPause.png";
     private Font FONTE_MENU = super.getPixel().deriveFont(Font.BOLD, super.getTamanhoFonte());
-    private static final String CAMINHOIMG = "recursos\\Sprites\\Fundos\\TelaPause.png";
 
     public Pausar() {
         super.setVisibilidade(false);
@@ -29,7 +26,7 @@ public class Pausar extends TelasBase {
 
     @Override
     public void carregar() {
-        ImageIcon carregando = new ImageIcon(CAMINHOIMG);
+        ImageIcon carregando = new ImageIcon(CAMINHO_IMAGEM);
         super.setImagem(carregando.getImage());
         // RESIMENSIONA A IMG
         super.setImagem(super.getImagem().getScaledInstance(getTelaTamanho().LARGURA_TELA, getTelaTamanho().ALTURA_TELA,
@@ -43,19 +40,19 @@ public class Pausar extends TelasBase {
         g.setColor(Color.WHITE);
         g.setFont(FONTE_MENU);
         FontMetrics fm = g.getFontMetrics();
-        int posicaoEmX = (getTelaTamanho().LARGURA_TELA - fm.stringWidth(MENSAGEM)) / 2;
+        int posicaoEmX = (getTelaTamanho().LARGURA_TELA - fm.stringWidth(MENSAGEM_MENU)) / 2;
         int posicaoEmY = getTelaTamanho().ALTURA_TELA - OFFSETY;
-        g.drawString(MENSAGEM, posicaoEmX, posicaoEmY);
-        int mensagemPosX = posicaoEmX + fm.stringWidth(MENSAGEM) / 2;
+        g.drawString(MENSAGEM_MENU, posicaoEmX, posicaoEmY);
+        int mensagemPosX = posicaoEmX + fm.stringWidth(MENSAGEM_MENU) / 2;
 
         // CENTRALIZA AS OPCÇÕES
-        int simLargura = fm.stringWidth(OPC_SIM);
-        int naoLargura = fm.stringWidth(OPC_NAO);
+        int simLargura = fm.stringWidth(OPCAO_SIM);
+        int naoLargura = fm.stringWidth(OPCAO_NAO);
         int larguraTotal = simLargura + naoLargura;
 
         // 'SIM'
-        int posicaoXsim = (mensagemPosX - larguraTotal / 2) - offSetPosXsim;
-        int posicaoYsim = posicaoEmY + espacamentoYsim;
+        int posicaoXsim = (mensagemPosX - larguraTotal / 2) - 10;
+        int posicaoYsim = posicaoEmY + 40;
         if (super.getCursor() == 0) {
             g.setColor(getCorAmarela());
             int cursorWidth = fm.stringWidth(" ");
@@ -63,10 +60,10 @@ public class Pausar extends TelasBase {
         } else {
             g.setColor(Color.WHITE);
         }
-        g.drawString(OPC_SIM, posicaoXsim, posicaoYsim);
+        g.drawString(OPCAO_SIM, posicaoXsim, posicaoYsim);
 
         // 'NÃO'
-        int posicaoXnao = (posicaoXsim + simLargura) + offSetPosXnao;
+        int posicaoXnao = (posicaoXsim + simLargura) + 30;
         int posicaoYnao = posicaoYsim;
         if (super.getCursor() == 1) {
             g.setColor(getCorAmarela());
@@ -75,7 +72,7 @@ public class Pausar extends TelasBase {
         } else {
             g.setColor(Color.WHITE);
         }
-        g.drawString(OPC_NAO, posicaoXnao, posicaoYnao);
+        g.drawString(OPCAO_NAO, posicaoXnao, posicaoYnao);
     }
 
     public void menuPausado(KeyEvent teclado) {

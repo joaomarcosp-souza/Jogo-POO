@@ -7,7 +7,8 @@ import javax.swing.ImageIcon;
 import java.awt.Font;
 
 public class Naves extends Base {
-    private static final String IMAGEMINIMIGO = "recursos\\Sprites\\Inimigos\\tfighter.png";
+
+    private static final String NAVE_IMAGEM = "recursos\\Sprites\\Inimigos\\tfighter.png";
 
     public Naves(int posicaoEmX, int posicaoEmY, int INIMIGOSVIDA) {
         super.setPosicaoEmX(posicaoEmX);
@@ -20,7 +21,7 @@ public class Naves extends Base {
 
     @Override
     public void carregar() {
-        ImageIcon carregador = new ImageIcon(IMAGEMINIMIGO);
+        ImageIcon carregador = new ImageIcon(NAVE_IMAGEM);
         super.setImagem(carregador.getImage());
         super.setLarguraImagem(super.getImagem().getWidth(null));
         super.setAlturaImagem(super.getImagem().getHeight(null));
@@ -54,7 +55,7 @@ public class Naves extends Base {
         for (int i = 0; i < maximoVidas; i++) {
             // CALCULA A POSIÇÃO DO CUBO ATUAL
             int cuboPosX = posicaoCuboX + (tamanhoCubo + espacamentoCubo) * i;
-            // DESENHADO O CUBO
+            // DESENHADO O CUBO(VIDA)
             g.setColor(Color.RED);
             g.fillRect((cuboPosX + offsetRetangulo), posicaoCuboY, tamanhoCubo, tamanhoCubo);
         }
