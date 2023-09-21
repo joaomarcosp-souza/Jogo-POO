@@ -5,7 +5,6 @@ import br.ifpr.paranavai.jogo.modelo.Base;
 
 public class StarDestroyer extends Base {
 
-    private boolean bossAlive;
     private static final String PATH_IMAGE = "recursos\\Sprites\\Inimigos\\starDestroyer.png";
 
     public StarDestroyer(int posicaoEmX, int posicaoEmY) {
@@ -18,8 +17,8 @@ public class StarDestroyer extends Base {
 
     @Override
     public void carregar() {
-        ImageIcon carregador = new ImageIcon(PATH_IMAGE);
-        super.setImage(carregador.getImage());
+        ImageIcon loading = new ImageIcon(PATH_IMAGE);
+        super.setImage(loading.getImage());
         super.setWidthImage(super.getImage().getWidth(null));
         super.setHeightImage(super.getImage().getHeight(null));
     }
@@ -36,14 +35,5 @@ public class StarDestroyer extends Base {
         } else if (super.getPositionInY() > super.getScreenResolution().HEIGHT_SCREEN - super.getHeightImage()) {
             super.setPositionInY(super.getScreenResolution().HEIGHT_SCREEN - super.getHeightImage());
         }
-    }
-
-    // GETTERS E SETTERS
-    public boolean isBossAlive() {
-        return bossAlive;
-    }
-
-    public void setBossAlive(boolean chefaoVivo) {
-        this.bossAlive = chefaoVivo;
     }
 }

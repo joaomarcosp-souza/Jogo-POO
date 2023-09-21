@@ -72,9 +72,18 @@ public class Infinito extends JPanel implements ActionListener {
     private Timer timerFlashing;
     private int countFlashing = 0;
     // AUDIO
+    //BULLET ITEMS
     private File bulletSound = new File("recursos/Audios/tiro.wav");
     private AudioStream bulletSoundAudio;
     private InputStream bulletSoundInput;
+    //ENEMY DESTROYED ITEMS
+    private File deathEnemySound = new File("recursos/Audios/naveInimigaDestruida.wav");
+    private AudioStream deathEnemySoundAudio;
+    private InputStream deathEnemySoundInput;
+    // HIT MARKER
+    private File hitMarkerSound = new File("recursos/Audios/colisaoAudio.wav");
+    private AudioStream hitMarkerSoundAudio;
+    private InputStream hitMarkerSoundInput;
 
     public Infinito() {
         setFocusable(true);
@@ -460,8 +469,15 @@ public class Infinito extends JPanel implements ActionListener {
         }
 
         try {
+            // BULLET THINGS
             bulletSoundInput = new FileInputStream(bulletSound);
             bulletSoundAudio = new AudioStream(bulletSoundInput);
+            //ENEMY DESTROYED THINGS
+            deathEnemySoundInput = new FileInputStream(deathEnemySound);
+            deathEnemySoundAudio = new AudioStream(deathEnemySoundInput);
+            // ENEMY DESTROYED THINGS
+            hitMarkerSoundInput = new FileInputStream(hitMarkerSound);
+            hitMarkerSoundAudio = new AudioStream(hitMarkerSoundInput);
         } catch (Exception e) {
 
         }
@@ -524,6 +540,7 @@ public class Infinito extends JPanel implements ActionListener {
         }
         for (Naves inimigoNave : enemyShip) {
             Rectangle formaInimigoNave = inimigoNave.getBounds();
+
             // TIRO NORMAL
             for (Tiro tiro : player.getBullets()) {
                 Rectangle formaTiro = tiro.getBounds();
@@ -536,9 +553,11 @@ public class Infinito extends JPanel implements ActionListener {
                         inimigoNave.setVisibility(false);
                         player.setScore(pontuacaoAtual);
                         player.setScoreDeadEnemys(player.getScoreDeadEnemys() + 1);
+                        AudioPlayer.player.start(deathEnemySoundAudio);
                         this.enemyKilled = true;
                     } else {
                         inimigoNave.setLife(inimigoNave.getLife() - 1);
+                        AudioPlayer.player.start(hitMarkerSoundAudio);
                         this.enemyKilled = false;
                     }
                     scorePositionX = inimigoNave.getPositionInX();

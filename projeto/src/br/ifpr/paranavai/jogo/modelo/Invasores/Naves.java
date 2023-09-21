@@ -21,8 +21,8 @@ public class Naves extends Base {
 
     @Override
     public void carregar() {
-        ImageIcon carregador = new ImageIcon(PATH_IMAGE);
-        super.setImage(carregador.getImage());
+        ImageIcon loading = new ImageIcon(PATH_IMAGE);
+        super.setImage(loading.getImage());
         super.setWidthImage(super.getImage().getWidth(null));
         super.setHeightImage(super.getImage().getHeight(null));
     }
