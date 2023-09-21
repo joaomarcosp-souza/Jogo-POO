@@ -5,28 +5,28 @@ import br.ifpr.paranavai.jogo.modelo.Base;
 
 public class Tiro extends Base {
 
-    private static final int VELOCIDADE_TIRO = 8;
-    private static final String IMAGEM_TIRO = "recursos\\Sprites\\Tiros\\tiroNormal.gif";
+    private static final int SPEED_BULLET = 8;
+    private static final String IMAGE_PATH_BULLET = "recursos\\Sprites\\Tiros\\tiroNormal.gif";
 
     public Tiro(int posicaoEmX, int posicaoEmY) {
-        super.setPosicaoEmX(posicaoEmX);
-        super.setPosicaoEmY(posicaoEmY);
-        super.setVisibilidade(true);
+        super.setPositionInX(posicaoEmX);
+        super.setPositionInY(posicaoEmY);
+        super.setVisibility(true);
     }
 
     @Override
     public void carregar() {
-        ImageIcon carregador = new ImageIcon(IMAGEM_TIRO);
-        super.setImagem(carregador.getImage());
-        super.setLarguraImagem(super.getImagem().getWidth(null));
-        super.setAlturaImagem(super.getImagem().getHeight(null));
+        ImageIcon carregador = new ImageIcon(IMAGE_PATH_BULLET);
+        super.setImage(carregador.getImage());
+        super.setWidthImage(super.getImage().getWidth(null));
+        super.setHeightImage(super.getImage().getHeight(null));
     }
 
     @Override
     public void atualizar() {
-        super.setPosicaoEmX(super.getPosicaoEmX() + VELOCIDADE_TIRO);
-        if (super.getPosicaoEmX() > getTelaTamanho().LARGURA_TELA) {
-            super.setVisibilidade(false);
+        super.setPositionInX(super.getPositionInX() + SPEED_BULLET);
+        if (super.getPositionInX() > getScreenResolution().WIDTH_SCREEN) {
+            super.setVisibility(false);
         }
     }
 }

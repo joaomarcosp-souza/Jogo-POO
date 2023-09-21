@@ -12,295 +12,275 @@ import java.awt.Image;
 import java.awt.Rectangle;
 
 public class Personagem extends Base {
-    private int pontos;
-    private int inimigosMortos;
+    private int score;
+    private int scoreDeadEnemys;
     // VARIAVEIS RESPAWN DA VIDA
-    private int posicaoVidaY;
-    private int posicaoVidaX;
-    private Rectangle vidaHitBox;
-    private int alturaImagemVida;
-    private int qtdeRestauraVida;
-    private boolean vidaRestaurada;
+    private int positionLifeInX;
+    private int positionLifeInY;
+    private Rectangle lifeHitBox;
+    private int heightLifeImage;
+    private int healthRestoreCheck;
+    private boolean healthRestored;
     // TIROS
-    private int qtdeSuper;
-    private long ultimoTiro;
-    private boolean jogando;
+    private int superQuantity;
+    private long lastBullet;
+    private boolean playing;
     // LISTA
-    private boolean podeAtirar;
-    private List<Tiro> tiros;
-    private List<SuperTiro> supertiro;
+    private boolean CanShoot;
+    private List<Tiro> bullets;
+    private List<SuperTiro> specialBullet;
     // MOVITEMENTAÇÃO
-    private int deslocamentoEmX, deslocamentoEmY;
+    private int offsetInX, offsetInY;
     // VARIAVEIS CONSTANTES
-    private Image IMAGEM_VIDA;
-    private final long DELAY_TIRO;
-    private final int ANGULO = 15;
-    private final int VIDA_MAXIMA = 4;
-    private static final int VIDA_INICIAL = 4;
-    private final int POSICAO_INICIAL_X = 100;
-    private static final int PONTOS_INICIAIS = 0;
-    private final int POSICAO_INICIAL_Y = super.getTelaTamanho().ALTURA_TELA / 2;
+    private Image IMAGE_LIFE;
+    private final long DELAY_BULLET;
+    private final int ANGLE = 15;
+    private final int MAX_LIFE = 4;
+    private final int INITIAL_LIFE = 4;
+    private static final int INITIAL_SCORE = 0;
+    private final int INITIAL_POSITION_X = 100;
+    private final int INITIAL_POSITION_Y = super.getScreenResolution().HEIGHT_SCREEN / 2;
     // CAMINHO PARA AS IMAGENS
-    private static final String IMAGEM_JOGADOR = "recursos\\Sprites\\Personagem\\Personagem.gif";
-    private static final String IMAGEM_JOGADOR_VIDA = "recursos\\Sprites\\Personagem\\coracao.png";
+    private static final String IMAGE_PATH_LIFE = "recursos\\Sprites\\Personagem\\coracao.png";
+    private static final String IMAGE_PATH_PLAYER = "recursos\\Sprites\\Personagem\\Personagem.gif";
 
     public Personagem() {
-        super.setVida(VIDA_INICIAL);
-        super.setPosicaoEmX(POSICAO_INICIAL_X);
-        super.setPosicaoEmY(POSICAO_INICIAL_Y);
-        super.setVelocidadeInicial(4);
-        super.setVelocidade(super.getVelocidadeInicial());
-        super.setVisibilidade(true);
+        super.setLife(INITIAL_LIFE);
+        super.setPositionInX(INITIAL_POSITION_X);
+        super.setPositionInY(INITIAL_POSITION_Y);
+        super.setInitialSpeed(4);
+        super.setSpeed(super.getInitialSpeed());
+        super.setVisibility(true);
 
-        this.DELAY_TIRO = 300;
-        this.jogando = false;
-        this.pontos = PONTOS_INICIAIS;
-        this.vidaRestaurada = false;
-        this.posicaoVidaX = (int) (Math.random() * 200);
-        this.posicaoVidaY = (int) (Math.random() * 150);
+        this.DELAY_BULLET = 300;
+        this.playing = false;
+        this.score = INITIAL_SCORE;
+        this.healthRestored = false;
+        this.positionLifeInY = (int) (Math.random() * 200);
+        this.positionLifeInX = (int) (Math.random() * 150);
 
-        tiros = new ArrayList<Tiro>();
-        supertiro = new ArrayList<SuperTiro>();
+        bullets = new ArrayList<Tiro>();
+        specialBullet = new ArrayList<SuperTiro>();
     }
 
     @Override
     public void carregar() {
         // IMAGEM NAVE
-        ImageIcon carregando = new ImageIcon(IMAGEM_JOGADOR);
-        super.setImagem(carregando.getImage());
-        super.setLarguraImagem(super.getImagem().getWidth(null));
-        super.setAlturaImagem(super.getImagem().getHeight(null));
+        ImageIcon loading = new ImageIcon(IMAGE_PATH_PLAYER);
+        super.setImage(loading.getImage());
+        super.setWidthImage(super.getImage().getWidth(null));
+        super.setHeightImage(super.getImage().getHeight(null));
         // IMAGEM VIDA
-        ImageIcon carregaVida = new ImageIcon(IMAGEM_JOGADOR_VIDA);
-        this.IMAGEM_VIDA = carregaVida.getImage();
-        this.alturaImagemVida = this.IMAGEM_VIDA.getHeight(null);
-
+        ImageIcon loadingImageLife = new ImageIcon(IMAGE_PATH_LIFE);
+        this.IMAGE_LIFE = loadingImageLife.getImage();
+        this.heightLifeImage = this.IMAGE_LIFE.getHeight(null);
     }
 
     @Override
     public void atualizar() {
-        super.setPosicaoEmX(super.getPosicaoEmX() + deslocamentoEmX);
-        super.setPosicaoEmY(super.getPosicaoEmY() + deslocamentoEmY);
+        super.setPositionInX(super.getPositionInX() + offsetInX);
+        super.setPositionInY(super.getPositionInY() + offsetInY);
     }
 
-    public void mover(KeyEvent teclado) {
-        int tecla = teclado.getKeyCode();
-        if (tecla == KeyEvent.VK_UP || tecla == KeyEvent.VK_W) {
-            this.deslocamentoEmY = -((int) super.getVelocidade());
+    public void mover(KeyEvent keyboard) {
+        int key = keyboard.getKeyCode();
+        if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W) {
+            this.offsetInY = -((int) super.getSpeed());
         }
-        if (tecla == KeyEvent.VK_DOWN || tecla == KeyEvent.VK_S) {
-            this.deslocamentoEmY = ((int) super.getVelocidade());
+        if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) {
+            this.offsetInY = ((int) super.getSpeed());
         }
-        if (tecla == KeyEvent.VK_LEFT || tecla == KeyEvent.VK_A) {
-            this.deslocamentoEmX = -((int) super.getVelocidade());
+        if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
+            this.offsetInX = -((int) super.getSpeed());
         }
-        if (tecla == KeyEvent.VK_RIGHT || tecla == KeyEvent.VK_D) {
-            this.deslocamentoEmX = ((int) super.getVelocidade());
+        if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
+            this.offsetInX = ((int) super.getSpeed());
         }
     }
 
-    public void parar(KeyEvent teclado) {
-        int tecla = teclado.getKeyCode();
+    public void parar(KeyEvent keyboard) {
+        int key = keyboard.getKeyCode();
 
-        if (tecla == KeyEvent.VK_UP || tecla == KeyEvent.VK_W) {
-            this.deslocamentoEmY = 0;
+        if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W) {
+            this.offsetInY = 0;
         }
-        if (tecla == KeyEvent.VK_DOWN || tecla == KeyEvent.VK_S) {
-            this.deslocamentoEmY = 0;
+        if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) {
+            this.offsetInY = 0;
         }
-        if (tecla == KeyEvent.VK_LEFT || tecla == KeyEvent.VK_A) {
-            this.deslocamentoEmX = 0;
+        if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
+            this.offsetInX = 0;
         }
-        if (tecla == KeyEvent.VK_RIGHT || tecla == KeyEvent.VK_D) {
-            this.deslocamentoEmX = 0;
+        if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
+            this.offsetInX = 0;
         }
     }
 
     // MÉTODO ATIRAR TANTO 'TIRO NORMAL' QUANTO O 'SUPER TIRO'
-    public void atirar(KeyEvent teclado) {
-        int tecla = teclado.getKeyCode();
-        long tempoAtual = System.currentTimeMillis();
+    public void atirar(KeyEvent keyboard) {
+        int key = keyboard.getKeyCode();
+        long currentTime = System.currentTimeMillis();
 
-        int centroPersonagemX = super.getPosicaoEmX() + super.getLarguraImagem() / 2;
-        int centroPersonagemY = super.getPosicaoEmY() + super.getAlturaImagem() / 2;
+        int playerCenterInX = super.getPositionInX() + super.getWidthImage() / 2;
+        int playerCenterInY = super.getPositionInY() + super.getHeightImage() / 2;
 
-        if (tempoAtual - ultimoTiro < DELAY_TIRO) {
-            this.podeAtirar = false;
+        if (currentTime - lastBullet < DELAY_BULLET) {
+            this.CanShoot = false;
             return;
         } else {
-            if (tecla == KeyEvent.VK_SPACE) {
-                Tiro tiro = new Tiro(centroPersonagemX, centroPersonagemY);
-                this.tiros.add(tiro);
-                this.podeAtirar = true;
+            if (key == KeyEvent.VK_SPACE) {
+                Tiro bullet = new Tiro(playerCenterInX, playerCenterInY);
+                this.bullets.add(bullet);
+                this.CanShoot = true;
             }
             // SUPER TIRO
-            if (tecla == KeyEvent.VK_R && this.getQtdeSuper() > 0) {
-                SuperTiro superTiro1 = new SuperTiro(centroPersonagemX, centroPersonagemY, this.ANGULO);
-                SuperTiro superTiro2 = new SuperTiro(centroPersonagemX, centroPersonagemY, this.ANGULO - this.ANGULO);
-                SuperTiro superTiro3 = new SuperTiro(centroPersonagemX, centroPersonagemY, -this.ANGULO);
+            if (key == KeyEvent.VK_R && this.getSuperQuantity() > 0) {
+                SuperTiro specialBullet1 = new SuperTiro(playerCenterInX, playerCenterInY, this.ANGLE);
+                SuperTiro specialBullet2 = new SuperTiro(playerCenterInX, playerCenterInY, this.ANGLE - this.ANGLE);
+                SuperTiro specialBullet3 = new SuperTiro(playerCenterInX, playerCenterInY, -this.ANGLE);
                 // ADCIONA OS TIROS
-                this.supertiro.add(superTiro1);
-                this.supertiro.add(superTiro2);
-                this.supertiro.add(superTiro3);
-                this.qtdeSuper--;
+                this.specialBullet.add(specialBullet1);
+                this.specialBullet.add(specialBullet2);
+                this.specialBullet.add(specialBullet3);
+                this.superQuantity--;
             }
         }
-        ultimoTiro = tempoAtual;
+        lastBullet = currentTime;
     }
 
     public void restauraVida(Graphics g) {
-        if (this.getQtdeRestauraVida() > 0 && this.vidaRestaurada == true && this.getVida() < VIDA_MAXIMA) {
-            g.drawImage(IMAGEM_VIDA, this.posicaoVidaX, this.posicaoVidaY, null);
-            if (this.getBounds().intersects((new Rectangle(posicaoVidaX, posicaoVidaY, 50, 50)))) {
-                this.setVida(this.getVida() + 1);
-                this.qtdeRestauraVida--;
-                this.vidaRestaurada = false;
+        if (this.getHealthRestoreCheck() > 0 && this.healthRestored == true && this.getLife() < MAX_LIFE) {
+            g.drawImage(IMAGE_LIFE, this.positionLifeInY, this.positionLifeInX, null);
+            if (this.getBounds().intersects((new Rectangle(positionLifeInY, positionLifeInX, 50, 50)))) {
+                this.setLife(this.getLife() + 1);
+                this.healthRestoreCheck--;
+                this.healthRestored = false;
                 // GERANDO NOVAS POSIÇÕES PRO RETANGULO E IMAGEM
-                this.posicaoVidaX = ((int) (Math.random() * super.getTelaTamanho().LARGURA_TELA));
-                this.posicaoVidaY = ((int) (Math.random() * super.getTelaTamanho().ALTURA_TELA));
+                this.positionLifeInY = ((int) (Math.random() * super.getScreenResolution().WIDTH_SCREEN));
+                this.positionLifeInX = ((int) (Math.random() * super.getScreenResolution().HEIGHT_SCREEN));
             }
         }
     }
 
     // MÉTODO PARA DESENHAR A VIDA DO JOGADOR
     public void desenhaVida(Graphics g) {
-        int diferenca = 70;
+        int difference = 70;
         // PARA CADA VIDA DO JOGADOR, DESENHA UMA IMAGEM DA VIDA,
         // ALTERANDO A POSIÇÃO COM BASE NOS CALCULOS PARA DEFINIR
-        for (int i = 0; i < super.getVida(); i++) {
-            g.drawImage(IMAGEM_VIDA, super.getTelaTamanho().LARGURA_TELA - diferenca, 10, null);
-            diferenca += alturaImagemVida + 5;
+        for (int i = 0; i < super.getLife(); i++) {
+            g.drawImage(IMAGE_LIFE, super.getScreenResolution().WIDTH_SCREEN - difference, 10, null);
+            difference += heightLifeImage + 5;
         }
     }
 
     // MÉTODO PARA DESENHAR A PONTUAÇÃO DO JOGADOR
     public void pontuacao(Graphics g) {
-        String pontosSTR = "PONTOS: " + pontos;
+        String scoreString = "PONTOS: " + score;
         g.setFont(super.getPixel().deriveFont(Font.PLAIN, 22));
         g.setColor(new Color(255, 209, 0));
-        g.drawString(pontosSTR, 20, 25);
+        g.drawString(scoreString, 20, 25);
     }
 
     public void desenhaEliminacoes(Graphics g) {
-        String qtdeMorte = "INIMIGOS MORTOS: " + inimigosMortos;
+        String scoreEnemysDeath = "INIMIGOS MORTOS: " + scoreDeadEnemys;
         g.setFont(super.getPixel().deriveFont(Font.PLAIN, 17));
         g.setColor(new Color(255, 209, 0));
-        g.drawString(qtdeMorte, 20, 70);
+        g.drawString(scoreEnemysDeath, 20, 70);
     }
 
-    // MÉTODOS GETTERS E SETTERS
-    public int getPontos() {
-        return pontos;
+    // GETTERS E SETTERS
+    public int getScore() {
+        return score;
     }
 
-    public void setPontos(int pontos) {
-        this.pontos = pontos;
+    public void setScore(int score) {
+        this.score = score;
     }
 
-    public int getInimigosMortos() {
-        return inimigosMortos;
+    public boolean isPlaying() {
+        return playing;
     }
 
-    public void setInimigosMortos(int inimigosMortos) {
-        this.inimigosMortos = inimigosMortos;
+    public void setPlaying(boolean playing) {
+        this.playing = playing;
     }
 
-    public int getQtdeSuper() {
-        return qtdeSuper;
+    public List<Tiro> getBullets() {
+        return bullets;
     }
 
-    public void setQtdeSuper(int qtdeSuper) {
-        this.qtdeSuper = qtdeSuper;
+    public void setBullets(List<Tiro> bullets) {
+        this.bullets = bullets;
     }
 
-    public boolean isJogando() {
-        return jogando;
+    public List<SuperTiro> getSpecialBullet() {
+        return specialBullet;
     }
 
-    public void setJogando(boolean jogando) {
-        this.jogando = jogando;
+    public void setSpecialBullet(List<SuperTiro> specialBullet) {
+        this.specialBullet = specialBullet;
     }
 
-    public int getVidaInicial() {
-        return VIDA_INICIAL;
+    public int getSuperQuantity() {
+        return superQuantity;
     }
 
-    public static int getPontosIniciais() {
-        return PONTOS_INICIAIS;
+    public void setSuperQuantity(int superQuantity) {
+        this.superQuantity = superQuantity;
     }
 
-    public List<Tiro> getTiros() {
-        return tiros;
+    public int getHealthRestoreCheck() {
+        return healthRestoreCheck;
     }
 
-    public void setTiros(List<Tiro> tiros) {
-        this.tiros = tiros;
+    public void setHealthRestoreCheck(int healthRestoreCheck) {
+        this.healthRestoreCheck = healthRestoreCheck;
     }
 
-    public List<SuperTiro> getSupertiro() {
-        return supertiro;
+    public int getInitialLife() {
+        return INITIAL_LIFE;
     }
 
-    public void setSupertiro(List<SuperTiro> supertiro) {
-        this.supertiro = supertiro;
+    public static int getInitialScore() {
+        return INITIAL_SCORE;
     }
 
-    public int getPOSICAO_INICIAL_X() {
-        return POSICAO_INICIAL_X;
+    public int getINITIAL_POSITION_X() {
+        return INITIAL_POSITION_X;
     }
 
-    public int getPOSICAO_INICIAL_Y() {
-        return POSICAO_INICIAL_Y;
+    public int getINITIAL_POSITION_Y() {
+        return INITIAL_POSITION_Y;
     }
 
-    public Rectangle getVidaHitBox() {
-        return vidaHitBox;
+    public int getScoreDeadEnemys() {
+        return scoreDeadEnemys;
     }
 
-    public void setVidaHitBox(Rectangle vidaHitBox) {
-        this.vidaHitBox = vidaHitBox;
+    public void setScoreDeadEnemys(int scoreDeadEnemys) {
+        this.scoreDeadEnemys = scoreDeadEnemys;
     }
 
-    public int getPosicaoVidaX() {
-        return posicaoVidaX;
+    public boolean isHealthRestored() {
+        return healthRestored;
     }
 
-    public void setPosicaoVidaX(int posicaoVidaX) {
-        this.posicaoVidaX = posicaoVidaX;
+    public void setHealthRestored(boolean healthRestored) {
+        this.healthRestored = healthRestored;
     }
 
-    public int getPosicaoVidaY() {
-        return posicaoVidaY;
+    public boolean isCanShoot() {
+        return CanShoot;
     }
 
-    public void setPosicaoVidaY(int posicaoVidaY) {
-        this.posicaoVidaY = posicaoVidaY;
+    public void setCanShoot(boolean canShoot) {
+        CanShoot = canShoot;
     }
 
-    public int getQtdeRestauraVida() {
-        return qtdeRestauraVida;
+    public Rectangle getLifeHitBox() {
+        return lifeHitBox;
     }
 
-    public void setQtdeRestauraVida(int qtdeRestauraVida) {
-        this.qtdeRestauraVida = qtdeRestauraVida;
+    public void setLifeHitBox(Rectangle lifeHitBox) {
+        this.lifeHitBox = lifeHitBox;
     }
-
-    public boolean isVidaRestaurada() {
-        return vidaRestaurada;
-    }
-
-    public void setVidaRestaurada(boolean vidaRestaurada) {
-        this.vidaRestaurada = vidaRestaurada;
-    }
-
-    public boolean isPodeAtirar() {
-        return podeAtirar;
-    }
-
-    public void setPodeAtirar(boolean podeAtirar) {
-        this.podeAtirar = podeAtirar;
-    }
-
-    
-
 }

@@ -14,16 +14,12 @@ public abstract class TelasBase extends Base{
     private static final int TAMANHO_FONTE = 30;
 
     public TelasBase() {
-        super.setVisibilidade(true);
+        super.setVisibility(true);
         //this.botao = new Rectangle(BOTAO_X, BOTAO_Y, BOTAO_LARGURA, BOTAO_ALTURA);
     }
 
     // MÉTODOS ABSTRATOS
     public abstract void carregar();
-    // GETTERS E SETTERS
-    public static Color getCorAmarela() {
-        return COR_AMARELA;
-    }
 
     public int getPOSICAO_TITULO_Y() {
         return POSICAO_TITULO_Y;
@@ -45,7 +41,11 @@ public abstract class TelasBase extends Base{
         return TITULO_TAMANHO;
     }
 
+    public static Color getCorAmarela() {
+        return COR_AMARELA;
+    }
+
     public static int getTamanhoFonte() {
         return TAMANHO_FONTE;
-    }
+    }   
 }

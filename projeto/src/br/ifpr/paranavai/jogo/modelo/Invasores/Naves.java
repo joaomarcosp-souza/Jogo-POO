@@ -8,66 +8,66 @@ import java.awt.Font;
 
 public class Naves extends Base {
 
-    private static final String NAVE_IMAGEM = "recursos\\Sprites\\Inimigos\\tfighter.png";
+    private static final String PATH_IMAGE = "recursos\\Sprites\\Inimigos\\tfighter.png";
 
     public Naves(int posicaoEmX, int posicaoEmY, int INIMIGOSVIDA) {
-        super.setPosicaoEmX(posicaoEmX);
-        super.setPosicaoEmY(posicaoEmY);
-        super.setVida(INIMIGOSVIDA);
-        super.setVelocidadeInicial(4);
-        super.setVelocidade(super.getVelocidadeInicial());
-        super.setVisibilidade(true);
+        super.setPositionInX(posicaoEmX);
+        super.setPositionInY(posicaoEmY);
+        super.setLife(INIMIGOSVIDA);
+        super.setInitialSpeed(4);
+        super.setSpeed(super.getInitialSpeed());
+        super.setVisibility(true);
     }
 
     @Override
     public void carregar() {
-        ImageIcon carregador = new ImageIcon(NAVE_IMAGEM);
-        super.setImagem(carregador.getImage());
-        super.setLarguraImagem(super.getImagem().getWidth(null));
-        super.setAlturaImagem(super.getImagem().getHeight(null));
+        ImageIcon carregador = new ImageIcon(PATH_IMAGE);
+        super.setImage(carregador.getImage());
+        super.setWidthImage(super.getImage().getWidth(null));
+        super.setHeightImage(super.getImage().getHeight(null));
     }
 
     @Override
     public void atualizar() {
-        super.setPosicaoEmX((int) (super.getPosicaoEmX() - super.getVelocidade()));
-        if (super.getPosicaoEmX() < -50) {
-            super.setVisibilidade(false);
+        super.setPositionInX((int) (super.getPositionInX() - super.getSpeed()));
+        if (super.getPositionInX() < -50) {
+            super.setVisibility(false);
         }
 
         // VERIFICANDO SE A NAVE INIMIGA ESTA NASCENDO DENTRO DOS LIMETES DA TELA
-        if (super.getPosicaoEmY() < 0) {
-            super.setPosicaoEmY(0);
-        } else if (super.getPosicaoEmY() > super.getTelaTamanho().ALTURA_TELA - super.getAlturaImagem()) {
-            super.setPosicaoEmY(super.getTelaTamanho().ALTURA_TELA - super.getAlturaImagem());
+        if (super.getPositionInY() < 0) {
+            super.setPositionInY(0);
+        } else if (super.getPositionInY() > super.getScreenResolution().HEIGHT_SCREEN - super.getHeightImage()) {
+            super.setPositionInY(super.getScreenResolution().HEIGHT_SCREEN - super.getHeightImage());
         }
     }
 
     // MÉTODO DE VIDA NAVES
     public void vidas(Graphics g) {
-        int tamanhoCubo = 10; // TAMANHO DO CUBO
-        int espacamentoCubo = 5; // ESPAÇAMENTO ENTRE OS CUBOS
-        int offsetRetangulo = 44;
+        int cubeSize = 10; // TAMANHO DO CUBO
+        int CubeSpacing = 5; // ESPAÇAMENTO ENTRE OS CUBOS
+        int offsetRectangle = 44;
         // CALCULANDO A POSIÇÃO DE CADA CUBO
-        int maximoVidas = super.getVida();
-        int posicaoCuboX = super.getPosicaoEmX() - ((tamanhoCubo + espacamentoCubo) * maximoVidas) / 2;
-        int posicaoCuboY = super.getPosicaoEmY() + super.getAlturaImagem() + 5;
+        int maxLife = super.getLife();
+        int cubePositionX = super.getPositionInX() - ((cubeSize + CubeSpacing) * maxLife) / 2;
+        int cubePositionY = super.getPositionInY() + super.getHeightImage() + 5;
         // UM CUBO PARA CADA VIDA
-        for (int i = 0; i < maximoVidas; i++) {
+        for (int i = 0; i < maxLife; i++) {
             // CALCULA A POSIÇÃO DO CUBO ATUAL
-            int cuboPosX = posicaoCuboX + (tamanhoCubo + espacamentoCubo) * i;
+            int cuboPosX = cubePositionX + (cubeSize + CubeSpacing) * i;
             // DESENHADO O CUBO(VIDA)
             g.setColor(Color.RED);
-            g.fillRect((cuboPosX + offsetRetangulo), posicaoCuboY, tamanhoCubo, tamanhoCubo);
+            g.fillRect((cuboPosX + offsetRectangle), cubePositionY, cubeSize, cubeSize);
         }
     }
 
     // INFORMA A VELOCIDADE ATUAL DA NAVE
     public void inimigoDados(Graphics g) {
         // VELOCIDADE
-        String velocidadeNave = "INIMIGOS VELOCIDADE: " + super.getVelocidade();
+        String shipSpeed = "INIMIGOS VELOCIDADE: " + super.getSpeed();
         g.setFont(super.getPixel().deriveFont(Font.PLAIN, 17));
         g.setColor(new Color(255, 209, 0));
-        g.drawString(velocidadeNave, 20, 50);
+        g.drawString(shipSpeed, 20, 50);
     }
 
 }

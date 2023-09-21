@@ -5,45 +5,45 @@ import br.ifpr.paranavai.jogo.modelo.Base;
 
 public class StarDestroyer extends Base {
 
-    private boolean chefaoVivo;
-    private static final String IMAGEM_STAR_DESTROYER = "recursos\\Sprites\\Inimigos\\starDestroyer.png";
+    private boolean bossAlive;
+    private static final String PATH_IMAGE = "recursos\\Sprites\\Inimigos\\starDestroyer.png";
 
     public StarDestroyer(int posicaoEmX, int posicaoEmY) {
-        super.setVelocidadeInicial(3);
-        super.setVelocidade(super.getVelocidadeInicial());
-        super.setPosicaoEmX(posicaoEmX);
-        super.setPosicaoEmY(posicaoEmY);
-        super.setVisibilidade(true);
+        super.setInitialSpeed(3);
+        super.setSpeed(super.getInitialSpeed());
+        super.setPositionInX(posicaoEmX);
+        super.setPositionInY(posicaoEmY);
+        super.setVisibility(true);
     }
 
     @Override
     public void carregar() {
-        ImageIcon carregador = new ImageIcon(IMAGEM_STAR_DESTROYER);
-        super.setImagem(carregador.getImage());
-        super.setLarguraImagem(super.getImagem().getWidth(null));
-        super.setAlturaImagem(super.getImagem().getHeight(null));
+        ImageIcon carregador = new ImageIcon(PATH_IMAGE);
+        super.setImage(carregador.getImage());
+        super.setWidthImage(super.getImage().getWidth(null));
+        super.setHeightImage(super.getImage().getHeight(null));
     }
 
     @Override
     public void atualizar() {
-        super.setPosicaoEmX((int) (super.getPosicaoEmX() - super.getVelocidade()));
-        if (super.getPosicaoEmX() < -1000) {
-            super.setVisibilidade(false);
+        super.setPositionInX((int) (super.getPositionInX() - super.getSpeed()));
+        if (super.getPositionInX() < -1000) {
+            super.setVisibility(false);
         }
 
-        if (super.getPosicaoEmY() < 0) {
-            super.setPosicaoEmY(0);
-        } else if (super.getPosicaoEmY() > super.getTelaTamanho().ALTURA_TELA - super.getAlturaImagem()) {
-            super.setPosicaoEmY(super.getTelaTamanho().ALTURA_TELA - super.getAlturaImagem());
+        if (super.getPositionInY() < 0) {
+            super.setPositionInY(0);
+        } else if (super.getPositionInY() > super.getScreenResolution().HEIGHT_SCREEN - super.getHeightImage()) {
+            super.setPositionInY(super.getScreenResolution().HEIGHT_SCREEN - super.getHeightImage());
         }
     }
 
     // GETTERS E SETTERS
-    public boolean isChefaoVivo() {
-        return chefaoVivo;
+    public boolean isBossAlive() {
+        return bossAlive;
     }
 
-    public void setChefaoVivo(boolean chefaoVivo) {
-        this.chefaoVivo = chefaoVivo;
+    public void setBossAlive(boolean chefaoVivo) {
+        this.bossAlive = chefaoVivo;
     }
 }

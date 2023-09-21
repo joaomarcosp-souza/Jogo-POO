@@ -6,34 +6,34 @@ import javax.swing.ImageIcon;
 
 public class Controles extends TelasBase {
     
-    private Image imagemControle;
+    private Image imageControl;
     // CAMINHO IMAGEM DE FUNDO
-    private static final String IMAGEM_FUNDO = "recursos\\Sprites\\Fundos\\FundoTelas.jpg";
-    private static final String IMAGEM_TITULO = "recursos\\Sprites\\Fundos\\TelaControle.png";
+    private static final String PATH_IMAGE = "recursos\\Sprites\\Fundos\\FundoTelas.jpg";
+    private static final String PATH_IMAGE_TITLE = "recursos\\Sprites\\Fundos\\TelaControle.png";
     
     public Controles() {
-        super.setVisibilidade(false);
+        super.setVisibility(false);
     }
 
     @Override
     public void carregar() {
-        ImageIcon carregando = new ImageIcon(IMAGEM_FUNDO);
-        super.setImagem(carregando.getImage());
-        super.setImagem(super.getImagem().getScaledInstance(getTelaTamanho().LARGURA_TELA, getTelaTamanho().ALTURA_TELA,
+        ImageIcon loading = new ImageIcon(PATH_IMAGE);
+        super.setImage(loading.getImage());
+        super.setImage(super.getImage().getScaledInstance(getScreenResolution().WIDTH_SCREEN, getScreenResolution().HEIGHT_SCREEN,
                 Image.SCALE_FAST));
 
         // IMAGEM SOBREPOSIÇÃO
-        ImageIcon imgcontrole = new ImageIcon(IMAGEM_TITULO);
-        this.imagemControle = imgcontrole.getImage();
+        ImageIcon loadingImageControl = new ImageIcon(PATH_IMAGE_TITLE);
+        this.imageControl = loadingImageControl.getImage();
         // REDIMENSIONA O TAMANHO DA IMAGEM PARA O TAMANHO DA TELA
-        this.imagemControle = this.imagemControle.getScaledInstance(getTelaTamanho().LARGURA_TELA,
-                getTelaTamanho().ALTURA_TELA,
+        this.imageControl = this.imageControl.getScaledInstance(getScreenResolution().WIDTH_SCREEN,
+                getScreenResolution().HEIGHT_SCREEN,
                 Image.SCALE_FAST);
     };
 
     // CARREGANDO A IMAGEM DE FUNDO E A IMAGEM COM OS COMANDOS
     public void conteudo(Graphics g) {
-        g.drawImage(super.getImagem(), 0, 0, null);
-        g.drawImage(imagemControle, 0, 0, null);
+        g.drawImage(super.getImage(), 0, 0, null);
+        g.drawImage(imageControl, 0, 0, null);
     }
 }

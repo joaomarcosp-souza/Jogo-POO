@@ -13,11 +13,11 @@ public class Principal extends JFrame {
         super.setTitle("Star Wars: Invader");
         super.setVisible(true);
         // PEGA O TAMANHO DO MONITOR PRINCIPAL
-        Dimension telaTamanho = Toolkit.getDefaultToolkit().getScreenSize();
-        int telaLargura = (int) telaTamanho.getWidth();
-        int telaAltura = (int) telaTamanho.getHeight();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenWidth = (int) screenSize.getWidth();
+        int screenHeight = (int) screenSize.getHeight();
         // CRIA O TAMANHO DA JANELA JFRAME COM BASE NO TAMANHO DO MONITOR
-        super.setSize(telaLargura, telaAltura);
+        super.setSize(screenWidth, screenHeight);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setLocationRelativeTo(null);
         super.setResizable(false);

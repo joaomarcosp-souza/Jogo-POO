@@ -10,81 +10,81 @@ import javax.swing.ImageIcon;
 
 public class Pausar extends TelasBase {
     
-    private boolean pausado;
+    private boolean paused;
     // OPÇÕES MENU
-    private static final String OPCAO_SIM = "SIM";
-    private static final String OPCAO_NAO = "NAO";
-    private static final String MENSAGEM_MENU = "VOLTAR AO JOGO?";
+    private static final String OPTION_YES = "SIM";
+    private static final String OPTION_NO = "NAO";
+    private static final String MENSSAGE_MENU = "VOLTAR AO JOGO?";
     // FONTES
-    private static final String CAMINHO_IMAGEM = "recursos\\Sprites\\Fundos\\TelaPause.png";
-    private Font FONTE_MENU = super.getPixel().deriveFont(Font.BOLD, super.getTamanhoFonte());
+    private static final String PATH_IMAGE = "recursos\\Sprites\\Fundos\\TelaPause.png";
+    private Font NEW_FONT = super.getPixel().deriveFont(Font.BOLD, super.getTamanhoFonte());
 
     public Pausar() {
-        super.setVisibilidade(false);
-        this.pausado = false;
+        super.setVisibility(false);
+        this.paused = false;
     }
 
     @Override
     public void carregar() {
-        ImageIcon carregando = new ImageIcon(CAMINHO_IMAGEM);
-        super.setImagem(carregando.getImage());
+        ImageIcon loading = new ImageIcon(PATH_IMAGE);
+        super.setImage(loading.getImage());
         // RESIMENSIONA A IMG
-        super.setImagem(super.getImagem().getScaledInstance(getTelaTamanho().LARGURA_TELA, getTelaTamanho().ALTURA_TELA,
+        super.setImage(super.getImage().getScaledInstance(getScreenResolution().WIDTH_SCREEN, getScreenResolution().HEIGHT_SCREEN,
                 Image.SCALE_FAST));
     }
 
     public void menu(Graphics g) {
         int OFFSETY = 150;
-        g.drawImage(super.getImagem(), 0, 0, null);
+        g.drawImage(super.getImage(), 0, 0, null);
         // COMEÇO DA FRASE
         g.setColor(Color.WHITE);
-        g.setFont(FONTE_MENU);
+        g.setFont(NEW_FONT);
         FontMetrics fm = g.getFontMetrics();
-        int posicaoEmX = (getTelaTamanho().LARGURA_TELA - fm.stringWidth(MENSAGEM_MENU)) / 2;
-        int posicaoEmY = getTelaTamanho().ALTURA_TELA - OFFSETY;
-        g.drawString(MENSAGEM_MENU, posicaoEmX, posicaoEmY);
-        int mensagemPosX = posicaoEmX + fm.stringWidth(MENSAGEM_MENU) / 2;
+        int positionInX = (getScreenResolution().WIDTH_SCREEN - fm.stringWidth(MENSSAGE_MENU)) / 2;
+        int positionInY = getScreenResolution().HEIGHT_SCREEN - OFFSETY;
+        g.drawString(MENSSAGE_MENU, positionInX, positionInY);
+        int positionMenssage = positionInX + fm.stringWidth(MENSSAGE_MENU) / 2;
 
         // CENTRALIZA AS OPCÇÕES
-        int simLargura = fm.stringWidth(OPCAO_SIM);
-        int naoLargura = fm.stringWidth(OPCAO_NAO);
-        int larguraTotal = simLargura + naoLargura;
+        int widthYes = fm.stringWidth(OPTION_YES);
+        int widthNo = fm.stringWidth(OPTION_NO);
+        int widthTotal = widthYes + widthNo;
 
         // 'SIM'
-        int posicaoXsim = (mensagemPosX - larguraTotal / 2) - 10;
-        int posicaoYsim = posicaoEmY + 40;
+        int positionYesInX = (positionMenssage - widthTotal / 2) - 10;
+        int positionYesInY = positionInY + 40;
         if (super.getCursor() == 0) {
             g.setColor(getCorAmarela());
             int cursorWidth = fm.stringWidth(" ");
-            g.drawString(" ", posicaoXsim - cursorWidth, posicaoYsim);
+            g.drawString(" ", positionYesInX - cursorWidth, positionYesInY);
         } else {
             g.setColor(Color.WHITE);
         }
-        g.drawString(OPCAO_SIM, posicaoXsim, posicaoYsim);
+        g.drawString(OPTION_YES, positionYesInX, positionYesInY);
 
         // 'NÃO'
-        int posicaoXnao = (posicaoXsim + simLargura) + 30;
-        int posicaoYnao = posicaoYsim;
+        int positionNoInX = (positionYesInX + widthYes) + 30;
+        int positionNoInY = positionYesInY;
         if (super.getCursor() == 1) {
             g.setColor(getCorAmarela());
             int cursorWidth = fm.stringWidth(" ");
-            g.drawString(" ", posicaoXnao - cursorWidth, posicaoYnao);
+            g.drawString(" ", positionNoInX - cursorWidth, positionNoInY);
         } else {
             g.setColor(Color.WHITE);
         }
-        g.drawString(OPCAO_NAO, posicaoXnao, posicaoYnao);
+        g.drawString(OPTION_NO, positionNoInX, positionNoInY);
     }
 
-    public void menuPausado(KeyEvent teclado) {
-        int tecla = teclado.getKeyCode();
+    public void menuPausado(KeyEvent keyboard) {
+        int key = keyboard.getKeyCode();
 
-        if (tecla == KeyEvent.VK_LEFT) {
+        if (key == KeyEvent.VK_LEFT) {
             super.setCursor(super.getCursor() - 1);
             if (super.getCursor() < 0) {
                 super.setCursor(1);
             }
         }
-        if (tecla == KeyEvent.VK_RIGHT) {
+        if (key == KeyEvent.VK_RIGHT) {
             super.setCursor(super.getCursor() + 1);
             if (super.getCursor() > 1) {
                 super.setCursor(0);
@@ -93,11 +93,11 @@ public class Pausar extends TelasBase {
     }
 
     // GETTERS E SETTERS
-    public boolean isPausado() {
-        return pausado;
+    public boolean isPaused() {
+        return paused;
     }
 
-    public void setPausado(boolean pausado) {
-        this.pausado = pausado;
+    public void setPaused(boolean paused) {
+        this.paused = paused;
     }
 }

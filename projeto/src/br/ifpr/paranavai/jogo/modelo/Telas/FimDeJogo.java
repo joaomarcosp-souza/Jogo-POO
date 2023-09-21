@@ -10,101 +10,101 @@ import javax.swing.ImageIcon;
 
 public class FimDeJogo extends TelasBase {
     // OPÇÕES MENU
-    private static final String OPCAO_SIM = "SIM";
-    private static final String OPCAO_NAO = "NAO";
-    private static final String MENSAGEM = "JOGAR NOVAMENTE?";
+    private static final String OPTION_YES = "SIM";
+    private static final String OPTION_NO = "NAO";
+    private static final String MESSAGE = "JOGAR NOVAMENTE?";
     // TITULO
-    private static final String SUBTITULO = "OVER";
-    private static final String TITULO_PRINCIPAL = "GAME";
+    private static final String OVER = "OVER";
+    private static final String GAME = "GAME";
     // FONTES
-    private final Font FONTE_MENU = super.getPixel().deriveFont(Font.BOLD, super.getTamanhoFonte());
-    private final Font FONTE_TITULOS = super.getPixel().deriveFont(Font.BOLD, super.getTituloTamanho());
+    private final Font FONT_MENU = super.getPixel().deriveFont(Font.BOLD, super.getTamanhoFonte());
+    private final Font FONT_TITLE = super.getPixel().deriveFont(Font.BOLD, super.getTituloTamanho());
     // CAMINHO IMAGEM DE FUNDO
-    private static final String IMAGEM_FUNDO = "recursos\\Sprites\\Fundos\\TelaFimDeJogo.gif";
+    private static final String PATH_IMAGE_GAME_OVER = "recursos\\Sprites\\Fundos\\TelaFimDeJogo.gif";
 
     public FimDeJogo() {
-        super.setVisibilidade(false);
+        super.setVisibility(false);
     }
 
     @Override
     public void carregar() {
-        ImageIcon carregando = new ImageIcon(IMAGEM_FUNDO);
-        super.setImagem(carregando.getImage());
-        super.setLarguraImagem(super.getImagem().getWidth(null));
-        super.setAlturaImagem(super.getImagem().getHeight(null));
+        ImageIcon loading = new ImageIcon(PATH_IMAGE_GAME_OVER);
+        super.setImage(loading.getImage());
+        super.setWidthImage(super.getImage().getWidth(null));
+        super.setHeightImage(super.getImage().getHeight(null));
         // REDIMENSIONA O TAMANHO DA IMAGEM PARA O TAMANHO DA TELA
-        super.setImagem(super.getImagem().getScaledInstance(getTelaTamanho().LARGURA_TELA, getTelaTamanho().ALTURA_TELA,
+        super.setImage(super.getImage().getScaledInstance(getScreenResolution().WIDTH_SCREEN, getScreenResolution().HEIGHT_SCREEN,
                 Image.SCALE_FAST));
     };
 
     public void titulo(Graphics g) {
-        g.drawImage(super.getImagem(), 0, 0, null);
-        g.setFont(FONTE_TITULOS);
+        g.drawImage(super.getImage(), 0, 0, null);
+        g.setFont(FONT_TITLE);
 
         FontMetrics fm = g.getFontMetrics();
-        int tituloPosX = (getTelaTamanho().LARGURA_TELA - fm.stringWidth(TITULO_PRINCIPAL)) / 2;
-        int subTituloLargura = (fm.stringWidth(SUBTITULO));
+        int tituloPosX = (getScreenResolution().WIDTH_SCREEN - fm.stringWidth(GAME)) / 2;
+        int subTituloLargura = (fm.stringWidth(OVER));
         // EFEITO PARA O TITULO
         g.setColor(Color.WHITE);
-        g.drawString(TITULO_PRINCIPAL, tituloPosX + 5, super.getPOSICAO_TITULO_Y());
+        g.drawString(GAME, tituloPosX + 5, super.getPOSICAO_TITULO_Y());
         g.setColor(super.getCorAmarela());
-        g.drawString(TITULO_PRINCIPAL, tituloPosX, (super.getPOSICAO_TITULO_Y()));
+        g.drawString(GAME, tituloPosX, (super.getPOSICAO_TITULO_Y()));
         // DESENHA O SUBTITULO
         g.setColor(Color.WHITE);
-        g.drawString(SUBTITULO, tituloPosX + (fm.stringWidth(TITULO_PRINCIPAL) - subTituloLargura) / 2,
+        g.drawString(OVER, tituloPosX + (fm.stringWidth(GAME) - subTituloLargura) / 2,
                 (super.getPOSICAO_TITULO_Y() + 80));
     }
 
     public void menu(Graphics g) {
         int OFFSETY = 150;
         // COMEÇO DA FRASE
-        g.setFont(FONTE_MENU);
+        g.setFont(FONT_MENU);
         FontMetrics fm = g.getFontMetrics();
-        int posicaoEmX = (getTelaTamanho().LARGURA_TELA - fm.stringWidth(MENSAGEM)) / 2;
-        int posicaoEmY = getTelaTamanho().ALTURA_TELA - OFFSETY;
-        g.drawString(MENSAGEM, posicaoEmX, posicaoEmY);
-        int mensagemPosX = posicaoEmX + fm.stringWidth(MENSAGEM) / 2;
+        int posicaoEmX = (getScreenResolution().WIDTH_SCREEN - fm.stringWidth(MESSAGE)) / 2;
+        int posicaoEmY = getScreenResolution().HEIGHT_SCREEN - OFFSETY;
+        g.drawString(MESSAGE, posicaoEmX, posicaoEmY);
+        int mensagemPosX = posicaoEmX + fm.stringWidth(MESSAGE) / 2;
 
         // CENTRALIZA AS OPCÇÕES
-        int simLargura = fm.stringWidth(OPCAO_SIM);
-        int naoLargura = fm.stringWidth(OPCAO_NAO);
-        int larguraTotal = simLargura + naoLargura;
+        int widthYes = fm.stringWidth(OPTION_YES);
+        int widthNo = fm.stringWidth(OPTION_NO);
+        int widthTotal = widthYes + widthNo;
 
         // 'SIM'
-        int posicaoXsim = (mensagemPosX - larguraTotal / 2) - 10;
-        int posicaoYsim = posicaoEmY + 40;
+        int positionYesInX = (mensagemPosX - widthTotal / 2) - 10;
+        int positionYesInY = posicaoEmY + 40;
         if (super.getCursor() == 0) {
             g.setColor(getCorAmarela());
             int cursorWidth = fm.stringWidth(">");
-            g.drawString(">", posicaoXsim - cursorWidth, posicaoYsim);
+            g.drawString(">", positionYesInX - cursorWidth, positionYesInY);
         } else {
             g.setColor(Color.WHITE);
         }
-        g.drawString(OPCAO_SIM, posicaoXsim, posicaoYsim);
+        g.drawString(OPTION_YES, positionYesInX, positionYesInY);
 
         // 'NÃO'
-        int posicaoXnao = (posicaoXsim + simLargura) + 30;
-        int posicaoYnao = posicaoYsim;
+        int positionNoInX = (positionYesInX + widthYes) + 30;
+        int positionNoInY = positionYesInY;
         if (super.getCursor() == 1) {
             g.setColor(getCorAmarela());
             int cursorWidth = fm.stringWidth(">");
-            g.drawString(">", posicaoXnao - cursorWidth, posicaoYnao);
+            g.drawString(">", positionNoInX - cursorWidth, positionNoInY);
         } else {
             g.setColor(Color.WHITE);
         }
-        g.drawString(OPCAO_NAO, posicaoXnao, posicaoYnao);
+        g.drawString(OPTION_NO, positionNoInX, positionNoInY);
     }
 
-    public void controleMenu(KeyEvent teclado) {
-        int tecla = teclado.getKeyCode();
+    public void controleMenu(KeyEvent keyboard) {
+        int key = keyboard.getKeyCode();
 
-        if (tecla == KeyEvent.VK_LEFT) {
+        if (key == KeyEvent.VK_LEFT) {
             super.setCursor(super.getCursor() - 1);
             if (super.getCursor() < 0) {
                 super.setCursor(1);
             }
         }
-        if (tecla == KeyEvent.VK_RIGHT) {
+        if (key == KeyEvent.VK_RIGHT) {
             super.setCursor(super.getCursor() + 1);
             if (super.getCursor() > 1) {
                 super.setCursor(0);

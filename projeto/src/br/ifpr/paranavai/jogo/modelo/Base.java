@@ -10,21 +10,21 @@ import br.ifpr.paranavai.principal.TamanhoTela;
 
 public abstract class Base {
     
-    private int vida;
-    private Image imagem;
-    private double velocidade;
+    private int life;
+    private Image image;
+    private double speed;
     private Font pixel = null;
-    private boolean visibilidade;
-    private TamanhoTela telaTamanho;
-    private double velocidadeInicial;
-    private int posicaoEmX, posicaoEmY;
-    private int larguraImagem, alturaImagem;
+    private boolean visibility;
+    private TamanhoTela screenResolution;
+    private double initialSpeed;
+    private int positionInX, positionInY;
+    private int widthImage, heightImage;
 
     public Base() {
-        this.visibilidade = true;
+        this.visibility = true;
         //PUXANDO INFORMAÇÕES DA TELA 
-        telaTamanho = new TamanhoTela();
-        telaTamanho.carregar();
+        screenResolution = new TamanhoTela();
+        screenResolution.carregar();
         // CARREGANDO UMA NOVA FONTE
         try {
             // CARREGA A FONTE A PARTIR DO ARQUIVO
@@ -39,83 +39,33 @@ public abstract class Base {
     
     // CAIXA DE COLISÃO
     public Rectangle getBounds() {
-        return new Rectangle(posicaoEmX, posicaoEmY, larguraImagem, alturaImagem);
+        return new Rectangle(positionInX, positionInY, widthImage, heightImage);
     }
     //NÃO E UM MÉTODO ABSTRAT, POR CAUSA DAS CLASSE DE TELA
-    public void atualizar(){};
+    public void atualizar(){}
 
-    //GETTERS E SETTERS
-    public Image getImagem() {
-        return imagem;
+    public int getLife() {
+        return life;
     }
 
-    public void setImagem(Image imagem) {
-        this.imagem = imagem;
+    public void setLife(int life) {
+        this.life = life;
     }
 
-    public boolean isVisibilidade() {
-        return visibilidade;
+    public Image getImage() {
+        return image;
     }
 
-    public void setVisibilidade(boolean visibilidade) {
-        this.visibilidade = visibilidade;
+    public void setImage(Image image) {
+        this.image = image;
     }
 
-    public int getPosicaoEmX() {
-        return posicaoEmX;
+    public double getSpeed() {
+        return speed;
     }
 
-    public void setPosicaoEmX(int posicaoEmX) {
-        this.posicaoEmX = posicaoEmX;
-    }
-
-    public int getPosicaoEmY() {
-        return posicaoEmY;
-    }
-
-    public void setPosicaoEmY(int posicaoEmY) {
-        this.posicaoEmY = posicaoEmY;
-    }
-
-    public int getLarguraImagem() {
-        return larguraImagem;
-    }
-
-    public void setLarguraImagem(int larguraImagem) {
-        this.larguraImagem = larguraImagem;
-    }
-
-    public int getAlturaImagem() {
-        return alturaImagem;
-    }
-
-    public void setAlturaImagem(int alturaImagem) {
-        this.alturaImagem = alturaImagem;
-    }
-    
-
-    public int getVida() {
-        return vida;
-    }
-
-    public void setVida(int vida) {
-        this.vida = vida;
-    }
-
-    public double getVelocidadeInicial() {
-        return velocidadeInicial;
-    }
-
-    public void setVelocidadeInicial(double velocidadeInicial) {
-        this.velocidadeInicial = velocidadeInicial;
-    }
-
-    public double getVelocidade() {
-        return velocidade;
-    }
-
-    public void setVelocidade(double velocidade) {
-        this.velocidade = velocidade;
+    public void setSpeed(double speed) {
+        this.speed = speed;
     }
 
     public Font getPixel() {
@@ -126,11 +76,62 @@ public abstract class Base {
         this.pixel = pixel;
     }
 
-    public TamanhoTela getTelaTamanho() {
-        return telaTamanho;
+    public boolean isVisibility() {
+        return visibility;
     }
 
-    public void setTelaTamanho(TamanhoTela telaTamanho) {
-        this.telaTamanho = telaTamanho;
+    public void setVisibility(boolean visibility) {
+        this.visibility = visibility;
     }
+
+    public TamanhoTela getScreenResolution() {
+        return screenResolution;
+    }
+
+    public void setScreenResolution(TamanhoTela screenResolution) {
+        this.screenResolution = screenResolution;
+    }
+
+    public double getInitialSpeed() {
+        return initialSpeed;
+    }
+
+    public void setInitialSpeed(double initialSpeed) {
+        this.initialSpeed = initialSpeed;
+    }
+
+    public int getPositionInX() {
+        return positionInX;
+    }
+
+    public void setPositionInX(int positionInX) {
+        this.positionInX = positionInX;
+    }
+
+    public int getPositionInY() {
+        return positionInY;
+    }
+
+    public void setPositionInY(int positionInY) {
+        this.positionInY = positionInY;
+    }
+
+    public int getWidthImage() {
+        return widthImage;
+    }
+
+    public void setWidthImage(int widthImage) {
+        this.widthImage = widthImage;
+    }
+
+    public int getHeightImage() {
+        return heightImage;
+    }
+
+    public void setHeightImage(int heightImage) {
+        this.heightImage = heightImage;
+    };
+
+    //GETTERS E SETTERS
+    
 }

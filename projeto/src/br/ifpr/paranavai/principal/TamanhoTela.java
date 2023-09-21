@@ -4,30 +4,30 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 public class TamanhoTela {
-    public int LARGURA_TELA;
-    public int ALTURA_TELA;
-    public Dimension TAMANHOTELA;
+    public int WIDTH_SCREEN;
+    public int HEIGHT_SCREEN;
+    public Dimension SCREEN;
 
     public void carregar() {
-        TAMANHOTELA = Toolkit.getDefaultToolkit().getScreenSize();
-        LARGURA_TELA = (int) TAMANHOTELA.getWidth();
-        ALTURA_TELA = (int) TAMANHOTELA.getHeight();
+        SCREEN = Toolkit.getDefaultToolkit().getScreenSize();
+        WIDTH_SCREEN = (int) SCREEN.getWidth();
+        HEIGHT_SCREEN = (int) SCREEN.getHeight();
     }
 
     // GETTERS E SETTERS
-    public int getLARGURA_TELA() {
-        return LARGURA_TELA;
+    public int getWIDTH_SCREEN() {
+        return WIDTH_SCREEN;
     }
 
-    public void setLARGURA_TELA(int lARGURA_TELA) {
-        LARGURA_TELA = lARGURA_TELA;
+    public void setWIDTH_SCREEN(int lARGURA_TELA) {
+        WIDTH_SCREEN = lARGURA_TELA;
     }
 
-    public int getALTURA_TELA() {
-        return ALTURA_TELA;
+    public int getHEIGHT_SCREEN() {
+        return HEIGHT_SCREEN;
     }
 
-    public void setALTURA_TELA(int aLTURA_TELA) {
-        ALTURA_TELA = aLTURA_TELA;
+    public void setHEIGHT_SCREEN(int aLTURA_TELA) {
+        HEIGHT_SCREEN = aLTURA_TELA;
     }
 }

@@ -10,47 +10,47 @@ import br.ifpr.paranavai.jogo.modelo.Base;
 
 public class Asteroide extends Base {
 
-    private Image selecionaImagem;
-    private List<String> listaImagens = new ArrayList<>();
-    private final String CAMINHO_PASTA = "recursos\\Sprites\\Inimigos\\asteroides";
+    private Image selectImage;
+    private List<String> listImage = new ArrayList<>();
+    private final String PATH_FOLDER = "recursos\\Sprites\\Inimigos\\asteroides";
 
     public Asteroide(int posicaoEmX, int posicaoEmY) {
-        super.setPosicaoEmX(posicaoEmX);
-        super.setPosicaoEmY(posicaoEmY);
-        super.setVelocidadeInicial(2);
-        super.setVelocidade(super.getVelocidadeInicial());
-        super.setVisibilidade(true);
+        super.setPositionInX(posicaoEmX);
+        super.setPositionInY(posicaoEmY);
+        super.setInitialSpeed(2);
+        super.setSpeed(super.getInitialSpeed());
+        super.setVisibility(true);
         carregarImagensAleatorias();
     }
 
     private void carregarImagensAleatorias() {
         try {
-            File diretorio = new File(CAMINHO_PASTA);
-            File[] arquivos = diretorio.listFiles();
+            File directory = new File(PATH_FOLDER);
+            File[] files = directory.listFiles();
 
-            if (arquivos != null) {
-                for (File arquivo : arquivos) {
+            if (files != null) {
+                for (File file : files) {
                     // SE AS DUAS CONDIÇÕES FOREM VERDADEIRAS
-                    if (arquivo.isFile() && arquivo.getName().toLowerCase().endsWith(".png")) {
+                    if (file.isFile() && file.getName().toLowerCase().endsWith(".png")) {
                         // ENTÃO JUNTA OS DOIS CAMINHOS EM UM CAMINHO ABSOLUTO
-                        listaImagens.add(arquivo.getAbsolutePath());
+                        listImage.add(file.getAbsolutePath());
                     }
                 }
             }
 
-            if (listaImagens.isEmpty()) {
+            if (listImage.isEmpty()) {
                 System.out.println("Nenhuma imagem Carregada");
                 return;
             }
 
             // GERA UM VALOR ALEATORIO PRA PEGAR UMA IMAGEM DIFERENTE
             Random random = new Random();
-            int valorAleatorio = random.nextInt(listaImagens.size());
-            String caminhoImagemSelecionada = listaImagens.get(valorAleatorio);
+            int randomValue = random.nextInt(listImage.size());
+            String pathSelectedImage = listImage.get(randomValue);
 
             // CARREGA A IMG SELECIONADA
-            ImageIcon carregador = new ImageIcon(caminhoImagemSelecionada);
-            selecionaImagem = carregador.getImage();
+            ImageIcon charge = new ImageIcon(pathSelectedImage);
+            selectImage = charge.getImage();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,22 +59,22 @@ public class Asteroide extends Base {
 
     @Override
     public void carregar() {
-        super.setImagem(selecionaImagem);
-        super.setLarguraImagem(selecionaImagem.getWidth(null));
-        super.setAlturaImagem(selecionaImagem.getHeight(null));
+        super.setImage(selectImage);
+        super.setWidthImage(selectImage.getWidth(null));
+        super.setHeightImage(selectImage.getHeight(null));
     }
 
     @Override
     public void atualizar() {
-        super.setPosicaoEmX((int) (super.getPosicaoEmX() - super.getVelocidade()));
-        if (super.getPosicaoEmX() < -10) {
-            super.setVisibilidade(false);
+        super.setPositionInX((int) (super.getPositionInX() - super.getSpeed()));
+        if (super.getPositionInX() < -10) {
+            super.setVisibility(false);
         }
 
-        if (super.getPosicaoEmY() < 0) {
-            super.setPosicaoEmY(0);
-        } else if (super.getPosicaoEmY() > super.getTelaTamanho().ALTURA_TELA - super.getAlturaImagem()) {
-            super.setPosicaoEmY(super.getTelaTamanho().ALTURA_TELA - super.getAlturaImagem());
+        if (super.getPositionInY() < 0) {
+            super.setPositionInY(0);
+        } else if (super.getPositionInY() > super.getScreenResolution().HEIGHT_SCREEN - super.getHeightImage()) {
+            super.setPositionInY(super.getScreenResolution().HEIGHT_SCREEN - super.getHeightImage());
         }
     }
 
