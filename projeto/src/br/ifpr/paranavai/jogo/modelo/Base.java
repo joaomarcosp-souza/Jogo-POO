@@ -9,6 +9,7 @@ import java.awt.FontFormatException;
 import br.ifpr.paranavai.principal.TamanhoTela;
 
 public abstract class Base {
+    
     private int vida;
     private Image imagem;
     private double velocidade;
@@ -42,7 +43,6 @@ public abstract class Base {
     }
     //NÃO E UM MÉTODO ABSTRAT, POR CAUSA DAS CLASSE DE TELA
     public void atualizar(){};
-
 
     //GETTERS E SETTERS
     public Image getImagem() {

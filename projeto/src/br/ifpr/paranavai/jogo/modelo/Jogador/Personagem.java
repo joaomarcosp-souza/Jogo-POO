@@ -26,6 +26,7 @@ public class Personagem extends Base {
     private long ultimoTiro;
     private boolean jogando;
     // LISTA
+    private boolean podeAtirar;
     private List<Tiro> tiros;
     private List<SuperTiro> supertiro;
     // MOVITEMENTAÇÃO
@@ -124,11 +125,13 @@ public class Personagem extends Base {
         int centroPersonagemY = super.getPosicaoEmY() + super.getAlturaImagem() / 2;
 
         if (tempoAtual - ultimoTiro < DELAY_TIRO) {
+            this.podeAtirar = false;
             return;
         } else {
             if (tecla == KeyEvent.VK_SPACE) {
                 Tiro tiro = new Tiro(centroPersonagemX, centroPersonagemY);
                 this.tiros.add(tiro);
+                this.podeAtirar = true;
             }
             // SUPER TIRO
             if (tecla == KeyEvent.VK_R && this.getQtdeSuper() > 0) {
@@ -289,5 +292,15 @@ public class Personagem extends Base {
     public void setVidaRestaurada(boolean vidaRestaurada) {
         this.vidaRestaurada = vidaRestaurada;
     }
+
+    public boolean isPodeAtirar() {
+        return podeAtirar;
+    }
+
+    public void setPodeAtirar(boolean podeAtirar) {
+        this.podeAtirar = podeAtirar;
+    }
+
+    
 
 }
