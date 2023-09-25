@@ -136,8 +136,9 @@ public class Infinito extends JPanel implements ActionListener {
         inicializaAsteroides();
     }
 
-    //CAMINHO PARA A PASTA QUE POSSUIR OS AUDIOS
+    // CAMINHO PARA A PASTA QUE POSSUIR OS AUDIOS
     private HashMap<String, Clip> clipSounds = new HashMap<>();
+
     public void loadSound(String soundName) {
         try {
             if (!clipSounds.containsKey(soundName)) {
@@ -552,11 +553,11 @@ public class Infinito extends JPanel implements ActionListener {
                         inimigoNave.setVisibility(false);
                         player.setScore(pontuacaoAtual);
                         player.setScoreDeadEnemys(player.getScoreDeadEnemys() + 1);
-                        loadSound("naveInimigaDestruida.wav");
+                        loadSound("explosao.wav");
                         this.enemyKilled = true;
                     } else {
                         inimigoNave.setLife(inimigoNave.getLife() - 1);
-                        loadSound("colisaoAudio.wav");
+                        loadSound("colisao.wav");
                         this.enemyKilled = false;
                     }
                     scorePositionX = inimigoNave.getPositionInX();
@@ -571,11 +572,11 @@ public class Infinito extends JPanel implements ActionListener {
                     if (inimigoNave.getLife() == 1) {
                         inimigoNave.setVisibility(false);
                         player.setScore(player.getScore() + VALOR_INIMIGOS);
-                        loadSound("naveInimigaDestruida.wav");
+                        loadSound("explosao.wav");
                         this.enemyKilled = true;
                     } else {
                         inimigoNave.setLife(inimigoNave.getLife() - 1);
-                        loadSound("colisaoAudio.wav");
+                        loadSound("colisao.wav");
                         this.enemyKilled = false;
                     }
                     scorePositionX = inimigoNave.getPositionInX();
@@ -699,6 +700,7 @@ public class Infinito extends JPanel implements ActionListener {
             if (screenMenu.isVisibility() == true) {
                 controleMenuInicial(e);
                 screenMenu.controleMenu(e);
+                loadSound("botao.wav");
             } else if (screenControls.isVisibility() == true) {
                 controleTelas(e);
             } else if (screenHistory.isVisibility() == true) {
@@ -714,11 +716,13 @@ public class Infinito extends JPanel implements ActionListener {
             } else if (screenEndGame.isVisibility() == true) {
                 controleFimDeJogo(e);
                 screenEndGame.controleMenu(e);
+                loadSound("botao.wav");
             }
 
             if (screenPaused.isPaused()) {
                 int tecla = e.getKeyCode();
                 screenPaused.menuPausado(e);
+                loadSound("botao.wav");
                 if (tecla == KeyEvent.VK_ENTER) {
                     if (screenPaused.getCursor() == 0) {
                         screenPaused.setPaused(false);
