@@ -12,7 +12,7 @@ public class Asteroide extends Base {
 
     private Image selectImage;
     private List<String> listImage = new ArrayList<>();
-    private final String PATH_FOLDER = "recursos\\Sprites\\Inimigos\\asteroides";
+    private final String PATH_FOLDER = "src/br/ifpr/paranavai/recursos/Sprites/Inimigos/asteroides";
 
     public Asteroide(int posicaoEmX, int posicaoEmY) {
         super.setPositionInX(posicaoEmX);

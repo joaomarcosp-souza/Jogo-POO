@@ -5,7 +5,7 @@ import br.ifpr.paranavai.jogo.modelo.Base;
 
 public class Meteorito extends Base {
 
-    private static final String PATH_IMAGE = "recursos\\Sprites\\Inimigos\\meteorito.png";
+    private static final String PATH_IMAGE = "src/br/ifpr/paranavai/recursos/Sprites/Inimigos/meteorito.png";
 
     public Meteorito(int posicaoEmX, int posicaoEmY) {
         super.setPositionInX(posicaoEmX);

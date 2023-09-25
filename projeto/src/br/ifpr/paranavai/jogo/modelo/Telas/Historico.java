@@ -8,8 +8,8 @@ public class Historico extends TelasBase {
     
     private Image imageHistory;
     // CAMINHO IMAGEM DE FUNDO
-    private static final String PATH_IMAGE = "recursos\\Sprites\\Fundos\\FundoTelas.jpg";
-    private static final String PATH_IMAGE_TITLE = "recursos\\Sprites\\Fundos\\TelaHistorico.png";
+    private static final String PATH_IMAGE = "src/br/ifpr/paranavai/recursos/Sprites/Fundos/FundoTelas.jpg";
+    private static final String PATH_IMAGE_TITLE = "src/br/ifpr/paranavai/recursos/Sprites/Fundos/TelaHistorico.png";
 
     public Historico() {
         super.setVisibility(false);

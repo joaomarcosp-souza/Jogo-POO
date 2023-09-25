@@ -41,8 +41,8 @@ public class Personagem extends Base {
     private final int INITIAL_POSITION_X = 100;
     private final int INITIAL_POSITION_Y = super.getScreenResolution().HEIGHT_SCREEN / 2;
     // CAMINHO PARA AS IMAGENS
-    private static final String IMAGE_PATH_LIFE = "recursos\\Sprites\\Personagem\\coracao.png";
-    private static final String IMAGE_PATH_PLAYER = "recursos\\Sprites\\Personagem\\Personagem.gif";
+    private static final String IMAGE_PATH_LIFE = "src/br/ifpr/paranavai/recursos/Sprites/Personagem/coracao.png";
+    private static final String IMAGE_PATH_PLAYER = "src/br/ifpr/paranavai/recursos/Sprites/Personagem/Personagem.gif";
 
     public Personagem() {
         super.setLife(INITIAL_LIFE);

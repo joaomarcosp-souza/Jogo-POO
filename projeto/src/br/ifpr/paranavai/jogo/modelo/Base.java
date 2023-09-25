@@ -28,7 +28,7 @@ public abstract class Base {
         // CARREGANDO UMA NOVA FONTE
         try {
             // CARREGA A FONTE A PARTIR DO ARQUIVO
-            pixel = Font.createFont(Font.TRUETYPE_FONT, new File("recursos\\fontes\\pixel_fonte.ttf"));
+            pixel = Font.createFont(Font.TRUETYPE_FONT, new File("src/br/ifpr/paranavai/recursos/Fontes/pixel_fonte.ttf"));
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }

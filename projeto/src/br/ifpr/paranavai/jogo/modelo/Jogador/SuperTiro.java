@@ -7,7 +7,7 @@ public class SuperTiro extends Base {
 
     private int angle;
     private static final int SPEED_SUPER = 8;
-    private static final String IMAGE_PATH_SUPER = "recursos\\Sprites\\Tiros\\superTiro.gif";
+    private static final String IMAGE_PATH_SUPER = "src/br/ifpr/paranavai/recursos/Sprites/Tiros/superTiro.gif";
 
     public SuperTiro(int posicaoEmX, int posicaoEmY, int angulo) {
         super.setPositionInX(posicaoEmX);

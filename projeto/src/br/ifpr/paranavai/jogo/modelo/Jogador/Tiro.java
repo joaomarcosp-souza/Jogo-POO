@@ -6,7 +6,7 @@ import br.ifpr.paranavai.jogo.modelo.Base;
 public class Tiro extends Base {
 
     private static final int SPEED_BULLET = 8;
-    private static final String IMAGE_PATH_BULLET = "recursos\\Sprites\\Tiros\\tiroNormal.gif";
+    private static final String IMAGE_PATH_BULLET = "src/br/ifpr/paranavai/recursos/Sprites/Tiros/tiroNormal.gif";
 
     public Tiro(int posicaoEmX, int posicaoEmY) {
         super.setPositionInX(posicaoEmX);

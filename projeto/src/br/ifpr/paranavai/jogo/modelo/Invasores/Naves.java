@@ -8,7 +8,7 @@ import java.awt.Font;
 
 public class Naves extends Base {
 
-    private static final String PATH_IMAGE = "recursos\\Sprites\\Inimigos\\tfighter.png";
+    private static final String PATH_IMAGE = "src/br/ifpr/paranavai/recursos/Sprites/Inimigos/tfighter.png";
 
     public Naves(int posicaoEmX, int posicaoEmY, int INIMIGOSVIDA) {
         super.setPositionInX(posicaoEmX);

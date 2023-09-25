@@ -5,7 +5,7 @@ import br.ifpr.paranavai.jogo.modelo.Base;
 
 public class StarDestroyer extends Base {
 
-    private static final String PATH_IMAGE = "recursos\\Sprites\\Inimigos\\starDestroyer.png";
+    private static final String PATH_IMAGE = "src/br/ifpr/paranavai/recursos/Sprites/Inimigos/starDestroyer.png";
 
     public StarDestroyer(int posicaoEmX, int posicaoEmY) {
         super.setInitialSpeed(3);

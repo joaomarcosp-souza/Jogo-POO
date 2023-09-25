@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Iterator;
 import javax.swing.ImageIcon;
@@ -16,12 +17,13 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.awt.Color;
 // IMPORTAÇÕES PARA O AUDIO
-import java.io.File;
-import java.io.FileInputStream;
-
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
-import java.io.InputStream;
+import java.io.IOException;
+import java.net.URL;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import br.ifpr.paranavai.jogo.modelo.Invasores.Meteorito;
 import br.ifpr.paranavai.jogo.modelo.Invasores.Naves;
@@ -71,29 +73,16 @@ public class Infinito extends JPanel implements ActionListener {
     private boolean flashing;
     private Timer timerFlashing;
     private int countFlashing = 0;
-    // AUDIO
-    //BULLET ITEMS
-    private File bulletSound = new File("recursos/Audios/tiro.wav");
-    private AudioStream bulletSoundAudio;
-    private InputStream bulletSoundInput;
-    //ENEMY DESTROYED ITEMS
-    private File deathEnemySound = new File("recursos/Audios/naveInimigaDestruida.wav");
-    private AudioStream deathEnemySoundAudio;
-    private InputStream deathEnemySoundInput;
-    // HIT MARKER
-    private File hitMarkerSound = new File("recursos/Audios/colisaoAudio.wav");
-    private AudioStream hitMarkerSoundAudio;
-    private InputStream hitMarkerSoundInput;
 
     public Infinito() {
         setFocusable(true);
         setDoubleBuffered(true);
 
         // IMAGEM DE FUNDO
-        ImageIcon carregando = new ImageIcon("recursos\\Sprites\\Fundos\\FundoFase.jpg");
+        ImageIcon carregando = new ImageIcon("src/br/ifpr/paranavai/recursos/Sprites/Fundos/FundoFase.jpg");
         this.background = carregando.getImage();
         // IMAGEM SEGUNDO FUNDO
-        ImageIcon carregandoDois = new ImageIcon("recursos\\Sprites\\Fundos\\FundoFase2.jpg");
+        ImageIcon carregandoDois = new ImageIcon("src/br/ifpr/paranavai/recursos/Sprites/Fundos/FundoFase2.jpg");
         this.backgroundTwo = carregandoDois.getImage();
 
         // INICIA A CLASSE PERSONAGEM
@@ -145,6 +134,30 @@ public class Infinito extends JPanel implements ActionListener {
         inicializaMeteorito(); // METEORITOS
         inicializaDeathStar();// NUVEMS
         inicializaAsteroides();
+    }
+
+    //CAMINHO PARA A PASTA QUE POSSUIR OS AUDIOS
+    private HashMap<String, Clip> clipSounds = new HashMap<>();
+    public void loadSound(String soundName) {
+        try {
+            if (!clipSounds.containsKey(soundName)) {
+                URL urlPath = this.getClass().getClassLoader()
+                        .getResource("br/ifpr/paranavai/recursos/Audios/" + soundName);
+                AudioInputStream audioIn = AudioSystem.getAudioInputStream(urlPath);
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioIn);
+                clipSounds.put(soundName, clip);
+            }
+
+            Clip playSound = clipSounds.get(soundName);
+            if (playSound.isRunning()) {
+                playSound.stop(); // PARA O CLIP PRA ENTÃO REINICIAR
+            }
+            playSound.setFramePosition(0); // REINICIA O AUDIO
+            playSound.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 
     // INICIANDO POSIÇÃO DAS NAVES INIMIGAS ALEATORIAMENTE
@@ -468,20 +481,6 @@ public class Infinito extends JPanel implements ActionListener {
             player.setHealthRestored(true);
         }
 
-        try {
-            // BULLET THINGS
-            bulletSoundInput = new FileInputStream(bulletSound);
-            bulletSoundAudio = new AudioStream(bulletSoundInput);
-            //ENEMY DESTROYED THINGS
-            deathEnemySoundInput = new FileInputStream(deathEnemySound);
-            deathEnemySoundAudio = new AudioStream(deathEnemySoundInput);
-            // ENEMY DESTROYED THINGS
-            hitMarkerSoundInput = new FileInputStream(hitMarkerSound);
-            hitMarkerSoundAudio = new AudioStream(hitMarkerSoundInput);
-        } catch (Exception e) {
-
-        }
-
     }
 
     public void checarColisoes() {
@@ -553,11 +552,11 @@ public class Infinito extends JPanel implements ActionListener {
                         inimigoNave.setVisibility(false);
                         player.setScore(pontuacaoAtual);
                         player.setScoreDeadEnemys(player.getScoreDeadEnemys() + 1);
-                        AudioPlayer.player.start(deathEnemySoundAudio);
+                        loadSound("naveInimigaDestruida.wav");
                         this.enemyKilled = true;
                     } else {
                         inimigoNave.setLife(inimigoNave.getLife() - 1);
-                        AudioPlayer.player.start(hitMarkerSoundAudio);
+                        loadSound("colisaoAudio.wav");
                         this.enemyKilled = false;
                     }
                     scorePositionX = inimigoNave.getPositionInX();
@@ -572,12 +571,13 @@ public class Infinito extends JPanel implements ActionListener {
                     if (inimigoNave.getLife() == 1) {
                         inimigoNave.setVisibility(false);
                         player.setScore(player.getScore() + VALOR_INIMIGOS);
+                        loadSound("naveInimigaDestruida.wav");
                         this.enemyKilled = true;
                     } else {
                         inimigoNave.setLife(inimigoNave.getLife() - 1);
+                        loadSound("colisaoAudio.wav");
                         this.enemyKilled = false;
                     }
-                    superTiro.setVisibility(false);
                     scorePositionX = inimigoNave.getPositionInX();
                     scorePositionY = inimigoNave.getPositionInY();
                 }
@@ -708,7 +708,7 @@ public class Infinito extends JPanel implements ActionListener {
                 player.mover(e);
                 player.atirar(e);
                 if (tecla == KeyEvent.VK_SPACE && player.isCanShoot()) {
-                    AudioPlayer.player.start(bulletSoundAudio);
+                    loadSound("tiro.wav");
                 }
                 pausar(e);
             } else if (screenEndGame.isVisibility() == true) {

@@ -8,8 +8,8 @@ public class Controles extends TelasBase {
     
     private Image imageControl;
     // CAMINHO IMAGEM DE FUNDO
-    private static final String PATH_IMAGE = "recursos\\Sprites\\Fundos\\FundoTelas.jpg";
-    private static final String PATH_IMAGE_TITLE = "recursos\\Sprites\\Fundos\\TelaControle.png";
+    private static final String PATH_IMAGE = "src/br/ifpr/paranavai/recursos/Sprites/Fundos/FundoTelas.jpg";
+    private static final String PATH_IMAGE_TITLE = "src/br/ifpr/paranavai/recursos/Sprites/Fundos/TelaControle.png";
     
     public Controles() {
         super.setVisibility(false);

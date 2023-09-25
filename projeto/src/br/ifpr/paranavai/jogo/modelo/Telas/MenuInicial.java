@@ -20,8 +20,8 @@ public class MenuInicial extends TelasBase {
     private static final String SCREEN_HISTORY = "HISTORICO";
     private static final String INIFINITY_GAME_MODE = "MODO INFINITO";
     // CAMINHO IMAGEM DE FUNDO
-    private static final String GIF_BACKGROUND = "recursos\\Sprites\\Fundos\\FundoMenu.gif";
-    private static final String PATH_IMAGE_TITLE = "recursos\\Sprites\\Fundos\\MenuPrincipal.png";
+    private static final String GIF_BACKGROUND = "src/br/ifpr/paranavai/recursos/Sprites/Fundos/FundoMenu.gif";
+    private static final String PATH_IMAGE_TITLE = "src/br/ifpr/paranavai/recursos/Sprites/Fundos/MenuPrincipal.png";
     // FONTES
     private final Font NEW_FONT = super.getPixel().deriveFont(Font.BOLD, super.getMenuTamanho());
 

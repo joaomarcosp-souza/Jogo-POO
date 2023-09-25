@@ -20,7 +20,7 @@ public class FimDeJogo extends TelasBase {
     private final Font FONT_MENU = super.getPixel().deriveFont(Font.BOLD, super.getTamanhoFonte());
     private final Font FONT_TITLE = super.getPixel().deriveFont(Font.BOLD, super.getTituloTamanho());
     // CAMINHO IMAGEM DE FUNDO
-    private static final String PATH_IMAGE_GAME_OVER = "recursos\\Sprites\\Fundos\\TelaFimDeJogo.gif";
+    private static final String PATH_IMAGE_GAME_OVER = "src/br/ifpr/paranavai/recursos/Sprites/Fundos/TelaFimDeJogo.gif";
 
     public FimDeJogo() {
         super.setVisibility(false);
