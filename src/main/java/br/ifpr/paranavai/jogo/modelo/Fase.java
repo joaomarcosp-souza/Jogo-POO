@@ -1,4 +1,4 @@
-package br.ifpr.paranavai.jogo.modelo.Modos;
+package br.ifpr.paranavai.jogo.modelo;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -39,7 +39,7 @@ import br.ifpr.paranavai.jogo.modelo.Telas.Pausar;
 import br.ifpr.paranavai.principal.TamanhoTela;
 import br.ifpr.paranavai.jogo.modelo.Telas.FimDeJogo;
 
-public class Infinito extends JPanel implements ActionListener {
+public class Fase extends JPanel implements ActionListener {
 
     private boolean enemyKilled;
     private int scorePositionX, scorePositionY;
@@ -74,7 +74,7 @@ public class Infinito extends JPanel implements ActionListener {
     private Timer timerFlashing;
     private int countFlashing = 0;
 
-    public Infinito() {
+    public Fase() {
         setFocusable(true);
         setDoubleBuffered(true);
 
