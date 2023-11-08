@@ -7,9 +7,9 @@
         com.mysql.jdbc.Driver
         </property>
         <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password"> </property>
+        <property name="hibernate.connection.password"></property>
         <property name="hibernate.connection.url">
-        jdbc:mysql://localhost/banco_jogo
+        jdbc:mysql://localhost:3306/bd_jogo
         </property>
         <property name="hibernate.dialect">
         org.hibernate.dialect.MySQL8Dialect
@@ -18,7 +18,13 @@
         <property name="hibernate.format_sql">false</property>
         <property name="hbm2ddl.auto">update</property>
         <!-- Classes que serão persistidas no tutorial -->
-        <mapping class="ifpr.paranavai.jogo.modelo.Jogador" />
+        <mapping class="ifpr.paranavai.jogo.modelo.model.Character.Player"/>
+        <mapping class="ifpr.paranavai.jogo.modelo.model.Character.Bullets.Shoot"/>
+        <mapping class="ifpr.paranavai.jogo.modelo.model.Character.Bullets.SpecialShoot"/>
+        <mapping class="ifpr.paranavai.jogo.modelo.model.Enemies.Asteroide"/>
+        <mapping class="ifpr.paranavai.jogo.modelo.model.Enemies.Meteorito"/>
+        <mapping class="ifpr.paranavai.jogo.modelo.model.Enemies.Naves"/>
+        <mapping class="ifpr.paranavai.jogo.modelo.model.Enemies.StarDestroyer"/>
 
     </session-factory>
 </hibernate-configuration>

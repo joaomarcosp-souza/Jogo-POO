@@ -25,19 +25,19 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import br.ifpr.paranavai.jogo.modelo.model.Invasores.Meteorito;
-import br.ifpr.paranavai.jogo.modelo.model.Invasores.Naves;
-import br.ifpr.paranavai.jogo.modelo.model.Invasores.Asteroide;
-import br.ifpr.paranavai.jogo.modelo.model.Invasores.StarDestroyer;
-import br.ifpr.paranavai.jogo.modelo.model.Jogador.Personagem;
-import br.ifpr.paranavai.jogo.modelo.model.Jogador.Tiro;
-import br.ifpr.paranavai.jogo.modelo.model.Jogador.SuperTiro;
+import br.ifpr.paranavai.jogo.modelo.model.Character.Player;
+import br.ifpr.paranavai.jogo.modelo.model.Character.Bullets.Shoot;
+import br.ifpr.paranavai.jogo.modelo.model.Character.Bullets.SpecialShoot;
+import br.ifpr.paranavai.jogo.modelo.model.Enemies.Asteroide;
+import br.ifpr.paranavai.jogo.modelo.model.Enemies.Meteorito;
+import br.ifpr.paranavai.jogo.modelo.model.Enemies.Naves;
+import br.ifpr.paranavai.jogo.modelo.model.Enemies.StarDestroyer;
+import br.ifpr.paranavai.jogo.modelo.model.Screens.Controles;
+import br.ifpr.paranavai.jogo.modelo.model.Screens.FimDeJogo;
+import br.ifpr.paranavai.jogo.modelo.model.Screens.Historico;
+import br.ifpr.paranavai.jogo.modelo.model.Screens.MenuInicial;
+import br.ifpr.paranavai.jogo.modelo.model.Screens.Pausar;
 import br.ifpr.paranavai.jogo.modelo.Util.TamanhoTela;
-import br.ifpr.paranavai.jogo.modelo.model.Telas.Controles;
-import br.ifpr.paranavai.jogo.modelo.model.Telas.FimDeJogo;
-import br.ifpr.paranavai.jogo.modelo.model.Telas.Historico;
-import br.ifpr.paranavai.jogo.modelo.model.Telas.MenuInicial;
-import br.ifpr.paranavai.jogo.modelo.model.Telas.Pausar;
 
 public class Fase extends JPanel implements ActionListener {
 
@@ -49,19 +49,19 @@ public class Fase extends JPanel implements ActionListener {
     // LISTA PARA INIMIGOS
     private List<Naves> enemyShip;
     private List<Asteroide> asteroids;
-    private List<StarDestroyer> deathstar;
+    private List<StarDestroyer> starDestroyer;
     private List<Meteorito> enemyMeteor;
     // INSTANCIAS
     private Pausar screenPaused;
     private FimDeJogo screenEndGame;
     private MenuInicial screenMenu;
-    private Personagem player;
+    private Player player;
     private Historico screenHistory;
     private Controles screenControls;
     private TamanhoTela screenResolution;
     // TIMERS
     private Timer timerMeteor;
-    private Timer timerDeathStar;
+    private Timer timerStarDestroyer;
     private Timer timerAsteroids;
     private Timer timerEnemyShip;
     private final Timer timerGlobal;
@@ -86,7 +86,7 @@ public class Fase extends JPanel implements ActionListener {
         this.backgroundTwo = carregandoDois.getImage();
 
         // INICIA A CLASSE PERSONAGEM
-        player = new Personagem();
+        player = new Player();
         player.carregar();
         // INICIA TELA 'MENU'
         screenMenu = new MenuInicial();
@@ -132,7 +132,7 @@ public class Fase extends JPanel implements ActionListener {
         // INICIALIZANDO MÉTODOS INIMIGOS
         inicializaNaveInimiga(); // NAVES
         inicializaMeteorito(); // METEORITOS
-        inicializaDeathStar();// NUVEMS
+        inicializaStarDestroyer();// NUVEMS
         inicializaAsteroides();
     }
 
@@ -208,18 +208,18 @@ public class Fase extends JPanel implements ActionListener {
     }// FIM MÉTODO METEORITO
 
     // INICIALIZA NUVEM SEM COLISÃO(TEMPORARIO)
-    public void inicializaDeathStar() {
-        deathstar = new ArrayList<StarDestroyer>();
+    public void inicializaStarDestroyer() {
+        starDestroyer = new ArrayList<StarDestroyer>();
         // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
-        timerDeathStar = new Timer(GENERAL_DELAY * 19, new ActionListener() {
+        timerStarDestroyer = new Timer(GENERAL_DELAY * 19, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int posicaoEmX = screenResolution.getWIDTH_SCREEN();
                 int posicaoEmY = (int) (Math.random() * (screenResolution.getHEIGHT_SCREEN() - 100));
-                deathstar.add(new StarDestroyer(posicaoEmX, posicaoEmY));
+                starDestroyer.add(new StarDestroyer(posicaoEmX, posicaoEmY));
             }
         });
-        timerDeathStar.setRepeats(true);
+        timerStarDestroyer.setRepeats(true);
     }
 
     public void inicializaAsteroides() {
@@ -254,17 +254,17 @@ public class Fase extends JPanel implements ActionListener {
                 graficos.drawImage(this.backgroundTwo, 0, 0, null);
             }
             // CARREGANDO TIRO
-            List<Tiro> tiros = player.getBullets();
+            List<Shoot> tiros = player.getBullets();
             for (int i = 0; i < tiros.size(); i++) {
-                Tiro tiro = tiros.get(i);
+                Shoot tiro = tiros.get(i);
                 tiro.carregar();
                 graficos.drawImage(tiro.getImage(), tiro.getPositionInX(), tiro.getPositionInY(), null);
 
             }
             // CARREGANDO TIRO ESPECIAL
-            List<SuperTiro> tiroSuper = player.getSpecialBullet();
+            List<SpecialShoot> tiroSuper = player.getSpecialBullet();
             for (int i = 0; i < tiroSuper.size(); i++) {
-                SuperTiro tiroEspecial = tiroSuper.get(i);
+                SpecialShoot tiroEspecial = tiroSuper.get(i);
                 tiroEspecial.carregar();
                 graficos.drawImage(tiroEspecial.getImage(),
                         tiroEspecial.getPositionInX(), tiroEspecial.getPositionInY(), null);
@@ -277,8 +277,8 @@ public class Fase extends JPanel implements ActionListener {
                         asteroide.getPositionInX(), asteroide.getPositionInY(), null);
             }
             // CARREGA DEATH STAR
-            for (int i = 0; i < deathstar.size(); i++) {
-                StarDestroyer chefao = deathstar.get(i);
+            for (int i = 0; i < starDestroyer.size(); i++) {
+                StarDestroyer chefao = starDestroyer.get(i);
                 chefao.carregar();
                 graficos.drawImage(chefao.getImage(),
                         chefao.getPositionInX(), chefao.getPositionInY(), null);
@@ -358,8 +358,8 @@ public class Fase extends JPanel implements ActionListener {
                 }
             } // FIM
 
-            // DEATHSTAR ATUALIZA
-            Iterator<StarDestroyer> iteratorChefao = deathstar.iterator();
+            // STARDESTROYER ATUALIZA
+            Iterator<StarDestroyer> iteratorChefao = starDestroyer.iterator();
             while (iteratorChefao.hasNext()) {
                 StarDestroyer chefao = iteratorChefao.next();
                 if (chefao.isVisibility()) {
@@ -381,10 +381,10 @@ public class Fase extends JPanel implements ActionListener {
             }
 
             // ATUALIZA POSICAÇÃO DO TIRO
-            List<Tiro> tiros = player.getBullets();
-            Iterator<Tiro> iteratorTiro = tiros.iterator();
+            List<Shoot> tiros = player.getBullets();
+            Iterator<Shoot> iteratorTiro = tiros.iterator();
             while (iteratorTiro.hasNext()) {
-                Tiro tiro = iteratorTiro.next();
+                Shoot tiro = iteratorTiro.next();
                 if (tiro.isVisibility()) {
                     tiro.atualizar();
                 } else {
@@ -393,10 +393,10 @@ public class Fase extends JPanel implements ActionListener {
             } // FIM
 
             // ATUALIZA POSICAÇÃO DO TIRO ESPECIAL
-            List<SuperTiro> tirosEspecial = player.getSpecialBullet();
-            Iterator<SuperTiro> iteratorTiroEspecial = tirosEspecial.iterator();
+            List<SpecialShoot> tirosEspecial = player.getSpecialBullet();
+            Iterator<SpecialShoot> iteratorTiroEspecial = tirosEspecial.iterator();
             while (iteratorTiroEspecial.hasNext()) {
-                SuperTiro tiroSuper = iteratorTiroEspecial.next();
+                SpecialShoot tiroSuper = iteratorTiroEspecial.next();
                 if (tiroSuper.isVisibility()) {
                     tiroSuper.atualizar();
                 } else {
@@ -414,7 +414,7 @@ public class Fase extends JPanel implements ActionListener {
             timerEnemyShip.stop();
             timerMeteor.stop();
             timerAsteroids.stop();
-            timerDeathStar.stop();
+            timerStarDestroyer.stop();
             screenPaused.menu(getGraphics());
         }
     }
@@ -438,12 +438,12 @@ public class Fase extends JPanel implements ActionListener {
             // PARA O SPAWN DE INIMIGOS
             timerEnemyShip.stop();
             timerMeteor.stop();
-            timerDeathStar.stop();
+            timerStarDestroyer.stop();
             timerAsteroids.stop();
             // LIMPA A LISTA DE INMIGOS
             enemyShip.clear();
             enemyMeteor.clear();
-            deathstar.clear();
+            starDestroyer.clear();
             // RESETA A POSIÇÃO DO JOGADOR
             if (player.getPositionInX() != player.getINITIAL_POSITION_X()
                     || player.getPositionInY() != player.getINITIAL_POSITION_Y()) {
@@ -456,7 +456,7 @@ public class Fase extends JPanel implements ActionListener {
             player.setLife(player.getInitialLife());
         } else {
             timerEnemyShip.start();
-            timerDeathStar.start();
+            timerStarDestroyer.start();
             timerAsteroids.start();
 
             if (player.getScore() >= 300) {
@@ -542,7 +542,7 @@ public class Fase extends JPanel implements ActionListener {
             Rectangle formaInimigoNave = inimigoNave.getBounds();
 
             // TIRO NORMAL
-            for (Tiro tiro : player.getBullets()) {
+            for (Shoot tiro : player.getBullets()) {
                 Rectangle formaTiro = tiro.getBounds();
                 if (formaTiro.intersects(formaInimigoNave)) {
                     if (inimigoNave.getLife() == 1) {
@@ -566,7 +566,7 @@ public class Fase extends JPanel implements ActionListener {
                 }
             }
             // SUPER TIRO
-            for (SuperTiro superTiro : player.getSpecialBullet()) {
+            for (SpecialShoot superTiro : player.getSpecialBullet()) {
                 Rectangle formaSuper = superTiro.getBounds();
                 if (formaSuper.intersects(formaInimigoNave)) {
                     if (inimigoNave.getLife() == 1) {
@@ -606,7 +606,7 @@ public class Fase extends JPanel implements ActionListener {
         for (Meteorito inimigoMeteorito : enemyMeteor) {
             Rectangle formaInimigoMeteorito = inimigoMeteorito.getBounds();
             // TIRO NORMAL
-            for (Tiro tiro : player.getBullets()) {
+            for (Shoot tiro : player.getBullets()) {
                 Rectangle formaTiro = tiro.getBounds();
                 if (formaTiro.intersects(formaInimigoMeteorito)) {
                     inimigoMeteorito.setVisibility(false);
@@ -618,7 +618,7 @@ public class Fase extends JPanel implements ActionListener {
                 }
             }
             // SUPER TIRO
-            for (SuperTiro superTiro : player.getSpecialBullet()) {
+            for (SpecialShoot superTiro : player.getSpecialBullet()) {
                 Rectangle formaSuper = superTiro.getBounds();
                 if (formaSuper.intersects(formaInimigoMeteorito)) {
                     inimigoMeteorito.setVisibility(false);

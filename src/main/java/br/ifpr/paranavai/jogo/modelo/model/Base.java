@@ -6,21 +6,46 @@ import java.io.File;
 import java.awt.Font;
 import java.io.IOException;
 
-import br.ifpr.paranavai.jogo.modelo.Util.TamanhoTela;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
+import br.ifpr.paranavai.jogo.modelo.Util.TamanhoTela;
 import java.awt.FontFormatException;
 
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Base {
-    
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_jogador", unique = true, nullable = false)
+    private Integer idBase;
+
+    @Column(name= "vida")
     private int life;
+    @Column(name = "image")
     private Image image;
-    private double speed;
+    @Column(name = "velocidade")
     private Font pixel = null;
+    @Column(name = "visibilidade")
     private boolean visibility;
+    @Column(name = "posicaoX")    
+    private int positionInX;
+    @Column(name = "posicaoY")
+    private int positionInY;
+    @Column(name = "largura_imagem")
+    private int widthImage;
+    @Column(name= "altura_imagem")
+    private int heightImage;
+    @Column(name= "velocidade")
+    private double speed;
     private TamanhoTela screenResolution;
     private double initialSpeed;
-    private int positionInX, positionInY;
-    private int widthImage, heightImage;
 
     public Base() {
         this.visibility = true;

@@ -24,6 +24,7 @@ public class Principal extends JFrame {
         super.setLocationRelativeTo(null);
         super.setResizable(false);
     }
+    
     public static void main(String[] args) {
         new Principal();
     }
