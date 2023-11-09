@@ -1,30 +1,28 @@
 <!DOCTYPE hibernate-configuration PUBLIC
-"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.connection.driver_class">
-        com.mysql.jdbc.Driver
+            com.mysql.jdbc.Driver
         </property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password"></property>
         <property name="hibernate.connection.url">
-        jdbc:mysql://localhost:3306/bd_jogo
+            jdbc:mysql://localhost:3306/bd_jogo
         </property>
         <property name="hibernate.dialect">
-        org.hibernate.dialect.MySQL8Dialect
+            org.hibernate.dialect.MySQL8Dialect
         </property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">false</property>
-        <property name="hbm2ddl.auto">update</property>
-        <!-- Classes que serão persistidas no tutorial -->
-        <mapping class="ifpr.paranavai.jogo.modelo.model.Character.Player"/>
-        <mapping class="ifpr.paranavai.jogo.modelo.model.Character.Bullets.Shoot"/>
-        <mapping class="ifpr.paranavai.jogo.modelo.model.Character.Bullets.SpecialShoot"/>
-        <mapping class="ifpr.paranavai.jogo.modelo.model.Enemies.Asteroide"/>
-        <mapping class="ifpr.paranavai.jogo.modelo.model.Enemies.Meteorito"/>
-        <mapping class="ifpr.paranavai.jogo.modelo.model.Enemies.Naves"/>
-        <mapping class="ifpr.paranavai.jogo.modelo.model.Enemies.StarDestroyer"/>
-
+        <property name="hbm2ddl.auto">create-drop</property>
+        <mapping class="br.ifpr.paranavai.jogo.model.Character.Player"/>
+        <mapping class="br.ifpr.paranavai.jogo.model.Character.Bullets.Shoot"/>
+        <mapping class="br.ifpr.paranavai.jogo.model.Character.Bullets.SpecialShoot"/>
+        <mapping class="br.ifpr.paranavai.jogo.model.Enemies.Asteroide"/>
+        <mapping class="br.ifpr.paranavai.jogo.model.Enemies.Meteorito"/>
+        <mapping class="br.ifpr.paranavai.jogo.model.Enemies.Naves"/>
+        <mapping class="br.ifpr.paranavai.jogo.model.Enemies.StarDestroyer"/>
     </session-factory>
 </hibernate-configuration>
