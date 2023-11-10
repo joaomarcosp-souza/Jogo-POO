@@ -16,7 +16,7 @@ public class Historico extends TelasBase {
     }
 
     @Override
-    public void carregar() {
+    public void load() {
         ImageIcon loading = new ImageIcon(getClass().getResource(PATH_IMAGE));
         super.setImage(loading.getImage());
         super.setWidthImage(super.getImage().getWidth(null));

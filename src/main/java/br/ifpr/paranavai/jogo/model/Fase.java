@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Iterator;
@@ -31,31 +30,24 @@ import br.ifpr.paranavai.jogo.model.Character.Bullets.SpecialShoot;
 import br.ifpr.paranavai.jogo.model.Enemies.Asteroide;
 import br.ifpr.paranavai.jogo.model.Enemies.Meteorito;
 import br.ifpr.paranavai.jogo.model.Enemies.Naves;
-import br.ifpr.paranavai.jogo.model.Enemies.StarDestroyer;
 import br.ifpr.paranavai.jogo.model.Screens.Controles;
 import br.ifpr.paranavai.jogo.model.Screens.FimDeJogo;
 import br.ifpr.paranavai.jogo.model.Screens.Historico;
 import br.ifpr.paranavai.jogo.model.Screens.MenuInicial;
 import br.ifpr.paranavai.jogo.model.Screens.Pausar;
-import br.ifpr.paranavai.jogo.Services.FaseService;
 import br.ifpr.paranavai.jogo.Services.FaseServiceImpl;
 import br.ifpr.paranavai.jogo.Util.TamanhoTela;
 
 public class Fase extends JPanel implements ActionListener {
 
     private FaseModel faseModel;
-    private FaseService faseService;
+    private FaseServiceImpl faseServiceImpl;
 
     private boolean enemyKilled;
     private int scorePositionX, scorePositionY;
     // ATRIBUTOS DA CLASSE
     private Image background;
     private Image backgroundTwo;
-    // LISTA PARA INIMIGOS
-    private List<Naves> enemyShip;
-    private List<Asteroide> asteroids;
-    private List<StarDestroyer> starDestroyer;
-    private List<Meteorito> enemyMeteor;
     // INSTANCIAS
     private Pausar screenPaused;
     private FimDeJogo screenEndGame;
@@ -64,10 +56,6 @@ public class Fase extends JPanel implements ActionListener {
     private Controles screenControls;
     private TamanhoTela screenResolution;
     // TIMERS
-    private Timer timerMeteor;
-    private Timer timerStarDestroyer;
-    private Timer timerAsteroids;
-    private Timer timerEnemyShip;
     private final Timer timerGlobal;
     // DELAYS INIMIHOS
     private final static int GENERAL_DELAY = 1000;
@@ -79,9 +67,8 @@ public class Fase extends JPanel implements ActionListener {
     private int countFlashing = 0;
 
     public Fase() {
-
         faseModel = new FaseModel();
-        faseService = new FaseServiceImpl(this, this.faseModel);
+        faseServiceImpl = new FaseServiceImpl(this, this.faseModel);
 
         setFocusable(true);
         setDoubleBuffered(true);
@@ -93,28 +80,28 @@ public class Fase extends JPanel implements ActionListener {
         ImageIcon carregandoDois = new ImageIcon("src/main/resources/Sprites/Fundos/FundoFase2.jpg");
         this.backgroundTwo = carregandoDois.getImage();
 
-        //PERSONAGEM
+        // PERSONAGEM
         faseModel.setPlayer(new Player());
-        faseModel.getPlayer().carregar();
-        
+        faseModel.getPlayer().load();
+
         // INICIA TELA 'MENU'
         screenMenu = new MenuInicial();
-        screenMenu.carregar();
+        screenMenu.load();
         // INICIA TELA 'HISTORICO' COM AS PARTIDAS ANTERIORES
         screenHistory = new Historico();
-        screenHistory.carregar();
+        screenHistory.load();
         // INICIA TELA 'CONTROLES'
         screenControls = new Controles();
-        screenControls.carregar();
+        screenControls.load();
         // INICIA TELA 'FIM DE JOGO'
         screenEndGame = new FimDeJogo();
-        screenEndGame.carregar();
+        screenEndGame.load();
         // INICIA A CLASSE TAMANHO TELA;
         screenResolution = new TamanhoTela();
         screenResolution.carregar();
         // INICIA A CLASSE TAMANHO TELA;
         screenPaused = new Pausar();
-        screenPaused.carregar();
+        screenPaused.load();
 
         // RESCALONAMENTO DAS IMAGENS DE FUNDO
         this.background = this.background.getScaledInstance(
@@ -138,11 +125,10 @@ public class Fase extends JPanel implements ActionListener {
         // ATUALIZA A CLASSE E REDENSENHA A TELA EM INTERVALOS REGULARES.
         timerGlobal = new Timer(5, this);
         timerGlobal.start(); // START
-        // INICIALIZANDO MÉTODOS INIMIGOS
-        spawnEnemieShip(); // NAVES
-        spawnEnemieMeteor(); // METEORITOS
-        spawnEnemieStarDestroyer();// NUVEMS
-        spawnAsteroids();
+
+        faseServiceImpl.spawnAsteroids();
+        faseServiceImpl.spawnEnemieMeteor();
+        faseServiceImpl.spawnEnemieShip();
     }
 
     // CAMINHO PARA A PASTA QUE POSSUIR OS AUDIOS
@@ -171,79 +157,6 @@ public class Fase extends JPanel implements ActionListener {
     }
 
     // INICIANDO POSIÇÃO DAS NAVES INIMIGAS ALEATORIAMENTE
-    public void spawnEnemieShip() {
-        enemyShip = new ArrayList<Naves>();
-        // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
-        timerEnemyShip = new Timer(GENERAL_DELAY, new ActionListener() {
-            int alturaInimigo = 80;
-            int vidaInimigos = 1;
-            int multiploNave = 100;
-            boolean vidaAumentada;
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int posicaoEmX = screenResolution.getWIDTH_SCREEN(); // POSICÃO INICIAL DO PERSONAGEM
-                int posicaoEmY = (int) (Math.random() * ((screenResolution.getHEIGHT_SCREEN()) - alturaInimigo));
-                // AUMENTA A VIDA DO INIMIGO COM BASE NOS PONTOS DO JOGADOR
-                if (faseModel.getPlayer().isPlaying() && faseModel.getPlayer().getScore() > 0 && faseModel.getPlayer().getScore() % multiploNave == 0
-                        && vidaInimigos < 4 && !vidaAumentada) {
-                    vidaAumentada = true;
-                    vidaInimigos = vidaInimigos + 1;
-                }
-                // VERIFICANDO SE A PONTUAÇÃO NÃO E MAIS VALIDA E REDEFININDO A VARIAVEL PARA
-                if (faseModel.getPlayer().getScore() % multiploNave != 0) {
-                    vidaAumentada = false;
-                }
-                enemyShip.add(new Naves(posicaoEmX, posicaoEmY, vidaInimigos));
-            }
-        });
-        timerEnemyShip.setRepeats(true);
-    }
-
-    // INICIANDO POSIÇÃO DO METEORITO ALEATORIAMENTE
-    public void spawnEnemieMeteor() {
-        enemyMeteor = new ArrayList<Meteorito>();
-        int alturaInimigo = 100;
-        // TIMER PARA SPAWNAR O METEORITO
-        timerMeteor = new Timer(GENERAL_DELAY * 3, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int posicaoEmY = -alturaInimigo;
-                int posicaoEmX = (int) (Math.random() * (screenResolution.getWIDTH_SCREEN() - alturaInimigo));
-                enemyMeteor.add(new Meteorito(posicaoEmX, posicaoEmY));
-            }
-        });
-        timerMeteor.setRepeats(true);
-    }// FIM MÉTODO METEORITO
-
-    // INICIALIZA NUVEM SEM COLISÃO(TEMPORARIO)
-    public void spawnEnemieStarDestroyer() {
-        starDestroyer = new ArrayList<StarDestroyer>();
-        // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
-        timerStarDestroyer = new Timer(GENERAL_DELAY * 19, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int posicaoEmX = screenResolution.getWIDTH_SCREEN();
-                int posicaoEmY = (int) (Math.random() * (screenResolution.getHEIGHT_SCREEN() - 100));
-                starDestroyer.add(new StarDestroyer(posicaoEmX, posicaoEmY));
-            }
-        });
-        timerStarDestroyer.setRepeats(true);
-    }
-
-    public void spawnAsteroids() {
-        asteroids = new ArrayList<Asteroide>();
-        // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
-        timerAsteroids = new Timer(500, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int posicaoEmX = screenResolution.getWIDTH_SCREEN();
-                int posicaoEmY = (int) (Math.random() * (screenResolution.getHEIGHT_SCREEN()));
-                asteroids.add(new Asteroide(posicaoEmX, posicaoEmY));
-            }
-        });
-        timerAsteroids.setRepeats(true);
-    }
 
     public void paintComponent(Graphics g) {
         Graphics2D grapichs = (Graphics2D) g;
@@ -262,40 +175,9 @@ public class Fase extends JPanel implements ActionListener {
             if (faseModel.getPlayer().getScore() >= 200) {
                 grapichs.drawImage(this.backgroundTwo, 0, 0, null);
             }
-            
-            faseService.drawnBullets(g);
 
-            // CARREGA DEATH STAR
-            for (int i = 0; i < asteroids.size(); i++) {
-                Asteroide asteroide = asteroids.get(i);
-                asteroide.carregar();
-                grapichs.drawImage(asteroide.getImage(),
-                        asteroide.getPositionInX(), asteroide.getPositionInY(), null);
-            }
-            // CARREGA DEATH STAR
-            for (int i = 0; i < starDestroyer.size(); i++) {
-                StarDestroyer chefao = starDestroyer.get(i);
-                chefao.carregar();
-                grapichs.drawImage(chefao.getImage(),
-                        chefao.getPositionInX(), chefao.getPositionInY(), null);
-            }
-
-            // COMEÇO METEORO E NAVES INIMIGAS
-            for (int i = 0; i < enemyMeteor.size(); i++) {
-                Meteorito meteorito = enemyMeteor.get(i);
-                meteorito.carregar();
-                grapichs.drawImage(meteorito.getImage(), meteorito.getPositionInX(), meteorito.getPositionInY(),
-                        null);
-            }
-
-            for (int i = 0; i < enemyShip.size(); i++) {
-                Naves inimigoNave = enemyShip.get(i);
-                inimigoNave.carregar();
-                grapichs.drawImage(inimigoNave.getImage(), inimigoNave.getPositionInX(), inimigoNave.getPositionInY(),
-                        null);
-                inimigoNave.vidas(grapichs);
-                inimigoNave.inimigoDados(grapichs);
-            } // FIM METEORO E NAVES INIMIGAS
+            faseServiceImpl.drawnBullets(g);
+            faseServiceImpl.dranwEnemies(g);
 
             // DESENHA A PONTUAÇÃO ACIMA DO INIMIGO MORTO
             if (enemyKilled) {
@@ -306,15 +188,14 @@ public class Fase extends JPanel implements ActionListener {
                 g.drawString("- 1", scorePositionX + 75, scorePositionY += 1);
             }
 
-
             // CARREGANDO OS COMPONENTES DA CLASSE PERSONAGEM(VIDA E PONTUAÇÃO)
             faseModel.getPlayer().pontuacao(grapichs);
             faseModel.getPlayer().desenhaVida(grapichs);
-             faseModel.getPlayer().desenhaEliminacoes(grapichs);
-             faseModel.getPlayer().restauraVida(grapichs);
+            faseModel.getPlayer().desenhaEliminacoes(grapichs);
+            faseModel.getPlayer().restauraVida(grapichs);
             // CARREGANDO A IMAGEM DO PERSONAGEM SOMENTE SE NÃO ESTIVER PISCANDO
             if (!flashing) {
-                grapichs.drawImage(faseModel.getPlayer().getImage(), faseModel.getPlayer().getPositionInX(), 
+                grapichs.drawImage(faseModel.getPlayer().getImage(), faseModel.getPlayer().getPositionInX(),
                         faseModel.getPlayer().getPositionInY(),
                         null);
             }
@@ -335,44 +216,33 @@ public class Fase extends JPanel implements ActionListener {
             // DO METODO 'ATUALIZAR', AO FICAR INVISIVEL O INIMIGO E EXCLUIDO
             // A CLASSE ITERATOR E COMO UM PONTEIRO EM C QUE PERMITE INTERAJIR COM UM CERTO
             // OBJETO(INIMIGO) DE UMA LISTA DE FORMA ESPECIFICA E EM SEQUENCIA
-            Iterator<Naves> iteratorNaves = enemyShip.iterator();
+            Iterator<Naves> iteratorNaves = faseModel.getEnemieShip().iterator();
             while (iteratorNaves.hasNext()) {
                 Naves inimigoNave = iteratorNaves.next();
                 if (inimigoNave.isVisibility()) {
-                    inimigoNave.atualizar();
+                    inimigoNave.update();
                 } else {
                     iteratorNaves.remove();
                 }
             } // FIM NAVES
 
             // ATUALIZA A POSIÇÃO DO METEORO
-            Iterator<Meteorito> iteratorMeteorito = enemyMeteor.iterator();
+            Iterator<Meteorito> iteratorMeteorito = faseModel.getEnemieMeteor().iterator();
             while (iteratorMeteorito.hasNext()) {
                 Meteorito inimigoMeteorito = iteratorMeteorito.next();
                 if (inimigoMeteorito.isVisibility()) {
-                    inimigoMeteorito.atualizar();
+                    inimigoMeteorito.update();
                 } else {
                     iteratorMeteorito.remove();
                 }
             } // FIM
 
-            // STARDESTROYER ATUALIZA
-            Iterator<StarDestroyer> iteratorChefao = starDestroyer.iterator();
-            while (iteratorChefao.hasNext()) {
-                StarDestroyer chefao = iteratorChefao.next();
-                if (chefao.isVisibility()) {
-                    chefao.atualizar();
-                } else {
-                    iteratorChefao.remove();
-                }
-            }
-
             // ASTEROIDES ATUALIZA
-            Iterator<Asteroide> iteratorAsteroide = asteroids.iterator();
+            Iterator<Asteroide> iteratorAsteroide = faseModel.getAsteroids().iterator();
             while (iteratorAsteroide.hasNext()) {
                 Asteroide asteroide = iteratorAsteroide.next();
                 if (asteroide.isVisibility()) {
-                    asteroide.atualizar();
+                    asteroide.update();
                 } else {
                     iteratorAsteroide.remove();
                 }
@@ -384,7 +254,7 @@ public class Fase extends JPanel implements ActionListener {
             while (iteratorTiro.hasNext()) {
                 Shoot tiro = iteratorTiro.next();
                 if (tiro.isVisibility()) {
-                    tiro.atualizar();
+                    tiro.update();
                 } else {
                     iteratorTiro.remove();
                 }
@@ -396,23 +266,21 @@ public class Fase extends JPanel implements ActionListener {
             while (iteratorTiroEspecial.hasNext()) {
                 SpecialShoot tiroSuper = iteratorTiroEspecial.next();
                 if (tiroSuper.isVisibility()) {
-                    tiroSuper.atualizar();
+                    tiroSuper.update();
                 } else {
                     iteratorTiroEspecial.remove();
                 }
             }
-            // FIM
             gerenciaFase();
             checarColisoes();
-            faseModel.getPlayer().atualizar();
+            faseModel.getPlayer().update();
         }
         // PARA O SPAWN DOS INIMIGOS PRA QUE ELES NÃO ACUMULEM EM UMA SÓ POSIÇÃO
         // TAMBÉM CARREGA O MENU E A IMAGEM DA TELA PAUSE
         if (screenPaused.isPaused()) {
-            timerEnemyShip.stop();
-            timerMeteor.stop();
-            timerAsteroids.stop();
-            timerStarDestroyer.stop();
+            faseServiceImpl.getTimerEnemyShip().stop();
+            faseServiceImpl.getTimerAsteroids().stop();
+            faseServiceImpl.getTimerMeteor().stop();
             screenPaused.menu(getGraphics());
         }
     }
@@ -424,7 +292,7 @@ public class Fase extends JPanel implements ActionListener {
         for (int i = 0; i < pontosPersonagem.length; i++) {
             if (faseModel.getPlayer().getScore() > pontosPersonagem[i]) {
                 double aumentoVelocidade = ajusteVelocidades[i];
-                enemyShip.forEach(naveTemporaria -> naveTemporaria.setSpeed(aumentoVelocidade));
+                faseModel.getEnemieShip().forEach(naveTemporaria -> naveTemporaria.setSpeed(aumentoVelocidade));
             }
         }
 
@@ -434,31 +302,28 @@ public class Fase extends JPanel implements ActionListener {
             timerFlashing.stop();
             faseModel.getPlayer().getBullets().clear();
             // PARA O SPAWN DE INIMIGOS
-            timerEnemyShip.stop();
-            timerMeteor.stop();
-            timerStarDestroyer.stop();
-            timerAsteroids.stop();
+            faseServiceImpl.getTimerEnemyShip().stop();
+            faseServiceImpl.getTimerAsteroids().stop();
+            faseServiceImpl.getTimerMeteor().stop();
             // LIMPA A LISTA DE INMIGOS
-            enemyShip.clear();
-            enemyMeteor.clear();
-            starDestroyer.clear();
+            faseModel.getEnemieShip().clear();
+            faseModel.getEnemieMeteor().clear();
             // RESETA A POSIÇÃO DO JOGADOR
             if (faseModel.getPlayer().getPositionInX() != faseModel.getPlayer().getINITIAL_POSITION_X()
                     || faseModel.getPlayer().getPositionInY() != faseModel.getPlayer().getINITIAL_POSITION_Y()) {
-                 faseModel.getPlayer().setPositionInX(faseModel.getPlayer().getINITIAL_POSITION_X());
-                 faseModel.getPlayer().setPositionInY(faseModel.getPlayer().getINITIAL_POSITION_Y());
+                faseModel.getPlayer().setPositionInX(faseModel.getPlayer().getINITIAL_POSITION_X());
+                faseModel.getPlayer().setPositionInY(faseModel.getPlayer().getINITIAL_POSITION_Y());
             }
             // RESETA A HUD
             faseModel.getPlayer().setScore(0);
             faseModel.getPlayer().setScoreDeadEnemys(0);
             faseModel.getPlayer().setLife(faseModel.getPlayer().getInitialLife());
         } else {
-            timerEnemyShip.start();
-            timerStarDestroyer.start();
-            timerAsteroids.start();
+            faseServiceImpl.getTimerEnemyShip().start();
+            faseServiceImpl.getTimerAsteroids().start();
 
             if (faseModel.getPlayer().getScore() >= 300) {
-                timerMeteor.start();
+                faseServiceImpl.getTimerMeteor().start();
             }
         }
 
@@ -475,7 +340,8 @@ public class Fase extends JPanel implements ActionListener {
         }
 
         // FUNÇÃO PARA VERIFICAR A VIDA DO PERSONAGEM E ATIVAR O SPAWN DE VIDA
-        if (faseModel.getPlayer().getScore() > 0 && faseModel.getPlayer().getScore() % 300 == 0 && faseModel.getPlayer().isHealthRestored() == false) {
+        if (faseModel.getPlayer().getScore() > 0 && faseModel.getPlayer().getScore() % 300 == 0
+                && faseModel.getPlayer().isHealthRestored() == false) {
             faseModel.getPlayer().setHealthRestoreCheck(1);
             faseModel.getPlayer().setHealthRestored(true);
         }
@@ -493,21 +359,25 @@ public class Fase extends JPanel implements ActionListener {
         // VERIFICA COLISÃO COM A BORDA EM 'X'
         if (faseModel.getPlayer().getPositionInX() < 0) {
             faseModel.getPlayer().setPositionInX(0); // POSIÇÃO MÍNIMA X
-        } else if (faseModel.getPlayer().getPositionInX() + faseModel.getPlayer().getWidthImage() > screenResolution.getWIDTH_SCREEN()) {
-            int maximoEmX = screenResolution.getWIDTH_SCREEN() -  faseModel.getPlayer().getWidthImage(); // CALCULA A POSIÇÃO MÁXIMA
+        } else if (faseModel.getPlayer().getPositionInX() + faseModel.getPlayer().getWidthImage() > screenResolution
+                .getWIDTH_SCREEN()) {
+            int maximoEmX = screenResolution.getWIDTH_SCREEN() - faseModel.getPlayer().getWidthImage(); // CALCULA A
+                                                                                                        // POSIÇÃO
+                                                                                                        // MÁXIMA
             faseModel.getPlayer().setPositionInX(maximoEmX);
         }
         // VERIFICA COLISÃO COM A BORDA EM 'Y'
         if (faseModel.getPlayer().getPositionInY() < 0) {
             faseModel.getPlayer().setPositionInY(0); // POSIÇÃO MÍNIMA Y
-        } else if ( faseModel.getPlayer().getPositionInY() +  faseModel.getPlayer().getHeightImage() > screenResolution.getHEIGHT_SCREEN()) {
+        } else if (faseModel.getPlayer().getPositionInY() + faseModel.getPlayer().getHeightImage() > screenResolution
+                .getHEIGHT_SCREEN()) {
             int maximoEmY = screenResolution.getHEIGHT_SCREEN() - faseModel.getPlayer().getHeightImage();
             faseModel.getPlayer().setPositionInY(maximoEmY);
         }
 
         // VERIFICA A COLISÃO DO PERSONAGEM COM A NAVE INIMIGA
-        for (int i = 0; i < enemyShip.size(); i++) {
-            Naves naveTemporaria = enemyShip.get(i);
+        for (int i = 0; i < faseModel.getEnemieShip().size(); i++) {
+            Naves naveTemporaria = faseModel.getEnemieShip().get(i);
             naveInimigaForma = naveTemporaria.getBounds();
             long tempoAtual = System.currentTimeMillis();
             if (tempoAtual - lastCollision < GENERAL_DELAY) {
@@ -518,7 +388,7 @@ public class Fase extends JPanel implements ActionListener {
                 if (personagemForma.getBounds().intersects(naveInimigaForma.getBounds())) {
                     // VERIFICA SE A VIDA DO PERSONAGME PODE SER RESTAURADA
                     if (faseModel.getPlayer().getLife() == 1) {
-                         faseModel.getPlayer().setPlaying(false);
+                        faseModel.getPlayer().setPlaying(false);
                         screenEndGame.setVisibility(true);
                         faseModel.getPlayer().setVisibility(false);
                     } else {
@@ -536,7 +406,7 @@ public class Fase extends JPanel implements ActionListener {
             timerFlashing.stop();
             flashing = false;
         }
-        for (Naves inimigoNave : enemyShip) {
+        for (Naves inimigoNave : faseModel.getEnemieShip()) {
             Rectangle formaInimigoNave = inimigoNave.getBounds();
 
             // TIRO NORMAL
@@ -544,13 +414,13 @@ public class Fase extends JPanel implements ActionListener {
                 Rectangle formaTiro = tiro.getBounds();
                 if (formaTiro.intersects(formaInimigoNave)) {
                     if (inimigoNave.getLife() == 1) {
-                        int pontuacaoAtual =  faseModel.getPlayer().getScore() + VALOR_INIMIGOS;
+                        int pontuacaoAtual = faseModel.getPlayer().getScore() + VALOR_INIMIGOS;
                         if (pontuacaoAtual % 50 == 0) {
                             faseModel.getPlayer().setSuperQuantity(2);
                         }
                         inimigoNave.setVisibility(false);
-                         faseModel.getPlayer().setScore(pontuacaoAtual);
-                         faseModel.getPlayer().setScoreDeadEnemys(faseModel.getPlayer().getScoreDeadEnemys() + 1);
+                        faseModel.getPlayer().setScore(pontuacaoAtual);
+                        faseModel.getPlayer().setScoreDeadEnemys(faseModel.getPlayer().getScoreDeadEnemys() + 1);
                         loadSound("explosao.wav");
                         this.enemyKilled = true;
                     } else {
@@ -584,8 +454,8 @@ public class Fase extends JPanel implements ActionListener {
         }
 
         // VEREFICA A COLISÃO DO PERSONAGEM COM O METEORITO
-        for (int k = 0; k < enemyMeteor.size(); k++) {
-            Meteorito meteritoTemporario = enemyMeteor.get(k);
+        for (int k = 0; k < faseModel.getEnemieMeteor().size(); k++) {
+            Meteorito meteritoTemporario = faseModel.getEnemieMeteor().get(k);
             meteoritoForma = meteritoTemporario.getBounds();
             if (personagemForma.getBounds().intersects(meteoritoForma.getBounds())) {
                 // VERIFICA SE O PERSONAGEM ESTA PERTO DE MORRER
@@ -594,14 +464,14 @@ public class Fase extends JPanel implements ActionListener {
                     screenEndGame.setVisibility(true);
 
                 } else {
-                    faseModel.getPlayer().setLife( faseModel.getPlayer().getLife() - 1);
+                    faseModel.getPlayer().setLife(faseModel.getPlayer().getLife() - 1);
                 }
                 meteritoTemporario.setVisibility(false);
                 faseModel.getPlayer().setVisibility(false);
             }
         }
         // VERIFICA A COLISÃO DO TIRO NORMAL E SUPER COM O METEORIOTO
-        for (Meteorito inimigoMeteorito : enemyMeteor) {
+        for (Meteorito inimigoMeteorito : faseModel.getEnemieMeteor()) {
             Rectangle formaInimigoMeteorito = inimigoMeteorito.getBounds();
             // TIRO NORMAL
             for (Shoot tiro : faseModel.getPlayer().getBullets()) {

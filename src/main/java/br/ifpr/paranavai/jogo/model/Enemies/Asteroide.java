@@ -71,14 +71,14 @@ public class Asteroide extends Base {
     }
 
     @Override
-    public void carregar() {
+    public void load() {
         super.setImage(selectImage);
         super.setWidthImage(selectImage.getWidth(null));
         super.setHeightImage(selectImage.getHeight(null));
     }
 
     @Override
-    public void atualizar() {
+    public void update() {
         super.setPositionInX((int) (super.getPositionInX() - super.getSpeed()));
         if (super.getPositionInX() < -10) {
             super.setVisibility(false);

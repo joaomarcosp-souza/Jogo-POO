@@ -64,14 +64,15 @@ public abstract class Base {
     }
 
     // MÉTODOS ABSTRATO BASICO PARA 'CARREGAR' É 'ATUALIZAR'
-    public abstract void carregar();
+    public abstract void load();
     
     // CAIXA DE COLISÃO
     public Rectangle getBounds() {
         return new Rectangle(positionInX, positionInY, widthImage, heightImage);
     }
     //NÃO E UM MÉTODO ABSTRAT, POR CAUSA DAS CLASSE DE TELA
-    public void atualizar(){}
+    public void update(){}
+
 
     public int getLife() {
         return life;

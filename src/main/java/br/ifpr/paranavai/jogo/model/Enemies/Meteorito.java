@@ -21,7 +21,7 @@ public class Meteorito extends Base {
     }
 
     @Override
-    public void carregar() {
+    public void load() {
         ImageIcon loading = new ImageIcon(PATH_IMAGE);
         super.setImage(loading.getImage());
         super.setWidthImage(super.getImage().getWidth(null));
@@ -29,7 +29,7 @@ public class Meteorito extends Base {
     }
 
     @Override
-    public void atualizar() {
+    public void update() {
         super.setPositionInY((int) (super.getPositionInY() + super.getInitialSpeed()));
         if (super.getPositionInY() > super.getScreenResolution().HEIGHT_SCREEN) {
             super.setVisibility(false);

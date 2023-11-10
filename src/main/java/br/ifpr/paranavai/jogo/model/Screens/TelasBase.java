@@ -20,7 +20,7 @@ public abstract class TelasBase extends Base{
     }
 
     // MÉTODOS ABSTRATOS
-    public abstract void carregar();
+    public abstract void load();
 
     public int getPOSICAO_TITULO_Y() {
         return POSICAO_TITULO_Y;

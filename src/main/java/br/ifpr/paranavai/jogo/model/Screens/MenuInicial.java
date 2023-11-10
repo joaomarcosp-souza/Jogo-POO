@@ -30,7 +30,7 @@ public class MenuInicial extends TelasBase {
     }
 
     @Override
-    public void carregar() {
+    public void load() {
         ImageIcon loading = new ImageIcon(GIF_BACKGROUND);
         setImage(loading.getImage());
         setWidthImage(getImage().getWidth(null));

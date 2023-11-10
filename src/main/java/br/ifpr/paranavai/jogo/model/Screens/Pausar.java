@@ -25,7 +25,7 @@ public class Pausar extends TelasBase {
     }
 
     @Override
-    public void carregar() {
+    public void load() {
         ImageIcon loading = new ImageIcon(getClass().getResource(PATH_IMAGE));
         super.setImage(loading.getImage());
         // RESIMENSIONA A IMG

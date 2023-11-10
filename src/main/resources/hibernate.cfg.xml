@@ -23,6 +23,5 @@
         <mapping class="br.ifpr.paranavai.jogo.model.Enemies.Asteroide"/>
         <mapping class="br.ifpr.paranavai.jogo.model.Enemies.Meteorito"/>
         <mapping class="br.ifpr.paranavai.jogo.model.Enemies.Naves"/>
-        <mapping class="br.ifpr.paranavai.jogo.model.Enemies.StarDestroyer"/>
     </session-factory>
 </hibernate-configuration>

@@ -27,7 +27,7 @@ public class Naves extends Base {
     }
 
     @Override
-    public void carregar() {
+    public void load() {
         ImageIcon loading = new ImageIcon(getClass().getResource(PATH_IMAGE));
         super.setImage(loading.getImage());
         super.setWidthImage(super.getImage().getWidth(null));
@@ -35,7 +35,7 @@ public class Naves extends Base {
     }
 
     @Override
-    public void atualizar() {
+    public void update() {
         super.setPositionInX((int) (super.getPositionInX() - super.getSpeed()));
         if (super.getPositionInX() < -50) {
             super.setVisibility(false);

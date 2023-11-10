@@ -20,7 +20,7 @@ public class Shoot extends Base {
     }
 
     @Override
-    public void carregar() {
+    public void load() {
         ImageIcon carregador = new ImageIcon(getClass().getResource(IMAGE_PATH_BULLET));
         super.setImage(carregador.getImage());
         super.setWidthImage(super.getImage().getWidth(null));
@@ -28,7 +28,7 @@ public class Shoot extends Base {
     }
 
     @Override
-    public void atualizar() {
+    public void update() {
         super.setPositionInX(super.getPositionInX() + SPEED_BULLET);
         if (super.getPositionInX() > getScreenResolution().WIDTH_SCREEN) {
             super.setVisibility(false);

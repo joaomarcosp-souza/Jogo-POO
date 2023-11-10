@@ -93,7 +93,7 @@ public class Player extends Base {
     }
 
     @Override
-    public void carregar() {
+    public void load() {
         // IMAGEM NAVE
         ImageIcon loading = new ImageIcon(IMAGE_PATH_PLAYER);
         super.setImage(loading.getImage());
@@ -106,7 +106,7 @@ public class Player extends Base {
     }
 
     @Override
-    public void atualizar() {
+    public void update() {
         super.setPositionInX(super.getPositionInX() + displacementX);
         super.setPositionInY(super.getPositionInY() + displacementY);
     }

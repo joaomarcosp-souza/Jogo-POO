@@ -9,7 +9,7 @@ import br.ifpr.paranavai.jogo.model.Base;
 @Entity
 @Table(name = "tb_superTiro")
 public class SpecialShoot extends Base {
-    
+
     @Column(name = "angulo")
     private int angle;
     private static final int SPEED_SUPER = 8;
@@ -23,7 +23,7 @@ public class SpecialShoot extends Base {
     }
 
     @Override
-    public void carregar() {
+    public void load() {
         ImageIcon carregador = new ImageIcon(getClass().getResource(IMAGE_PATH_SUPER));
         super.setImage(carregador.getImage());
         super.setWidthImage(super.getImage().getWidth(null));
@@ -31,7 +31,7 @@ public class SpecialShoot extends Base {
     }
 
     @Override
-    public void atualizar() {
+    public void update() {
         // CONVERTE A VARIAVEL 'ANGULO' PARA RADIANOS
         double radianos = Math.toRadians(angle);
         // CALCULANDO AS VELOCIDADES DE 'X' E 'Y' COM BASE NO ANGULO

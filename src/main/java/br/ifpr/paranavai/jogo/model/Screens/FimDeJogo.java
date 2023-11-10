@@ -27,7 +27,7 @@ public class FimDeJogo extends TelasBase {
     }
 
     @Override
-    public void carregar() {
+    public void load() {
         ImageIcon loading = new ImageIcon(PATH_IMAGE_GAME_OVER);
         super.setImage(loading.getImage());
         super.setWidthImage(super.getImage().getWidth(null));

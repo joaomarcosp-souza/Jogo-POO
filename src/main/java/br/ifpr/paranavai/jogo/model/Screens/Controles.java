@@ -16,7 +16,7 @@ public class Controles extends TelasBase {
     }
 
     @Override
-    public void carregar() {
+    public void load() {
         ImageIcon loading = new ImageIcon(PATH_IMAGE);
         super.setImage(loading.getImage());
         super.setImage(super.getImage().getScaledInstance(getScreenResolution().WIDTH_SCREEN, getScreenResolution().HEIGHT_SCREEN,
