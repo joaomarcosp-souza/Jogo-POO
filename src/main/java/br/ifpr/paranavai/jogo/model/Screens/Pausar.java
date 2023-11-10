@@ -11,11 +11,9 @@ import javax.swing.ImageIcon;
 public class Pausar extends TelasBase {
     
     private boolean paused;
-    // OPÇÕES MENU
     private static final String OPTION_YES = "SIM";
     private static final String OPTION_NO = "NAO";
     private static final String MENSSAGE_MENU = "VOLTAR AO JOGO?";
-    // FONTES
     private static final String PATH_IMAGE = "/Sprites/Fundos/TelaPause.png";
     private Font NEW_FONT = super.getPixel().deriveFont(Font.BOLD, super.getTamanhoFonte());
 
@@ -28,7 +26,6 @@ public class Pausar extends TelasBase {
     public void load() {
         ImageIcon loading = new ImageIcon(getClass().getResource(PATH_IMAGE));
         super.setImage(loading.getImage());
-        // RESIMENSIONA A IMG
         super.setImage(super.getImage().getScaledInstance(getScreenResolution().WIDTH_SCREEN, getScreenResolution().HEIGHT_SCREEN,
                 Image.SCALE_FAST));
     }
@@ -36,7 +33,6 @@ public class Pausar extends TelasBase {
     public void menu(Graphics g) {
         int OFFSETY = 150;
         g.drawImage(super.getImage(), 0, 0, null);
-        // COMEÇO DA FRASE
         g.setColor(Color.WHITE);
         g.setFont(NEW_FONT);
         FontMetrics fm = g.getFontMetrics();

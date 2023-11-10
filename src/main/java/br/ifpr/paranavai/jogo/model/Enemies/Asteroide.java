@@ -14,11 +14,11 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.swing.ImageIcon;
 
-import br.ifpr.paranavai.jogo.model.Base;
+import br.ifpr.paranavai.jogo.model.GraphicsElements;
 
 @Entity
 @Table(name= "tb_asteroide")
-public class Asteroide extends Base {
+public class Asteroide extends GraphicsElements {
     @Transient
     @Column(name = "seleciona_imagem")
     private Image selectImage;

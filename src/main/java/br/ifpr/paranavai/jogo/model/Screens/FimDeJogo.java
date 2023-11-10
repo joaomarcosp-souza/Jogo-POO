@@ -13,13 +13,10 @@ public class FimDeJogo extends TelasBase {
     private static final String OPTION_YES = "SIM";
     private static final String OPTION_NO = "NAO";
     private static final String MESSAGE = "JOGAR NOVAMENTE?";
-    // TITULO
     private static final String OVER = "OVER";
     private static final String GAME = "GAME";
-    // FONTES
     private final Font FONT_MENU = super.getPixel().deriveFont(Font.BOLD, super.getTamanhoFonte());
     private final Font FONT_TITLE = super.getPixel().deriveFont(Font.BOLD, super.getTituloTamanho());
-    // CAMINHO IMAGEM DE FUNDO
     private static final String PATH_IMAGE_GAME_OVER = "src/main/resources/Sprites/Fundos/TelaFimDeJogo.gif";
 
     public FimDeJogo() {
@@ -32,7 +29,6 @@ public class FimDeJogo extends TelasBase {
         super.setImage(loading.getImage());
         super.setWidthImage(super.getImage().getWidth(null));
         super.setHeightImage(super.getImage().getHeight(null));
-        // REDIMENSIONA O TAMANHO DA IMAGEM PARA O TAMANHO DA TELA
         super.setImage(super.getImage().getScaledInstance(getScreenResolution().WIDTH_SCREEN, getScreenResolution().HEIGHT_SCREEN,
                 Image.SCALE_FAST));
     };

@@ -4,11 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.swing.ImageIcon;
 
-import br.ifpr.paranavai.jogo.model.Base;
+import br.ifpr.paranavai.jogo.model.GraphicsElements;
 
 @Entity
 @Table(name = "tb_meteoritos")
-public class Meteorito extends Base {
+public class Meteorito extends GraphicsElements {
 
     private static final String PATH_IMAGE = "src/main/resources/Sprites/Inimigos/meteorito.png";
 

@@ -9,7 +9,7 @@ import br.ifpr.paranavai.jogo.model.Enemies.Asteroide;
 import br.ifpr.paranavai.jogo.model.Enemies.Meteorito;
 import br.ifpr.paranavai.jogo.model.Enemies.Naves;
 
-public class FaseModel {
+public class StageModel {
     @Transient
     private Player player;
     // LISTA PARA INIMIGOS
@@ -22,7 +22,7 @@ public class FaseModel {
 
     private TamanhoTela screenSize;
 
-    public FaseModel() {
+    public StageModel() {
         screenSize = new TamanhoTela();
         screenSize.carregar();
     }

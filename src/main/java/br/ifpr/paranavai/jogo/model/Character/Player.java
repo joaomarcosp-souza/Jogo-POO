@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.swing.ImageIcon;
 
-import br.ifpr.paranavai.jogo.model.Base;
+import br.ifpr.paranavai.jogo.model.GraphicsElements;
 import br.ifpr.paranavai.jogo.model.Character.Bullets.Shoot;
 import br.ifpr.paranavai.jogo.model.Character.Bullets.SpecialShoot;
 
@@ -23,7 +23,7 @@ import java.awt.Rectangle;
 
 @Entity
 @Table(name = "tb_Jogador")
-public class Player extends Base {
+public class Player extends GraphicsElements {
     @Column(name= "pontos", unique = true, nullable = false)
     private int score;
     @Column(name = "pontos_inimigos_mortos", unique = true, nullable = false)

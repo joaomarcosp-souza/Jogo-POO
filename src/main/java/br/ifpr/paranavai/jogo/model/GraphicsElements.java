@@ -20,7 +20,7 @@ import java.awt.FontFormatException;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Base {
+public abstract class GraphicsElements {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -49,7 +49,7 @@ public abstract class Base {
     private TamanhoTela screenResolution;
     private double initialSpeed;
 
-    public Base() {
+    public GraphicsElements() {
         this.visibility = true;
         //PUXANDO INFORMAÇÕES DA TELA 
         screenResolution = new TamanhoTela();
@@ -62,17 +62,14 @@ public abstract class Base {
             e.printStackTrace();
         }
     }
-
     // MÉTODOS ABSTRATO BASICO PARA 'CARREGAR' É 'ATUALIZAR'
     public abstract void load();
+    public void update(){}
     
     // CAIXA DE COLISÃO
     public Rectangle getBounds() {
         return new Rectangle(positionInX, positionInY, widthImage, heightImage);
     }
-    //NÃO E UM MÉTODO ABSTRAT, POR CAUSA DAS CLASSE DE TELA
-    public void update(){}
-
 
     public int getLife() {
         return life;

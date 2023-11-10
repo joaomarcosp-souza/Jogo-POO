@@ -12,17 +12,13 @@ import javax.swing.ImageIcon;
 public class MenuInicial extends TelasBase {
     
     private Image imageTitle;
-    // VARIAVEIS DE AJUSTE
     private static final int ESPACAMENTO_OPCOES_Y = 50;
-    // OPCÕES DO MENU
     private static final String NEW_GAME = "NOVO JOGO";
     private static final String LOAD = "CARREGAR JOGO";
     private static final String SCREEN_HISTORY = "HISTORICO";
     private static final String SCREEN_CONTROLS = "CONTROLES";
-    // CAMINHO IMAGEM DE FUNDO
     private static final String GIF_BACKGROUND = "src/main/resources/Sprites/Fundos/FundoMenu.gif";
     private static final String PATH_IMAGE_TITLE = "src/main/resources/Sprites/Fundos/MenuPrincipal.png";
-    // FONTES
     private final Font NEW_FONT = super.getPixel().deriveFont(Font.BOLD, super.getMenuTamanho());
 
     public MenuInicial() {
@@ -35,14 +31,12 @@ public class MenuInicial extends TelasBase {
         setImage(loading.getImage());
         setWidthImage(getImage().getWidth(null));
         setHeightImage(getImage().getHeight(null));
-        // REDIMENSIONA O TAMANHO DA IMAGEM PARA O TAMANHO DA TELA
         setImage(getImage().getScaledInstance(getScreenResolution().WIDTH_SCREEN, getScreenResolution().HEIGHT_SCREEN,
                 Image.SCALE_FAST));
 
         // IMAGEM DO TITULO
         ImageIcon loadingPathTitle = new ImageIcon(PATH_IMAGE_TITLE);
         this.imageTitle = loadingPathTitle.getImage();
-        // REDIMENSIONA O TAMANHO DA IMAGEM PARA O TAMANHO DA TELA
         this.imageTitle = this.imageTitle.getScaledInstance(getScreenResolution().WIDTH_SCREEN,
                 getScreenResolution().HEIGHT_SCREEN,
                 Image.SCALE_FAST);

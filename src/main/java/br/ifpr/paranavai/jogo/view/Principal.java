@@ -3,14 +3,14 @@ package br.ifpr.paranavai.jogo.view;
 import javax.swing.JFrame;
 import org.hibernate.Session;
 import br.ifpr.paranavai.jogo.Conexao.HibernateUtil;
-import br.ifpr.paranavai.jogo.model.Fase;
+import br.ifpr.paranavai.jogo.model.Stage;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
 public class Principal extends JFrame {
 
     public Principal() {
-        Fase fase = new Fase();
+        Stage fase = new Stage();
         super.add(fase);
         super.setTitle("Star Wars: Invader");
         super.setVisible(true);

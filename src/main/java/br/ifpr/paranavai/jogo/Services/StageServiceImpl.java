@@ -4,8 +4,8 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import br.ifpr.paranavai.jogo.model.Fase;
-import br.ifpr.paranavai.jogo.model.FaseModel;
+import br.ifpr.paranavai.jogo.model.Stage;
+import br.ifpr.paranavai.jogo.model.StageModel;
 import br.ifpr.paranavai.jogo.model.Character.Bullets.Shoot;
 import br.ifpr.paranavai.jogo.model.Character.Bullets.SpecialShoot;
 import br.ifpr.paranavai.jogo.model.Enemies.Asteroide;
@@ -13,16 +13,16 @@ import br.ifpr.paranavai.jogo.model.Enemies.Meteorito;
 import br.ifpr.paranavai.jogo.model.Enemies.Naves;
 import javax.swing.Timer;
 
-public class FaseServiceImpl implements FaseService {
-    private Fase fase;
-    private FaseModel faseModel;
+public class StageServiceImpl implements StageService {
+    private Stage stage;
+    private StageModel faseModel;
 
     private Timer timerMeteor;
     private Timer timerAsteroids;
     private Timer timerEnemyShip;
 
-    public FaseServiceImpl(Fase fase, FaseModel faseModel) {
-        this.fase = fase;
+    public StageServiceImpl(Stage fase, StageModel faseModel) {
+        this.stage = fase;
         this.faseModel = faseModel;
         
     }

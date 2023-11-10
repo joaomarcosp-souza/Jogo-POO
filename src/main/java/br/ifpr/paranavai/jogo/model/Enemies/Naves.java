@@ -7,13 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.swing.ImageIcon;
 
-import br.ifpr.paranavai.jogo.model.Base;
+import br.ifpr.paranavai.jogo.model.GraphicsElements;
 
 import java.awt.Font;
 
 @Entity
 @Table(name= "tb_naves")
-public class Naves extends Base {
+public class Naves extends GraphicsElements {
 
     private static final String PATH_IMAGE = "/Sprites/Inimigos/tfighter.png";
 

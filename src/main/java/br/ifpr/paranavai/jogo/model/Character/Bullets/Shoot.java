@@ -4,11 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.swing.ImageIcon;
 
-import br.ifpr.paranavai.jogo.model.Base;
+import br.ifpr.paranavai.jogo.model.GraphicsElements;
 
 @Entity
 @Table(name= "tb_tiro")
-public class Shoot extends Base {
+public class Shoot extends GraphicsElements {
     
     private static final int SPEED_BULLET = 8;
     private static final String IMAGE_PATH_BULLET = "/Sprites/Tiros/tiroNormal.gif";

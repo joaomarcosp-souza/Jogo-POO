@@ -4,11 +4,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.swing.ImageIcon;
-import br.ifpr.paranavai.jogo.model.Base;
+import br.ifpr.paranavai.jogo.model.GraphicsElements;
 
 @Entity
 @Table(name = "tb_superTiro")
-public class SpecialShoot extends Base {
+public class SpecialShoot extends GraphicsElements {
 
     @Column(name = "angulo")
     private int angle;

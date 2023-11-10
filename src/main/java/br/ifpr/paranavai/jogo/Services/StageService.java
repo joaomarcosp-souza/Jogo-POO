@@ -2,7 +2,7 @@ package br.ifpr.paranavai.jogo.Services;
 
 import java.awt.Graphics;
 
-public interface FaseService {
+public interface StageService {
     public abstract void drawnBullets(Graphics graphics);
     public abstract void dranwEnemies(Graphics graphics);
     public abstract void spawnAsteroids();

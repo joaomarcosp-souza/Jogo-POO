@@ -2,21 +2,19 @@ package br.ifpr.paranavai.jogo.model.Screens;
 
 import java.awt.Color;
 
-import br.ifpr.paranavai.jogo.model.Base;
+import br.ifpr.paranavai.jogo.model.GraphicsElements;
 
-public abstract class TelasBase extends Base{
+public abstract class TelasBase extends GraphicsElements{
     
-    private final int POSICAO_TITULO_Y = 100; // POSIÇÃO DOS TITULOS EM 'Y'
-    // MENU
+    private final int POSICAO_TITULO_Y = 100;
     private int cursor = 0;
     private static final int MENU_TAMANHO = 50;
     private static final int TITULO_TAMANHO = 85;
-    private static final Color COR_AMARELA = new Color(255, 209, 0); // COR
+    private static final Color COR_AMARELA = new Color(255, 209, 0);
     private static final int TAMANHO_FONTE = 30;
 
     public TelasBase() {
         super.setVisibility(true);
-        //this.botao = new Rectangle(BOTAO_X, BOTAO_Y, BOTAO_LARGURA, BOTAO_ALTURA);
     }
 
     // MÉTODOS ABSTRATOS
