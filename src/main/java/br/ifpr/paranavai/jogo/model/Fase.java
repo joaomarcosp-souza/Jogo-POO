@@ -44,7 +44,7 @@ import br.ifpr.paranavai.jogo.Util.TamanhoTela;
 public class Fase extends JPanel implements ActionListener {
 
     private FaseModel faseModel;
-    private FaseServiceImpl faseServiceImpl;
+    private FaseService faseService;
 
     private boolean enemyKilled;
     private int scorePositionX, scorePositionY;
@@ -60,7 +60,6 @@ public class Fase extends JPanel implements ActionListener {
     private Pausar screenPaused;
     private FimDeJogo screenEndGame;
     private MenuInicial screenMenu;
-    private Player player;
     private Historico screenHistory;
     private Controles screenControls;
     private TamanhoTela screenResolution;
@@ -82,7 +81,7 @@ public class Fase extends JPanel implements ActionListener {
     public Fase() {
 
         faseModel = new FaseModel();
-        faseServiceImpl = new FaseServiceImpl(this, this.faseModel);
+        faseService = new FaseServiceImpl(this, this.faseModel);
 
         setFocusable(true);
         setDoubleBuffered(true);
@@ -247,80 +246,81 @@ public class Fase extends JPanel implements ActionListener {
     }
 
     public void paintComponent(Graphics g) {
-        Graphics2D graficos = (Graphics2D) g;
+        Graphics2D grapichs = (Graphics2D) g;
         super.paintComponent(g);
 
         if (screenMenu.isVisibility() == true) {
-            screenMenu.conteudo(graficos);
+            screenMenu.conteudo(grapichs);
         } else if (screenControls.isVisibility() == true) {
-            screenControls.conteudo(graficos);
+            screenControls.conteudo(grapichs);
         } else if (screenHistory.isVisibility() == true) {
-            screenHistory.conteudo(graficos);
+            screenHistory.conteudo(grapichs);
         }
 
         if (faseModel.getPlayer().isPlaying() == true) {
-            graficos.drawImage(this.background, 0, 0, null);
+            grapichs.drawImage(this.background, 0, 0, null);
             if (faseModel.getPlayer().getScore() >= 200) {
-                graficos.drawImage(this.backgroundTwo, 0, 0, null);
+                grapichs.drawImage(this.backgroundTwo, 0, 0, null);
             }
             
-            faseServiceImpl.drawnBullets(g);
+            faseService.drawnBullets(g);
 
             // CARREGA DEATH STAR
             for (int i = 0; i < asteroids.size(); i++) {
                 Asteroide asteroide = asteroids.get(i);
                 asteroide.carregar();
-                graficos.drawImage(asteroide.getImage(),
+                grapichs.drawImage(asteroide.getImage(),
                         asteroide.getPositionInX(), asteroide.getPositionInY(), null);
             }
             // CARREGA DEATH STAR
             for (int i = 0; i < starDestroyer.size(); i++) {
                 StarDestroyer chefao = starDestroyer.get(i);
                 chefao.carregar();
-                graficos.drawImage(chefao.getImage(),
+                grapichs.drawImage(chefao.getImage(),
                         chefao.getPositionInX(), chefao.getPositionInY(), null);
-            }
-
-            // DESENHA A PONTUAÇÃO ACIMA DO INIMIGO MORTO
-            if (enemyKilled) {
-                graficos.setColor(Color.WHITE);
-                graficos.drawString("+ 10", scorePositionX + 5, scorePositionY -= 1);
-            } else {
-                graficos.setColor(Color.WHITE);
-                g.drawString("- 1", scorePositionX + 75, scorePositionY += 1);
             }
 
             // COMEÇO METEORO E NAVES INIMIGAS
             for (int i = 0; i < enemyMeteor.size(); i++) {
                 Meteorito meteorito = enemyMeteor.get(i);
                 meteorito.carregar();
-                graficos.drawImage(meteorito.getImage(), meteorito.getPositionInX(), meteorito.getPositionInY(),
+                grapichs.drawImage(meteorito.getImage(), meteorito.getPositionInX(), meteorito.getPositionInY(),
                         null);
             }
 
             for (int i = 0; i < enemyShip.size(); i++) {
                 Naves inimigoNave = enemyShip.get(i);
                 inimigoNave.carregar();
-                graficos.drawImage(inimigoNave.getImage(), inimigoNave.getPositionInX(), inimigoNave.getPositionInY(),
+                grapichs.drawImage(inimigoNave.getImage(), inimigoNave.getPositionInX(), inimigoNave.getPositionInY(),
                         null);
-                inimigoNave.vidas(graficos);
-                inimigoNave.inimigoDados(graficos);
+                inimigoNave.vidas(grapichs);
+                inimigoNave.inimigoDados(grapichs);
             } // FIM METEORO E NAVES INIMIGAS
 
+            // DESENHA A PONTUAÇÃO ACIMA DO INIMIGO MORTO
+            if (enemyKilled) {
+                grapichs.setColor(Color.WHITE);
+                grapichs.drawString("+ 10", scorePositionX + 5, scorePositionY -= 1);
+            } else {
+                grapichs.setColor(Color.WHITE);
+                g.drawString("- 1", scorePositionX + 75, scorePositionY += 1);
+            }
+
+
             // CARREGANDO OS COMPONENTES DA CLASSE PERSONAGEM(VIDA E PONTUAÇÃO)
-            faseModel.getPlayer().pontuacao(graficos);
-            faseModel.getPlayer().desenhaVida(graficos);
-             faseModel.getPlayer().desenhaEliminacoes(graficos);
-             faseModel.getPlayer().restauraVida(graficos);
+            faseModel.getPlayer().pontuacao(grapichs);
+            faseModel.getPlayer().desenhaVida(grapichs);
+             faseModel.getPlayer().desenhaEliminacoes(grapichs);
+             faseModel.getPlayer().restauraVida(grapichs);
             // CARREGANDO A IMAGEM DO PERSONAGEM SOMENTE SE NÃO ESTIVER PISCANDO
             if (!flashing) {
-                graficos.drawImage(faseModel.getPlayer().getImage(), faseModel.getPlayer().getPositionInX(), 
+                grapichs.drawImage(faseModel.getPlayer().getImage(), faseModel.getPlayer().getPositionInX(), 
                         faseModel.getPlayer().getPositionInY(),
                         null);
             }
         } else if (screenEndGame.isVisibility() == true) {
-            screenEndGame.titulo(graficos);
-            screenEndGame.menu(graficos);
+            screenEndGame.titulo(grapichs);
+            screenEndGame.menu(grapichs);
         }
 
         g.dispose();

@@ -17,13 +17,17 @@ public class FaseModel {
     private Player player;
     // LISTA PARA INIMIGOS
     @Transient
-    private List<Naves> enemyShip;
+    @OneToMany(mappedBy = "naves_inimigas", cascade = CascadeType.ALL)
+    private List<Naves> enemieShip;
     @Transient
+    @OneToMany(mappedBy = "asteroides", cascade = CascadeType.ALL)
     private List<Asteroide> asteroids;
     @Transient
+    @OneToMany(mappedBy = "starDestroyer", cascade = CascadeType.ALL)
     private List<StarDestroyer> starDestroyer;
     @Transient
-    private List<Meteorito> enemyMeteor;
+    @OneToMany(mappedBy = "meteoritos_inimigos", cascade = CascadeType.ALL)
+    private List<Meteorito> enemieMeteor;
 
     public Player getPlayer() {
         return player;
@@ -31,11 +35,11 @@ public class FaseModel {
     public void setPlayer(Player player) {
         this.player = player;
     }
-    public List<Naves> getEnemyShip() {
-        return enemyShip;
+    public List<Naves> getEnemieShip() {
+        return enemieShip;
     }
-    public void setEnemyShip(List<Naves> enemyShip) {
-        this.enemyShip = enemyShip;
+    public void setEnemieShip(List<Naves> enemyShip) {
+        this.enemieShip = enemyShip;
     }
     public List<Asteroide> getAsteroids() {
         return asteroids;
@@ -49,12 +53,10 @@ public class FaseModel {
     public void setStarDestroyer(List<StarDestroyer> starDestroyer) {
         this.starDestroyer = starDestroyer;
     }
-    public List<Meteorito> getEnemyMeteor() {
-        return enemyMeteor;
+    public List<Meteorito> getEnemieMeteor() {
+        return enemieMeteor;
     }
-    public void setEnemyMeteor(List<Meteorito> enemyMeteor) {
-        this.enemyMeteor = enemyMeteor;
+    public void setEnemieMeteor(List<Meteorito> enemyMeteor) {
+        this.enemieMeteor = enemyMeteor;
     }
-
-    
 }

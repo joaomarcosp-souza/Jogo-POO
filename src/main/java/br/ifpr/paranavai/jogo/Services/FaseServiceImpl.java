@@ -8,7 +8,7 @@ import br.ifpr.paranavai.jogo.model.FaseModel;
 import br.ifpr.paranavai.jogo.model.Character.Bullets.Shoot;
 import br.ifpr.paranavai.jogo.model.Character.Bullets.SpecialShoot;
 
-public class FaseServiceImpl implements FaseService{
+public class FaseServiceImpl implements FaseService {
 
     private Fase fase;
     private FaseModel faseModel;
@@ -37,10 +37,4 @@ public class FaseServiceImpl implements FaseService{
                     tiroEspecial.getPositionInX(), tiroEspecial.getPositionInY(), null);
         }
     }
-
-    @Override
-    public void dranwEnemies(Graphics graphics) {
-        
-    }
-    
 }

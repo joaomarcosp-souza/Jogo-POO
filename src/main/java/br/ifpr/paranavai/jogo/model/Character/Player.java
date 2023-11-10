@@ -3,7 +3,6 @@ package br.ifpr.paranavai.jogo.model.Character;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.List;
 import java.util.ArrayList;
 
 import javax.persistence.CascadeType;
