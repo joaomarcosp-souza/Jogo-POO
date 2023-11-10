@@ -35,10 +35,10 @@ public class Player extends Base {
     private long lastBullet;
     @Transient
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personagem")
-    private List<Shoot> bullets;
+    private ArrayList<Shoot> bullets;
     @Transient
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personagem")
-    private List<SpecialShoot> specialBullet;
+    private ArrayList<SpecialShoot> specialBullet;
     // MOVITEMENTAÇÃO
     @Column(name= "deslocamento_X")
     private int displacementX;
@@ -48,7 +48,9 @@ public class Player extends Base {
     private int positionLifeInX;
     @Column(name = "posicao_vida_Y")
     private int positionLifeInY;
+    @Column(name= "altura_vida_img")
     private int heightLifeImage;
+    @Column(name= "verifica_saude_restaurada")
     private int healthRestoreCheck;
     //
     @Column(name= "jogando")
@@ -233,19 +235,19 @@ public class Player extends Base {
         this.playing = playing;
     }
 
-    public List<Shoot> getBullets() {
+    public ArrayList<Shoot> getBullets() {
         return bullets;
     }
 
-    public void setBullets(List<Shoot> bullets) {
+    public void setBullets(ArrayList<Shoot> bullets) {
         this.bullets = bullets;
     }
 
-    public List<SpecialShoot> getSpecialBullet() {
+    public ArrayList<SpecialShoot> getSpecialBullet() {
         return specialBullet;
     }
 
-    public void setSpecialBullet(List<SpecialShoot> specialBullet) {
+    public void setSpecialBullet(ArrayList<SpecialShoot> specialBullet) {
         this.specialBullet = specialBullet;
     }
 

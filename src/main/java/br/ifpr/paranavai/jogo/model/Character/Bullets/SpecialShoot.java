@@ -1,5 +1,6 @@
 package br.ifpr.paranavai.jogo.model.Character.Bullets;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.swing.ImageIcon;
@@ -8,7 +9,8 @@ import br.ifpr.paranavai.jogo.model.Base;
 @Entity
 @Table(name = "tb_superTiro")
 public class SpecialShoot extends Base {
-
+    
+    @Column(name = "angulo")
     private int angle;
     private static final int SPEED_SUPER = 8;
     private static final String IMAGE_PATH_SUPER = "/Sprites/Tiros/superTiro.gif";

@@ -24,8 +24,8 @@ public abstract class Base {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_base", unique = true)
-    private Integer idBase;
+    @Column(name = "id", unique = true)
+    private Integer identificador;
     @Column(name= "vida")
     private int life;
     @Transient
