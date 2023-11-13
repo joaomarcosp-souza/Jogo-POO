@@ -3,7 +3,7 @@ package br.ifpr.paranavai.jogo.Util;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
-public class TamanhoTela {
+public class ScreenSize {
     public int WIDTH_SCREEN;
     public int HEIGHT_SCREEN;
     public Dimension SCREEN;

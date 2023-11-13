@@ -8,4 +8,10 @@ public interface StageService {
     public abstract void spawnAsteroids();
     public abstract void spawnEnemieShip();
     public abstract void spawnEnemieMeteor();
+    public abstract void controlEnemies();
+    public abstract void controlBullets();
+    public abstract void speedEnemieControl();
+    public abstract void screenCollisions();
+    public abstract void EnemieShipCollisions();
+    public abstract void EnemieMeteorCollisions();
 }

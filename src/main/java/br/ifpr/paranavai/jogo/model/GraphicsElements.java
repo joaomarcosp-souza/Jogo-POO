@@ -15,7 +15,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Transient;
 
-import br.ifpr.paranavai.jogo.Util.TamanhoTela;
+import br.ifpr.paranavai.jogo.Util.ScreenSize;
 import java.awt.FontFormatException;
 
 @Entity
@@ -46,18 +46,15 @@ public abstract class GraphicsElements {
     @Column(name= "velocidade")
     private double speed;
     @Transient
-    private TamanhoTela screenResolution;
+    private ScreenSize screenResolution;
     private double initialSpeed;
 
     public GraphicsElements() {
         this.visibility = true;
-        //PUXANDO INFORMAÇÕES DA TELA 
-        screenResolution = new TamanhoTela();
+        screenResolution = new ScreenSize();
         screenResolution.carregar();
-        // CARREGANDO UMA NOVA FONTE
         try {
-            // CARREGA A FONTE A PARTIR DO ARQUIVO
-            pixel = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/Fontes/pixel_fonte.ttf"));
+            pixel = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/Font/pixel_fonte.ttf"));
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
@@ -111,11 +108,11 @@ public abstract class GraphicsElements {
         this.visibility = visibility;
     }
 
-    public TamanhoTela getScreenResolution() {
+    public ScreenSize getScreenResolution() {
         return screenResolution;
     }
 
-    public void setScreenResolution(TamanhoTela screenResolution) {
+    public void setScreenResolution(ScreenSize screenResolution) {
         this.screenResolution = screenResolution;
     }
 

@@ -7,9 +7,9 @@ import br.ifpr.paranavai.jogo.model.Stage;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
-public class Principal extends JFrame {
+public class Main extends JFrame {
 
-    public Principal() {
+    public Main() {
         Stage fase = new Stage();
         super.add(fase);
         super.setTitle("Star Wars: Invader");
@@ -28,6 +28,6 @@ public class Principal extends JFrame {
     public static void main(String[] args) {
         Session sessao = HibernateUtil.getSession();
         sessao.beginTransaction();
-        new Principal();
+        new Main();
     }
 }
