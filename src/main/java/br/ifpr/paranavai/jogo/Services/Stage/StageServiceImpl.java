@@ -1,4 +1,4 @@
-package br.ifpr.paranavai.jogo.Services;
+package br.ifpr.paranavai.jogo.Services.Stage;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -14,6 +14,8 @@ import br.ifpr.paranavai.jogo.model.Enemies.Asteroide;
 import br.ifpr.paranavai.jogo.model.Enemies.Meteorito;
 import br.ifpr.paranavai.jogo.model.Enemies.Naves;
 import javax.swing.Timer;
+import java.awt.Rectangle;
+import java.awt.Color;
 
 public class StageServiceImpl implements StageService {
     private Stage stage;
@@ -22,6 +24,8 @@ public class StageServiceImpl implements StageService {
     private Timer timerMeteor;
     private Timer timerAsteroids;
     private Timer timerEnemyShip;
+
+    private int scorePositionX, scorePositionY;
 
     public StageServiceImpl(Stage fase, StageModel faseModel) {
         this.stage = fase;
@@ -74,10 +78,21 @@ public class StageServiceImpl implements StageService {
     }
 
     @Override
+    public void dranwEnemiesScore(Graphics graphics) {
+        if (stageModel.isEnemyKilled()) {
+            graphics.setColor(Color.WHITE);
+            graphics.drawString("+ 10", scorePositionX + 5, scorePositionY -= 1);
+        } else {
+            graphics.setColor(Color.WHITE);
+            graphics.drawString("- 1", scorePositionX + 75, scorePositionY += 1);
+        }
+    }
+
+    @Override
     public void spawnEnemieShip() {
         stageModel.setEnemieShip(new ArrayList<Naves>());
         // INTERVALO (EM MILISSEGUNDOS) PARA CONTROLAR A TAXA DE // SPAWN DE INIMIGOS
-        timerEnemyShip = new Timer(1500, new ActionListener() {
+        timerEnemyShip = new Timer(1000, new ActionListener() {
             int alturaInimigo = 80;
             int vidaInimigos = 1;
             int multiploNave = 100;
@@ -238,14 +253,142 @@ public class StageServiceImpl implements StageService {
 
     @Override
     public void EnemieShipCollisions() {
-        // TODO Auto-generated method stub
-        
+        // VALORES PARA CADA INIMIGO DESTRUIDO
+        int ENEMIE_VALUE = 10;
+        // FORMAS
+        Rectangle personagemForma = stageModel.getPlayer().getBounds();
+        Rectangle naveInimigaForma;
+
+        // VERIFICA A COLISÃO DO PERSONAGEM COM A NAVE INIMIGA
+        for (int i = 0; i < stageModel.getEnemieShip().size(); i++) {
+            Naves naveTemporaria = stageModel.getEnemieShip().get(i);
+            naveInimigaForma = naveTemporaria.getBounds();
+            long tempoAtual = System.currentTimeMillis();
+            if (tempoAtual - stage.lastCollision < stage.GENERAL_DELAY) {
+                return;
+            } else {
+                stage.countFlashing = 0; // REINICIA O CONTADOR
+                stage.timerFlashing.start(); // INICIA O TIMER
+                if (personagemForma.getBounds().intersects(naveInimigaForma.getBounds())) {
+                    // VERIFICA SE A VIDA DO PERSONAGME PODE SER RESTAURADA
+                    if (stageModel.getPlayer().getLife() == 1) {
+                        stageModel.getPlayer().setPlaying(false);
+                        stageModel.getScreenEndGame().setVisibility(true);
+                        stageModel.getPlayer().setVisibility(false);
+                    } else {
+                        stageModel.getPlayer().setLife(stageModel.getPlayer().getLife() - 1);
+                    }
+                    // VERIFICA A VIDA DA NAVE INIMIGA
+                    if (naveTemporaria.getLife() == 1) {
+                        naveTemporaria.setVisibility(false);
+                    } else {
+                        naveTemporaria.setLife(naveTemporaria.getLife() - 1);
+                    }
+                    stage.lastCollision = tempoAtual;
+                }
+            }
+            stage.timerFlashing.stop();
+            stage.flashing = false;
+        }
+        for (Naves inimigoNave : stageModel.getEnemieShip()) {
+            Rectangle formaInimigoNave = inimigoNave.getBounds();
+
+            // TIRO NORMAL
+            for (Shoot tiro : stageModel.getPlayer().getBullets()) {
+                Rectangle formaTiro = tiro.getBounds();
+                if (formaTiro.intersects(formaInimigoNave)) {
+                    if (inimigoNave.getLife() == 1) {
+                        int pontuacaoAtual = stageModel.getPlayer().getScore() + ENEMIE_VALUE;
+                        if (pontuacaoAtual % 50 == 0) {
+                            stageModel.getPlayer().setSuperQuantity(2);
+                        }
+                        inimigoNave.setVisibility(false);
+                        stageModel.getPlayer().setScore(pontuacaoAtual);
+                        stageModel.getPlayer().setScoreDeadEnemys(stageModel.getPlayer().getScoreDeadEnemys() + 1);
+                        stageModel.getSounds().loadSound("explosao.wav");
+                        stageModel.setEnemyKilled(true);
+                    } else {
+                        inimigoNave.setLife(inimigoNave.getLife() - 1);
+                        stageModel.getSounds().loadSound("colisao.wav");
+                        stageModel.setEnemyKilled(false);
+                    }
+                    scorePositionX = inimigoNave.getPositionInX();
+                    scorePositionY = inimigoNave.getPositionInY();
+                    tiro.setVisibility(false);
+                }
+            }
+            // SUPER TIRO
+            for (SpecialShoot superTiro : stageModel.getPlayer().getSpecialBullet()) {
+                Rectangle formaSuper = superTiro.getBounds();
+                if (formaSuper.intersects(formaInimigoNave)) {
+                    if (inimigoNave.getLife() == 1) {
+                        inimigoNave.setVisibility(false);
+                        stageModel.getPlayer().setScore(stageModel.getPlayer().getScore() + ENEMIE_VALUE);
+                        stageModel.getSounds().loadSound("explosao.wav");
+                        stageModel.setEnemyKilled(true);
+                    } else {
+                        inimigoNave.setLife(inimigoNave.getLife() - 1);
+                        stageModel.getSounds().loadSound("colisao.wav");
+                        stageModel.setEnemyKilled(false);
+                    }
+                    scorePositionX = inimigoNave.getPositionInX();
+                    scorePositionY = inimigoNave.getPositionInY();
+                }
+            }
+        }
     }
 
     @Override
     public void EnemieMeteorCollisions() {
-        // TODO Auto-generated method stub
-        
+        int ENEMIE_VALUE = 10;
+        Rectangle personagemForma = stageModel.getPlayer().getBounds();
+        Rectangle meteoritoForma;
+
+        // VEREFICA A COLISÃO DO PERSONAGEM COM O METEORITO
+        for (int k = 0; k < stageModel.getEnemieMeteor().size(); k++) {
+            Meteorito meteritoTemporario = stageModel.getEnemieMeteor().get(k);
+            meteoritoForma = meteritoTemporario.getBounds();
+            if (personagemForma.getBounds().intersects(meteoritoForma.getBounds())) {
+                // VERIFICA SE O PERSONAGEM ESTA PERTO DE MORRER
+                if (stageModel.getPlayer().getLife() == 1) {
+                    stageModel.getPlayer().setPlaying(false);
+                    stageModel.getScreenEndGame().setVisibility(true);
+
+                } else {
+                    stageModel.getPlayer().setLife(stageModel.getPlayer().getLife() - 1);
+                }
+                meteritoTemporario.setVisibility(false);
+                stageModel.getPlayer().setVisibility(false);
+            }
+        }
+        // VERIFICA A COLISÃO DO TIRO NORMAL E SUPER COM O METEORIOTO
+        for (Meteorito inimigoMeteorito : stageModel.getEnemieMeteor()) {
+            Rectangle formaInimigoMeteorito = inimigoMeteorito.getBounds();
+            // TIRO NORMAL
+            for (Shoot tiro : stageModel.getPlayer().getBullets()) {
+                Rectangle formaTiro = tiro.getBounds();
+                if (formaTiro.intersects(formaInimigoMeteorito)) {
+                    inimigoMeteorito.setVisibility(false);
+                    tiro.setVisibility(false);
+                    stageModel.getPlayer().setScore(stageModel.getPlayer().getScore() + ENEMIE_VALUE);
+                    stageModel.setEnemyKilled(true);
+                    scorePositionX = inimigoMeteorito.getPositionInX();
+                    scorePositionY = inimigoMeteorito.getPositionInY();
+                }
+            }
+            // SUPER TIRO
+            for (SpecialShoot superTiro : stageModel.getPlayer().getSpecialBullet()) {
+                Rectangle formaSuper = superTiro.getBounds();
+                if (formaSuper.intersects(formaInimigoMeteorito)) {
+                    inimigoMeteorito.setVisibility(false);
+                    superTiro.setVisibility(false);
+                    stageModel.getPlayer().setScore(stageModel.getPlayer().getScore() + ENEMIE_VALUE);
+                    stageModel.setEnemyKilled(true);
+                    scorePositionX = inimigoMeteorito.getPositionInX();
+                    scorePositionY = inimigoMeteorito.getPositionInY();
+                }
+            }
+        }
     }
 
     // GETTERS E SETTRS

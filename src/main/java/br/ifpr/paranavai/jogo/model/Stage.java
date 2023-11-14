@@ -3,7 +3,6 @@ package br.ifpr.paranavai.jogo.model;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -11,51 +10,33 @@ import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import java.awt.Color;
 
 import br.ifpr.paranavai.jogo.model.Character.Player;
-import br.ifpr.paranavai.jogo.model.Character.Bullets.Shoot;
-import br.ifpr.paranavai.jogo.model.Character.Bullets.SpecialShoot;
-import br.ifpr.paranavai.jogo.model.Enemies.Meteorito;
-import br.ifpr.paranavai.jogo.model.Enemies.Naves;
-import br.ifpr.paranavai.jogo.model.Screens.Controles;
-import br.ifpr.paranavai.jogo.model.Screens.FimDeJogo;
-import br.ifpr.paranavai.jogo.model.Screens.Historico;
-import br.ifpr.paranavai.jogo.model.Screens.MenuInicial;
-import br.ifpr.paranavai.jogo.model.Screens.Pausar;
-import br.ifpr.paranavai.jogo.Services.StageServiceImpl;
-import br.ifpr.paranavai.jogo.Util.ScreenSize;
+import br.ifpr.paranavai.jogo.Services.Screens.ScreenServiceImpl;
+import br.ifpr.paranavai.jogo.Services.Stage.StageServiceImpl;
 
 public class Stage extends JPanel implements ActionListener {
-
+    // INSTANCIAS
     private StageModel stageModel;
     private StageServiceImpl stageServiceImpl;
-    private boolean enemyKilled;
-    private int scorePositionX, scorePositionY;
-    // ATRIBUTOS DA CLASSE
+
+    private ScreenServiceImpl screenServiceImpl;
+    // DA CLASSE
     private Image background;
     private Image backgroundTwo;
-    // INSTANCIAS
-    private Pausar screenPaused;
-    private FimDeJogo screenEndGame;
-    private MenuInicial screenMenu;
-    private Historico screenHistory;
-    private Controles screenControls;
-    private ScreenSize screenResolution;
     // TIMERS
+    public boolean flashing;
+    public long lastCollision;
+    public Timer timerFlashing;
+    public int countFlashing = 0;
     private final Timer timerGlobal;
-    // DELAYS INIMIHOS
-    private final static int GENERAL_DELAY = 1000;
-    // 'TIMER' PARA A COLISAO
-    private long lastCollision;
-    // VARIAVEIS DO EFEITO 'PISCANDO' PARA O PERSONAGEM
-    private boolean flashing;
-    private Timer timerFlashing;
-    private int countFlashing = 0;
+    public final int GENERAL_DELAY = 1000;
 
     public Stage() {
         stageModel = new StageModel();
         stageServiceImpl = new StageServiceImpl(this, this.stageModel);
+
+        screenServiceImpl = new ScreenServiceImpl(this.stageModel);
 
         setFocusable(true);
         setDoubleBuffered(true);
@@ -69,30 +50,14 @@ public class Stage extends JPanel implements ActionListener {
         stageModel.setPlayer(new Player());
         stageModel.getPlayer().load();
 
-        screenMenu = new MenuInicial();
-        screenMenu.load();
-
-        screenHistory = new Historico();
-        screenHistory.load();
-
-        screenControls = new Controles();
-        screenControls.load();
-
-        screenEndGame = new FimDeJogo();
-        screenEndGame.load();
-
-        screenResolution = new ScreenSize();
-        screenResolution.carregar();
-
-        screenPaused = new Pausar();
-        screenPaused.load();
-
         // RESCALONAMENTO DAS IMAGENS DE FUNDO
         this.background = this.background.getScaledInstance(
-                screenResolution.getWIDTH_SCREEN(), screenResolution.getHEIGHT_SCREEN(), Image.SCALE_FAST);
+                stageModel.getScreenSize().getWIDTH_SCREEN(), stageModel.getScreenSize().getHEIGHT_SCREEN(),
+                Image.SCALE_FAST);
 
         this.backgroundTwo = this.backgroundTwo.getScaledInstance(
-                screenResolution.getWIDTH_SCREEN(), screenResolution.getHEIGHT_SCREEN(), Image.SCALE_FAST);
+                stageModel.getScreenSize().getWIDTH_SCREEN(), stageModel.getScreenSize().getHEIGHT_SCREEN(),
+                Image.SCALE_FAST);
 
         addKeyListener(new TecladoAdapter());
         timerFlashing = new Timer(GENERAL_DELAY, new ActionListener() {
@@ -101,8 +66,6 @@ public class Stage extends JPanel implements ActionListener {
                 flashing = !flashing;
             }
         });
-
-        // TIMER PARA O EFEITO DE PISCANDO
         timerFlashing.setRepeats(true);
         flashing = false;
 
@@ -114,18 +77,16 @@ public class Stage extends JPanel implements ActionListener {
         stageServiceImpl.spawnEnemieShip();
     }
 
-    // INICIANDO POSIÇÃO DAS NAVES INIMIGAS ALEATORIAMENTE
-
     public void paintComponent(Graphics g) {
         Graphics2D grapichs = (Graphics2D) g;
         super.paintComponent(g);
 
-        if (screenMenu.isVisibility() == true) {
-            screenMenu.conteudo(grapichs);
-        } else if (screenControls.isVisibility() == true) {
-            screenControls.conteudo(grapichs);
-        } else if (screenHistory.isVisibility() == true) {
-            screenHistory.conteudo(grapichs);
+        if (stageModel.getScreenMenu().isVisibility() == true) {
+            stageModel.getScreenMenu().conteudo(grapichs);
+        } else if (stageModel.getScreenControls().isVisibility() == true) {
+            stageModel.getScreenControls().conteudo(grapichs);
+        } else if (stageModel.getScreenHistory().isVisibility() == true) {
+            stageModel.getScreenHistory().conteudo(grapichs);
         }
 
         if (stageModel.getPlayer().isPlaying() == true) {
@@ -136,15 +97,7 @@ public class Stage extends JPanel implements ActionListener {
 
             stageServiceImpl.drawnBullets(g);
             stageServiceImpl.dranwEnemies(g);
-
-            // DESENHA A PONTUAÇÃO ACIMA DO INIMIGO MORTO
-            if (enemyKilled) {
-                grapichs.setColor(Color.WHITE);
-                grapichs.drawString("+ 10", scorePositionX + 5, scorePositionY -= 1);
-            } else {
-                grapichs.setColor(Color.WHITE);
-                g.drawString("- 1", scorePositionX + 75, scorePositionY += 1);
-            }
+            stageServiceImpl.dranwEnemiesScore(g);
 
             stageModel.getPlayer().pontuacao(grapichs);
             stageModel.getPlayer().desenhaVida(grapichs);
@@ -156,44 +109,42 @@ public class Stage extends JPanel implements ActionListener {
                         stageModel.getPlayer().getPositionInY(),
                         null);
             }
-        } else if (screenEndGame.isVisibility() == true) {
-            screenEndGame.titulo(grapichs);
-            screenEndGame.menu(grapichs);
+        } else if (stageModel.getScreenEndGame().isVisibility() == true) {
+            stageModel.getScreenEndGame().titulo(grapichs);
+            stageModel.getScreenEndGame().menu(grapichs);
         }
 
         g.dispose();
     }
 
-    // MÉTODO DE CONTROLE DA FASE
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (!screenPaused.isPaused()) {
+        if (!stageModel.getScreenPaused().isPaused()) {
             repaint();
-
             stageServiceImpl.controlEnemies();
             stageServiceImpl.controlBullets();
             stageServiceImpl.speedEnemieControl();
 
             stageServiceImpl.screenCollisions();
+            stageServiceImpl.EnemieMeteorCollisions();
+            stageServiceImpl.EnemieShipCollisions();
 
             resetStage();
-            detectCollisions();
+            playerControl();
             stageModel.getPlayer().update();
         }
         // PARA O SPAWN DOS INIMIGOS
-        if (screenPaused.isPaused()) {
+        if (stageModel.getScreenPaused().isPaused()) {
             stageServiceImpl.getTimerEnemyShip().stop();
             stageServiceImpl.getTimerAsteroids().stop();
             stageServiceImpl.getTimerMeteor().stop();
-            screenPaused.menu(getGraphics());
+            stageModel.getScreenPaused().menu(getGraphics());
         }
     }
 
     public void resetStage() {
-
-        // CONTROLE DA FASE
         if (stageModel.getPlayer().isPlaying() == false) {
-            // PERSONAGEM
+            // EFEITO DO PERSONAGEM
             timerFlashing.stop();
             stageModel.getPlayer().getBullets().clear();
             // PARA O SPAWN DE INIMIGOS
@@ -214,22 +165,24 @@ public class Stage extends JPanel implements ActionListener {
             stageModel.getPlayer().setScoreDeadEnemys(0);
             stageModel.getPlayer().setLife(stageModel.getPlayer().getInitialLife());
         } else {
+            // INICIAR O SPAWN DOS INIMIGOS
             stageServiceImpl.getTimerEnemyShip().start();
             stageServiceImpl.getTimerAsteroids().start();
-
             if (stageModel.getPlayer().getScore() >= 300) {
                 stageServiceImpl.getTimerMeteor().start();
             }
         }
+    }
 
+    public void playerControl() {
         // FUNÇÃO PARA FAZER O PERSONAGEM 'PISCAR' CASO COLIDA
-        countFlashing++; // CONTADOR
+        countFlashing++;
         if (countFlashing % 2 == 1) {
             flashing = false; // SE FOR IMPAR O PERSONAGEM TA VISIVEL
         } else {
             flashing = true; // SE FOR PAR O PERSONAGEM ESTA PISCANDO
         }
-        if (countFlashing == 10) { // VEZES PARA 'PISCAR'
+        if (countFlashing == 10) {
             timerFlashing.stop();
             flashing = false;
         }
@@ -240,215 +193,19 @@ public class Stage extends JPanel implements ActionListener {
             stageModel.getPlayer().setHealthRestoreCheck(1);
             stageModel.getPlayer().setHealthRestored(true);
         }
-
-    }
-
-    public void detectCollisions() {
-        // VALORES PARA CADA INIMIGO DESTRUIDO
-        int ENEMIE_VALUE = 10;
-        // FORMAS
-        Rectangle personagemForma = stageModel.getPlayer().getBounds();
-        Rectangle naveInimigaForma;
-        Rectangle meteoritoForma;
-
-        // VERIFICA A COLISÃO DO PERSONAGEM COM A NAVE INIMIGA
-        for (int i = 0; i < stageModel.getEnemieShip().size(); i++) {
-            Naves naveTemporaria = stageModel.getEnemieShip().get(i);
-            naveInimigaForma = naveTemporaria.getBounds();
-            long tempoAtual = System.currentTimeMillis();
-            if (tempoAtual - lastCollision < GENERAL_DELAY) {
-                return;
-            } else {
-                countFlashing = 0; // REINICIA O CONTADOR
-                timerFlashing.start(); // INICIA O TIMER
-                if (personagemForma.getBounds().intersects(naveInimigaForma.getBounds())) {
-                    // VERIFICA SE A VIDA DO PERSONAGME PODE SER RESTAURADA
-                    if (stageModel.getPlayer().getLife() == 1) {
-                        stageModel.getPlayer().setPlaying(false);
-                        screenEndGame.setVisibility(true);
-                        stageModel.getPlayer().setVisibility(false);
-                    } else {
-                        stageModel.getPlayer().setLife(stageModel.getPlayer().getLife() - 1);
-                    }
-                    // VERIFICA A VIDA DA NAVE INIMIGA
-                    if (naveTemporaria.getLife() == 1) {
-                        naveTemporaria.setVisibility(false);
-                    } else {
-                        naveTemporaria.setLife(naveTemporaria.getLife() - 1);
-                    }
-                    lastCollision = tempoAtual;
-                }
-            }
-            timerFlashing.stop();
-            flashing = false;
-        }
-        for (Naves inimigoNave : stageModel.getEnemieShip()) {
-            Rectangle formaInimigoNave = inimigoNave.getBounds();
-
-            // TIRO NORMAL
-            for (Shoot tiro : stageModel.getPlayer().getBullets()) {
-                Rectangle formaTiro = tiro.getBounds();
-                if (formaTiro.intersects(formaInimigoNave)) {
-                    if (inimigoNave.getLife() == 1) {
-                        int pontuacaoAtual = stageModel.getPlayer().getScore() + ENEMIE_VALUE;
-                        if (pontuacaoAtual % 50 == 0) {
-                            stageModel.getPlayer().setSuperQuantity(2);
-                        }
-                        inimigoNave.setVisibility(false);
-                        stageModel.getPlayer().setScore(pontuacaoAtual);
-                        stageModel.getPlayer().setScoreDeadEnemys(stageModel.getPlayer().getScoreDeadEnemys() + 1);
-                        stageModel.getSounds().loadSound("explosao.wav");
-                        this.enemyKilled = true;
-                    } else {
-                        inimigoNave.setLife(inimigoNave.getLife() - 1);
-                        stageModel.getSounds().loadSound("colisao.wav");
-                        this.enemyKilled = false;
-                    }
-                    scorePositionX = inimigoNave.getPositionInX();
-                    scorePositionY = inimigoNave.getPositionInY();
-                    tiro.setVisibility(false);
-                }
-            }
-            // SUPER TIRO
-            for (SpecialShoot superTiro : stageModel.getPlayer().getSpecialBullet()) {
-                Rectangle formaSuper = superTiro.getBounds();
-                if (formaSuper.intersects(formaInimigoNave)) {
-                    if (inimigoNave.getLife() == 1) {
-                        inimigoNave.setVisibility(false);
-                        stageModel.getPlayer().setScore(stageModel.getPlayer().getScore() + ENEMIE_VALUE);
-                        stageModel.getSounds().loadSound("explosao.wav");
-                        this.enemyKilled = true;
-                    } else {
-                        inimigoNave.setLife(inimigoNave.getLife() - 1);
-                        stageModel.getSounds().loadSound("colisao.wav");
-                        this.enemyKilled = false;
-                    }
-                    scorePositionX = inimigoNave.getPositionInX();
-                    scorePositionY = inimigoNave.getPositionInY();
-                }
-            }
-        }
-
-        // VEREFICA A COLISÃO DO PERSONAGEM COM O METEORITO
-        for (int k = 0; k < stageModel.getEnemieMeteor().size(); k++) {
-            Meteorito meteritoTemporario = stageModel.getEnemieMeteor().get(k);
-            meteoritoForma = meteritoTemporario.getBounds();
-            if (personagemForma.getBounds().intersects(meteoritoForma.getBounds())) {
-                // VERIFICA SE O PERSONAGEM ESTA PERTO DE MORRER
-                if (stageModel.getPlayer().getLife() == 1) {
-                    stageModel.getPlayer().setPlaying(false);
-                    screenEndGame.setVisibility(true);
-
-                } else {
-                    stageModel.getPlayer().setLife(stageModel.getPlayer().getLife() - 1);
-                }
-                meteritoTemporario.setVisibility(false);
-                stageModel.getPlayer().setVisibility(false);
-            }
-        }
-        // VERIFICA A COLISÃO DO TIRO NORMAL E SUPER COM O METEORIOTO
-        for (Meteorito inimigoMeteorito : stageModel.getEnemieMeteor()) {
-            Rectangle formaInimigoMeteorito = inimigoMeteorito.getBounds();
-            // TIRO NORMAL
-            for (Shoot tiro : stageModel.getPlayer().getBullets()) {
-                Rectangle formaTiro = tiro.getBounds();
-                if (formaTiro.intersects(formaInimigoMeteorito)) {
-                    inimigoMeteorito.setVisibility(false);
-                    tiro.setVisibility(false);
-                    stageModel.getPlayer().setScore(stageModel.getPlayer().getScore() + ENEMIE_VALUE);
-                    enemyKilled = true;
-                    scorePositionX = inimigoMeteorito.getPositionInX();
-                    scorePositionY = inimigoMeteorito.getPositionInY();
-                }
-            }
-            // SUPER TIRO
-            for (SpecialShoot superTiro : stageModel.getPlayer().getSpecialBullet()) {
-                Rectangle formaSuper = superTiro.getBounds();
-                if (formaSuper.intersects(formaInimigoMeteorito)) {
-                    inimigoMeteorito.setVisibility(false);
-                    superTiro.setVisibility(false);
-                    stageModel.getPlayer().setScore(stageModel.getPlayer().getScore() + ENEMIE_VALUE);
-                    enemyKilled = true;
-                    scorePositionX = inimigoMeteorito.getPositionInX();
-                    scorePositionY = inimigoMeteorito.getPositionInY();
-                }
-            }
-        }
-    }
-
-    public void controleMenuInicial(KeyEvent e) {
-        int tecla = e.getKeyCode();
-        if (tecla == KeyEvent.VK_ENTER) {
-            if (screenMenu.getCursor() == 0) { // NOVO JOGO
-                stageModel.getPlayer().setPlaying(true);
-                screenMenu.setVisibility(false);
-            } else if (screenMenu.getCursor() == 1) { // CARREGAR JOGO
-                // A SER IMPLEMENTADO AINDA
-            } else if (screenMenu.getCursor() == 2) { // TELA CONTROLES
-                screenMenu.setVisibility(false);
-                screenControls.setVisibility(true);
-            } else if (screenMenu.getCursor() == 3) { // TELA HISTORICO - IMPLEMENTAR
-                screenMenu.setVisibility(false);
-                screenHistory.setVisibility(true);
-            }
-        }
-    }
-
-    public void controleTelas(KeyEvent e) {
-        int tecla = e.getKeyCode();
-
-        if (screenControls.isVisibility() == true) {
-            if (tecla == KeyEvent.VK_ESCAPE) {
-                screenControls.setVisibility(false);
-                screenMenu.setVisibility(true);
-            }
-        }
-        if (screenHistory.isVisibility() == true) {
-            if (tecla == KeyEvent.VK_ESCAPE) {
-                screenHistory.setVisibility(false);
-                screenMenu.setVisibility(true);
-            }
-        }
-    }
-
-    public void pausar(KeyEvent e) {
-        int tecla = e.getKeyCode();
-        if (tecla == KeyEvent.VK_ESCAPE) {
-            if (stageModel.getPlayer().isPlaying()) {
-                stageModel.getPlayer().setPlaying(false);
-                screenPaused.setPaused(true);
-            }
-        }
-    }
-
-    public void controleFimDeJogo(KeyEvent e) {
-        int tecla = e.getKeyCode();
-        if (screenEndGame.isVisibility() == true) {
-            if (tecla == KeyEvent.VK_ENTER) {
-                if (screenEndGame.getCursor() == 0) {
-                    stageModel.getPlayer().setPlaying(true);
-                    screenEndGame.setVisibility(false);
-                }
-                if (screenEndGame.getCursor() == 1) {
-                    screenEndGame.setVisibility(false);
-                    screenMenu.setVisibility(true);
-                }
-            }
-        }
     }
 
     // CHAMANDO A LEITURA DOS TECLADOS
     private class TecladoAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
-            if (screenMenu.isVisibility() == true) {
-                controleMenuInicial(e);
-                screenMenu.controleMenu(e);
+            if (stageModel.getScreenMenu().isVisibility() == true) {
+                stageModel.getScreenMenu().controleMenu(e);
                 stageModel.getSounds().loadSound("botao.wav");
-            } else if (screenControls.isVisibility() == true) {
-                controleTelas(e);
-            } else if (screenHistory.isVisibility() == true) {
-                controleTelas(e);
+            } else if (stageModel.getScreenControls().isVisibility() == true) {
+                screenServiceImpl.visibilityControlScreens(e);
+            } else if (stageModel.getScreenHistory().isVisibility() == true) {
+                screenServiceImpl.visibilityControlScreens(e);
             } else if (stageModel.getPlayer().isPlaying() == true) {
                 int tecla = e.getKeyCode();
                 stageModel.getPlayer().mover(e);
@@ -456,28 +213,28 @@ public class Stage extends JPanel implements ActionListener {
                 if (tecla == KeyEvent.VK_SPACE && stageModel.getPlayer().isCanShoot()) {
                     stageModel.getSounds().loadSound("tiro.wav");
                 }
-                pausar(e);
-            } else if (screenEndGame.isVisibility() == true) {
-                controleFimDeJogo(e);
-                screenEndGame.controleMenu(e);
+                screenServiceImpl.visibilityScreenPause(e);
+            } else if (stageModel.getScreenEndGame().isVisibility() == true) {
+                screenServiceImpl.visibilityControlEndGame(e);
+                stageModel.getScreenEndGame().controleMenu(e);
                 stageModel.getSounds().loadSound("botao.wav");
             }
 
-            if (screenPaused.isPaused()) {
+            if (stageModel.getScreenPaused().isPaused()) {
                 int tecla = e.getKeyCode();
-                screenPaused.menuPausado(e);
+                stageModel.getScreenPaused().menuPausado(e);
                 stageModel.getSounds().loadSound("botao.wav");
                 if (tecla == KeyEvent.VK_ENTER) {
-                    if (screenPaused.getCursor() == 0) {
-                        screenPaused.setPaused(false);
+                    if (stageModel.getScreenPaused().getCursor() == 0) {
+                        stageModel.getScreenPaused().setPaused(false);
                         stageModel.getPlayer().setPlaying(true);
-                        screenPaused.setVisibility(false);
+                        stageModel.getScreenPaused().setVisibility(false);
                     }
-                    if (screenPaused.getCursor() == 1) {
-                        screenPaused.setPaused(false);
+                    if (stageModel.getScreenPaused().getCursor() == 1) {
+                        stageModel.getScreenPaused().setPaused(false);
                         stageModel.getPlayer().setPlaying(false);
-                        screenPaused.setVisibility(false);
-                        screenMenu.setVisibility(true);
+                        stageModel.getScreenPaused().setVisibility(false);
+                        stageModel.getScreenMenu().setVisibility(true);
                     }
                 }
             }
