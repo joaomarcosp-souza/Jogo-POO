@@ -25,6 +25,7 @@ public class Main extends JFrame {
         super.setResizable(false);
     }
     
+    
     public static void main(String[] args) {
         Session sessao = HibernateUtil.getSession();
         sessao.beginTransaction();

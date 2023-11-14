@@ -200,6 +200,7 @@ public class Stage extends JPanel implements ActionListener {
         @Override
         public void keyPressed(KeyEvent e) {
             if (stageModel.getScreenMenu().isVisibility() == true) {
+                screenServiceImpl.visibilityControlMenu(e);
                 stageModel.getScreenMenu().controleMenu(e);
                 stageModel.getSounds().loadSound("botao.wav");
             } else if (stageModel.getScreenControls().isVisibility() == true) {
