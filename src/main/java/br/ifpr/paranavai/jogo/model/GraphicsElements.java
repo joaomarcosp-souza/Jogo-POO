@@ -24,7 +24,7 @@ public abstract class GraphicsElements {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", unique = true)
+    @Column(name = "id_elementos", unique = true)
     private Integer identificador;
     @Column(name= "vida")
     private int life;

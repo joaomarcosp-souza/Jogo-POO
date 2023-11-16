@@ -3,10 +3,13 @@ package br.ifpr.paranavai.jogo.Services.Screens;
 import java.awt.event.KeyEvent;
 
 import br.ifpr.paranavai.jogo.model.StageModel;
+import br.ifpr.paranavai.jogo.model.Character.Player;
 
 public class ScreenServiceImpl implements ScreenService {
 
     private StageModel stageModel;
+
+    Player player = new Player();
 
     public ScreenServiceImpl(StageModel stageModel) {
         this.stageModel = stageModel;
@@ -19,9 +22,9 @@ public class ScreenServiceImpl implements ScreenService {
             if (stageModel.getScreenMenu().getCursor() == 0) {
                 stageModel.getPlayer().setPlaying(true);
                 stageModel.getScreenMenu().setVisibility(false);
-            } else if (stageModel.getScreenMenu().getCursor() == 1) { 
+            } else if (stageModel.getScreenMenu().getCursor() == 1) {
                 // A SER IMPLEMENTADO AINDA
-            } else if (stageModel.getScreenMenu().getCursor() == 2) { 
+            } else if (stageModel.getScreenMenu().getCursor() == 2) {
                 stageModel.getScreenControls().setVisibility(true);
                 stageModel.getScreenMenu().setVisibility(false);
             } else if (stageModel.getScreenMenu().getCursor() == 3) {
@@ -75,5 +78,4 @@ public class ScreenServiceImpl implements ScreenService {
             }
         }
     }
-
 }

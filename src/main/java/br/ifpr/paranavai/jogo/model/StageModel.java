@@ -1,7 +1,16 @@
 package br.ifpr.paranavai.jogo.model;
 
 import java.util.ArrayList;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.Transient;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 
 import br.ifpr.paranavai.jogo.Util.Sounds;
 import br.ifpr.paranavai.jogo.Util.ScreenSize;
@@ -15,15 +24,22 @@ import br.ifpr.paranavai.jogo.model.Screens.Historico;
 import br.ifpr.paranavai.jogo.model.Screens.MenuInicial;
 import br.ifpr.paranavai.jogo.model.Screens.Pausar;
 
+@Entity
+
 public class StageModel {
+
     @Transient
+    @JoinColumn(name =  "id_elementos")
     private Player player;
     // LISTA PARA INIMIGOS
     @Transient
+    @JoinColumn(name = "id_elementos")
     private ArrayList<Naves> enemieShip;
     @Transient
+    @JoinColumn(name = "id_elementos")
     private ArrayList<Asteroide> asteroids;
     @Transient
+    @JoinColumn(name = "id_elementos")
     private ArrayList<Meteorito> enemieMeteor;
 
     private ScreenSize screenSize;
