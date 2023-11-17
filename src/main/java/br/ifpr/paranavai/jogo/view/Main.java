@@ -26,8 +26,7 @@ public class Main extends JFrame {
     }
     
     public static void main(String[] args) {
-        Session sessao = HibernateUtil.getSession();
-        sessao.beginTransaction();
+        Session session = HibernateUtil.getSession();
         new Main();
     }
 }

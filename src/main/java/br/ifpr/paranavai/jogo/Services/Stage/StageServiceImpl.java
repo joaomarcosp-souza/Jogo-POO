@@ -6,8 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import br.ifpr.paranavai.jogo.Services.player.PlayerService;
+import br.ifpr.paranavai.jogo.dao.player.PlayerDaoImpl;
 import br.ifpr.paranavai.jogo.model.Stage;
 import br.ifpr.paranavai.jogo.model.StageModel;
+import br.ifpr.paranavai.jogo.model.Character.Player;
 import br.ifpr.paranavai.jogo.model.Character.Bullets.Shoot;
 import br.ifpr.paranavai.jogo.model.Character.Bullets.SpecialShoot;
 import br.ifpr.paranavai.jogo.model.Enemies.Asteroide;
@@ -236,15 +240,20 @@ public class StageServiceImpl implements StageService {
         // VERIFICA COLISÃO COM A BORDA EM 'X'
         if (stageModel.getPlayer().getPositionInX() < 0) {
             stageModel.getPlayer().setPositionInX(0); // POSIÇÃO MÍNIMA X
-        } else if (stageModel.getPlayer().getPositionInX() + stageModel.getPlayer().getWidthImage() > stageModel.getScreenSize()
+        } else if (stageModel.getPlayer().getPositionInX() + stageModel.getPlayer().getWidthImage() > stageModel
+                .getScreenSize()
                 .getWIDTH_SCREEN()) {
-            int maximoEmX = stageModel.getScreenSize().getWIDTH_SCREEN() - stageModel.getPlayer().getWidthImage(); // CALCULA A                                                                                    // MÁXIMA
+            int maximoEmX = stageModel.getScreenSize().getWIDTH_SCREEN() - stageModel.getPlayer().getWidthImage(); // CALCULA
+                                                                                                                   // A
+                                                                                                                   // //
+                                                                                                                   // MÁXIMA
             stageModel.getPlayer().setPositionInX(maximoEmX);
         }
         // VERIFICA COLISÃO COM A BORDA EM 'Y'
         if (stageModel.getPlayer().getPositionInY() < 0) {
             stageModel.getPlayer().setPositionInY(0); // POSIÇÃO MÍNIMA Y
-        } else if (stageModel.getPlayer().getPositionInY() + stageModel.getPlayer().getHeightImage() > stageModel.getScreenSize()
+        } else if (stageModel.getPlayer().getPositionInY() + stageModel.getPlayer().getHeightImage() > stageModel
+                .getScreenSize()
                 .getHEIGHT_SCREEN()) {
             int maximoEmY = stageModel.getScreenSize().getHEIGHT_SCREEN() - stageModel.getPlayer().getHeightImage();
             stageModel.getPlayer().setPositionInY(maximoEmY);
@@ -389,6 +398,34 @@ public class StageServiceImpl implements StageService {
                 }
             }
         }
+    }
+
+    // MÉTODO PROVISORIO
+    // ERRO AO TENTAR SALVAR MAIS DE UMA VEZ NA PARTIDA
+    // SALVANDO APENAS UM ID NO BANCO
+
+    @Override
+    public void searcLastPLayer() {
+        // Player player = playerDaoImpl.searchForId(1);
+        PlayerDaoImpl playerDaoImpl = new PlayerDaoImpl();
+        List<Player> players = playerDaoImpl.searchAll();
+
+        if (!players.isEmpty()) {
+            Player player = players.get(players.size() - 1);
+
+            stageModel.setPlayer(player);
+            stageModel.getPlayer().load();
+        }
+
+        // if (player != null) {
+        // stageModel.setPlayer(player);
+        // stageModel.getPlayer().load();
+        // repaint();
+        // } else {
+        // stageModel.setPlayer(new Player());
+        // stageModel.getPlayer().load();
+        // repaint();
+        // }
     }
 
     // GETTERS E SETTRS

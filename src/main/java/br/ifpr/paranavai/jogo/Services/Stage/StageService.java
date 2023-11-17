@@ -15,4 +15,5 @@ public interface StageService {
     public abstract void screenCollisions();
     public abstract void EnemieShipCollisions();
     public abstract void EnemieMeteorCollisions();
+    public abstract void searcLastPLayer();
 }

@@ -2,14 +2,15 @@ package br.ifpr.paranavai.jogo.Services.Screens;
 
 import java.awt.event.KeyEvent;
 
+import br.ifpr.paranavai.jogo.Services.Stage.StageServiceImpl;
+import br.ifpr.paranavai.jogo.dao.player.PlayerDaoImpl;
 import br.ifpr.paranavai.jogo.model.StageModel;
 import br.ifpr.paranavai.jogo.model.Character.Player;
 
 public class ScreenServiceImpl implements ScreenService {
 
     private StageModel stageModel;
-
-    Player player = new Player();
+    private StageServiceImpl serviceImpl;
 
     public ScreenServiceImpl(StageModel stageModel) {
         this.stageModel = stageModel;
@@ -23,7 +24,7 @@ public class ScreenServiceImpl implements ScreenService {
                 stageModel.getPlayer().setPlaying(true);
                 stageModel.getScreenMenu().setVisibility(false);
             } else if (stageModel.getScreenMenu().getCursor() == 1) {
-                // A SER IMPLEMENTADO AINDA
+                serviceImpl.searcLastPLayer();
             } else if (stageModel.getScreenMenu().getCursor() == 2) {
                 stageModel.getScreenControls().setVisibility(true);
                 stageModel.getScreenMenu().setVisibility(false);

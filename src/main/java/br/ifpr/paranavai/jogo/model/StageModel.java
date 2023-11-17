@@ -2,16 +2,17 @@ package br.ifpr.paranavai.jogo.model;
 
 import java.util.ArrayList;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-
 import br.ifpr.paranavai.jogo.Util.Sounds;
 import br.ifpr.paranavai.jogo.Util.ScreenSize;
 import br.ifpr.paranavai.jogo.model.Character.Player;
@@ -25,21 +26,27 @@ import br.ifpr.paranavai.jogo.model.Screens.MenuInicial;
 import br.ifpr.paranavai.jogo.model.Screens.Pausar;
 
 @Entity
-
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class StageModel {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_stageModel", unique = true)
+    private Integer id_stage;
     @Transient
-    @JoinColumn(name =  "id_elementos")
+    @JoinColumn(name = "id_stageModel")
     private Player player;
     // LISTA PARA INIMIGOS
     @Transient
-    @JoinColumn(name = "id_elementos")
+    @JoinColumn(name = "id_stageModel")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personagem")
     private ArrayList<Naves> enemieShip;
     @Transient
-    @JoinColumn(name = "id_elementos")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personagem")
+    @JoinColumn(name = "id_stageModel")
     private ArrayList<Asteroide> asteroids;
     @Transient
-    @JoinColumn(name = "id_elementos")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personagem")
+    @JoinColumn(name = "id_stageModel")
     private ArrayList<Meteorito> enemieMeteor;
 
     private ScreenSize screenSize;
@@ -182,5 +189,4 @@ public class StageModel {
         this.screenResolution = screenResolution;
     }
 
-    
 }

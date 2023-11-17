@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -25,53 +24,37 @@ import java.awt.Rectangle;
 @Entity
 @Table(name = "tb_Jogador")
 public class Player extends GraphicsElements {
-    @Column(name= "pontos", unique = true, nullable = false)
-    @JoinColumn(name = "id_elementos")
+    @Column(name= "pontos")
     private int score;
-    @JoinColumn(name = "id_elementos")
-    @Column(name = "pontos_inimigos_mortos", unique = true, nullable = false)
+    @Column(name = "pontos_inimigos_mortos")
     private int scoreDeadEnemys;
-    @JoinColumn(name = "id_elementos")
     @Column(name = "quantidade_super")
     private int superQuantity;
-    @JoinColumn(name = "id_elementos")
     @Column(name= "ultimo_tiro")
     private long lastBullet;
     @Transient
-    @JoinColumn(name = "id_elementos")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personagem")
     private ArrayList<Shoot> bullets;
     @Transient
-    @JoinColumn(name = "id_elementos")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personagem")
     private ArrayList<SpecialShoot> specialBullet;
     // MOVITEMENTAÇÃO
-    @JoinColumn(name = "id_elementos")
-    @Column(name= "deslocamento_X")
     private int displacementX;
-    @JoinColumn(name = "id_elementos")
-    @Column(name = "deslocamento_Y")
     private int displacementY;
-    @JoinColumn(name = "id_elementos")
-    @Column(name = "posixcao_vida_x")
+    @Column(name = "posicao_vida_x")
     private int positionLifeInX;
-    @JoinColumn(name = "id_elementos")
-    @Column(name = "posixcao_vida_y")
+    @Column(name = "posicao_vida_y")
     private int positionLifeInY;
-    @JoinColumn(name = "id_elementos")
     @Column(name = "altura_vida")
-    @JoinColumn(name = "id_elementos")
     private int heightLifeImage;
     @Column(name = "checa_vida")
     private int healthRestoreCheck;
-    //
-    @Column(name = "jogando")
+  
     private boolean playing;
     private Rectangle lifeHitBox;
     private boolean healthRestored;
-    // LISTA
+
     private boolean CanShoot;
-    // VARIAVEIS CONSTANTES
     @Transient
     private Image IMAGE_LIFE;
     private final long DELAY_BULLET;

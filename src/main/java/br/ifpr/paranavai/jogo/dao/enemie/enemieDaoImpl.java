@@ -1,39 +1,37 @@
-package br.ifpr.paranavai.jogo.dao.player;
+package br.ifpr.paranavai.jogo.dao.enemie;
 
 import java.util.List;
-
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-
 import br.ifpr.paranavai.jogo.Conexao.HibernateUtil;
-import br.ifpr.paranavai.jogo.model.Character.Player;
+import br.ifpr.paranavai.jogo.model.Enemies.Naves;
 
-public class PlayerDaoImpl implements PlayerDao {
+public class enemieDaoImpl implements enemieDao{
 
     private Session session;
 
-    public PlayerDaoImpl() {
+    public enemieDaoImpl() {
         this.session = HibernateUtil.getSession();
     }
 
     @Override
-    public List<Player> searchAll() {
-        Query<Player> query = this.session.createQuery("from Player",
-                Player.class);
-        List<Player> players = query.getResultList();
-        return players;
+    public List<Naves> searchAll() {
+        Query<Naves> query = this.session.createQuery("from Ships",
+                Naves.class);
+        List<Naves> naves = query.getResultList();
+        return naves;
     }
 
     @Override
-    public Player searchForId(Integer id) {
-        return this.session.find(Player.class, id);
+    public Naves searchForId(Integer id) {
+        return this.session.find(Naves.class, id);
     }
 
     @Override
-    public void modify(Player player) {
+    public void modify(Naves naves) {
         try {
             session.beginTransaction();
-            session.merge(player);
+            session.merge(naves);
             session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -42,10 +40,10 @@ public class PlayerDaoImpl implements PlayerDao {
     }
 
     @Override
-    public void delete(Player player) {
+    public void delete(Naves ships) {
         try {
             session.beginTransaction();
-            session.remove(player);
+            session.remove(ships);
             session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,15 +51,14 @@ public class PlayerDaoImpl implements PlayerDao {
     }
 
     @Override
-    public void insert(Player player) {
+    public void insert(Naves ships) {
         try {
             session.beginTransaction();
-            session.persist(player);
+            session.persist(ships);
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
             e.printStackTrace();
         }
     }
-
 }

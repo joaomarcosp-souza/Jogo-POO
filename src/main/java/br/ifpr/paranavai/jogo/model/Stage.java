@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -17,15 +19,18 @@ import br.ifpr.paranavai.jogo.Services.Screens.ScreenServiceImpl;
 import br.ifpr.paranavai.jogo.Services.Stage.StageServiceImpl;
 import br.ifpr.paranavai.jogo.Services.player.PlayerService;
 
+@Entity
+@PrimaryKeyJoinColumn(name = "id_stageModel")
 public class Stage extends JPanel implements ActionListener {
-    private StageModel stageModel;
-    private StageServiceImpl stageServiceImpl;
 
+    private StageModel stageModel;
+
+    private StageServiceImpl stageServiceImpl;
     private ScreenServiceImpl screenServiceImpl;
-    // DA CLASSE
+
     private Image background;
     private Image backgroundTwo;
-    // TIMERS
+
     public boolean flashing;
     public long lastCollision;
     public Timer timerFlashing;
@@ -34,6 +39,7 @@ public class Stage extends JPanel implements ActionListener {
     public final int GENERAL_DELAY = 1000;
 
     public Stage() {
+
         stageModel = new StageModel();
         stageServiceImpl = new StageServiceImpl(this, this.stageModel);
 
@@ -216,8 +222,14 @@ public class Stage extends JPanel implements ActionListener {
                     stageModel.getSounds().loadSound("tiro.wav");
                 }
 
+                // SALVAMENTO RAPIDO(TESTE)
                 if (tecla == KeyEvent.VK_F5) {
                     PlayerService.insert(stageModel.getPlayer());
+                }
+                // CARREGA O SAVE(TESTE)
+                if (tecla == KeyEvent.VK_F8) {
+                    stageServiceImpl.searcLastPLayer();
+                    repaint();
                 }
 
                 screenServiceImpl.visibilityScreenPause(e);

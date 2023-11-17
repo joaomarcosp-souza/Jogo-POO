@@ -13,7 +13,7 @@ public class PlayerService {
         return dao.searchAll();
     }
 
-    public static Player buscarPorId(Integer id) {
+    public static Player searchForId(Integer id) {
         return dao.searchForId(id);
     }
 

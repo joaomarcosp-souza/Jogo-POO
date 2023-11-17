@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import br.ifpr.paranavai.jogo.Util.ScreenSize;
@@ -20,12 +21,13 @@ import java.awt.FontFormatException;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Table(name = "tb_elemento_grafico")
 public abstract class GraphicsElements {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_elementos", unique = true)
+    @Column(name = "id_elementos")
     private Integer identificador;
+
     @Column(name= "vida")
     private int life;
     @Transient
@@ -154,7 +156,16 @@ public abstract class GraphicsElements {
 
     public void setHeightImage(int heightImage) {
         this.heightImage = heightImage;
+    }
+    
+    public Integer getIdentificador() {
+        return identificador;
+    }
+    public void setIdentificador(Integer identificador) {
+        this.identificador = identificador;
     };
+
+    
 
     //GETTERS E SETTERS
     
