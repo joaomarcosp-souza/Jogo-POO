@@ -8,25 +8,25 @@ import br.ifpr.paranavai.jogo.model.Enemies.Naves;
 
 public class ShipService {
 
-    private static ShipDao daoAsteroid = new ShipDaoImpl();
+    private static ShipDao shipDao = new ShipDaoImpl();
 
     public static List<Naves> searchAll() {
-        return daoAsteroid.searchAll();
+        return shipDao.searchAll();
     }
 
     public static Naves searchForId(Integer id) {
-        return daoAsteroid.searchForId(id);
+        return shipDao.searchForId(id);
     }
 
     public static void insert(Naves naves) {
-        daoAsteroid.insert(naves);
+        shipDao.insert(naves);
     }
 
     public static void modify(Naves naves) {
-        daoAsteroid.modify(naves);
+        shipDao.modify(naves);
     }
 
     public static void delete(Naves naves) {
-        daoAsteroid.delete(naves);
+        shipDao.delete(naves);
     }
 }

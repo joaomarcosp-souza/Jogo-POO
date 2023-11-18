@@ -1,4 +1,4 @@
-package br.ifpr.paranavai.jogo.dao.enemie;
+package br.ifpr.paranavai.jogo.dao.enemies.Ships;
 
 import java.util.List;
 import org.hibernate.Session;
@@ -6,11 +6,11 @@ import org.hibernate.query.Query;
 import br.ifpr.paranavai.jogo.Conexao.HibernateUtil;
 import br.ifpr.paranavai.jogo.model.Enemies.Naves;
 
-public class enemieDaoImpl implements enemieDao{
+public class ShipDaoImpl implements ShipDao{
 
     private Session session;
 
-    public enemieDaoImpl() {
+    public ShipDaoImpl() {
         this.session = HibernateUtil.getSession();
     }
 
