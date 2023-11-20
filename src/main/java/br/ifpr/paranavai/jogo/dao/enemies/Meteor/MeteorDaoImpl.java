@@ -18,7 +18,7 @@ public class MeteorDaoImpl implements MeteorDao{
 
     @Override
     public List<Meteorito> searchAll() {
-        Query<Meteorito> query = this.session.createQuery("from tb_meteoritos",
+        Query<Meteorito> query = this.session.createQuery("from Meteorito",
                 Meteorito.class);
         List<Meteorito> meteoritos = query.getResultList();
         return meteoritos;

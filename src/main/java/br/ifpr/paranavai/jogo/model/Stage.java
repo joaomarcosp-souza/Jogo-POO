@@ -13,13 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import br.ifpr.paranavai.jogo.model.Character.Player;
-import br.ifpr.paranavai.jogo.model.Enemies.Asteroide;
-import br.ifpr.paranavai.jogo.model.Enemies.Naves;
-import br.ifpr.paranavai.jogo.Services.Enemies.AsteroidsService;
-import br.ifpr.paranavai.jogo.Services.Enemies.ShipService;
 import br.ifpr.paranavai.jogo.Services.Screens.ScreenServiceImpl;
 import br.ifpr.paranavai.jogo.Services.Stage.StageServiceImpl;
-import br.ifpr.paranavai.jogo.Services.player.PlayerService;
 
 public class Stage extends JPanel implements ActionListener {
 

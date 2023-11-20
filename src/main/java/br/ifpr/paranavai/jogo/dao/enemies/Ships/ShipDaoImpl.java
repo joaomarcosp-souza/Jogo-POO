@@ -16,7 +16,7 @@ public class ShipDaoImpl implements ShipDao{
 
     @Override
     public List<Naves> searchAll() {
-        Query<Naves> query = this.session.createQuery("from tb_naves",
+        Query<Naves> query = this.session.createQuery("from Naves",
                 Naves.class);
         List<Naves> naves = query.getResultList();
         return naves;

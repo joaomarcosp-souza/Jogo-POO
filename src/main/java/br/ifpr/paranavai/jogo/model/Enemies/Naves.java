@@ -12,11 +12,17 @@ import br.ifpr.paranavai.jogo.model.GraphicsElements;
 import java.awt.Font;
 
 @Entity
-@Table(name= "tb_naves")
+@Table(name = "tb_naves")
 public class Naves extends GraphicsElements {
 
     private static final String PATH_IMAGE = "/Sprites/Inimigos/tfighter.png";
 
+    // CONSTRUTOR PADRÃO
+    public Naves() {
+        super();
+    }
+
+    // CONSTRUTOR COM PARAMETRO
     public Naves(int posicaoEmX, int posicaoEmY, int INIMIGOSVIDA) {
         super.setPositionInX(posicaoEmX);
         super.setPositionInY(posicaoEmY);

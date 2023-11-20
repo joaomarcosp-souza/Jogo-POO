@@ -39,15 +39,15 @@ public class StageModel {
     // LISTA PARA INIMIGOS
     @Transient
     @JoinColumn(referencedColumnName = "id_elementos")
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id_elementos")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tb_elemento_grafico")
     private ArrayList<Naves> enemieShip;
     @Transient
-   @JoinColumn(referencedColumnName = "id_elementos")
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id_elementos")
+    @JoinColumn(referencedColumnName = "id_elementos")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tb_elemento_grafico")
     private ArrayList<Asteroide> asteroids;
     @Transient
     @JoinColumn(referencedColumnName = "id_elementos")
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id_elementos")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tb_elemento_grafico")
     private ArrayList<Meteorito> enemieMeteor;
 
     private ScreenSize screenSize;
