@@ -1,4 +1,4 @@
-package br.ifpr.paranavai.jogo.Services.Stage;
+package br.ifpr.paranavai.jogo.services.stage;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -7,11 +7,9 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import br.ifpr.paranavai.jogo.Services.Enemies.AsteroidsService;
-import br.ifpr.paranavai.jogo.Services.Enemies.MeteorService;
-import br.ifpr.paranavai.jogo.Services.Enemies.ShipService;
-import br.ifpr.paranavai.jogo.Services.player.PlayerService;
-import br.ifpr.paranavai.jogo.dao.enemies.Ships.ShipDaoImpl;
+import br.ifpr.paranavai.jogo.dao.enemies.meteor.MeteorDaoImpl;
+import br.ifpr.paranavai.jogo.dao.enemies.ships.ShipDaoImpl;
+import br.ifpr.paranavai.jogo.dao.player.PlayerDao;
 import br.ifpr.paranavai.jogo.dao.player.PlayerDaoImpl;
 import br.ifpr.paranavai.jogo.model.Stage;
 import br.ifpr.paranavai.jogo.model.StageModel;
@@ -21,6 +19,10 @@ import br.ifpr.paranavai.jogo.model.Character.Bullets.SpecialShoot;
 import br.ifpr.paranavai.jogo.model.Enemies.Asteroide;
 import br.ifpr.paranavai.jogo.model.Enemies.Meteorito;
 import br.ifpr.paranavai.jogo.model.Enemies.Naves;
+import br.ifpr.paranavai.jogo.services.enemies.AsteroidsService;
+import br.ifpr.paranavai.jogo.services.enemies.MeteorService;
+import br.ifpr.paranavai.jogo.services.enemies.ShipService;
+import br.ifpr.paranavai.jogo.services.player.PlayerService;
 
 import javax.swing.Timer;
 import java.awt.Rectangle;
@@ -34,6 +36,8 @@ public class StageServiceImpl implements StageService {
     private Timer timerMeteor;
     private Timer timerAsteroids;
     private Timer timerEnemyShip;
+
+    private boolean gamesaved = false;
 
     private int scorePositionX, scorePositionY;
 
@@ -123,6 +127,10 @@ public class StageServiceImpl implements StageService {
                 // VERIFICANDO SE A PONTUAÇÃO NÃO E MAIS VALIDA E REDEFININDO A VARIAVEL PARA
                 if (stageModel.getPlayer().getScore() % multiploNave != 0) {
                     vidaAumentada = false;
+                }
+
+                if (stageModel.getPlayer().isPlaying() == false) {
+                    vidaInimigos = 1;
                 }
                 stageModel.getEnemieShip().add(new Naves(posicaoEmX, posicaoEmY, vidaInimigos));
             }
@@ -408,19 +416,21 @@ public class StageServiceImpl implements StageService {
 
     @Override
     public void saveGame() {
+        // SALVA O JOGADOR
         PlayerService.insert(stageModel.getPlayer());
-
+        // SALVA AS NAVES INIMIGAS
         for (Naves inimigoNaves : stageModel.getEnemieShip()) {
             ShipService.insert(inimigoNaves);
         }
-
+        // SALVA OS ASTEROIDS
         for (Asteroide asteroide : stageModel.getAsteroids()) {
             AsteroidsService.insert(asteroide);
         }
-
+        // SALVA OS METEORITO(DEPOIS DE COMEÇAR O SPAWN DELES)
         for (Meteorito meteorito : stageModel.getEnemieMeteor()) {
             MeteorService.insert(meteorito);
         }
+        this.gamesaved = true;
     }
 
     // MÉTODO PROVISORIO
@@ -428,7 +438,6 @@ public class StageServiceImpl implements StageService {
     // SALVANDO APENAS UM ID NO BANCO
     @Override
     public void loadLastSaveElements() {
-
         PlayerDaoImpl playerDaoImpl = new PlayerDaoImpl();
         List<Player> players = playerDaoImpl.searchAll();
 
@@ -439,13 +448,43 @@ public class StageServiceImpl implements StageService {
         }
 
         ShipDaoImpl shipDaoImpl = new ShipDaoImpl();
+        List<Naves> enemiesShips = shipDaoImpl.searchAll();
+
+        for (Naves ship : enemiesShips) {
+            int enemyShipId = ship.getIdentificador();
+            Naves inimigoNaves = shipDaoImpl.searchForId(enemyShipId);
+            stageModel.getEnemieShip().add(inimigoNaves);
+            ship.load();
+        }
+
+        MeteorDaoImpl meteorDaoImpl = new MeteorDaoImpl();
+        List<Meteorito> enemieMeteoritos = meteorDaoImpl.searchAll();
+
+        for (Meteorito meteorito : enemieMeteoritos) {
+            int enemyMeteoritoId = meteorito.getIdentificador();
+            Meteorito metoritoSearch = meteorDaoImpl.searchForId(enemyMeteoritoId);
+            stageModel.getEnemieMeteor().add(metoritoSearch);
+            meteorito.load();
+        }
+    }
+
+    @Override
+    public void deleteInfoSaved() {
+        PlayerDaoImpl playerDaoImpl = new PlayerDaoImpl();
+        List<Player> players = playerDaoImpl.searchAll();
+
+        if (!players.isEmpty()) {
+            Player player = players.get(players.size() - 1);
+            playerDaoImpl.delete(player);
+        }
+
+        ShipDaoImpl shipDaoImpl = new ShipDaoImpl();
         List<Naves> shipEnemies = shipDaoImpl.searchAll();
 
         for (Naves enemieShip : shipEnemies) {
             int enemyShipId = enemieShip.getIdentificador();
             Naves inimigoNaves = shipDaoImpl.searchForId(enemyShipId);
-            stageModel.getEnemieShip().add(inimigoNaves);
-            enemieShip.load();
+            shipDaoImpl.delete(inimigoNaves);
         }
     }
 
@@ -474,4 +513,11 @@ public class StageServiceImpl implements StageService {
         this.timerEnemyShip = timerEnemyShip;
     }
 
+    public boolean isGamesaved() {
+        return gamesaved;
+    }
+
+    public void setGamesaved(boolean gamesaved) {
+        this.gamesaved = gamesaved;
+    }
 }

@@ -5,16 +5,16 @@ import java.util.ArrayList;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import br.ifpr.paranavai.jogo.Util.Sounds;
-import br.ifpr.paranavai.jogo.Util.ScreenSize;
+
 import br.ifpr.paranavai.jogo.model.Character.Player;
 import br.ifpr.paranavai.jogo.model.Enemies.Asteroide;
 import br.ifpr.paranavai.jogo.model.Enemies.Meteorito;
@@ -24,6 +24,8 @@ import br.ifpr.paranavai.jogo.model.Screens.FimDeJogo;
 import br.ifpr.paranavai.jogo.model.Screens.Historico;
 import br.ifpr.paranavai.jogo.model.Screens.MenuInicial;
 import br.ifpr.paranavai.jogo.model.Screens.Pausar;
+import br.ifpr.paranavai.jogo.util.ScreenSize;
+import br.ifpr.paranavai.jogo.util.Sounds;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -33,24 +35,22 @@ public class StageModel {
     @Column(name = "id_stageModel", unique = true)
     @JoinColumn(referencedColumnName = "id_elementos")
     private Integer id_stage;
-    @Transient
+
+    @ManyToOne
     @JoinColumn(name = "id_elementos")
     private Player player;
     // LISTA PARA INIMIGOS
-    @Transient
-    @JoinColumn(referencedColumnName = "id_elementos")
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tb_elemento_grafico")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tb_elemento_grafico", fetch = FetchType.LAZY)
     private ArrayList<Naves> enemieShip;
-    @Transient
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tb_elemento_grafico", fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "id_elementos")
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tb_elemento_grafico")
     private ArrayList<Asteroide> asteroids;
-    @Transient
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tb_elemento_grafico", fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "id_elementos")
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tb_elemento_grafico")
     private ArrayList<Meteorito> enemieMeteor;
 
-    private ScreenSize screenSize;
     private Sounds sounds;
 
     private Pausar screenPaused;
@@ -58,13 +58,11 @@ public class StageModel {
     private MenuInicial screenMenu;
     private Historico screenHistory;
     private Controles screenControls;
-    private ScreenSize screenResolution;
+    private ScreenSize screenSize;
 
     private boolean enemyKilled;
 
     public StageModel() {
-        screenSize = new ScreenSize();
-        screenSize.carregar();
         sounds = new Sounds();
 
         screenMenu = new MenuInicial();
@@ -79,11 +77,11 @@ public class StageModel {
         screenEndGame = new FimDeJogo();
         screenEndGame.load();
 
-        screenResolution = new ScreenSize();
-        screenResolution.carregar();
-
         screenPaused = new Pausar();
         screenPaused.load();
+
+        screenSize = new ScreenSize();
+        screenSize.carregar();
     }
 
     public Player getPlayer() {
@@ -116,14 +114,6 @@ public class StageModel {
 
     public void setEnemieMeteor(ArrayList<Meteorito> enemieMeteor) {
         this.enemieMeteor = enemieMeteor;
-    }
-
-    public ScreenSize getScreenSize() {
-        return screenSize;
-    }
-
-    public void setScreenSize(ScreenSize screenSize) {
-        this.screenSize = screenSize;
     }
 
     public Sounds getSounds() {
@@ -182,12 +172,12 @@ public class StageModel {
         this.screenControls = screenControls;
     }
 
-    public ScreenSize getScreenResolution() {
-        return screenResolution;
+    public ScreenSize getScreenSize() {
+        return screenSize;
     }
 
-    public void setScreenResolution(ScreenSize screenResolution) {
-        this.screenResolution = screenResolution;
+    public void setScreenSize(ScreenSize screenSize) {
+        this.screenSize = screenSize;
     }
 
 }

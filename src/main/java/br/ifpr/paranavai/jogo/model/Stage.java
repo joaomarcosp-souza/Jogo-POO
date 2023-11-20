@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import br.ifpr.paranavai.jogo.model.Character.Player;
-import br.ifpr.paranavai.jogo.Services.Screens.ScreenServiceImpl;
-import br.ifpr.paranavai.jogo.Services.Stage.StageServiceImpl;
+import br.ifpr.paranavai.jogo.services.Screens.ScreenServiceImpl;
+import br.ifpr.paranavai.jogo.services.stage.StageServiceImpl;
 
 public class Stage extends JPanel implements ActionListener {
 
@@ -38,7 +38,7 @@ public class Stage extends JPanel implements ActionListener {
         stageModel = new StageModel();
         stageServiceImpl = new StageServiceImpl(this, this.stageModel);
 
-        screenServiceImpl = new ScreenServiceImpl(this.stageModel);
+        screenServiceImpl = new ScreenServiceImpl(stageModel, stageServiceImpl);
 
         setFocusable(true);
         setDoubleBuffered(true);
@@ -170,7 +170,7 @@ public class Stage extends JPanel implements ActionListener {
             // INICIAR O SPAWN DOS INIMIGOS
             stageServiceImpl.getTimerEnemyShip().start();
             stageServiceImpl.getTimerAsteroids().start();
-            if (stageModel.getPlayer().getScore() >= 300) {
+            if (stageModel.getPlayer().getScore() >= 100) {
                 stageServiceImpl.getTimerMeteor().start();
             }
         }
@@ -216,18 +216,10 @@ public class Stage extends JPanel implements ActionListener {
                 if (tecla == KeyEvent.VK_SPACE && stageModel.getPlayer().isCanShoot()) {
                     stageModel.getSounds().loadSound("tiro.wav");
                 }
-
                 // SALVAMENTO RAPIDO(TESTE)
                 if (tecla == KeyEvent.VK_F5) {
                     stageServiceImpl.saveGame();
                 }
-
-                // CARREGA O SAVE(TESTE)
-                if (tecla == KeyEvent.VK_F8) {
-                    stageServiceImpl.loadLastSaveElements();
-                    repaint();
-                }
-
                 screenServiceImpl.visibilityScreenPause(e);
             } else if (stageModel.getScreenEndGame().isVisibility() == true) {
                 screenServiceImpl.visibilityControlEndGame(e);

@@ -1,9 +1,9 @@
-package br.ifpr.paranavai.jogo.Services.Enemies;
+package br.ifpr.paranavai.jogo.services.enemies;
 
 import java.util.List;
 
-import br.ifpr.paranavai.jogo.dao.enemies.Ships.ShipDao;
-import br.ifpr.paranavai.jogo.dao.enemies.Ships.ShipDaoImpl;
+import br.ifpr.paranavai.jogo.dao.enemies.ships.ShipDao;
+import br.ifpr.paranavai.jogo.dao.enemies.ships.ShipDaoImpl;
 import br.ifpr.paranavai.jogo.model.Enemies.Naves;
 
 public class ShipService {

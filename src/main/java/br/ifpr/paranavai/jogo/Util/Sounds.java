@@ -1,4 +1,4 @@
-package br.ifpr.paranavai.jogo.Util;
+package br.ifpr.paranavai.jogo.util;
 
 import java.net.URL;
 import java.util.HashMap;

@@ -1,17 +1,18 @@
-package br.ifpr.paranavai.jogo.Services.Screens;
+package br.ifpr.paranavai.jogo.services.Screens;
 
 import java.awt.event.KeyEvent;
 
-import br.ifpr.paranavai.jogo.Services.Stage.StageServiceImpl;
 import br.ifpr.paranavai.jogo.model.StageModel;
+import br.ifpr.paranavai.jogo.services.stage.StageServiceImpl;
 
 public class ScreenServiceImpl implements ScreenService {
 
     private StageModel stageModel;
     private StageServiceImpl serviceImpl;
 
-    public ScreenServiceImpl(StageModel stageModel) {
+    public ScreenServiceImpl(StageModel stageModel, StageServiceImpl serviceImpl) {
         this.stageModel = stageModel;
+        this.serviceImpl = serviceImpl;
     }
 
     @Override
@@ -22,13 +23,17 @@ public class ScreenServiceImpl implements ScreenService {
                 stageModel.getPlayer().setPlaying(true);
                 stageModel.getScreenMenu().setVisibility(false);
             } else if (stageModel.getScreenMenu().getCursor() == 1) {
-                serviceImpl.loadLastSaveElements();
+                if (serviceImpl.isGamesaved() == true) {
+                    serviceImpl.loadLastSaveElements();
+                    stageModel.getPlayer().setPlaying(true);
+                    stageModel.getScreenMenu().setVisibility(false);
+                }
             } else if (stageModel.getScreenMenu().getCursor() == 2) {
                 stageModel.getScreenControls().setVisibility(true);
                 stageModel.getScreenMenu().setVisibility(false);
             } else if (stageModel.getScreenMenu().getCursor() == 3) {
-                stageModel.getScreenMenu().setVisibility(false);
-                stageModel.getScreenHistory().setVisibility(true);
+                // stageModel.getScreenMenu().setVisibility(false);
+                // stageModel.getScreenHistory().setVisibility(true);
             }
         }
     }

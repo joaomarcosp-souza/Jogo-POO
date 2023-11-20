@@ -1,4 +1,4 @@
-package br.ifpr.paranavai.jogo.Services.Stage;
+package br.ifpr.paranavai.jogo.services.stage;
 
 import java.awt.Graphics;
 
@@ -17,5 +17,5 @@ public interface StageService {
     public abstract void EnemieMeteorCollisions();
     public abstract void saveGame();
     public abstract void loadLastSaveElements();
-
+    public abstract void deleteInfoSaved();
 }

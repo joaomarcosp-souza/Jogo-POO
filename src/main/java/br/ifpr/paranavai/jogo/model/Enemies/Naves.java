@@ -27,7 +27,7 @@ public class Naves extends GraphicsElements {
         super.setPositionInX(posicaoEmX);
         super.setPositionInY(posicaoEmY);
         super.setLife(INIMIGOSVIDA);
-        super.setInitialSpeed(4);
+        super.setInitialSpeed(5);
         super.setSpeed(super.getInitialSpeed());
         super.setVisibility(true);
     }
@@ -49,7 +49,7 @@ public class Naves extends GraphicsElements {
 
         // VERIFICANDO SE A NAVE INIMIGA ESTA NASCENDO DENTRO DOS LIMETES DA TELA
         if (super.getPositionInY() < 0) {
-            super.setPositionInY(0);
+            super.setPositionInY(150);
         } else if (super.getPositionInY() > super.getScreenResolution().HEIGHT_SCREEN - super.getHeightImage()) {
             super.setPositionInY(super.getScreenResolution().HEIGHT_SCREEN - super.getHeightImage());
         }

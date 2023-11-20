@@ -1,4 +1,4 @@
-package br.ifpr.paranavai.jogo.Services.Screens;
+package br.ifpr.paranavai.jogo.services.Screens;
 
 import java.awt.event.KeyEvent;
 

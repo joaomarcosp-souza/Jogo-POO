@@ -12,6 +12,10 @@ public class Meteorito extends GraphicsElements {
 
     private static final String PATH_IMAGE = "src/main/resources/Sprites/Inimigos/meteorito.png";
 
+    public Meteorito() {
+        super();
+    }
+
     public Meteorito(int posicaoEmX, int posicaoEmY) {
         super.setPositionInX(posicaoEmX);
         super.setPositionInY(posicaoEmY);
