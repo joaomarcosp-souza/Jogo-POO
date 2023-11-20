@@ -24,6 +24,7 @@ import java.awt.Rectangle;
 @Entity
 @Table(name = "tb_Jogador")
 public class Player extends GraphicsElements {
+    
     @Column(name= "pontos")
     private int score;
     @Column(name = "pontos_inimigos_mortos")

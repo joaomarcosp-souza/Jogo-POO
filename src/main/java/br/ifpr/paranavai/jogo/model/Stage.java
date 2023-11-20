@@ -8,19 +8,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import br.ifpr.paranavai.jogo.model.Character.Player;
+import br.ifpr.paranavai.jogo.model.Enemies.Asteroide;
+import br.ifpr.paranavai.jogo.model.Enemies.Naves;
+import br.ifpr.paranavai.jogo.Services.Enemies.AsteroidsService;
+import br.ifpr.paranavai.jogo.Services.Enemies.ShipService;
 import br.ifpr.paranavai.jogo.Services.Screens.ScreenServiceImpl;
 import br.ifpr.paranavai.jogo.Services.Stage.StageServiceImpl;
 import br.ifpr.paranavai.jogo.Services.player.PlayerService;
 
-@Entity
-@PrimaryKeyJoinColumn(name = "id_stageModel")
 public class Stage extends JPanel implements ActionListener {
 
     private StageModel stageModel;
@@ -224,11 +224,12 @@ public class Stage extends JPanel implements ActionListener {
 
                 // SALVAMENTO RAPIDO(TESTE)
                 if (tecla == KeyEvent.VK_F5) {
-                    PlayerService.insert(stageModel.getPlayer());
+                    stageServiceImpl.saveGame();
                 }
+
                 // CARREGA O SAVE(TESTE)
                 if (tecla == KeyEvent.VK_F8) {
-                    stageServiceImpl.searcLastPLayer();
+                    stageServiceImpl.loadLastSaveElements();
                     repaint();
                 }
 

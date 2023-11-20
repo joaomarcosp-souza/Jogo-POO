@@ -16,11 +16,12 @@ public class ShipDaoImpl implements ShipDao{
 
     @Override
     public List<Naves> searchAll() {
-        Query<Naves> query = this.session.createQuery("from Ships",
+        Query<Naves> query = this.session.createQuery("from tb_naves",
                 Naves.class);
         List<Naves> naves = query.getResultList();
         return naves;
     }
+
 
     @Override
     public Naves searchForId(Integer id) {
@@ -40,10 +41,10 @@ public class ShipDaoImpl implements ShipDao{
     }
 
     @Override
-    public void delete(Naves ships) {
+    public void delete(Naves naves) {
         try {
             session.beginTransaction();
-            session.remove(ships);
+            session.remove(naves);
             session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,10 +52,10 @@ public class ShipDaoImpl implements ShipDao{
     }
 
     @Override
-    public void insert(Naves ships) {
+    public void insert(Naves naves) {
         try {
             session.beginTransaction();
-            session.persist(ships);
+            session.persist(naves);
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();

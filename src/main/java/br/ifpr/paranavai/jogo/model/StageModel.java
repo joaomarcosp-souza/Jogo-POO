@@ -31,22 +31,23 @@ public class StageModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_stageModel", unique = true)
+    @JoinColumn(referencedColumnName = "id_elementos")
     private Integer id_stage;
     @Transient
-    @JoinColumn(name = "id_stageModel")
+    @JoinColumn(name = "id_elementos")
     private Player player;
     // LISTA PARA INIMIGOS
     @Transient
-    @JoinColumn(name = "id_stageModel")
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personagem")
+    @JoinColumn(referencedColumnName = "id_elementos")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id_elementos")
     private ArrayList<Naves> enemieShip;
     @Transient
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personagem")
-    @JoinColumn(name = "id_stageModel")
+   @JoinColumn(referencedColumnName = "id_elementos")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id_elementos")
     private ArrayList<Asteroide> asteroids;
     @Transient
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personagem")
-    @JoinColumn(name = "id_stageModel")
+    @JoinColumn(referencedColumnName = "id_elementos")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id_elementos")
     private ArrayList<Meteorito> enemieMeteor;
 
     private ScreenSize screenSize;

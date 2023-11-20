@@ -18,7 +18,7 @@ public class AsteroidDaoImpl implements AsteroidDao {
 
     @Override
     public List<Asteroide> searchAll() {
-        Query<Asteroide> query = this.session.createQuery("from Asteroids",
+        Query<Asteroide> query = this.session.createQuery("from tb_asteroide",
                 Asteroide.class);
         List<Asteroide> meteoritos = query.getResultList();
         return meteoritos;

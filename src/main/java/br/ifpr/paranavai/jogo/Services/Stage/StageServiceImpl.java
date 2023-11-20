@@ -7,7 +7,11 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import br.ifpr.paranavai.jogo.Services.Enemies.AsteroidsService;
+import br.ifpr.paranavai.jogo.Services.Enemies.MeteorService;
+import br.ifpr.paranavai.jogo.Services.Enemies.ShipService;
 import br.ifpr.paranavai.jogo.Services.player.PlayerService;
+import br.ifpr.paranavai.jogo.dao.enemies.Ships.ShipDaoImpl;
 import br.ifpr.paranavai.jogo.dao.player.PlayerDaoImpl;
 import br.ifpr.paranavai.jogo.model.Stage;
 import br.ifpr.paranavai.jogo.model.StageModel;
@@ -17,11 +21,13 @@ import br.ifpr.paranavai.jogo.model.Character.Bullets.SpecialShoot;
 import br.ifpr.paranavai.jogo.model.Enemies.Asteroide;
 import br.ifpr.paranavai.jogo.model.Enemies.Meteorito;
 import br.ifpr.paranavai.jogo.model.Enemies.Naves;
+
 import javax.swing.Timer;
 import java.awt.Rectangle;
 import java.awt.Color;
 
 public class StageServiceImpl implements StageService {
+
     private Stage stage;
     private StageModel stageModel;
 
@@ -400,32 +406,47 @@ public class StageServiceImpl implements StageService {
         }
     }
 
+    @Override
+    public void saveGame() {
+        PlayerService.insert(stageModel.getPlayer());
+
+        for (Naves inimigoNaves : stageModel.getEnemieShip()) {
+            ShipService.insert(inimigoNaves);
+        }
+
+        for (Asteroide asteroide : stageModel.getAsteroids()) {
+            AsteroidsService.insert(asteroide);
+        }
+
+        for (Meteorito meteorito : stageModel.getEnemieMeteor()) {
+            MeteorService.insert(meteorito);
+        }
+    }
+
     // MÉTODO PROVISORIO
     // ERRO AO TENTAR SALVAR MAIS DE UMA VEZ NA PARTIDA
     // SALVANDO APENAS UM ID NO BANCO
-
     @Override
-    public void searcLastPLayer() {
-        // Player player = playerDaoImpl.searchForId(1);
+    public void loadLastSaveElements() {
+
         PlayerDaoImpl playerDaoImpl = new PlayerDaoImpl();
         List<Player> players = playerDaoImpl.searchAll();
 
         if (!players.isEmpty()) {
             Player player = players.get(players.size() - 1);
-
             stageModel.setPlayer(player);
             stageModel.getPlayer().load();
         }
 
-        // if (player != null) {
-        // stageModel.setPlayer(player);
-        // stageModel.getPlayer().load();
-        // repaint();
-        // } else {
-        // stageModel.setPlayer(new Player());
-        // stageModel.getPlayer().load();
-        // repaint();
-        // }
+        ShipDaoImpl shipDaoImpl = new ShipDaoImpl();
+        List<Naves> shipEnemies = shipDaoImpl.searchAll();
+
+        for (Naves enemieShip : shipEnemies) {
+            int enemyShipId = enemieShip.getIdentificador();
+            Naves inimigoNaves = shipDaoImpl.searchForId(enemyShipId);
+            stageModel.getEnemieShip().add(inimigoNaves);
+            enemieShip.load();
+        }
     }
 
     // GETTERS E SETTRS
