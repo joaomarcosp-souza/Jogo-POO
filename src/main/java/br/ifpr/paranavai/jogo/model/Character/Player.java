@@ -34,10 +34,10 @@ public class Player extends GraphicsElements {
     @Column(name= "ultimo_tiro")
     private long lastBullet;
     @Transient
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personagem")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "player")
     private ArrayList<Shoot> bullets;
     @Transient
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personagem")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "player")
     private ArrayList<SpecialShoot> specialBullet;
     // MOVITEMENTAÇÃO
     private int displacementX;

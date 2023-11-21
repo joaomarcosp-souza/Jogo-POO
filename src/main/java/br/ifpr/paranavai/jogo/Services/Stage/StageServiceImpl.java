@@ -11,9 +11,12 @@ import br.ifpr.paranavai.jogo.services.enemies.AsteroidsService;
 import br.ifpr.paranavai.jogo.services.enemies.MeteorService;
 import br.ifpr.paranavai.jogo.services.enemies.ShipService;
 import br.ifpr.paranavai.jogo.services.player.PlayerService;
+import br.ifpr.paranavai.jogo.services.player.Bullets.ShootService;
+import br.ifpr.paranavai.jogo.services.player.Bullets.SpecialService;
 import br.ifpr.paranavai.jogo.dao.enemies.meteor.MeteorDaoImpl;
 import br.ifpr.paranavai.jogo.dao.enemies.ships.ShipDaoImpl;
 import br.ifpr.paranavai.jogo.dao.player.PlayerDaoImpl;
+import br.ifpr.paranavai.jogo.dao.player.shoot.ShootDaoImpl;
 import br.ifpr.paranavai.jogo.model.Stage;
 import br.ifpr.paranavai.jogo.model.StageModel;
 import br.ifpr.paranavai.jogo.model.Character.Player;
@@ -23,6 +26,8 @@ import br.ifpr.paranavai.jogo.model.Enemies.Asteroide;
 import br.ifpr.paranavai.jogo.model.Enemies.Meteorito;
 import br.ifpr.paranavai.jogo.model.Enemies.Naves;
 
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.awt.Rectangle;
 import java.awt.Color;
@@ -429,6 +434,17 @@ public class StageServiceImpl implements StageService {
         for (Meteorito meteorito : stageModel.getEnemieMeteor()) {
             MeteorService.insert(meteorito);
         }
+
+        // SALVA OS TIROS NORMAIS
+        for (Shoot shoot : stageModel.getPlayer().getBullets()) {
+            ShootService.insert(shoot);
+        }
+
+        // SALVA OS TIROS ESPECIAIS
+        for (SpecialShoot special : stageModel.getPlayer().getSpecialBullet()) {
+            SpecialService.insert(special);
+        }
+
         this.gamesaved = true;
     }
 
@@ -436,39 +452,48 @@ public class StageServiceImpl implements StageService {
     // ERRO AO TENTAR SALVAR MAIS DE UMA VEZ NA PARTIDA
     // SALVANDO APENAS UM ID NO BANCO
     @Override
-    public void loadLastSaveElements() {
-        PlayerDaoImpl playerDaoImpl = new PlayerDaoImpl();
-        List<Player> players = playerDaoImpl.searchAll();
+    public void loadGame() {
+        PlayerDaoImpl daoPlayer = new PlayerDaoImpl();
+        List<Player> loadPlayer = daoPlayer.searchAll();
 
-        if (!players.isEmpty()) {
-            Player player = players.get(players.size() - 1);
-            stageModel.setPlayer(player);
+        if (loadPlayer.isEmpty()) {
+            System.out.println("Nenhum save");
+        } else {
+            Player playerID = loadPlayer.get(loadPlayer.size() - 1);
+            stageModel.setPlayer(playerID);
             stageModel.getPlayer().load();
+
+            ShipDaoImpl daoShip = new ShipDaoImpl();
+            List<Naves> loadEnemieShip = new ShipDaoImpl().searchAll();
+            for (Naves ship : loadEnemieShip) {
+                int shipID = ship.getIdentificador();
+                Naves inimigoNaves = daoShip.searchForId(shipID);
+                stageModel.getEnemieShip().add(inimigoNaves);
+                ship.load();
+            }
         }
 
-        ShipDaoImpl shipDaoImpl = new ShipDaoImpl();
-        List<Naves> enemiesShips = shipDaoImpl.searchAll();
-
-        for (Naves ship : enemiesShips) {
-            int enemyShipId = ship.getIdentificador();
-            Naves inimigoNaves = shipDaoImpl.searchForId(enemyShipId);
-            stageModel.getEnemieShip().add(inimigoNaves);
-            ship.load();
-        }
-
-        MeteorDaoImpl meteorDaoImpl = new MeteorDaoImpl();
-        List<Meteorito> enemieMeteoritos = meteorDaoImpl.searchAll();
-
-        for (Meteorito meteorito : enemieMeteoritos) {
-            int enemyMeteoritoId = meteorito.getIdentificador();
-            Meteorito metoritoSearch = meteorDaoImpl.searchForId(enemyMeteoritoId);
+        MeteorDaoImpl daoMeteor = new MeteorDaoImpl();
+        List<Meteorito> loadMeteor = daoMeteor.searchAll();
+        for (Meteorito meteorito : loadMeteor) {
+            int meteorID = meteorito.getIdentificador();
+            Meteorito metoritoSearch = daoMeteor.searchForId(meteorID);
             stageModel.getEnemieMeteor().add(metoritoSearch);
             meteorito.load();
         }
+
+        // ShootDaoImpl daoShoot = new ShootDaoImpl();
+        // List<Shoot> loadShoot = daoShoot.searchAll();
+        // for (Shoot shoot : loadShoot) {
+        //     int shootid = shoot.getIdentificador();
+        //     Shoot shootSearch = daoShoot.searchForId(shootid);
+        //     stageModel.getPlayer().getBullets().add(shootSearch);
+        //     shoot.load();
+        // }
     }
 
     @Override
-    public void deleteInfoSaved() {
+    public void deleteGame() {
         PlayerDaoImpl playerDaoImpl = new PlayerDaoImpl();
         List<Player> players = playerDaoImpl.searchAll();
 

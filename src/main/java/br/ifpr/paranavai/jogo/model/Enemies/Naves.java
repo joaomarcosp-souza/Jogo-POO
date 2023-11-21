@@ -4,16 +4,23 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.swing.ImageIcon;
 
 import br.ifpr.paranavai.jogo.model.GraphicsElements;
+import br.ifpr.paranavai.jogo.model.Character.Player;
 
 import java.awt.Font;
 
 @Entity
 @Table(name = "tb_naves")
 public class Naves extends GraphicsElements {
+
+    @ManyToOne
+    @JoinColumn(name = "player_id")
+    private Player player;
 
     private static final String PATH_IMAGE = "/Sprites/Inimigos/tfighter.png";
 

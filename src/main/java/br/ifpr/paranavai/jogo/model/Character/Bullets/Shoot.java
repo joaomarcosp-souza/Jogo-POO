@@ -13,6 +13,9 @@ public class Shoot extends GraphicsElements {
     private static final int SPEED_BULLET = 8;
     private static final String IMAGE_PATH_BULLET = "/Sprites/Tiros/tiroNormal.gif";
 
+    public Shoot(){
+    }
+
     public Shoot(int posicaoEmX, int posicaoEmY) {
         super.setPositionInX(posicaoEmX);
         super.setPositionInY(posicaoEmY);

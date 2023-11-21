@@ -1,14 +1,21 @@
 package br.ifpr.paranavai.jogo.model.Enemies;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.swing.ImageIcon;
 
 import br.ifpr.paranavai.jogo.model.GraphicsElements;
+import br.ifpr.paranavai.jogo.model.Character.Player;
 
 @Entity
 @Table(name = "tb_meteoritos")
 public class Meteorito extends GraphicsElements {
+
+    @ManyToOne
+    @JoinColumn(name = "player_id")
+    private Player player;
 
     private static final String PATH_IMAGE = "src/main/resources/Sprites/Inimigos/meteorito.png";
 

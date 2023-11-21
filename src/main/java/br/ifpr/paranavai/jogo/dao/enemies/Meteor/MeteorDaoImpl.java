@@ -63,4 +63,11 @@ public class MeteorDaoImpl implements MeteorDao{
             e.printStackTrace();
         }
     }
+
+    public List<Meteorito> searchByPlayerId(Integer playerId) {
+        Query<Meteorito> query = this.session.createQuery("from Meteorito where player.id = :playerId",
+                Meteorito.class);
+        query.setParameter("playerId", playerId);
+        return query.getResultList();
+    }
 }

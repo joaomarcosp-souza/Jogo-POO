@@ -41,7 +41,6 @@ public class Stage extends JPanel implements ActionListener {
 
         screenService = new ScreenServiceImpl(stageModel, stageService);
 
-
         setFocusable(true);
         setDoubleBuffered(true);
 

@@ -40,19 +40,16 @@ public class StageModel {
     @JoinColumn(name = "id_elementos")
     private Player player;
     // LISTA PARA INIMIGOS
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tb_elemento_grafico", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "player", fetch = FetchType.LAZY)
     private ArrayList<Naves> enemieShip;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tb_elemento_grafico", fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "id_elementos")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "player", fetch = FetchType.LAZY)
     private ArrayList<Asteroide> asteroids;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tb_elemento_grafico", fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "id_elementos")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "player", fetch = FetchType.LAZY)
     private ArrayList<Meteorito> enemieMeteor;
 
     private Sounds sounds;
-
     private Pausar screenPaused;
     private FimDeJogo screenEndGame;
     private MenuInicial screenMenu;
@@ -67,19 +64,14 @@ public class StageModel {
 
         screenMenu = new MenuInicial();
         screenMenu.load();
-
         screenHistory = new Historico();
         screenHistory.load();
-
         screenControls = new Controles();
         screenControls.load();
-
         screenEndGame = new FimDeJogo();
         screenEndGame.load();
-
         screenPaused = new Pausar();
         screenPaused.load();
-
         screenSize = new ScreenSize();
         screenSize.carregar();
     }

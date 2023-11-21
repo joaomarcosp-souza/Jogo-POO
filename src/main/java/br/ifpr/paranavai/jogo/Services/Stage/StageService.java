@@ -16,6 +16,6 @@ public interface StageService {
     public abstract void EnemieShipCollisions();
     public abstract void EnemieMeteorCollisions();
     public abstract void saveGame();
-    public abstract void loadLastSaveElements();
-    public abstract void deleteInfoSaved();
+    public abstract void loadGame();
+    public abstract void deleteGame();
 }

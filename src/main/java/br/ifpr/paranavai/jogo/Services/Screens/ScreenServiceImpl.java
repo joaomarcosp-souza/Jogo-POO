@@ -24,7 +24,7 @@ public class ScreenServiceImpl implements ScreenService {
                 stageModel.getScreenMenu().setVisibility(false);
             } else if (stageModel.getScreenMenu().getCursor() == 1) {
                 if (serviceImpl.isGamesaved() == true) {
-                    serviceImpl.loadLastSaveElements();
+                    serviceImpl.loadGame();
                     stageModel.getPlayer().setPlaying(true);
                     stageModel.getScreenMenu().setVisibility(false);
                 }

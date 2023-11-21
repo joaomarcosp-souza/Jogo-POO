@@ -63,4 +63,10 @@ public class ShipDaoImpl implements ShipDao{
             e.printStackTrace();
         }
     }
+
+    public List<Naves> searchByPlayerId(Integer playerId) {
+        Query<Naves> query = this.session.createQuery("FROM Naves WHERE player.id = :playerId", Naves.class);
+        query.setParameter("playerId", playerId);
+        return query.getResultList();
+    }
 }

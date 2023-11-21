@@ -7,7 +7,6 @@ import java.util.Random;
 import java.awt.Image;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -20,7 +19,6 @@ import br.ifpr.paranavai.jogo.model.GraphicsElements;
 @Table(name= "tb_asteroide")
 public class Asteroide extends GraphicsElements {
     @Transient
-    @Column(name = "seleciona_imagem")
     private Image selectImage;
     @Transient
     @OneToMany(mappedBy = "asteroide", cascade = CascadeType.ALL)

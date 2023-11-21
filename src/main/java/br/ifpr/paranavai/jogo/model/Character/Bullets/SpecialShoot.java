@@ -10,6 +10,9 @@ import br.ifpr.paranavai.jogo.model.GraphicsElements;
 @Table(name = "tb_superTiro")
 public class SpecialShoot extends GraphicsElements {
 
+    public SpecialShoot(){
+    }
+
     @Column(name = "angulo")
     private int angle;
     private static final int SPEED_SUPER = 8;
