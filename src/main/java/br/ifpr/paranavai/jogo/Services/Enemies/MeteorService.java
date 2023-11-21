@@ -1,9 +1,9 @@
-package br.ifpr.paranavai.jogo.services.enemies;
+package br.ifpr.paranavai.jogo.Services.Enemies;
 
 import java.util.List;
 
-import br.ifpr.paranavai.jogo.dao.enemies.meteor.MeteorDao;
-import br.ifpr.paranavai.jogo.dao.enemies.meteor.MeteorDaoImpl;
+import br.ifpr.paranavai.jogo.dao.enemies.Meteor.MeteorDao;
+import br.ifpr.paranavai.jogo.dao.enemies.Meteor.MeteorDaoImpl;
 import br.ifpr.paranavai.jogo.model.Enemies.Meteorito;
 
 public class MeteorService {

@@ -1,9 +1,9 @@
-package br.ifpr.paranavai.jogo.services.enemies;
+package br.ifpr.paranavai.jogo.Services.Enemies;
 
 import java.util.List;
 
-import br.ifpr.paranavai.jogo.dao.enemies.asteroids.AsteroidDao;
-import br.ifpr.paranavai.jogo.dao.enemies.asteroids.AsteroidDaoImpl;
+import br.ifpr.paranavai.jogo.dao.enemies.Asteroids.AsteroidDao;
+import br.ifpr.paranavai.jogo.dao.enemies.Asteroids.AsteroidDaoImpl;
 import br.ifpr.paranavai.jogo.model.Enemies.Asteroide;
 
 public class AsteroidsService {

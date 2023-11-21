@@ -1,11 +1,11 @@
-package br.ifpr.paranavai.jogo.dao.enemies.asteroids;
+package br.ifpr.paranavai.jogo.dao.enemies.Asteroids;
 
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import br.ifpr.paranavai.jogo.conexao.HibernateUtil;
+import br.ifpr.paranavai.jogo.Conexao.HibernateUtil;
 import br.ifpr.paranavai.jogo.model.Enemies.Asteroide;
 
 public class AsteroidDaoImpl implements AsteroidDao {

@@ -1,4 +1,4 @@
-package br.ifpr.paranavai.jogo.dao.enemies.meteor;
+package br.ifpr.paranavai.jogo.dao.enemies.Meteor;
 
 import java.util.List;
 

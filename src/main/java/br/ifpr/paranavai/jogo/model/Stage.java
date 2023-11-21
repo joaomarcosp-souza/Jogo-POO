@@ -12,16 +12,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import br.ifpr.paranavai.jogo.Services.Screens.ScreenServiceImpl;
+import br.ifpr.paranavai.jogo.Services.Stage.StageServiceImpl;
 import br.ifpr.paranavai.jogo.model.Character.Player;
-import br.ifpr.paranavai.jogo.services.Screens.ScreenServiceImpl;
-import br.ifpr.paranavai.jogo.services.stage.StageServiceImpl;
+
 
 public class Stage extends JPanel implements ActionListener {
 
     private StageModel stageModel;
 
-    private StageServiceImpl stageServiceImpl;
-    private ScreenServiceImpl screenServiceImpl;
+    private StageServiceImpl stageService;
+    private ScreenServiceImpl screenService;
 
     private Image background;
     private Image backgroundTwo;
@@ -36,9 +37,10 @@ public class Stage extends JPanel implements ActionListener {
     public Stage() {
 
         stageModel = new StageModel();
-        stageServiceImpl = new StageServiceImpl(this, this.stageModel);
+        stageService = new StageServiceImpl(this, this.stageModel);
 
-        screenServiceImpl = new ScreenServiceImpl(stageModel, stageServiceImpl);
+        screenService = new ScreenServiceImpl(stageModel, stageService);
+
 
         setFocusable(true);
         setDoubleBuffered(true);
@@ -74,9 +76,9 @@ public class Stage extends JPanel implements ActionListener {
         timerGlobal = new Timer(5, this);
         timerGlobal.start();
 
-        stageServiceImpl.spawnAsteroids();
-        stageServiceImpl.spawnEnemieMeteor();
-        stageServiceImpl.spawnEnemieShip();
+        stageService.spawnAsteroids();
+        stageService.spawnEnemieMeteor();
+        stageService.spawnEnemieShip();
     }
 
     public void paintComponent(Graphics g) {
@@ -97,9 +99,9 @@ public class Stage extends JPanel implements ActionListener {
                 grapichs.drawImage(this.backgroundTwo, 0, 0, null);
             }
 
-            stageServiceImpl.drawnBullets(g);
-            stageServiceImpl.dranwEnemies(g);
-            stageServiceImpl.dranwEnemiesScore(g);
+            stageService.drawnBullets(g);
+            stageService.dranwEnemies(g);
+            stageService.dranwEnemiesScore(g);
 
             stageModel.getPlayer().pontuacao(grapichs);
             stageModel.getPlayer().desenhaVida(grapichs);
@@ -123,13 +125,13 @@ public class Stage extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (!stageModel.getScreenPaused().isPaused()) {
             repaint();
-            stageServiceImpl.controlEnemies();
-            stageServiceImpl.controlBullets();
-            stageServiceImpl.speedEnemieControl();
+            stageService.controlEnemies();
+            stageService.controlBullets();
+            stageService.speedEnemieControl();
 
-            stageServiceImpl.screenCollisions();
-            stageServiceImpl.EnemieMeteorCollisions();
-            stageServiceImpl.EnemieShipCollisions();
+            stageService.screenCollisions();
+            stageService.EnemieMeteorCollisions();
+            stageService.EnemieShipCollisions();
 
             resetStage();
             playerControl();
@@ -137,9 +139,9 @@ public class Stage extends JPanel implements ActionListener {
         }
         // PARA O SPAWN DOS INIMIGOS
         if (stageModel.getScreenPaused().isPaused()) {
-            stageServiceImpl.getTimerEnemyShip().stop();
-            stageServiceImpl.getTimerAsteroids().stop();
-            stageServiceImpl.getTimerMeteor().stop();
+            stageService.getTimerEnemyShip().stop();
+            stageService.getTimerAsteroids().stop();
+            stageService.getTimerMeteor().stop();
             stageModel.getScreenPaused().menu(getGraphics());
         }
     }
@@ -150,9 +152,9 @@ public class Stage extends JPanel implements ActionListener {
             timerFlashing.stop();
             stageModel.getPlayer().getBullets().clear();
             // PARA O SPAWN DE INIMIGOS
-            stageServiceImpl.getTimerEnemyShip().stop();
-            stageServiceImpl.getTimerAsteroids().stop();
-            stageServiceImpl.getTimerMeteor().stop();
+            stageService.getTimerEnemyShip().stop();
+            stageService.getTimerAsteroids().stop();
+            stageService.getTimerMeteor().stop();
             // LIMPA A LISTA DE INMIGOS
             stageModel.getEnemieShip().clear();
             stageModel.getEnemieMeteor().clear();
@@ -168,10 +170,10 @@ public class Stage extends JPanel implements ActionListener {
             stageModel.getPlayer().setLife(stageModel.getPlayer().getInitialLife());
         } else {
             // INICIAR O SPAWN DOS INIMIGOS
-            stageServiceImpl.getTimerEnemyShip().start();
-            stageServiceImpl.getTimerAsteroids().start();
+            stageService.getTimerEnemyShip().start();
+            stageService.getTimerAsteroids().start();
             if (stageModel.getPlayer().getScore() >= 100) {
-                stageServiceImpl.getTimerMeteor().start();
+                stageService.getTimerMeteor().start();
             }
         }
     }
@@ -202,13 +204,13 @@ public class Stage extends JPanel implements ActionListener {
         @Override
         public void keyPressed(KeyEvent e) {
             if (stageModel.getScreenMenu().isVisibility() == true) {
-                screenServiceImpl.visibilityControlMenu(e);
+                screenService.visibilityControlMenu(e);
                 stageModel.getScreenMenu().controleMenu(e);
                 stageModel.getSounds().loadSound("botao.wav");
             } else if (stageModel.getScreenControls().isVisibility() == true) {
-                screenServiceImpl.visibilityControlScreens(e);
+                screenService.visibilityControlScreens(e);
             } else if (stageModel.getScreenHistory().isVisibility() == true) {
-                screenServiceImpl.visibilityControlScreens(e);
+                screenService.visibilityControlScreens(e);
             } else if (stageModel.getPlayer().isPlaying() == true) {
                 int tecla = e.getKeyCode();
                 stageModel.getPlayer().mover(e);
@@ -218,11 +220,11 @@ public class Stage extends JPanel implements ActionListener {
                 }
                 // SALVAMENTO RAPIDO(TESTE)
                 if (tecla == KeyEvent.VK_F5) {
-                    stageServiceImpl.saveGame();
+                    stageService.saveGame();
                 }
-                screenServiceImpl.visibilityScreenPause(e);
+                screenService.visibilityScreenPause(e);
             } else if (stageModel.getScreenEndGame().isVisibility() == true) {
-                screenServiceImpl.visibilityControlEndGame(e);
+                screenService.visibilityControlEndGame(e);
                 stageModel.getScreenEndGame().controleMenu(e);
                 stageModel.getSounds().loadSound("botao.wav");
             }

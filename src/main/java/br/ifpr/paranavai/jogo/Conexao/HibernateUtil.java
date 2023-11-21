@@ -1,4 +1,4 @@
-package br.ifpr.paranavai.jogo.conexao;
+package br.ifpr.paranavai.jogo.Conexao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

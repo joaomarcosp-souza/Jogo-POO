@@ -1,9 +1,9 @@
-package br.ifpr.paranavai.jogo.services.Screens;
+package br.ifpr.paranavai.jogo.Services.Screens;
 
 import java.awt.event.KeyEvent;
 
+import br.ifpr.paranavai.jogo.Services.Stage.StageServiceImpl;
 import br.ifpr.paranavai.jogo.model.StageModel;
-import br.ifpr.paranavai.jogo.services.stage.StageServiceImpl;
 
 public class ScreenServiceImpl implements ScreenService {
 

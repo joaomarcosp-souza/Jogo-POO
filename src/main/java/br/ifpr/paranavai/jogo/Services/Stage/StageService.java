@@ -1,4 +1,4 @@
-package br.ifpr.paranavai.jogo.services.stage;
+package br.ifpr.paranavai.jogo.Services.Stage;
 
 import java.awt.Graphics;
 

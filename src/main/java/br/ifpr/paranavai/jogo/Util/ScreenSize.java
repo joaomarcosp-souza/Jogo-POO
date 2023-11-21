@@ -1,4 +1,4 @@
-package br.ifpr.paranavai.jogo.util;
+package br.ifpr.paranavai.jogo.Util;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;

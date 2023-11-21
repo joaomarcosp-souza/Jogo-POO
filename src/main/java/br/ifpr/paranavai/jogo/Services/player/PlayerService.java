@@ -1,4 +1,4 @@
-package br.ifpr.paranavai.jogo.services.player;
+package br.ifpr.paranavai.jogo.Services.player;
 
 import java.util.List;
 

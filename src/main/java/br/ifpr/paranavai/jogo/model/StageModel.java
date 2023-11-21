@@ -24,8 +24,8 @@ import br.ifpr.paranavai.jogo.model.Screens.FimDeJogo;
 import br.ifpr.paranavai.jogo.model.Screens.Historico;
 import br.ifpr.paranavai.jogo.model.Screens.MenuInicial;
 import br.ifpr.paranavai.jogo.model.Screens.Pausar;
-import br.ifpr.paranavai.jogo.util.ScreenSize;
-import br.ifpr.paranavai.jogo.util.Sounds;
+import br.ifpr.paranavai.jogo.Util.ScreenSize;
+import br.ifpr.paranavai.jogo.Util.Sounds;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
