@@ -16,7 +16,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import br.ifpr.paranavai.jogo.Util.ScreenSize;
+import br.ifpr.paranavai.jogo.util.ScreenSize;
 
 import java.awt.FontFormatException;
 

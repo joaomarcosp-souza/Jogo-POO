@@ -1,4 +1,4 @@
-package br.ifpr.paranavai.jogo.dao.enemies.Ships;
+package br.ifpr.paranavai.jogo.dao.enemies.ships;
 
 import java.util.List;
 import br.ifpr.paranavai.jogo.model.Enemies.Naves;

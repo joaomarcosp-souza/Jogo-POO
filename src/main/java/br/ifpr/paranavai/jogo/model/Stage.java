@@ -12,8 +12,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import br.ifpr.paranavai.jogo.Services.Screens.ScreenServiceImpl;
-import br.ifpr.paranavai.jogo.Services.Stage.StageServiceImpl;
+import br.ifpr.paranavai.jogo.services.Screens.ScreenServiceImpl;
+import br.ifpr.paranavai.jogo.services.stage.StageServiceImpl;
 import br.ifpr.paranavai.jogo.model.Character.Player;
 
 

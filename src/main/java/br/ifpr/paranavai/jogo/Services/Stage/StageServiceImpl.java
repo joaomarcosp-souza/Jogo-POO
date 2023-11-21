@@ -1,4 +1,4 @@
-package br.ifpr.paranavai.jogo.Services.Stage;
+package br.ifpr.paranavai.jogo.services.stage;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -7,12 +7,12 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import br.ifpr.paranavai.jogo.Services.Enemies.AsteroidsService;
-import br.ifpr.paranavai.jogo.Services.Enemies.MeteorService;
-import br.ifpr.paranavai.jogo.Services.Enemies.ShipService;
-import br.ifpr.paranavai.jogo.Services.player.PlayerService;
-import br.ifpr.paranavai.jogo.dao.enemies.Meteor.MeteorDaoImpl;
-import br.ifpr.paranavai.jogo.dao.enemies.Ships.ShipDaoImpl;
+import br.ifpr.paranavai.jogo.services.enemies.AsteroidsService;
+import br.ifpr.paranavai.jogo.services.enemies.MeteorService;
+import br.ifpr.paranavai.jogo.services.enemies.ShipService;
+import br.ifpr.paranavai.jogo.services.player.PlayerService;
+import br.ifpr.paranavai.jogo.dao.enemies.meteor.MeteorDaoImpl;
+import br.ifpr.paranavai.jogo.dao.enemies.ships.ShipDaoImpl;
 import br.ifpr.paranavai.jogo.dao.player.PlayerDaoImpl;
 import br.ifpr.paranavai.jogo.model.Stage;
 import br.ifpr.paranavai.jogo.model.StageModel;
